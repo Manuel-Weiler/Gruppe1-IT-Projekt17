@@ -13,12 +13,12 @@
   
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/it_projekt18/greet</url-pattern>
+    <url-pattern>/it_projekt17/greet</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>IT_Projekt18.html</welcome-file>
+    <welcome-file>IT_Projekt17.html</welcome-file>
   </welcome-file-list>
 
 </web-app>
