@@ -1,9 +1,9 @@
-package de.hdm.gruppe1.shared;
+package de.hdm.gruppe1.Project4u.shared;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import de.hdm.gruppe1.shared.bo.Nutzer;
+import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
 
 
 @RemoteServiceRelativePath("login")

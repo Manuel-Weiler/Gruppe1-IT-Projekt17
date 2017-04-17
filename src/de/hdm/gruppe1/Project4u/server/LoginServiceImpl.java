@@ -1,4 +1,4 @@
-package de.hdm.gruppe1.server;
+package de.hdm.gruppe1.Project4u.server;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -6,8 +6,8 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import de.hdm.gruppe1.shared.LoginService;
-import de.hdm.gruppe1.shared.bo.Nutzer;
+import de.hdm.gruppe1.Project4u.shared.LoginService;
+import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
 /**
  * Implementierungsklasse des Interfaces LoginService
  * @see LoginService

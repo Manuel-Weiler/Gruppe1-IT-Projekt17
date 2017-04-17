@@ -1,4 +1,4 @@
-package de.hdm.gruppe1.shared;
+package de.hdm.gruppe1.Project4u.shared;
 
 /**
  * Zentrale Konstante etc., die sowohl Server- als auch Client-seitig benötigt

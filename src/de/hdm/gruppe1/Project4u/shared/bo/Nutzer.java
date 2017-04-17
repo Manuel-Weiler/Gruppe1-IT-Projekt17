@@ -1,13 +1,16 @@
-package de.hdm.gruppe1.shared.bo;
+package de.hdm.gruppe1.Project4u.shared.bo;
 
-public class Nutzer {
+public class Nutzer extends BusinessObject{
 
 	private static final long serialVersionUID = 1L;
 
+	private int nutzerId = 0;
 	private boolean loggedIn = false;
 	private String loginUrl;
 	private String logoutUrl;
 	private String emailAddress;
+	private String vorname;
+	private String nachname;
 	private String nickname;
 	private boolean status = false;
 
@@ -57,6 +60,30 @@ public class Nutzer {
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+
+	public int getNutzerId() {
+		return nutzerId;
+	}
+
+	public void setNutzerId(int nutzerId) {
+		this.nutzerId = nutzerId;
+	}
+
+	public String getVorname() {
+		return vorname;
+	}
+
+	public void setVorname(String vorname) {
+		this.vorname = vorname;
+	}
+
+	public String getNachname() {
+		return nachname;
+	}
+
+	public void setNachname(String nachname) {
+		this.nachname = nachname;
 	}
 
 }

@@ -4,21 +4,42 @@
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee">
-
-  <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>de.hdm.gruppe1.server.GreetingServiceImpl</servlet-class>
-  </servlet>
   
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/it_projekt17/greet</url-pattern>
-  </servlet-mapping>
-  
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>IT_Projekt17.html</welcome-file>
-  </welcome-file-list>
+  	<!-- Editor Start -->
+	<!-- Servlets -->
 
+	<servlet>
+		<servlet-name>Project4uAdministrationImpl</servlet-name>
+		<servlet-class>de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl</servlet-class>
+	</servlet>
+   
+	<servlet-mapping>
+		<servlet-name>Project4uAdministrationImpl</servlet-name>
+		<url-pattern>/project4u/project4udministration</url-pattern>
+		<url-pattern>/project4ureport/project4uadministration</url-pattern>
+	</servlet-mapping>
+
+	<!-- Editor Ende -->
+
+	<!-- LOGIN Start -->
+	<!-- Servlets -->
+	<servlet>
+		<servlet-name>loginService</servlet-name>
+		<servlet-class>de.hdm.gruppe1.Project4u.server.LoginServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>loginService</servlet-name>
+		<url-pattern>/project4u/login</url-pattern>
+		<url-pattern>/project4ureport/login</url-pattern>
+	</servlet-mapping>
+
+	<!-- LOGIN Ende -->
+
+	<!-- Default page to serve -->
+
+	<welcome-file-list>
+		<welcome-file>Project4u.html</welcome-file>
+		<welcome-file>Project4uReport.html</welcome-file>
+	</welcome-file-list>
 </web-app>
