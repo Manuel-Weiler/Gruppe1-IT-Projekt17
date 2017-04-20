@@ -10,7 +10,7 @@ public class DBConnection {
 	private static String googleUrl = ""; // <-- da muss unsere Google-DatenbankURL rein!
 	private static String localUrl = ""; // <-- da muss unsere lokale DatenbankURL rein!
 	
-	//DAtenbankverbindung aufbauen
+	//Datenbankverbindung aufbauen
 	public static Connection connection(){
 		if (con == null){
 			String url = null;
