@@ -68,8 +68,3 @@ public class ClientsideSettings extends CommonSettings{
 
 	}
 }
-
-
-
-
-
