@@ -7,8 +7,13 @@ import com.google.appengine.api.utils.SystemProperty;
 
 public class DBConnection {
 	private static Connection con = null;
+<<<<<<< HEAD
 	private static String googleUrl = "jdbc:google:mysql://173.194.86.227/project4u?user=MaxBotta&password=";
 	private static String localUrl = "jdbc:mysql://127.0.0.1:3306/project4u?user=MaxBotta&password=1234";
+=======
+	private static String googleUrl = "'jdbc:mysql://173.194.86.227:3306/project4u', 'TobiasReumann', null"; // <-- da muss unsere Google-DatenbankURL rein!
+	private static String localUrl = ""; // <-- da muss unsere lokale DatenbankURL rein!
+>>>>>>> refs/heads/master
 	
 	//DAtenbankverbindung aufbauen
 	public static Connection connection(){
