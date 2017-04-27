@@ -18,7 +18,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
  * @author Thies
  * @author Dominik
  */
-public class NutzerMapper {
+public class OrganisationseinheitMapper {
 	
 	/**
 	 * Die Klasse NutzerprofilMapper wird nur einmal instantiiert. Man spricht
@@ -29,13 +29,13 @@ public class NutzerMapper {
 	 * speichert die einzige Instanz dieser Klasse.
 	 * 
 	 */
-	private static NutzerMapper nutzerMapper = null;
+	private static OrganisationseinheitMapper nutzerMapper = null;
 
 	/**
 	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
-	protected NutzerMapper(){
+	protected OrganisationseinheitMapper(){
 		
 	}
 	
@@ -52,9 +52,9 @@ public class NutzerMapper {
 	 * 
 	 * @return nutzerprofilMapper <code>NutzerprofilMapper</code>-Objekt.
 	 */
-	public static NutzerMapper nutzerMapper(){
+	public static OrganisationseinheitMapper nutzerMapper(){
 		if(nutzerMapper == null){
-			nutzerMapper = new NutzerMapper();
+			nutzerMapper = new OrganisationseinheitMapper();
 		}
 		return nutzerMapper;
 	}
@@ -73,7 +73,7 @@ public class NutzerMapper {
 		try{
 			Statement stmt = con.createStatement();
 			
-			ResultSet rs = stmt.executeQuery("SELECT MAX(NutzerID) AS maxid " + "FROM Nutzer ");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(NutzerID) AS maxid " + "FROM Organisationseinheit ");
 			
 			
 			if(rs.next()){

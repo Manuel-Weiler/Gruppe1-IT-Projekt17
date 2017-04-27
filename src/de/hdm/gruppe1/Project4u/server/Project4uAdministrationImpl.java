@@ -9,7 +9,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
 @SuppressWarnings("serial")
 public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration{
 	
-	private NutzerMapper nutzerMapper = null;
+	private OrganisationseinheitMapper nutzerMapper = null;
 	
 	public Project4uAdministrationImpl() throws IllegalArgumentException{
 		
@@ -18,7 +18,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	//Initialisierung
 	public void init() throws IllegalArgumentException{
 		
-		this.nutzerMapper = NutzerMapper.nutzerMapper();
+		this.nutzerMapper = OrganisationseinheitMapper.nutzerMapper();
 		
 	}
 	
