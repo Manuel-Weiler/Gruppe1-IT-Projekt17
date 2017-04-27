@@ -1,5 +1,7 @@
 package de.hdm.gruppe1.Project4u.server;
 
+import java.util.Vector;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.gruppe1.Project4u.server.db.*;
@@ -37,6 +39,26 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	//Login-Status
 	public Organisationseinheit checkStatus(Organisationseinheit loginInfo){
 		return this.organisationseinheitMapper.checkStatus(loginInfo);
+	}
+	
+	public Organisationseinheit findByKey(int id) throws IllegalArgumentException {
+		return this.organisationseinheitMapper.findByKey(id);
+	}
+	
+	public Vector<Organisationseinheit> findAll() throws IllegalArgumentException {
+		return this.organisationseinheitMapper.findAll();
+	}
+	
+	public Vector<Organisationseinheit> findByNachname(String name) {
+		return this.organisationseinheitMapper.findByNachname(name);
+	}
+	
+	public void update (Organisationseinheit organisationseinheit) throws IllegalArgumentException {
+		organisationseinheitMapper.update(organisationseinheit);
+	}
+	
+	public void delete (Organisationseinheit organisationseinheit) throws IllegalArgumentException {
+		organisationseinheitMapper.delete(organisationseinheit);
 	}
 
 }
