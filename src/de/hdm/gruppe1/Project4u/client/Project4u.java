@@ -16,33 +16,33 @@ import de.hdm.gruppe1.Project4u.client.gui.Startseite;
 import de.hdm.gruppe1.Project4u.shared.LoginService;
 import de.hdm.gruppe1.Project4u.shared.LoginServiceAsync;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
-import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 
 public class Project4u implements EntryPoint {
 
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 
-	private Nutzer loginInfo = null;
+	private Organisationseinheit loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label("Please sign in to your Google Account to access application.");
 	private Anchor signinLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
-	Nutzer nutzer = ClientsideSettings.getAktuellerUser();
+	Organisationseinheit nutzer = ClientsideSettings.getAktuellerUser();
 
 	/*
-	 * Diese Methode prüft den Login-Status
+	 * Diese Methode prï¿½ft den Login-Status
 	 * 
 	 */
 	public void onModuleLoad() {
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
-		loginService.login(GWT.getHostPageBaseURL() + "Project4u.html", new AsyncCallback<Nutzer>() {
-			// fängt mögliche Fehler ab
+		loginService.login(GWT.getHostPageBaseURL() + "Project4u.html", new AsyncCallback<Organisationseinheit>() {
+			// fï¿½ngt mï¿½gliche Fehler ab
 			public void onFailure(Throwable error) {
 
 			}
 
 			// Falls keine Fehler auftreten:
-			public void onSuccess(Nutzer result) {
+			public void onSuccess(Organisationseinheit result) {
 				loginInfo = result;
 				if (loginInfo.getLoggedIn()) {
 					Project4uVerwaltung.checkStatus(loginInfo, new CheckStatusNutzerCallback());
@@ -76,12 +76,12 @@ public class Project4u implements EntryPoint {
 	}
 }
 
-class CheckStatusNutzerCallback implements AsyncCallback<Nutzer> {
+class CheckStatusNutzerCallback implements AsyncCallback<Organisationseinheit> {
 	public void onFailure(Throwable caught) {
 		Window.alert("Datenbank nicht da!");
 	}
 
-	public void onSuccess(Nutzer nutzer){
+	public void onSuccess(Organisationseinheit nutzer){
 		ClientsideSettings.setAktuellerUser(nutzer);
 		final boolean status = nutzer.getStatus();
 		if(status == true){

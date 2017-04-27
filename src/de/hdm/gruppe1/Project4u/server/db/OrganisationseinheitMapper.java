@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+
+
 
 /**
  * Mapper-Klasse, die <code>Nutzerprofil</code>-Objekte auf eine relationale
@@ -29,7 +31,7 @@ public class OrganisationseinheitMapper {
 	 * speichert die einzige Instanz dieser Klasse.
 	 * 
 	 */
-	private static OrganisationseinheitMapper nutzerMapper = null;
+	private static OrganisationseinheitMapper organisationseinheitMapper = null;
 
 	/**
 	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
@@ -52,11 +54,11 @@ public class OrganisationseinheitMapper {
 	 * 
 	 * @return nutzerprofilMapper <code>NutzerprofilMapper</code>-Objekt.
 	 */
-	public static OrganisationseinheitMapper nutzerMapper(){
-		if(nutzerMapper == null){
-			nutzerMapper = new OrganisationseinheitMapper();
+	public static OrganisationseinheitMapper organisationseinheitMapper(){
+		if(organisationseinheitMapper == null){
+			organisationseinheitMapper = new OrganisationseinheitMapper();
 		}
-		return nutzerMapper;
+		return organisationseinheitMapper;
 	}
 
 	/**
@@ -64,27 +66,28 @@ public class OrganisationseinheitMapper {
 	 * PartnerboerseAdministrationImpl und erstellt mit diesen einen neuen
 	 * Nutzer in der Datenbank.
 	 * 
-	 * @param nutzerprofil
-	 * @return nutzerprofil
+	 * @param organisationseinheit
+	 * @return organisationseinheit
 	 */
-	public Nutzer insert(Nutzer nutzer){
+	
+	public Organisationseinheit insert(Organisationseinheit organisationseinheit){
 		Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
 			
-			ResultSet rs = stmt.executeQuery("SELECT MAX(NutzerID) AS maxid " + "FROM Organisationseinheit ");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Organisationseinheit ");
 			
 			
 			if(rs.next()){
-				nutzer.setNutzerId(rs.getInt("maxid") +1);
+				organisationseinheit.setOrganisationseinheitId(rs.getInt("maxid") +1);
 				
 				stmt.executeUpdate("HIER MUSS DAS INSERT-SQL-STATEMENT REIN!!!");
 			}
 		} catch (SQLException e2){
 			e2.printStackTrace();
 		}
-		return nutzer;
+		return organisationseinheit;
 	}
 	/**
 	 * In dieser Methode wird überprüft ob der Nutzer bereits in der Datenbank
@@ -94,16 +97,16 @@ public class OrganisationseinheitMapper {
 	 * Nutzerobjekt loginInfo enthalten ist.
 	 * 
 	 * @param loginInfo
-	 * @param nutzer
+	 * @param organisationseinheit
 	 *            Nutzerdaten des Users werden hineingeladen
 	 * @param con
 	 *            Datenbankverbindung
 	 * @param email
 	 *            Email Adresse des Users, der sich einloggen will
-	 * @return nutzerdaten werden zurueckgegeben.
+	 * @return daten werden zurueckgegeben.
 	 */
-	public Nutzer checkStatus(Nutzer loginInfo){
-		Nutzer nutzer = loginInfo;
+	public Organisationseinheit checkStatus(Organisationseinheit loginInfo){
+		Organisationseinheit organisationseinheit = loginInfo;
 		
 		Connection con = DBConnection.connection();
 		String email = loginInfo.getEmailAddress();
@@ -112,25 +115,25 @@ public class OrganisationseinheitMapper {
 			//Anlegen eines leeren SQL-Statements
 			Statement stmt = con.createStatement();
 			
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Nutzer WHERE " + "GoogleMail = '" + email + "'");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Organisationseinheit WHERE " + "GoogleMail = '" + email + "'");
 		
 		if(rs.next()){
-			nutzer.setStatus(true);
-			nutzer.setNutzerId(rs.getInt("NutzerID"));
-			nutzer.setEmailAddress(rs.getString("GoogleMail"));
+			organisationseinheit.setStatus(true);
+			organisationseinheit.setOrganisationseinheitId(rs.getInt("id"));
+			organisationseinheit.setEmailAddress(rs.getString("GoogleMail"));
 			
-			ResultSet rs2 = stmt.executeQuery("SELECT * FROM Nutzer WHERE " + "NutzerID = " + rs.getInt("NutzerID"));
+			ResultSet rs2 = stmt.executeQuery("SELECT * FROM Organisationseinheit WHERE " + "id = " + rs.getInt("id"));
 			if(rs2.next()){
-				nutzer.setID(rs2.getInt("NutzerID"));
+				organisationseinheit.setID(rs2.getInt("id"));
 			}
 		} else{
-			nutzer.setStatus(false);
+			organisationseinheit.setStatus(false);
 		}
 	} catch(SQLException e){
 		e.printStackTrace();
 		return null;
 	}
-		return nutzer;
+		return organisationseinheit;
 	}
 	
 }

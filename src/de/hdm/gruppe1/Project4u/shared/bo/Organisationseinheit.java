@@ -1,10 +1,10 @@
 package de.hdm.gruppe1.Project4u.shared.bo;
 
-public class Nutzer extends BusinessObject{
+public class Organisationseinheit extends BusinessObject{
 
 	private static final long serialVersionUID = 1L;
 
-	private int nutzerId = 0;
+	private int organisationseinheitId = 0;
 	private boolean loggedIn = false;
 	private String loginUrl;
 	private String logoutUrl;
@@ -62,12 +62,12 @@ public class Nutzer extends BusinessObject{
 		this.status = status;
 	}
 
-	public int getNutzerId() {
-		return nutzerId;
+	public int getOrganisationseinheitId() {
+		return organisationseinheitId;
 	}
 
-	public void setNutzerId(int nutzerId) {
-		this.nutzerId = nutzerId;
+	public void setOrganisationseinheitId(int organisationseinheitId) {
+		this.organisationseinheitId = organisationseinheitId;
 	}
 
 	public String getVorname() {
