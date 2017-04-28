@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 import com.ibm.icu.text.SimpleDateFormat;
 
@@ -50,6 +51,9 @@ public class PartnerprofilMapper {
 		 
 		 Connection con = DBConnection.connection();
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		 Date date = new Date();
+			p.setAenderungsdatum(date);
+			p.setErstelldatum(date);
 
 		    try {
 		      Statement stmt = con.createStatement();
@@ -119,6 +123,43 @@ public class PartnerprofilMapper {
 		}
 		return p;
 	}
-}
 
+
+	/*
+	 * Die nachfolgende Methode speichert Veränderungen am Partnerprofilobjekt
+	 * in der Datenbank
+	 */
+	public Partnerprofil updatePartnerprofil(Partnerprofil p) {
+		Connection con = DBConnection.connection();
+		Date d = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		try {
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("UPDATE Partnerprofil " + "SET änderungsdatum='" + sdf.format(d) + "' WHERE id='"
+					+ p.getPartnerprofilId() + "'");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return p;
+	}
+	
+	/*
+	 * Diese Methode löscht eine Partnerprofil aus der Datebank.
+	 */
+	public void deletePartnerprofil (Partnerprofil p){
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE id='"
+					+ p.getPartnerprofilId() + "'");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+}
 
