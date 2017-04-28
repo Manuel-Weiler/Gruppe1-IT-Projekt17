@@ -5,36 +5,18 @@ import java.sql.DriverManager;
 
 public class DBConnection {
 	private static Connection con = null;
-<<<<<<< HEAD
-	private static String googleUrl = "'jdbc:mysql://173.194.86.227:3306/project4u', 'TobiasReumann', null"; // <-- da muss unsere Google-DatenbankURL rein!
-	private static String localUrl = ""; // <-- da muss unsere lokale DatenbankURL rein!
-=======
-
 	//private static String googleUrl = "'jdbc:mysql://173.194.86.227:3306/project4u', 'TobiasReumann', null"; // <-- da muss unsere Google-DatenbankURL rein!
 	//private static String localUrl = ""; // <-- da muss unsere lokale DatenbankURL rein!
-
->>>>>>> refs/heads/master
 	
 	//Datenbankverbindung aufbauen
 	public static Connection connection(){
-<<<<<<< HEAD
-		if (con == null){
-			String url = null;
-			try{
-					Class.forName("com.mysql.jdbc.GoogleDriver");
-					url = googleUrl;
-
-				
-				con = DriverManager.getConnection(url);
-			} catch (Exception e){
-=======
 		if (con == null) {
 
 			try {
 
 				con = DriverManager.getConnection("jdbc:mysql://173.194.86.227:3306/project4u", "TobiasReumann", null);
+			
 			} catch (Exception e) {
->>>>>>> refs/heads/master
 				con = null;
 				e.printStackTrace();
 			}

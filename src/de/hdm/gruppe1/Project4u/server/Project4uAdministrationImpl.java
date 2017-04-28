@@ -11,12 +11,10 @@ import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 @SuppressWarnings("serial")
 public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration{
 	
-<<<<<<< HEAD
+
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
-=======
-	private NutzerMapper nutzerMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
->>>>>>> refs/heads/master
+
 	
 	public Project4uAdministrationImpl() throws IllegalArgumentException{
 		
@@ -25,12 +23,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	//Initialisierung
 	public void init() throws IllegalArgumentException{
 		
-<<<<<<< HEAD
 		this.organisationseinheitMapper = OrganisationseinheitMapper.organisationseinheitMapper();
-=======
-		this.nutzerMapper = NutzerMapper.nutzerMapper();
 		this.partnerprofilMapper = PartnerprofilMapper.partnerprofilMapper();
->>>>>>> refs/heads/master
 		
 	}
 	
@@ -40,6 +34,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		Organisationseinheit organisationseinheit = new Organisationseinheit();
 		organisationseinheit.setGoogleId(google_id);
 		organisationseinheit.setName(name);
+		organisationseinheit.setTyp(typ);
 		
 		return this.organisationseinheitMapper.insert(organisationseinheit);
 		
