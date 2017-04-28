@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
-import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
 
 /**
  * Mapper-Klasse, die <code>Bewertung</code>-Objekte auf eine relationale

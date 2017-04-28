@@ -1,15 +1,20 @@
 package de.hdm.gruppe1.Project4u.server;
 
+import java.util.Date;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.gruppe1.Project4u.server.db.*;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
 
 @SuppressWarnings("serial")
 public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration{
 	
 	private NutzerMapper nutzerMapper = null;
+	private BewerbungMapper bewerbungMapper = null;
+	
 	
 	public Project4uAdministrationImpl() throws IllegalArgumentException{
 		
@@ -38,5 +43,54 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Nutzer checkStatus(Nutzer loginInfo){
 		return this.nutzerMapper.checkStatus(loginInfo);
 	}
+	
+	public Bewerbung createBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)throws IllegalArgumentException{
+		Bewerbung bewerbung = new Bewerbung();
+		return this.bewerbungMapper.insert(bewerbung);
+	}
+	
+	public void updateBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)throws IllegalArgumentException{
+		
+		Bewerbung bewerbung = new Bewerbung();
+		bewerbung.setBewerbungID(bewerbungID);
+		bewerbung.setErstelldatum(erstelldatum);
+		bewerbung.setBewerbungstext(bewerbungstext);
+		
+		this.bewerbungMapper.updateBewerbung(bewerbung);
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
