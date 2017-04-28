@@ -91,7 +91,7 @@ class CheckStatusNutzerCallback implements AsyncCallback<Organisationseinheit> {
 			Window.alert("Diese Email ist nicht in der Datenbank vorhanden" 
 					+ "Erstelle ein neues Konto oder verwende eine andere Adresse");
 			NutzerForm nutzerForm = new NutzerForm();
-			nutzerForm.loadNutzerForm(nutzer.getEmailAddress());
+			nutzerForm.loadNutzerForm(nutzer.getGoogleId());
 		}
 		
 	}

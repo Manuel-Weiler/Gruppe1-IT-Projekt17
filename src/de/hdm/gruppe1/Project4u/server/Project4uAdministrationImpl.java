@@ -24,13 +24,12 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		
 	}
 	
-	public Organisationseinheit createOrganisationseinheit(String emailAddress, String vorname, String nachname)
+	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ)
 		throws IllegalArgumentException{
 		
 		Organisationseinheit organisationseinheit = new Organisationseinheit();
-		organisationseinheit.setEmailAddress(emailAddress);
-		organisationseinheit.setVorname(vorname);
-		organisationseinheit.setNachname(nachname);
+		organisationseinheit.setGoogleId(google_id);
+		organisationseinheit.setName(name);
 		
 		return this.organisationseinheitMapper.insert(organisationseinheit);
 		

@@ -71,7 +71,7 @@ public class OrganisationseinheitMapper {
 	 * @return organisationseinheit
 	 */
 	
-	public Organisationseinheit insert(Organisationseinheit organisationseinheit){
+	public Organisationseinheit insert(Organisationseinheit organisationseinheit) {
 		Connection con = DBConnection.connection();
 		
 		try{
@@ -83,9 +83,8 @@ public class OrganisationseinheitMapper {
 			if(rs.next()){
 				organisationseinheit.setOrganisationseinheitId(rs.getInt("maxid") +1);
 				
-				stmt.executeUpdate("INSERT INTO Organisationseinheit (id, vorname, nachname) "
-			            + "VALUES (" + organisationseinheit.getOrganisationseinheitId() + ",'" + organisationseinheit.getVorname() + "','"
-			            + organisationseinheit.getNachname() + "')");
+				stmt.executeUpdate("INSERT INTO Organisationseinheit (id, google_id, name, typ) "
+			            + "VALUES (" + organisationseinheit.getOrganisationseinheitId() + ",'" + organisationseinheit.getName() + "', '" + organisationseinheit.getTyp() + "')");
 			}
 		} catch (SQLException e2){
 			e2.printStackTrace();
@@ -93,15 +92,15 @@ public class OrganisationseinheitMapper {
 		return organisationseinheit;
 	}
 	
-	public Organisationseinheit update(Organisationseinheit c) {
+	public Organisationseinheit update(Organisationseinheit o) {
 	    Connection con = DBConnection.connection();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("UPDATE Organisationseinheit " + "SET vorname=\""
-	          + c.getVorname() + "\", " + "nachname=\"" + c.getNachname() + "\" "
-	          + "WHERE id=" + c.getOrganisationseinheitId());
+	      stmt.executeUpdate("UPDATE Organisationseinheit " + "SET google_id=\""
+	          + o.getGoogleId() + "\", " + "name=\"" + o.getName() + "\", " + "typ=\"" + o.getTyp() + "\" "
+	          + "WHERE id=" + o.getOrganisationseinheitId());
 
 	    }
 	    catch (SQLException e) {
@@ -109,16 +108,16 @@ public class OrganisationseinheitMapper {
 	    }
 
 	    // Um Analogie zu insert(Customer c) zu wahren, geben wir c zurück
-	    return c;
+	    return o;
 	  }
 	
-	 public void delete(Organisationseinheit c) {
+	 public void delete(Organisationseinheit o) {
 		    Connection con = DBConnection.connection();
 
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      stmt.executeUpdate("DELETE FROM Organisationseinheit " + "WHERE id=" + c.getOrganisationseinheitId());
+		      stmt.executeUpdate("DELETE FROM Organisationseinheit " + "WHERE id=" + o.getOrganisationseinheitId());
 		    }
 		    catch (SQLException e) {
 		      e.printStackTrace();
@@ -145,18 +144,18 @@ public class OrganisationseinheitMapper {
 		Organisationseinheit organisationseinheit = loginInfo;
 		
 		Connection con = DBConnection.connection();
-		String email = loginInfo.getEmailAddress();
+		String googleid = loginInfo.getGoogleId();
 		
 		try{
 			//Anlegen eines leeren SQL-Statements
 			Statement stmt = con.createStatement();
 			
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Organisationseinheit WHERE " + "GoogleMail = '" + email + "'");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Organisationseinheit WHERE " + "google_id = '" + googleid + "'");
 		
 		if(rs.next()){
 			organisationseinheit.setStatus(true);
 			organisationseinheit.setOrganisationseinheitId(rs.getInt("id"));
-			organisationseinheit.setEmailAddress(rs.getString("GoogleMail"));
+			organisationseinheit.setGoogleId(rs.getString("GoogleMail"));
 			
 			ResultSet rs2 = stmt.executeQuery("SELECT * FROM Organisationseinheit WHERE " + "id = " + rs.getInt("id"));
 			if(rs2.next()){
@@ -191,12 +190,14 @@ public class OrganisationseinheitMapper {
 		       */
 		      if (rs.next()) {
 		        // Ergebnis-Tupel in Objekt umwandeln
-		        Organisationseinheit c = new Organisationseinheit();
-		        c.setOrganisationseinheitId(rs.getInt("id"));
-		        c.setNachname(rs.getString("nachname"));
-		        c.setVorname(rs.getString("vorname"));
+		        Organisationseinheit o = new Organisationseinheit();
+		        o.setOrganisationseinheitId(rs.getInt("id"));
+		        o.setName(rs.getString("name"));
+		        o.setGoogleId(rs.getString("google_id"));
+		        o.setTyp(rs.getString("typ"));
+		        
 
-		        return c;
+		        return o;
 		      }
 		    }
 		    catch (SQLException e) {
@@ -221,13 +222,16 @@ public class OrganisationseinheitMapper {
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
 		      // erstellt.
 		      while (rs.next()) {
-		        Organisationseinheit c = new Organisationseinheit();
-		        c.setOrganisationseinheitId(rs.getInt("id"));
-		        c.setVorname(rs.getString("firstName"));
-		        c.setNachname(rs.getString("lastName"));
+		        Organisationseinheit o = new Organisationseinheit();
+		        o.setOrganisationseinheitId(rs.getInt("id"));
+		        o.setGoogleId(rs.getString("google_id"));
+		        o.setName(rs.getString("name"));
+		        o.setTyp(rs.getString("typ"));
+		        //TO DO: 
+
 
 		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
-		        result.addElement(c);
+		        result.addElement(o);
 		      }
 		    }
 		    catch (SQLException e) {
@@ -252,13 +256,14 @@ public class OrganisationseinheitMapper {
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
 		      // erstellt.
 		      while (rs.next()) {
-		        Organisationseinheit c = new Organisationseinheit();
-		        c.setOrganisationseinheitId(rs.getInt("id"));
-		        c.setVorname(rs.getString("vorname"));
-		        c.setNachname(rs.getString("nachname"));
+		        Organisationseinheit o = new Organisationseinheit();
+		        o.setOrganisationseinheitId(rs.getInt("id"));
+		        o.setGoogleId(rs.getString("google_id"));
+		        o.setName(rs.getString("name"));
+		        o.setTyp(rs.getString("typ"));
 
 		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
-		        result.addElement(c);
+		        result.addElement(o);
 		      }
 		    }
 		    catch (SQLException e) {
@@ -268,4 +273,38 @@ public class OrganisationseinheitMapper {
 		    // Ergebnisvektor zurückgeben
 		    return result;
 		  }
+	 
+	 public Vector<Organisationseinheit> findByTyp(String typ) {
+		   Connection con = DBConnection.connection();
+		    Vector<Organisationseinheit> result = new Vector<Organisationseinheit>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT id, google_id, name, typ "
+		          + "FROM Organisationseinheit " + "WHERE tpy LIKE '" + typ
+		          + "' ORDER BY name");
+
+		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		    	   Organisationseinheit o = new Organisationseinheit();
+			        o.setOrganisationseinheitId(rs.getInt("id"));
+			        o.setGoogleId(rs.getString("google_id"));
+			        o.setName(rs.getString("name"));
+			        o.setTyp(rs.getString("typ"));
+
+		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(o);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurückgeben
+		    return result;
+		  }
+	 
 }
+

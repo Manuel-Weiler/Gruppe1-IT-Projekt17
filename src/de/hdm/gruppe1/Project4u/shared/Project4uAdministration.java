@@ -6,7 +6,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 
 public interface Project4uAdministration extends RemoteService{
 	
-	public Organisationseinheit createOrganisationseinheit(String emailAddress, String vorname, String nachname) throws IllegalArgumentException;
+	public Organisationseinheit createOrganisationseinheit(String emailAddress, String vorname, String nachname);
 	
 	public void init() throws IllegalArgumentException;
 	
