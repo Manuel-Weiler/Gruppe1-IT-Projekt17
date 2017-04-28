@@ -10,6 +10,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
 public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration{
 	
 	private NutzerMapper nutzerMapper = null;
+	private PartnerprofilMapper partnerprofilMapper = null;
 	
 	public Project4uAdministrationImpl() throws IllegalArgumentException{
 		
@@ -19,6 +20,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public void init() throws IllegalArgumentException{
 		
 		this.nutzerMapper = NutzerMapper.nutzerMapper();
+		this.partnerprofilMapper = PartnerprofilMapper.partnerprofilMapper();
 		
 	}
 	
@@ -38,5 +40,20 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Nutzer checkStatus(Nutzer loginInfo){
 		return this.nutzerMapper.checkStatus(loginInfo);
 	}
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Partnerprofil
+	 * #########################################################################
+	 * 
+	 */
+
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Ende: Partnerprofil
+	 * #########################################################################
+	 * 
+	 */
 
 }
