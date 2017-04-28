@@ -121,4 +121,4 @@ public class PartnerprofilMapper {
 	}
 }
 
-public Partn
+
