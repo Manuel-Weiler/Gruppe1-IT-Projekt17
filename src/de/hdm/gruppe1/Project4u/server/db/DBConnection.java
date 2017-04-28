@@ -15,14 +15,10 @@ public class DBConnection {
 		if (con == null){
 			String url = null;
 			try{
-				if(SystemProperty.environment.value() == SystemProperty.Environment.Value.Production){
 					Class.forName("com.mysql.jdbc.GoogleDriver");
 					url = googleUrl;
-				} else{
-					//Falls noch nicht auf Google Datenbank dann soll er lokal nehmen
-					Class.forName("com.mysql.jdbc.Driver");
-					url = localUrl;
-				}
+
+				
 				con = DriverManager.getConnection(url);
 			} catch (Exception e){
 				con = null;
