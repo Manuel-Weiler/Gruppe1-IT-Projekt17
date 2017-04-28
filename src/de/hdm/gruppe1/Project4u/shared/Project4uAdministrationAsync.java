@@ -6,7 +6,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 
 public interface Project4uAdministrationAsync {
 
-	void createOrganisationseinheit(String emailAddress, String vorname, String nachname, AsyncCallback<Organisationseinheit> callback);
+	void createOrganisationseinheit(String google_id, String name, String typ, AsyncCallback<Organisationseinheit> callback);
 
 	/**
 	 * @param callback
