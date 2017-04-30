@@ -1,16 +1,20 @@
 package de.hdm.gruppe1.Project4u.server;
 
+import java.util.Vector;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.gruppe1.Project4u.server.db.*;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
-import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 
 @SuppressWarnings("serial")
 public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration{
 	
-	private NutzerMapper nutzerMapper = null;
+
+	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
+
 	
 	public Project4uAdministrationImpl() throws IllegalArgumentException{
 		
@@ -19,26 +23,46 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	//Initialisierung
 	public void init() throws IllegalArgumentException{
 		
-		this.nutzerMapper = NutzerMapper.nutzerMapper();
+		this.organisationseinheitMapper = OrganisationseinheitMapper.organisationseinheitMapper();
 		this.partnerprofilMapper = PartnerprofilMapper.partnerprofilMapper();
 		
 	}
 	
-	public Nutzer createNutzer(String emailAddress, String vorname, String nachname)
+	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ)
 		throws IllegalArgumentException{
 		
-		Nutzer nutzer = new Nutzer();
-		nutzer.setEmailAddress(emailAddress);
-		nutzer.setVorname(vorname);
-		nutzer.setNachname(nachname);
+		Organisationseinheit organisationseinheit = new Organisationseinheit();
+		organisationseinheit.setGoogleId(google_id);
+		organisationseinheit.setName(name);
+		organisationseinheit.setTyp(typ);
 		
-		return this.nutzerMapper.insert(nutzer);
+		return this.organisationseinheitMapper.insert(organisationseinheit);
 		
 	}
 	
 	//Login-Status
-	public Nutzer checkStatus(Nutzer loginInfo){
-		return this.nutzerMapper.checkStatus(loginInfo);
+	public Organisationseinheit checkStatus(Organisationseinheit loginInfo){
+		return this.organisationseinheitMapper.checkStatus(loginInfo);
+	}
+	
+	public Organisationseinheit findByKey(int id) throws IllegalArgumentException {
+		return this.organisationseinheitMapper.findByKey(id);
+	}
+	
+	public Vector<Organisationseinheit> findAll() throws IllegalArgumentException {
+		return this.organisationseinheitMapper.findAll();
+	}
+	
+	public Vector<Organisationseinheit> findByNachname(String name) {
+		return this.organisationseinheitMapper.findByNachname(name);
+	}
+	
+	public void update (Organisationseinheit organisationseinheit) throws IllegalArgumentException {
+		organisationseinheitMapper.update(organisationseinheit);
+	}
+	
+	public void delete (Organisationseinheit organisationseinheit) throws IllegalArgumentException {
+		organisationseinheitMapper.delete(organisationseinheit);
 	}
 	
 	/*
