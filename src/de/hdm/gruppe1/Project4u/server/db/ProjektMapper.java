@@ -132,4 +132,47 @@ public class ProjektMapper {
 		return projekt;
 
 		   }
+	  
+	  /**
+	   * Wiederholtes Schreiben eines Objekts in die Datenbank.
+	   * 
+	   * @param p das Objekt, das in die DB geschrieben werden soll
+	   * @return das als Parameter übergebene Objekt
+	   */
+	  public Projekt update(Projekt p) {
+	    Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("Hier kommt noch das UPDATE Sql Statement rein"); //TODO
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
+
+	    // Um Analogie zu insert(Projekt p) zu wahren, geben wir p zurück
+	    return p;  
+	  }
+	  
+	  /**
+	   * Löschen der Daten eines <code>Projekt</code>-Objekts aus der Datenbank.
+	   * 
+	   * @param p das aus der DB zu löschende "Objekt"
+	   */
+	  public void delete(Projekt p) {
+	    Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("Hier kommt das DELETE Sql Statement rein");
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
+	  }
+	
 	  }

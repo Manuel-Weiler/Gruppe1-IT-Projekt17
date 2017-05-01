@@ -113,7 +113,7 @@ public class ProjektmarktplatzMapper {
 	              projektmarktplatz.setProjektmarktplatzId(rs.getInt("maxid") + 1);
 	            }
 			  
-			  stmt.executeUpdate("HIER MUSS DAS INSERT-SQL-STATEMENT REIN!!!");
+			  stmt.executeUpdate("HIER MUSS DAS INSERT-SQL-STATEMENT REIN!!!"); //TODO
 			                    
 			          }
 		      catch (SQLException e) {
@@ -123,6 +123,44 @@ public class ProjektmarktplatzMapper {
 		return projektmarktplatz;
 
 		   }
+	  
+	 public Projektmarktplatz update(Projektmarktplatz p) {
+		    Connection con = DBConnection.connection();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      stmt.executeUpdate("Hier kommt noch das UPDATE Sql Statement rein"); //TODO
+
+		    }
+		    catch (SQLException e2) {
+		      e2.printStackTrace();
+		    }
+
+		    // Um Analogie zu insert(Projektmarktplatz p) zu wahren, geben wir p zurück
+		    return p;
+		  }
+	 
+	 /**
+	   * Löschen der Daten eines <code>Projektmarktplatz</code>-Objekts aus der Datenbank.
+	   * 
+	   * @param p das aus der DB zu löschende "Objekt"
+	   */
+	  public void delete(Projektmarktplatz p) {
+	    Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("Hier kommt das DELETE Sql Statement rein"); //TODO
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 	  }
+	  
+	 
+}
 	
 
