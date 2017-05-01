@@ -97,8 +97,7 @@ public class PartnerprofilMapper {
 		 
 	 }
 	 
-	 /*
-	  */
+	 
 	
 	/**	  
 	 * Mit dieser Methode wird ein Partnerprofil-Objekt mit einer bestimmten <code>id</code>ausgegeben.
