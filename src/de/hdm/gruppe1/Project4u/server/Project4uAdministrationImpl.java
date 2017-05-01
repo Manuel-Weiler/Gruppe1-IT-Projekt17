@@ -14,6 +14,9 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	
 
 	
+	private static final Beteiligung Beteiligung = null;
+
+
 	private BeteiligungMapper beteiligungMapper = null;
 
 
@@ -47,9 +50,19 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		
 	}
 	
-/*
- *  Insert- Methode für die Beteiligung muss verfasst werden
- */
+	public Beteiligung createBeteiligung () throws IllegalArgumentException {
+		    Beteiligung beteiligung = new Beteiligung();
+		    beteiligung.setBeteiligungId(beteiligung);
+
+
+		    beteiligung.setID(1);
+
+		    return this.beteiligungMapper.insert(beteiligung);
+		  }
+	
+	public void delete (Beteiligung delete){
+		beteiligungMapper.deleteBeteiligung(Beteiligung);
+	}
 	
 	//Login-Status
 	public Organisationseinheit checkStatus(Organisationseinheit loginInfo){
