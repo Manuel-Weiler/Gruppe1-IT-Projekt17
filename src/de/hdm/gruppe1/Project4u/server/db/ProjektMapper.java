@@ -1,11 +1,14 @@
 package de.hdm.gruppe1.Project4u.server.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
+import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 /**
- * Mapper-Klasse, die <code>Projektmarktplatz</code>-Objekte auf eine relationale
+ * Mapper-Klasse, die <code>Projekt</code>-Objekte auf eine relationale
  * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
  * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
@@ -15,7 +18,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
  * @author Thies
  * @author Ugur
  */
-public class ProjektmarktplatzMapper {
+public class ProjektMapper {
 
 	/**
 	 * Die Klasse ProjektmarktplatzMapper wird nur einmal instantiiert. Man spricht
@@ -26,42 +29,42 @@ public class ProjektmarktplatzMapper {
 	 * speichert die einzige Instanz dieser Klasse.
 	 * 
 	 */
-	private static ProjektmarktplatzMapper projektmarktplatzMapper = null;
+	private static ProjektMapper projektMapper = null;
 	
 	/**
 	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
-	protected ProjektmarktplatzMapper(){
+	protected ProjektMapper(){
 		
 	}
 	
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch
-	 * <code>ProjektmarktplatzMapper.projektmarktplatzMapper()</code>. Sie stellt die
+	 * <code>ProjektMapper.projektMapper()</code>. Sie stellt die
 	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
-	 * einzige Instanz von <code>ProjektmarktplatzMapper</code> existiert.
+	 * einzige Instanz von <code>ProjektMapper</code> existiert.
 	 * <p>
 	 * 
-	 * <b>Fazit:</b> ProjektmarktplatzMapper sollte nicht mittels <code>new</code>
+	 * <b>Fazit:</b> ProjektMapper sollte nicht mittels <code>new</code>
 	 * instantiiert werden, sondern stets durch Aufruf dieser statischen
 	 * Methode.
 	 * 
-	 * @return projektmarktplatzMapper <code>ProjektmartkplatzMapper</code>-Objekt.
+	 * @return projektMapper <code>ProjektMapper</code>-Objekt.
 	 */
-	public static ProjektmarktplatzMapper projektmarktplatzMapper() {
-	    if (projektmarktplatzMapper == null) {
-	      projektmarktplatzMapper = new ProjektmarktplatzMapper();
+	public static ProjektMapper projektMapper() {
+	    if (projektMapper == null) {
+	      projektMapper = new ProjektMapper();
 	    }
-         return projektmarktplatzMapper;
+         return projektMapper;
 	  }
 	
 	/**
 	 ** @param id
-	 ** @return Liefert ein Projektmarktplatz entsprechend der �bergebenen id zurueck.
+	 ** @return Liefert ein Projekt entsprechend der �bergebenen id zurueck.
 	 **/
 
-      public Projektmarktplatz findById(int id){
+      public Projekt findById(int id){
 		 // DB-Verbindung holen
 		 Connection con = DBConnection.connection();
 		 
@@ -70,7 +73,7 @@ public class ProjektmarktplatzMapper {
 		   Statement stmt = con.createStatement();
 		   
 		   // Statement ausf�llen und als Query an die DB schicken
-		   ResultSet rs = stmt.executeQuery("SELECT * FROM projektmarktplatz " + "WHERE ProjektmarktplatzId=" + id);
+		   ResultSet rs = stmt.executeQuery("SELECT * FROM projekt " + "WHERE ProjektId=" + id);
 		   
 		   /*
 	        * Da id Prim�rschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
@@ -78,9 +81,15 @@ public class ProjektmarktplatzMapper {
 	        */
 		    if (rs.next()) {
 		      // Ergebnis-Tupel in Objekt umwandeln
-		      Projektmarktplatz p = new Projektmarktplatz();
-		      p.setProjektmarktplatzId(rs.getInt("projektmarktplatzId"));
+		      Projekt p = new Projekt();
+		      p.setProjektId(rs.getInt("projektId"));
 		      p.setName(rs.getString("name"));
+		      p.setStartdatum(rs.getDate("startdatum"));
+		      p.setEnddatum(rs.getDate("enddatum"));
+		      p.setBeschreibung(rs.getString("beschreibung"));
+		      p.setProjektmarktplatzId(rs.getInt("projektmarktplatzId"));
+		      p.setOrganisationseinheitId(rs.getInt("organisationseinheitId"));
+		      
 		      return p;
 		      }
 		    }
@@ -95,22 +104,22 @@ public class ProjektmarktplatzMapper {
 	  /**
 		 * Diese Methode bezieht ihre Informationen aus der
 		 * PartnerboerseAdministrationImpl und erstellt mit diesen einen neuen
-		 * Projektmarktplatz in der Datenbank.
+		 * Projekt in der Datenbank.
 		 * 
-		 * @param projektmarktplatz
-		 * @return projektmarktplatz
+		 * @param projekt
+		 * @return projekt
 		 */
 	  
-	  public Projektmarktplatz insert(Projektmarktplatz projektmarktplatz){
+	  public Projekt insert(Projekt projekt){
 		  Connection con = DBConnection.connection();
 		  
 		  try{
 			  Statement stmt = con.createStatement();
 			  
-			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM projektmarktplatz ");
+			  ResultSet rs = stmt.executeQuery("SELECT MAX(projektId) AS maxid " + "FROM projekt ");
 			  
 			  if (rs.next()) {
-	              projektmarktplatz.setProjektmarktplatzId(rs.getInt("maxid") + 1);
+	              projekt.setProjektId(rs.getInt("maxid") + 1);
 	            }
 			  
 			  stmt.executeUpdate("HIER MUSS DAS INSERT-SQL-STATEMENT REIN!!!"); //TODO
@@ -120,47 +129,50 @@ public class ProjektmarktplatzMapper {
 		    	 e.printStackTrace();
 		    	 }
 		  
-		return projektmarktplatz;
+		return projekt;
 
 		   }
 	  
-	 public Projektmarktplatz update(Projektmarktplatz p) {
-		    Connection con = DBConnection.connection();
-
-		    try {
-		      Statement stmt = con.createStatement();
-
-		      stmt.executeUpdate("Hier kommt noch das UPDATE Sql Statement rein"); //TODO
-
-		    }
-		    catch (SQLException e2) {
-		      e2.printStackTrace();
-		    }
-
-		    // Um Analogie zu insert(Projektmarktplatz p) zu wahren, geben wir p zurück
-		    return p;
-		  }
-	 
-	 /**
-	   * Löschen der Daten eines <code>Projektmarktplatz</code>-Objekts aus der Datenbank.
+	  /**
+	   * Wiederholtes Schreiben eines Objekts in die Datenbank.
 	   * 
-	   * @param p das aus der DB zu löschende "Objekt"
+	   * @param p das Objekt, das in die DB geschrieben werden soll
+	   * @return das als Parameter übergebene Objekt
 	   */
-	  public void delete(Projektmarktplatz p) {
+	  public Projekt update(Projekt p) {
 	    Connection con = DBConnection.connection();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("Hier kommt das DELETE Sql Statement rein"); //TODO
+	      stmt.executeUpdate("Hier kommt noch das UPDATE Sql Statement rein"); //TODO
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
+
+	    // Um Analogie zu insert(Projekt p) zu wahren, geben wir p zurück
+	    return p;  
+	  }
+	  
+	  /**
+	   * Löschen der Daten eines <code>Projekt</code>-Objekts aus der Datenbank.
+	   * 
+	   * @param p das aus der DB zu löschende "Objekt"
+	   */
+	  public void delete(Projekt p) {
+	    Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("Hier kommt das DELETE Sql Statement rein");
 
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
 	  }
-	  
-	 
-}
 	
-
+	  }
