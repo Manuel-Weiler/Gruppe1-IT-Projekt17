@@ -1,16 +1,18 @@
 package de.hdm.gruppe1.Project4u.shared.bo;
 
-public class Nutzer extends BusinessObject{
+public class Organisationseinheit extends BusinessObject{
 
 	private static final long serialVersionUID = 1L;
 
-	private int nutzerId = 0;
+	private int organisationseinheitId = 0;
 	private boolean loggedIn = false;
 	private String loginUrl;
 	private String logoutUrl;
-	private String emailAddress;
-	private String vorname;
-	private String nachname;
+	private String google_id;
+	/*private String vorname;
+	private String nachname;*/
+	private String name;
+	private String typ;
 	private String nickname;
 	private boolean status = false;
 
@@ -38,12 +40,12 @@ public class Nutzer extends BusinessObject{
 		this.logoutUrl = logoutUrl;
 	}
 
-	public String getEmailAddress() {
-		return emailAddress;
+	public String getGoogleId() {
+		return google_id;
 	}
 
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
+	public void setGoogleId(String emailAddress) {
+		this.google_id = emailAddress;
 	}
 
 	public String getNickname() {
@@ -62,15 +64,31 @@ public class Nutzer extends BusinessObject{
 		this.status = status;
 	}
 
-	public int getNutzerId() {
-		return nutzerId;
+	public int getOrganisationseinheitId() {
+		return organisationseinheitId;
 	}
 
-	public void setNutzerId(int nutzerId) {
-		this.nutzerId = nutzerId;
+	public void setOrganisationseinheitId(int organisationseinheitId) {
+		this.organisationseinheitId = organisationseinheitId;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getTyp() {
+		return typ;
+	}
+	
+	public void setTyp(String typ) {
+		this.typ = typ;
 	}
 
-	public String getVorname() {
+	/*public String getVorname() {
 		return vorname;
 	}
 
@@ -84,6 +102,6 @@ public class Nutzer extends BusinessObject{
 
 	public void setNachname(String nachname) {
 		this.nachname = nachname;
-	}
+	}*/
 
 }

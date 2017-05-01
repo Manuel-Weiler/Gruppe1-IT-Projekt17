@@ -8,12 +8,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
-import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 
 public class Startseite extends HorizontalPanel{
 	
 	Project4uAdministrationAsync project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
-	Nutzer nutzer = ClientsideSettings.getAktuellerUser();
+	Organisationseinheit nutzer = ClientsideSettings.getAktuellerUser();
 	
 	private Label head = new Label ("Willkommen!");
 	
@@ -32,7 +32,7 @@ public class Startseite extends HorizontalPanel{
 	private int beschreibungsTable;
 	protected int Beschreibung;
 	
-	//Methode für die Startseite
+	//Methode fï¿½r die Startseite
 	public void loadStartseite(){
 		this.add(horPanel);
 		horPanel.add(vertPanel);
@@ -54,7 +54,7 @@ public class Startseite extends HorizontalPanel{
 		
 		//TODO
 		
-		//Widgets und Panels hinzufügen
+		//Widgets und Panels hinzufï¿½gen
 		
 		vertPanel.add(startseiteFlexTable);
 		vertPanel.add(infoLabel);

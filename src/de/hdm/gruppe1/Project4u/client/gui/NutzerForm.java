@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
-import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 
 public class NutzerForm extends VerticalPanel {
 
@@ -72,19 +72,19 @@ public class NutzerForm extends VerticalPanel {
 				String vorname = vornameTextBox.getText();
 				String nachname = nachnameTextBox.getText();
 				
-				project4uVerwaltung.createNutzer(emailAddress, vorname, nachname, new CreateNutzerCallback());
+				project4uVerwaltung.createOrganisationseinheit(emailAddress, vorname, nachname, new CreateNutzerCallback());
 			}
 		});
 	}
 
 }
 
-class CreateNutzerCallback implements AsyncCallback<Nutzer>{
+class CreateNutzerCallback implements AsyncCallback<Organisationseinheit>{
 	public void onFailure(Throwable caught){
 		Window.alert("Das Anlegen ist fehlgeschlagen!");
 	}
 	
-	public void onSuccess(Nutzer nutzer){
+	public void onSuccess(Organisationseinheit nutzer){
 		if(nutzer != null){
 			Window.alert("Anlegen erfolgreich!");
 			RootPanel.get("Nutzer").clear();
