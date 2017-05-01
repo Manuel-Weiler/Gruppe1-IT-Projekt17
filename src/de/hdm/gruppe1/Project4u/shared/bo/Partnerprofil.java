@@ -6,9 +6,10 @@ public class Partnerprofil extends BusinessObject{
 	
 	private static final long serialVersionUID = 1L;
 
-	private int partnerprofilId=1;
+	private int partnerprofilId=0;
 	private Date erstelldatum;
 	private Date aenderungsdatum;
+	private int organisationseinheitId;
 	
 
 	public Date getErstelldatum() {
@@ -33,6 +34,14 @@ public class Partnerprofil extends BusinessObject{
 
 	public void setPartnerprofilId(int partnerprofilId) {
 		this.partnerprofilId = partnerprofilId;
+	}
+
+	public int getOrganisationseinheitId() {
+		return organisationseinheitId;
+	}
+
+	public void setOrganisationseinheitId(int organisationseinheitId) {
+		this.organisationseinheitId = organisationseinheitId;
 	}
 	
 	
