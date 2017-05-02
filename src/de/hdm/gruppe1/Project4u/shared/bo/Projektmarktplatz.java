@@ -6,7 +6,7 @@ public class Projektmarktplatz extends BusinessObject{
 	
 	private int projektmarktplatzId = 0;
 	private String name = "";
-
+	private String passwort = null;
 	
 	public String getName() {
 		return name;
@@ -22,6 +22,14 @@ public class Projektmarktplatz extends BusinessObject{
 
 	public void setProjektmarktplatzId(int projektmarktplatzId) {
 		this.projektmarktplatzId = projektmarktplatzId;
+	}
+
+	public String getPasswort() {
+		return passwort;
+	}
+
+	public void setPasswort(String passwort) {
+		this.passwort = passwort;
 	}
 	
 	

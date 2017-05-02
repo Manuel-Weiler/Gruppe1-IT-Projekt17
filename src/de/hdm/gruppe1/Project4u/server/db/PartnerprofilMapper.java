@@ -200,7 +200,7 @@ public class PartnerprofilMapper {
 		
 		
 		
-		return EigenschaftMapper.eigenschaftMapper().selectAllEigenschaft(p);
+		return EigenschaftMapper.eigenschaftMapper().selectAllEigenschaftOfPartnerprofil(p);
 	}
 	
 }

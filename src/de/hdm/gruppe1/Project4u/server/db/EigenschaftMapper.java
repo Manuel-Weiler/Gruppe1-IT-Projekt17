@@ -1,12 +1,13 @@
 package de.hdm.gruppe1.Project4u.server.db;
 
-import java.sql.ResultSet;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import de.hdm.gruppe1.Project4u.shared.bo.*;
+import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
+import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 
 
 public class EigenschaftMapper {
@@ -90,6 +91,20 @@ public class EigenschaftMapper {
 		return e;
 	}
 	
+	public Eigenschaft updateEigenschaft(Eigenschaft e) {
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("UPDATE Eigenschaft SET name='" + e.getName() + "' wert='" + e.getWert() + "' WHERE id='"
+					+ e.getEigenschaftId() + "'");
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return e;
+	}
+	
+	
 	/**
 	 * Löscht ein Eigenschaftsobjekt aus der Datenbank
 	 * 
@@ -116,7 +131,7 @@ public class EigenschaftMapper {
 		
 		//Zuerst wird ein Vector mit allen Eigenschaften erzeugt, die mit dem Partnerprofil-Objekt in
 		//Beziehung stehen.
-		eigenschaften=selectAllEigenschaft(p);
+		eigenschaften=selectAllEigenschaftOfPartnerprofil(p);
 		
 		//Für jedes Element dieses Vectors wird nun die Methode deleteEigenschaft() aufgerufen.
 		for(Eigenschaft e : eigenschaften){
@@ -129,7 +144,7 @@ public class EigenschaftMapper {
 	 * @param p Partnerprofil
 	 * @return Vektor mit allen Eigenschaftsobjekten die mit einem Partneprofil verknüpft sind.
 	 */
-	public Vector<Eigenschaft> selectAllEigenschaft(Partnerprofil p){
+	public Vector<Eigenschaft> selectAllEigenschaftOfPartnerprofil(Partnerprofil p){
 		Connection con = DBConnection.connection();
 		Vector<Eigenschaft> ergebnis = new Vector<Eigenschaft>();
 		
@@ -153,6 +168,8 @@ public class EigenschaftMapper {
 		}
 		return ergebnis;
 	}
+	
+	
 
 	
 	
