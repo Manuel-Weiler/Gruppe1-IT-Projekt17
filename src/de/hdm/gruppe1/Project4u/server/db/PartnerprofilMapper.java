@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.Vector;
+
 import com.ibm.icu.text.SimpleDateFormat;
 
 import de.hdm.gruppe1.Project4u.shared.bo.*;
@@ -154,7 +156,7 @@ public class PartnerprofilMapper {
 	}
 	
 	/*
-	 * Diese Methode löscht eine Partnerprofil aus der Datebank.
+	 * Diese Methode löscht ein Partnerprofil aus der Datebank.
 	 */
 	public void deletePartnerprofil (Partnerprofil p){
 		Connection con = DBConnection.connection();
@@ -187,15 +189,19 @@ public class PartnerprofilMapper {
 	}
 	
 ////////////////////////
-	/*
-	 * 
-	 *TODO: Anpassen wenn Klasse EigenschaftMapper existiert.
-	public Vector <Eigenschaft> getEigenschaftenOf (Partnerprofil p){
+	
+	
+	/**
+	 * Diese Methode gibt alle Eigenschaftsobjekte zu einem Partnerprofil-Objekt p zurück
+	 * @param p
+	 * @return
+	 */
+	public Vector <Eigenschaft> getEigenschaftenOfPartnerprofil (Partnerprofil p){
 		
 		
 		
-		return EigenschaftMapper.eigenschaftMapper.findAllByPartnerprofil();
+		return EigenschaftMapper.eigenschaftMapper().selectAllEigenschaft(p);
 	}
-	*/
+	
 }
 
