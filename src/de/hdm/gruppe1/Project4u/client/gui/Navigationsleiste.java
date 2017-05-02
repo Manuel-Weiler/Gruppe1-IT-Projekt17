@@ -9,14 +9,14 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
-import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 
 public class Navigationsleiste extends VerticalPanel {
 
 	Project4uAdministrationAsync project4u = ClientsideSettings.getProject4uVerwaltung();
-	Nutzer nutzer = ClientsideSettings.getAktuellerUser();
+	Organisationseinheit nutzer = ClientsideSettings.getAktuellerUser();
 
-	// Laedt Navigationsleiste und erstellt Menü
+	// Laedt Navigationsleiste und erstellt Menï¿½
 	public void loadNavigation() {
 		MenuBar menu = new MenuBar();
 		menu.setAutoOpen(true);
@@ -53,7 +53,7 @@ public class Navigationsleiste extends VerticalPanel {
 		RootPanel.get("navigation").add(menu);
 	}
 
-	public void loadLogout(Nutzer nutzer) {
+	public void loadLogout(Organisationseinheit nutzer) {
 		final String logoutUrl = nutzer.getLogoutUrl();
 		Window.Location.assign(logoutUrl);
 	}

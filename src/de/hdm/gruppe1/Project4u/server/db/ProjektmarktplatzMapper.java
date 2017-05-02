@@ -101,28 +101,67 @@ public class ProjektmarktplatzMapper {
 		 * @return projektmarktplatz
 		 */
 	  
-	  public Projektmarktplatz insert(Projektmarktplatz projektmarktplatz){
+	  public Projektmarktplatz insert(Projektmarktplatz p){
 		  Connection con = DBConnection.connection();
 		  
 		  try{
 			  Statement stmt = con.createStatement();
 			  
-			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM projektmarktplatz ");
+			  ResultSet rs = stmt.executeQuery("SELECT MAX(projektmarktplatzId) AS maxid " + "FROM projektmarktplatz ");
 			  
 			  if (rs.next()) {
-	              projektmarktplatz.setProjektmarktplatzId(rs.getInt("maxid") + 1);
+	              p.setProjektmarktplatzId(rs.getInt("maxid") + 1);
 	            }
 			  
-			  stmt.executeUpdate("HIER MUSS DAS INSERT-SQL-STATEMENT REIN!!!");
+			  stmt.executeUpdate("INSERT INTO projektmarktplatz (projektmarktplatzId, name) " 
+			           + "VALUES ('" + p.getProjektmarktplatzId() + "','" + p.getName()+"')");
 			                    
 			          }
 		      catch (SQLException e) {
 		    	 e.printStackTrace();
 		    	 }
 		  
-		return projektmarktplatz;
+		return p;
 
 		   }
+	  
+	 public Projektmarktplatz update(Projektmarktplatz p) {
+		    Connection con = DBConnection.connection();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      stmt.executeUpdate("UPDATE projektmarktplatz SET Name =" + p.getName() 
+		                         + "WHERE projektmarktplatzId=" + p.getProjektmarktplatzId()); 
+		    }
+		    catch (SQLException e2) {
+		      e2.printStackTrace();
+		    }
+
+		    // Um Analogie zu insert(Projektmarktplatz p) zu wahren, geben wir p zurück
+		    return p;
+		  }
+	 
+	 /**
+	   * Löschen der Daten eines <code>Projektmarktplatz</code>-Objekts aus der Datenbank.
+	   * 
+	   * @param p das aus der DB zu löschende "Objekt"
+	   */
+	  public void delete(Projektmarktplatz p) {
+	    Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("DELETE FROM projektmarktplatz" + "WHERE projektmarktplatzId=" + p.getProjektmarktplatzId()); 
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 	  }
+	  
+	 
+}
 	
 

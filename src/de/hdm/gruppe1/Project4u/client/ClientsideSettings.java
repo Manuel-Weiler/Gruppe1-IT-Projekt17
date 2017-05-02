@@ -7,7 +7,7 @@ import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.ReportGenerator;
 import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
-import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 
 public class ClientsideSettings extends CommonSettings{
 	
@@ -16,20 +16,20 @@ public class ClientsideSettings extends CommonSettings{
 	private static Project4uAdministrationAsync project4uAdministration = null;
 	private static Project4uAdministrationAsync project4uVerwaltung = null;
 	private static ReportGeneratorAsync reportGenerator = null;
-	private static Nutzer aktuellerUser = null;
+	private static Organisationseinheit aktuellerUser = null;
 
 	/**
 	 * gibt den aktuelle eingeloggten User zurueck
 	 * @return aktuellerUser
 	 */
-	public static Nutzer getAktuellerUser() {
+	public static Organisationseinheit getAktuellerUser() {
 		return aktuellerUser;
 	}
 
 	/**
 	 * setzt den aktuell eingeloggten User als User
 	 */
-	public static void setAktuellerUser(Nutzer nutzer) {
+	public static void setAktuellerUser(Organisationseinheit nutzer) {
 		ClientsideSettings.aktuellerUser = nutzer;
 	}
 

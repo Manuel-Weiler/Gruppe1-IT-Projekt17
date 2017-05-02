@@ -1,96 +1,152 @@
 package de.hdm.gruppe1.Project4u.server;
 
 import java.util.Date;
-
+import java.util.Vector;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 import de.hdm.gruppe1.Project4u.server.db.*;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
-import de.hdm.gruppe1.Project4u.shared.bo.Nutzer;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 
 @SuppressWarnings("serial")
-public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration{
-	
-	private NutzerMapper nutzerMapper = null;
+public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration {
+
 	private BewerbungMapper bewerbungMapper = null;
-	
-	
-	public Project4uAdministrationImpl() throws IllegalArgumentException{
-		
+	private OrganisationseinheitMapper organisationseinheitMapper = null;
+	private PartnerprofilMapper partnerprofilMapper = null;
+
+	public Project4uAdministrationImpl() throws IllegalArgumentException {
+
 	}
-	
-	//Initialisierung
-	public void init() throws IllegalArgumentException{
-		
-		this.nutzerMapper = NutzerMapper.nutzerMapper();
-		
+
+	// Initialisierung
+	public void init() throws IllegalArgumentException {
+
+		this.organisationseinheitMapper = OrganisationseinheitMapper.organisationseinheitMapper();
+		this.partnerprofilMapper = PartnerprofilMapper.partnerprofilMapper();
+
 	}
-	
-	public Nutzer createNutzer(String emailAddress, String vorname, String nachname)
-		throws IllegalArgumentException{
-		
-		Nutzer nutzer = new Nutzer();
-		nutzer.setEmailAddress(emailAddress);
-		nutzer.setVorname(vorname);
-		nutzer.setNachname(nachname);
-		
-		return this.nutzerMapper.insert(nutzer);
-		
+
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Organisationseinheit
+	 * #########################################################################
+	 * 
+	 */
+	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ)
+			throws IllegalArgumentException {
+
+		Organisationseinheit organisationseinheit = new Organisationseinheit();
+		organisationseinheit.setGoogleId(google_id);
+		organisationseinheit.setName(name);
+		organisationseinheit.setTyp(typ);
+
+		return this.organisationseinheitMapper.insert(organisationseinheit);
+
 	}
-	
-	//Login-Status
-	public Nutzer checkStatus(Nutzer loginInfo){
-		return this.nutzerMapper.checkStatus(loginInfo);
+
+	// Login-Status
+	public Organisationseinheit checkStatus(Organisationseinheit loginInfo) {
+		return this.organisationseinheitMapper.checkStatus(loginInfo);
 	}
-	
-	public Bewerbung createBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)throws IllegalArgumentException{
+
+	public Bewerbung createBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)
+			throws IllegalArgumentException {
 		Bewerbung bewerbung = new Bewerbung();
 		return this.bewerbungMapper.insert(bewerbung);
 	}
-	
-	public void updateBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)throws IllegalArgumentException{
-		
+
+	public void updateBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)
+			throws IllegalArgumentException {
+
 		Bewerbung bewerbung = new Bewerbung();
 		bewerbung.setBewerbungID(bewerbungID);
 		bewerbung.setErstelldatum(erstelldatum);
 		bewerbung.setBewerbungstext(bewerbungstext);
-		
+
 		this.bewerbungMapper.updateBewerbung(bewerbung);
 	}
 
+	public Organisationseinheit findByKey(int id) throws IllegalArgumentException {
+		return this.organisationseinheitMapper.findByKey(id);
+	}
+
+	public Vector<Organisationseinheit> findAll() throws IllegalArgumentException {
+		return this.organisationseinheitMapper.findAll();
+	}
+
+	public Vector<Organisationseinheit> findByNachname(String name) {
+		return this.organisationseinheitMapper.findByNachname(name);
+	}
+
+	public void update(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
+		organisationseinheitMapper.update(organisationseinheit);
+	}
+
+	public void delete(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
+		organisationseinheitMapper.delete(organisationseinheit);
+	}
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Ende: Organisationseinheit
+	 * #########################################################################
+	 * 
+	 */
+
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Partnerprofil
+	 * #########################################################################
+	 * 
+	 */
+
+	/**
+	 * Mit dieser Methode wird dem zu speichernden Partnerprofil die richtige
+	 * <code>id</code> vergeben und das Partnerprofil in der Datenbank abgelegt.
+	 * 
+	 * @param p
+	 *            das Partnerprofil-Objekt, dass in der Datenbank abgelegt wird.
+	 * @param o
+	 *            das Organisationseinheit-Objekt, dem das Partnerprofil
+	 *            zugeordnet ist.
+	 * @return das möglicherweise durch die Methode geänderte
+	 *         Partnerprofil-Objekt.
+	 */
+
+	public Partnerprofil insertPartnerprofil(Partnerprofil p, Organisationseinheit o) throws IllegalArgumentException {
+		return this.partnerprofilMapper.insertPartnerprofil(p, o);
+	}
+
+	public Partnerprofil findById(int i) throws IllegalArgumentException {
+		return this.partnerprofilMapper.findById(i);
+	}
+
+	/**
+	 * Die Methode ändert das Änderungsdatum eines Partnerprofils Die id, das
+	 * Erstellungsdatum, sowie die Fremdschlüssel-id der zugehörigen
+	 * Organisationseinheit sind unveränderlich
+	 * 
+	 * @return ein Partnerprofil-Objekt mit geändertem Änderungsdatum
+	 * 
+	 */
+	public Partnerprofil updatePartnerprofil(Partnerprofil p) throws IllegalArgumentException {
+		return this.partnerprofilMapper.updatePartnerprofil(p);
+	}
+
+	public void deletePartnerprofil(Partnerprofil p) throws IllegalArgumentException {
+		partnerprofilMapper.deletePartnerprofil(p);
+	}
+
+	/*
+	 * TODO: public Ausschreibung getAusschreibungOf(Partnerprofil p) public
+	 * Vector <Eigenschaft> getEigenschaftenOf (Partnerprofil p)
+	 */
+
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Ende: Partnerprofil
+	 * #########################################################################
+	 * 
+	 */
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

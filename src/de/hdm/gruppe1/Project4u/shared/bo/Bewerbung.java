@@ -2,7 +2,7 @@ package de.hdm.gruppe1.Project4u.shared.bo;
 
 import java.util.Date;
 
-public class Bewerbung extends Nutzer{
+public class Bewerbung{
 
 	private static final long serialVersionUID = 1L;
 	

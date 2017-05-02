@@ -15,6 +15,7 @@ public class DBConnection {
 			try {
 
 				con = DriverManager.getConnection("jdbc:mysql://173.194.86.227:3306/project4u", "TobiasReumann", null);
+			
 			} catch (Exception e) {
 				con = null;
 				e.printStackTrace();
