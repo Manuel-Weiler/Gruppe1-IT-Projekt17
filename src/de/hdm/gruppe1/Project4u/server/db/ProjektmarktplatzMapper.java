@@ -101,26 +101,27 @@ public class ProjektmarktplatzMapper {
 		 * @return projektmarktplatz
 		 */
 	  
-	  public Projektmarktplatz insert(Projektmarktplatz projektmarktplatz){
+	  public Projektmarktplatz insert(Projektmarktplatz p){
 		  Connection con = DBConnection.connection();
 		  
 		  try{
 			  Statement stmt = con.createStatement();
 			  
-			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM projektmarktplatz ");
+			  ResultSet rs = stmt.executeQuery("SELECT MAX(projektmarktplatzId) AS maxid " + "FROM projektmarktplatz ");
 			  
 			  if (rs.next()) {
-	              projektmarktplatz.setProjektmarktplatzId(rs.getInt("maxid") + 1);
+	              p.setProjektmarktplatzId(rs.getInt("maxid") + 1);
 	            }
 			  
-			  stmt.executeUpdate("HIER MUSS DAS INSERT-SQL-STATEMENT REIN!!!"); //TODO
+			  stmt.executeUpdate("INSERT INTO projektmarktplatz (projektmarktplatzId, name) " 
+			           + "VALUES ('" + p.getProjektmarktplatzId() + "','" + p.getName()+"')");
 			                    
 			          }
 		      catch (SQLException e) {
 		    	 e.printStackTrace();
 		    	 }
 		  
-		return projektmarktplatz;
+		return p;
 
 		   }
 	  
@@ -130,8 +131,8 @@ public class ProjektmarktplatzMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      stmt.executeUpdate("Hier kommt noch das UPDATE Sql Statement rein"); //TODO
-
+		      stmt.executeUpdate("UPDATE projektmarktplatz SET Name =" + p.getName() 
+		                         + "WHERE projektmarktplatzId=" + p.getProjektmarktplatzId()); 
 		    }
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
@@ -152,7 +153,7 @@ public class ProjektmarktplatzMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("Hier kommt das DELETE Sql Statement rein"); //TODO
+	      stmt.executeUpdate("DELETE FROM projektmarktplatz" + "WHERE projektmarktplatzId=" + p.getProjektmarktplatzId()); 
 
 	    }
 	    catch (SQLException e2) {
