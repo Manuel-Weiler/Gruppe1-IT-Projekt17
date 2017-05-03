@@ -6,6 +6,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.gruppe1.Project4u.server.db.*;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
+import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 
@@ -15,6 +16,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
+	private EigenschaftMapper eigenschaftMapper = null;
 
 	
 	public Project4uAdministrationImpl() throws IllegalArgumentException{
@@ -26,6 +28,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		
 		this.organisationseinheitMapper = OrganisationseinheitMapper.organisationseinheitMapper();
 		this.partnerprofilMapper = PartnerprofilMapper.partnerprofilMapper();
+		this.eigenschaftMapper = EigenschaftMapper.eigenschaftMapper();
 		
 	}
 	
@@ -126,6 +129,26 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 			public Vector <Eigenschaft> getEigenschaftenOf (Partnerprofil p)
 	 */
 	
+	
+	/**Diese Methode gibt alle Eigenschaftsobjekte zu einem Partnerprofil-Objekt p zurück
+	 * @param p Partnerprofil
+	 * @return 
+	 * @throws IllegalArgumentException
+	 */
+	public Vector <Eigenschaft> getEigenschaftenOfPartnerprofil (Partnerprofil p)throws IllegalArgumentException{
+		return this.partnerprofilMapper.getEigenschaftenOfPartnerprofil(p);
+	}
+	
+	
+	/**Diese Methode gibt die zugehörige Organisationseinheit zu einem Partnerprofil zurück.
+	 * @param p
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Organisationseinheit getOrganisationseinheitOfPartnerprofil (Partnerprofil p)throws IllegalArgumentException{
+		return this.partnerprofilMapper.getOrganisationseinheitOfPartnerprofil(p);
+	}
+	
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Ende: Partnerprofil
@@ -133,4 +156,55 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Eigenschaft
+	 * #########################################################################
+	 * 
+	 */
+	
+	/**Die Methode vergibt dem zu speichernden Eigenschafts-Objekts einen Primärschlüssel und 
+	 * legt es in der DB ab. Zudem aktualisiert sie das Änderungsdatum des zugehörigen 
+	 * Partnerprofil-Objekts
+	 * @param e
+	 * @param p
+	 * @throws IllegalArgumentException
+	 */
+	public Eigenschaft insertEigenschaft(Eigenschaft e, Partnerprofil p)throws IllegalArgumentException{
+		return this.eigenschaftMapper.insertEigenschaft(e, p);
+	}
+	
+	public Eigenschaft updateEigenschaft(Eigenschaft e)throws IllegalArgumentException{
+		return this.eigenschaftMapper.updateEigenschaft(e);
+	}
+	
+	public void deleteEigenschaft(Eigenschaft e)throws IllegalArgumentException{
+		eigenschaftMapper.deleteEigenschaft(e);
+	}
+	
+	/**Die Methode löscht alle Eigenschaften, die in einer Fremdschlüsselbeziehung zu 
+	 * einem Partnerprofil p stehen.
+	 * @param p
+	 * @throws IllegalArgumentException
+	 */
+	public void deleteAllEigenschaftOfPartnerprofil(Partnerprofil p)throws IllegalArgumentException{
+		eigenschaftMapper.deleteAllEigenschaftOfPartnerprofil(p);
+	}
+	
+	/**Die Methode gibt alle Eigenschaftsobjekte eines Partnernprofils wieder
+	 * @param p
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Eigenschaft> selectAllEigenschaftOfPartnerprofil(Partnerprofil p)throws IllegalArgumentException{
+		return this.eigenschaftMapper.selectAllEigenschaftOfPartnerprofil(p);
+	}
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Ende: Eigenschaft
+	 * #########################################################################
+	 * 
+	 */
 }
