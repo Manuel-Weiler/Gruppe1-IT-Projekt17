@@ -64,13 +64,13 @@ public class ProjektmarktplatzMapper {
       public Projektmarktplatz findById(int id){
 		 // DB-Verbindung holen
 		 Connection con = DBConnection.connection();
-		 
+		 Projektmarktplatz p = new Projektmarktplatz();
 		 try {
 		   // Leeres SQL-Statement (JDBC) anlegen
 		   Statement stmt = con.createStatement();
 		   
 		   // Statement ausfüllen und als Query an die DB schicken
-		   ResultSet rs = stmt.executeQuery("SELECT * FROM projektmarktplatz " + "WHERE ProjektmarktplatzId=" + id);
+		   ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz " + "WHERE id='" + id+"'");
 		   
 		   /*
 	        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -78,18 +78,18 @@ public class ProjektmarktplatzMapper {
 	        */
 		    if (rs.next()) {
 		      // Ergebnis-Tupel in Objekt umwandeln
-		      Projektmarktplatz p = new Projektmarktplatz();
-		      p.setProjektmarktplatzId(rs.getInt("projektmarktplatzId"));
+		      
+		      p.setProjektmarktplatzId(rs.getInt("id"));
 		      p.setName(rs.getString("name"));
-		      return p;
+		      
 		      }
 		    }
            catch (SQLException e) {
         	 e.printStackTrace();
-        	 return null; 
+        	 
            }
 		 
-		     return null;
+		 	return p;
 		   }
 	  
 	  /**
@@ -107,13 +107,13 @@ public class ProjektmarktplatzMapper {
 		  try{
 			  Statement stmt = con.createStatement();
 			  
-			  ResultSet rs = stmt.executeQuery("SELECT MAX(projektmarktplatzId) AS maxid " + "FROM projektmarktplatz ");
+			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Projektmarktplatz ");
 			  
 			  if (rs.next()) {
 	              p.setProjektmarktplatzId(rs.getInt("maxid") + 1);
 	            }
 			  
-			  stmt.executeUpdate("INSERT INTO projektmarktplatz (projektmarktplatzId, name) " 
+			  stmt.executeUpdate("INSERT INTO Projektmarktplatz (id, name) " 
 			           + "VALUES ('" + p.getProjektmarktplatzId() + "','" + p.getName()+"')");
 			                    
 			          }

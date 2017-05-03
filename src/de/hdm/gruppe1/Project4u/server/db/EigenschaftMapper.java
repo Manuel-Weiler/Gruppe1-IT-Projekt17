@@ -1,14 +1,13 @@
 package de.hdm.gruppe1.Project4u.server.db;
 
-import java.sql.ResultSet;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import com.ibm.icu.text.SimpleDateFormat;
-
-import de.hdm.gruppe1.Project4u.shared.bo.*;
+import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
+import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 
 
 public class EigenschaftMapper {
@@ -91,6 +90,87 @@ public class EigenschaftMapper {
 		 */
 		return e;
 	}
+	
+	public Eigenschaft updateEigenschaft(Eigenschaft e) {
+		Connection con = DBConnection.connection();
 
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("UPDATE Eigenschaft SET name='" + e.getName() + "' wert='" + e.getWert() + "' WHERE id='"
+					+ e.getEigenschaftId() + "'");
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return e;
+	}
+	
+	
+	/**
+	 * Löscht ein Eigenschaftsobjekt aus der Datenbank
+	 * 
+	 * @param e Eigenschaft
+	 */
+	public void deleteEigenschaft(Eigenschaft e) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Eigenschaft WHERE id='" + e.getEigenschaftId() + "'");
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Die Methode löscht alle Eigenschaften, die in einer Fremdschlüsselbeziehung
+	 * zu einem Partnerprofil p stehen.
+	 * @param p Partnerprofil
+	 */
+	public void deleteAllEigenschaftOfPartnerprofil(Partnerprofil p){
+		Vector<Eigenschaft> eigenschaften = new Vector<Eigenschaft>();
+		
+		//Zuerst wird ein Vector mit allen Eigenschaften erzeugt, die mit dem Partnerprofil-Objekt in
+		//Beziehung stehen.
+		eigenschaften=selectAllEigenschaftOfPartnerprofil(p);
+		
+		//Für jedes Element dieses Vectors wird nun die Methode deleteEigenschaft() aufgerufen.
+		for(Eigenschaft e : eigenschaften){
+			EigenschaftMapper.eigenschaftMapper().deleteEigenschaft(e);
+		}
+	}
+	
+	/**
+	 * Die Methode gibt alle Eigenschaftsobjekte eines Partnernprofils wieder
+	 * @param p Partnerprofil
+	 * @return Vektor mit allen Eigenschaftsobjekten die mit einem Partneprofil verknüpft sind.
+	 */
+	public Vector<Eigenschaft> selectAllEigenschaftOfPartnerprofil(Partnerprofil p){
+		Connection con = DBConnection.connection();
+		Vector<Eigenschaft> ergebnis = new Vector<Eigenschaft>();
+		
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Eigenschaft WHERE partnerprofil_id='"
+					+ p.getPartnerprofilId() + "'");
+			
+			while (rs.next()){
+				Eigenschaft eigenschaft = new Eigenschaft();
+				eigenschaft.setEigenschaftId(rs.getInt("id"));
+				eigenschaft.setName(rs.getString("name"));
+				eigenschaft.setWert(rs.getString("wert"));
+				eigenschaft.setPartnerprofilId(rs.getInt("partnerprofil_id"));
+				
+				ergebnis.addElement(eigenschaft);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ergebnis;
+	}
+	
+	
+
+	
 	
 }
