@@ -8,6 +8,7 @@ import de.hdm.gruppe1.Project4u.server.db.*;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 
 @SuppressWarnings("serial")
 public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration{
@@ -35,6 +36,12 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		
 	}
 	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Organisationseinheit
+	 * #########################################################################
+	 * 
+	 */
 	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ)
 		throws IllegalArgumentException{
 		
@@ -75,6 +82,14 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public void delete (Organisationseinheit organisationseinheit) throws IllegalArgumentException {
 		organisationseinheitMapper.delete(organisationseinheit);
 	}
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Ende: Organisationseinheit
+	 * #########################################################################
+	 * 
+	 */
+	
+	
 	
 	/*
 	 * #########################################################################
@@ -82,7 +97,45 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * #########################################################################
 	 * 
 	 */
-
+	
+	
+	/**
+	  * Mit dieser Methode wird dem zu speichernden Partnerprofil die richtige
+	 * <code>id</code> vergeben und das Partnerprofil in der Datenbank abgelegt.
+	 * @param p das Partnerprofil-Objekt, dass in der Datenbank abgelegt wird.
+	 * @param o das Organisationseinheit-Objekt, dem das Partnerprofil zugeordnet ist.
+	 * @return das möglicherweise durch die Methode geänderte Partnerprofil-Objekt.
+	 */
+	 
+	public Partnerprofil insertPartnerprofil(Partnerprofil p, Organisationseinheit o)
+			throws IllegalArgumentException {
+		return this.partnerprofilMapper.insertPartnerprofil(p, o);
+	}
+	
+	public Partnerprofil findById(int i)throws IllegalArgumentException {
+		return this.partnerprofilMapper.findById(i);
+	}
+	
+	
+	/**
+	 * Die Methode ändert das Änderungsdatum eines Partnerprofils Die id, das
+	 * Erstellungsdatum, sowie die Fremdschlüssel-id der zugehörigen
+	 * Organisationseinheit sind unveränderlich
+	 * @return ein Partnerprofil-Objekt mit geändertem Änderungsdatum
+	 * 
+	 */
+	public Partnerprofil updatePartnerprofil(Partnerprofil p) throws IllegalArgumentException {
+		return this.partnerprofilMapper.updatePartnerprofil(p);
+	}
+	
+	public void deletePartnerprofil (Partnerprofil p)throws IllegalArgumentException{
+		partnerprofilMapper.deletePartnerprofil(p);
+	}
+	
+	/*
+	 * TODO: 	public Ausschreibung getAusschreibungOf(Partnerprofil p)
+	 * 			public Vector <Eigenschaft> getEigenschaftenOf (Partnerprofil p)
+	 */
 	
 	/*
 	 * #########################################################################

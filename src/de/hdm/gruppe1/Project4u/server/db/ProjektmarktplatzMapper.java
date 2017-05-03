@@ -64,13 +64,13 @@ public class ProjektmarktplatzMapper {
       public Projektmarktplatz findById(int id){
 		 // DB-Verbindung holen
 		 Connection con = DBConnection.connection();
-		 
+		 Projektmarktplatz p = new Projektmarktplatz();
 		 try {
 		   // Leeres SQL-Statement (JDBC) anlegen
 		   Statement stmt = con.createStatement();
 		   
 		   // Statement ausfüllen und als Query an die DB schicken
-		   ResultSet rs = stmt.executeQuery("SELECT * FROM projektmarktplatz " + "WHERE ProjektmarktplatzId=" + id);
+		   ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz " + "WHERE id='" + id+"'");
 		   
 		   /*
 	        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -78,18 +78,18 @@ public class ProjektmarktplatzMapper {
 	        */
 		    if (rs.next()) {
 		      // Ergebnis-Tupel in Objekt umwandeln
-		      Projektmarktplatz p = new Projektmarktplatz();
-		      p.setProjektmarktplatzId(rs.getInt("projektmarktplatzId"));
+		      
+		      p.setProjektmarktplatzId(rs.getInt("id"));
 		      p.setName(rs.getString("name"));
-		      return p;
+		      
 		      }
 		    }
            catch (SQLException e) {
         	 e.printStackTrace();
-        	 return null; 
+        	 
            }
 		 
-		     return null;
+		 	return p;
 		   }
 	  
 	  /**
@@ -101,26 +101,27 @@ public class ProjektmarktplatzMapper {
 		 * @return projektmarktplatz
 		 */
 	  
-	  public Projektmarktplatz insert(Projektmarktplatz projektmarktplatz){
+	  public Projektmarktplatz insert(Projektmarktplatz p){
 		  Connection con = DBConnection.connection();
 		  
 		  try{
 			  Statement stmt = con.createStatement();
 			  
-			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM projektmarktplatz ");
+			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Projektmarktplatz ");
 			  
 			  if (rs.next()) {
-	              projektmarktplatz.setProjektmarktplatzId(rs.getInt("maxid") + 1);
+	              p.setProjektmarktplatzId(rs.getInt("maxid") + 1);
 	            }
 			  
-			  stmt.executeUpdate("HIER MUSS DAS INSERT-SQL-STATEMENT REIN!!!"); //TODO
+			  stmt.executeUpdate("INSERT INTO Projektmarktplatz (id, name) " 
+			           + "VALUES ('" + p.getProjektmarktplatzId() + "','" + p.getName()+"')");
 			                    
 			          }
 		      catch (SQLException e) {
 		    	 e.printStackTrace();
 		    	 }
 		  
-		return projektmarktplatz;
+		return p;
 
 		   }
 	  
@@ -130,8 +131,8 @@ public class ProjektmarktplatzMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      stmt.executeUpdate("Hier kommt noch das UPDATE Sql Statement rein"); //TODO
-
+		      stmt.executeUpdate("UPDATE projektmarktplatz SET Name =" + p.getName() 
+		                         + "WHERE projektmarktplatzId=" + p.getProjektmarktplatzId()); 
 		    }
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
@@ -152,7 +153,7 @@ public class ProjektmarktplatzMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("Hier kommt das DELETE Sql Statement rein"); //TODO
+	      stmt.executeUpdate("DELETE FROM projektmarktplatz" + "WHERE projektmarktplatzId=" + p.getProjektmarktplatzId()); 
 
 	    }
 	    catch (SQLException e2) {

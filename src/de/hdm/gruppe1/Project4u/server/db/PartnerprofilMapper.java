@@ -14,10 +14,11 @@ import de.hdm.gruppe1.Project4u.shared.bo.*;
 
 public class PartnerprofilMapper {
 
-	/*
+		/**
 	 * Die statische Variable partnerprofilMapper stellt sicher, dass es von der
 	 * Klasse PartnerprofilMapper nur eine einzige Instanz gibt bzw. die
 	 * Variable speichert die einzige Instanz dieser Klasse.
+	 * @author Tobias
 	 */
 	private static PartnerprofilMapper partnerprofilMapper = null;
 
@@ -28,10 +29,13 @@ public class PartnerprofilMapper {
 	private PartnerprofilMapper() {
 	}
 
-	/*
+	
+	/**
 	 * Die Methode partnerprofilMapper stellt die Singleton-Eigenschaft sicher,
 	 * indem Sie dafÃ¼r sorgt, dass nur eine einzige Instanz von
 	 * <code>NutzerpofilMapper</code> existiert.
+	 * @return ein neu instanziiertes PartnerprofilMapper-Objekt
+	 * @author Tobias
 	 */
 	public static PartnerprofilMapper partnerprofilMapper() {
 		if (partnerprofilMapper == null) {
@@ -40,15 +44,16 @@ public class PartnerprofilMapper {
 		return partnerprofilMapper;
 	}
 
-	/*
-	 * Mit dieser Methode wird dem zu speichernden Partnerprofil die richtige
+		
+	 /**
+	  * Mit dieser Methode wird dem zu speichernden Partnerprofil die richtige
 	 * <code>id</code> vergeben und das Partnerprofil in der Datenbank abgelegt.
-	 * 
-	 * @param: p das Partnerprofil-Objekt, dass in der Datenbank abgelegt wird.
-	 * @return: das möglicherweise durch die Methode geänderte Partnerprofil-Objekt.
+	 * @param p das Partnerprofil-Objekt, dass in der Datenbank abgelegt wird.
+	 * @param o das Organisationseinheit-Objekt, dem das Partnerprofil zugeordnet ist.
+	 * @return das möglicherweise durch die Methode geänderte Partnerprofil-Objekt.
+	 * @author Tobias
 	 */
-	//TODO: Organisationseinheit-Objekt als Parameter hinzufügen.
-	 public Partnerprofil insertPartnerprofil(Partnerprofil p){
+	public Partnerprofil insertPartnerprofil(Partnerprofil p, Organisationseinheit o){
 		 
 		 Connection con = DBConnection.connection();
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -76,8 +81,8 @@ public class PartnerprofilMapper {
 
 		        // Jetzt erst erfolgt die tatsÃ¤chliche EinfÃ¼geoperation
 		        stmt.executeUpdate("INSERT INTO Partnerprofil (id, erstelldatum, änderungsdatum, Organisationseinheit_id) "
-		            + "VALUES (" + p.getID() + ",'" + sdf.format(p.getErstelldatum()) + "','"
-		            + sdf.format(p.getAenderungsdatum()) + "','1')"); //TODO: Organisationseiheit_id in DB speichern
+		            + "VALUES (" + p.getPartnerprofilId() + ",'" + sdf.format(p.getErstelldatum()) + "','"
+		            + sdf.format(p.getAenderungsdatum()) + "','"+o.getOrganisationseinheitId()+"')"); 
 		      }
 		    }
 		    catch (SQLException e) {
@@ -94,10 +99,14 @@ public class PartnerprofilMapper {
 		 
 	 }
 	 
-	 /*
-	  * Mit dieser Methode wird ein Partnerprofil-Objekt mit einer bestimmten id ausgegeben.
-	  */
+	 
 	
+	/**	  
+	 * Mit dieser Methode wird ein Partnerprofil-Objekt mit einer bestimmten <code>id</code>ausgegeben.
+	 * @param id
+	 * @return Partnerprofil p aus der DB
+	 * @author Tobias
+	 */
 	public Partnerprofil findById(int i) {
 		Connection con = DBConnection.connection();
 		Partnerprofil p = new Partnerprofil();
@@ -147,7 +156,7 @@ public class PartnerprofilMapper {
 	}
 	
 	/*
-	 * Diese Methode löscht eine Partnerprofil aus der Datebank.
+	 * Diese Methode löscht ein Partnerprofil aus der Datebank.
 	 */
 	public void deletePartnerprofil (Partnerprofil p){
 		Connection con = DBConnection.connection();
@@ -169,24 +178,30 @@ public class PartnerprofilMapper {
 		return a;
 	} */
 /////////////////////////
-	/*TODO: Anpassen, wenn Klassen Organisationseinheit implementiert ist
-	 * Diese Methode gibt die zugehörige Organisationseinheit zu einem Partnerprofil zurück.
-	 *
-	public Organisationseinheit getOrganisationseinheitOf (Partnerprofil p){
-		
-		return o;
-	}
-	*/
-////////////////////////
+	
 	/*
-	 * 
-	 *TODO: Anpassen wenn Klasse EingenschaftMapper existiert.
-	public Vector <Eigenschaft> getEigenschaftenOf (Partnerprofil p){
+	 * Diese Methode gibt die zugehörige Organisationseinheit zu einem Partnerprofil zurück.
+	 * Dabei wird sich des Mappers der Klasse OrganisationseinheitMapper bedient.
+	 */
+	public Organisationseinheit getOrganisationseinheitOfPartnerprofil (Partnerprofil p){
 		
-		
-		
-		return EigenschaftMapper.eigenschaftMapper.findAllByPartnerprofil();
+		return OrganisationseinheitMapper.organisationseinheitMapper().findByKey(p.getOrganisationseinheitId());
 	}
-	*/
+	
+////////////////////////
+	
+	
+	/**
+	 * Diese Methode gibt alle Eigenschaftsobjekte zu einem Partnerprofil-Objekt p zurück
+	 * @param p
+	 * @return
+	 */
+	public Vector <Eigenschaft> getEigenschaftenOfPartnerprofil (Partnerprofil p){
+		
+		
+		
+		return EigenschaftMapper.eigenschaftMapper().selectAllEigenschaftOfPartnerprofil(p);
+	}
+	
 }
 
