@@ -200,7 +200,7 @@ public class ProjektMapper {
 		    		                         + "FROM projekt" + "ORDER BY id");
 		   
 
-		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
+		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
 		      // erstellt.
 		      while (rs.next()) {
 		        Projekt p = new Projekt();
