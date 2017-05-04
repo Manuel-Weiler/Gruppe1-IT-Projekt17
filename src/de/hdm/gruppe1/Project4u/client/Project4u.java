@@ -5,9 +5,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import de.hdm.gruppe1.Project4u.client.gui.Fusszeile;
 import de.hdm.gruppe1.Project4u.client.gui.Navigationsleiste;
@@ -28,6 +30,40 @@ public class Project4u implements EntryPoint {
 	private Anchor signinLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 	Organisationseinheit nutzer = ClientsideSettings.getAktuellerUser();
+	
+	/**
+	 * MenÃ¼leiste wird als Widget erstellt.
+	 */
+
+	VerticalPanel menuPanel = new VerticalPanel();
+
+	Button profilButton = new Button("Nutzerprofil");
+	Button homeButton = new Button("Startseite");
+	Button pMarktplatz = new Button("Projektmarktplätze");
+	Button eBewerbungen = new Button("Eingangsbewerbungen");
+	Button aBewerbungen = new Button("Ausgangsbewerbungen");
+
+	public Widget menuWidget() {
+
+		menuPanel.add(homeButton);
+		menuPanel.add(profilButton);
+		
+		menuPanel.add(pMarktplatz);
+		menuPanel.add(eBewerbungen);
+		menuPanel.add(aBewerbungen);
+
+		// Abstand zwischen den einzelnen Buttons
+		menuPanel.setSpacing(20);
+
+		// Layout Button
+		profilButton.setPixelSize(200, 40);
+		eBewerbungen.setPixelSize(200, 40);
+		homeButton.setPixelSize(200, 40);
+		pMarktplatz.setPixelSize(200, 40);
+		aBewerbungen.setPixelSize(200, 40);
+
+		return menuPanel;
+	}
 
 	/*
 	 * Diese Methode prï¿½ft den Login-Status
@@ -66,13 +102,15 @@ public class Project4u implements EntryPoint {
 
 	private void loadProject4u() {
 
-		final Navigationsleiste navigationsleiste = new Navigationsleiste();
+		/*final Navigationsleiste navigationsleiste = new Navigationsleiste();
 		navigationsleiste.loadNavigation();
 		final Fusszeile fusszeile = new Fusszeile();
 		fusszeile.loadFusszeile();
 
 		Startseite startseite = new Startseite();
-		startseite.loadStartseite();
+		startseite.loadStartseite(); */
+		
+		
 	}
 }
 

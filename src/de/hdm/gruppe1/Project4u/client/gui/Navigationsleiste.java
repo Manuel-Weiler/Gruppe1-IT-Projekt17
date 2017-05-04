@@ -15,9 +15,14 @@ public class Navigationsleiste extends VerticalPanel {
 
 	Project4uAdministrationAsync project4u = ClientsideSettings.getProject4uVerwaltung();
 	Organisationseinheit nutzer = ClientsideSettings.getAktuellerUser();
+	
+	public void loadLogout(Organisationseinheit nutzer) {
+		final String logoutUrl = nutzer.getLogoutUrl();
+		Window.Location.assign(logoutUrl);
+	}
 
 	// Laedt Navigationsleiste und erstellt Men�
-	public void loadNavigation() {
+	/*public void loadNavigation() {
 		MenuBar menu = new MenuBar();
 		menu.setAutoOpen(true);
 		menu.setWidth("430px");
@@ -50,11 +55,8 @@ public class Navigationsleiste extends VerticalPanel {
 		});
 
 		RootPanel.get("navigation").clear();
-		RootPanel.get("navigation").add(menu);
-	}
+		RootPanel.get("navigation").add(menu);}*/
+	
 
-	public void loadLogout(Organisationseinheit nutzer) {
-		final String logoutUrl = nutzer.getLogoutUrl();
-		Window.Location.assign(logoutUrl);
-	}
+
 }

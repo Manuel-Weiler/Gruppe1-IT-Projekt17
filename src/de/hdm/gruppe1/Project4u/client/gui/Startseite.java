@@ -39,7 +39,7 @@ public class Startseite extends HorizontalPanel{
 		
 		//horizontale Navigationsleiste
 		final Navigationsleiste navigationsleiste = new Navigationsleiste();
-		navigationsleiste.loadNavigation();
+		//navigationsleiste.loadNavigation();
 		
 		startseiteFlexTable.setText(0, 0, "Vorname");
 		startseiteFlexTable.setText(1, 0, "Nachname");
