@@ -6,26 +6,31 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import de.hdm.gruppe1.Project4u.server.db.*;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
+import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 
 @SuppressWarnings("serial")
+
 public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration {
 
 	private BewerbungMapper bewerbungMapper = null;
+	private static final Beteiligung Beteiligung = null;
+	private BeteiligungMapper beteiligungMapper = null;
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
 
 	public Project4uAdministrationImpl() throws IllegalArgumentException {
 
 	}
+	
+	//Initialisierung
+	public void init() throws IllegalArgumentException{
 
-	// Initialisierung
-	public void init() throws IllegalArgumentException {
-
+		this.beteiligungMapper = BeteiligungMapper.beteiligungMapper(); 
 		this.organisationseinheitMapper = OrganisationseinheitMapper.organisationseinheitMapper();
 		this.partnerprofilMapper = PartnerprofilMapper.partnerprofilMapper();
-
+		this.partnerprofilMapper = PartnerprofilMapper.partnerprofilMapper();
 	}
 
 	/*
@@ -45,9 +50,23 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return this.organisationseinheitMapper.insert(organisationseinheit);
 
 	}
+	
+	public Beteiligung createBeteiligung () throws IllegalArgumentException {
+		    Beteiligung beteiligung = new Beteiligung();
+		    beteiligung.setBeteiligungId(beteiligung);
 
-	// Login-Status
-	public Organisationseinheit checkStatus(Organisationseinheit loginInfo) {
+
+		    beteiligung.setID(1);
+
+		    return this.beteiligungMapper.insert(beteiligung);
+		  }
+	
+	public void delete (Beteiligung delete){
+		beteiligungMapper.deleteBeteiligung(Beteiligung);
+	}
+	
+	//Login-Status
+	public Organisationseinheit checkStatus(Organisationseinheit loginInfo){
 		return this.organisationseinheitMapper.checkStatus(loginInfo);
 	}
 
