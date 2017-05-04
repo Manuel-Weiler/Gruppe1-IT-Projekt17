@@ -36,27 +36,57 @@ h1 {
   margin: 15.0px 6.0px 6.0px;
 }
 
-/*Navigationsleiste */
 
+#header {
+    background-color:#b30000;
+    color:white;
+    text-align:center;
+    padding:2px;
+    height:120px;
+    width:auto;
+}
+#nav {
+    line-height:30px;
+    background-color:#eeeeee;
+    height:750px;
+    width:20%;
+    float:left;
+    padding:5px;	      
+}
+#content {
+    width:77%;
+    height:500px;
+    float:left;
+    padding-left:10px;	
+}
+#footer {
+    background-color:#b30000;
+    color:white;
+    clear:both;
+    text-align:center;
+   padding:5px;	 	 
+}
+
+/* CSS von Domme (auskommentiert)
 #naigation {	
 	
 	margin: 0;
 	padding: 0;
 	border-bottom:1px solid black;
-	/*margin: 0.0 auto;          /* standardkonforme horizontale Zentrierung */
+	/*margin: 0.0 auto;          
 	top:0; 
 	right: 0;
 	left: 0;   
 	font-size: 80.0%;
 	text-align: center;
 	background: 	#97191d;
-	position:absolute;            /*Sorgt daf�r das die Leiste oben liegt */
+	position:absolute;            
 	width:100%;
 	overflow: hidden;
 	border-color: black;	
 }
 	
-/* Fusszeile */
+
 
 #trailer {
 	margin: 0;
@@ -68,7 +98,7 @@ h1 {
 	font-size: 80.0%;
 	text-align: center;
 	background: 	#97191d;
-	position:fixed;            /*Sorgt daf�r das die Leiste oben liegt */
+	position:fixed;            
 	width:100%;
 	overflow: hidden;
 	border-color: black;
@@ -91,7 +121,7 @@ img {
 
 div#Navigation {
 	padding: 20.0px 0.0;
-	margin: 0.0 auto; /* standardkonforme horizontale Zentrierung */
+	margin: 0.0 auto; 
 	font-size: 80.0%;
 	text-align: center;
 	background: 	#00BFFF;
@@ -194,4 +224,4 @@ margin: 3px 2px 3px 2px;
 	width: 100px;
 	margin-riht: 5px;
 	padding: 3px;
-}
+} */
