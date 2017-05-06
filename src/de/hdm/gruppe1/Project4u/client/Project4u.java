@@ -5,16 +5,12 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 
-import de.hdm.gruppe1.Project4u.client.gui.Fusszeile;
-import de.hdm.gruppe1.Project4u.client.gui.Navigationsleiste;
+import de.hdm.gruppe1.Project4u.client.gui.NavigationsleisteWidget;
 import de.hdm.gruppe1.Project4u.client.gui.NutzerForm;
-import de.hdm.gruppe1.Project4u.client.gui.Startseite;
 import de.hdm.gruppe1.Project4u.shared.LoginService;
 import de.hdm.gruppe1.Project4u.shared.LoginServiceAsync;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
@@ -31,45 +27,18 @@ public class Project4u implements EntryPoint {
 	private Anchor signOutLink = new Anchor("Sign Out");
 	Organisationseinheit nutzer = ClientsideSettings.getAktuellerUser();
 	
-	/**
-	 * MenÃ¼leiste wird als Widget erstellt.
-	 */
-
-	VerticalPanel menuPanel = new VerticalPanel();
-
-	Button profilButton = new Button("Nutzerprofil");
-	Button homeButton = new Button("Startseite");
-	Button pMarktplatz = new Button("Projektmarktplätze");
-	Button eBewerbungen = new Button("Eingangsbewerbungen");
-	Button aBewerbungen = new Button("Ausgangsbewerbungen");
-
-	public Widget menuWidget() {
-
-		menuPanel.add(homeButton);
-		menuPanel.add(profilButton);
-		
-		menuPanel.add(pMarktplatz);
-		menuPanel.add(eBewerbungen);
-		menuPanel.add(aBewerbungen);
-
-		// Abstand zwischen den einzelnen Buttons
-		menuPanel.setSpacing(20);
-
-		// Layout Button
-		profilButton.setPixelSize(200, 40);
-		eBewerbungen.setPixelSize(200, 40);
-		homeButton.setPixelSize(200, 40);
-		pMarktplatz.setPixelSize(200, 40);
-		aBewerbungen.setPixelSize(200, 40);
-
-		return menuPanel;
-	}
-
+	
 	/*
 	 * Diese Methode prï¿½ft den Login-Status
 	 * 
 	 */
 	public void onModuleLoad() {
+		
+		NavigationsleisteWidget nt = new NavigationsleisteWidget();
+		RootPanel.get("nav").add(nt);
+		nt.homeButtonclick();
+		
+		
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 		loginService.login(GWT.getHostPageBaseURL() + "Project4u.html", new AsyncCallback<Organisationseinheit>() {
 			// fï¿½ngt mï¿½gliche Fehler ab
@@ -123,8 +92,7 @@ class CheckStatusNutzerCallback implements AsyncCallback<Organisationseinheit> {
 		ClientsideSettings.setAktuellerUser(nutzer);
 		final boolean status = nutzer.getStatus();
 		if(status == true){
-			Startseite startseite = new Startseite();
-			startseite.loadStartseite();
+			//TODO: Die Startseite wird geladen.
 		} else{
 			Window.alert("Diese Email ist nicht in der Datenbank vorhanden" 
 					+ "Erstelle ein neues Konto oder verwende eine andere Adresse");

@@ -1,4 +1,4 @@
-package de.hdm.gruppe1.Project4u.client.gui;
+/*package de.hdm.gruppe1.Project4u.client.gui;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -66,3 +66,4 @@ public class Startseite extends HorizontalPanel{
 		
 	}
 }
+*/
