@@ -6,6 +6,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.gruppe1.Project4u.server.db.*;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
+import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
@@ -20,6 +21,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	private BeteiligungMapper beteiligungMapper = null;
 
+	private AusschreibungMapper ausschreibungMapper = null;
 
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
@@ -35,7 +37,6 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		this.beteiligungMapper = BeteiligungMapper.beteiligungMapper(); 
 		this.organisationseinheitMapper = OrganisationseinheitMapper.organisationseinheitMapper();
 		this.partnerprofilMapper = PartnerprofilMapper.partnerprofilMapper();
-
 		
 	}
 	
@@ -56,6 +57,21 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return this.organisationseinheitMapper.insert(organisationseinheit);
 		
 	}
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Ausschreibung
+	 * #########################################################################
+	 * 
+	 */
+	
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Beteiligung
+	 * #########################################################################
+	 * 
+	 */
 	
 	public Beteiligung createBeteiligung () throws IllegalArgumentException {
 		    Beteiligung beteiligung = new Beteiligung();
