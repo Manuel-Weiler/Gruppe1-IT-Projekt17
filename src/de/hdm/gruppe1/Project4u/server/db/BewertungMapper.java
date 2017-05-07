@@ -7,7 +7,6 @@ import java.sql.Statement;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
 
-
 /**
  * Mapper-Klasse, die <code>Bewertung</code>-Objekte auf eine relationale
  * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung

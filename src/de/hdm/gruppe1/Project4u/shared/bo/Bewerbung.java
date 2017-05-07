@@ -1,9 +1,11 @@
 package de.hdm.gruppe1.Project4u.shared.bo;
 
-import java.sql.Date;
+import java.util.Date;
 
-public class Bewerbung extends Bewertung {
+public class Bewerbung{
 
+	private static final long serialVersionUID = 1L;
+	
 	private int bewerbungID = 0;
 	private Date erstelldatum = null;
 	private String bewerbungstext = null;
