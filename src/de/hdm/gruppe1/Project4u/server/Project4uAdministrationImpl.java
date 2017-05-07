@@ -46,23 +46,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	}
 
-	/*
-	 * #########################################################################
-	 * ABSCHNITT, Beginn: Organisationseinheit
-	 * #########################################################################
-	 * 
-	 */
-	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ)
-			throws IllegalArgumentException {
-
-		Organisationseinheit organisationseinheit = new Organisationseinheit();
-		organisationseinheit.setGoogleId(google_id);
-		organisationseinheit.setName(name);
-		organisationseinheit.setTyp(typ);
-
-		return this.organisationseinheitMapper.insert(organisationseinheit);
-
-	}
+	
+	
 	
 	/*
 	 * #########################################################################
@@ -92,11 +77,18 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public void delete (Beteiligung delete){
 		beteiligungMapper.deleteBeteiligung(Beteiligung);
 	}
-	
-	//Login-Status
-	public Organisationseinheit checkStatus(Organisationseinheit loginInfo){
-		return this.organisationseinheitMapper.checkStatus(loginInfo);
-	}
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Ende: Beteiligung
+	 * #########################################################################
+	 * 
+	 */
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Bewerbung
+	 * #########################################################################
+	 * 
+	 */
 
 	public Bewerbung createBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)
 			throws IllegalArgumentException {
@@ -114,7 +106,37 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 		this.bewerbungMapper.updateBewerbung(bewerbung);
 	}
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Ende: Bewerbung
+	 * #########################################################################
+	 * 
+	 */
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Organisationseinheit
+	 * #########################################################################
+	 * 
+	 */
+	
+	//Login-Status
+		public Organisationseinheit checkStatus(Organisationseinheit loginInfo){
+			return this.organisationseinheitMapper.checkStatus(loginInfo);
+		}
 
+	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ)
+			throws IllegalArgumentException {
+
+		Organisationseinheit organisationseinheit = new Organisationseinheit();
+		organisationseinheit.setGoogleId(google_id);
+		organisationseinheit.setName(name);
+		organisationseinheit.setTyp(typ);
+
+		return this.organisationseinheitMapper.insert(organisationseinheit);
+
+	}
+	
 	public Organisationseinheit findByKey(int id) throws IllegalArgumentException {
 		return this.organisationseinheitMapper.findByKey(id);
 	}
