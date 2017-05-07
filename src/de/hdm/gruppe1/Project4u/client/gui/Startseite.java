@@ -1,4 +1,4 @@
-package de.hdm.gruppe1.Project4u.client.gui;
+/*package de.hdm.gruppe1.Project4u.client.gui;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -39,7 +39,7 @@ public class Startseite extends HorizontalPanel{
 		
 		//horizontale Navigationsleiste
 		final Navigationsleiste navigationsleiste = new Navigationsleiste();
-		navigationsleiste.loadNavigation();
+		//navigationsleiste.loadNavigation();
 		
 		startseiteFlexTable.setText(0, 0, "Vorname");
 		startseiteFlexTable.setText(1, 0, "Nachname");
@@ -66,3 +66,4 @@ public class Startseite extends HorizontalPanel{
 		
 	}
 }
+*/

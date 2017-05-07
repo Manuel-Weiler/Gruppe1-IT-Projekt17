@@ -1,6 +1,12 @@
 package de.hdm.gruppe1.Project4u.shared.bo;
 
 public class Organisationseinheit extends BusinessObject{
+	
+	public enum organisationseinheitenTyp {
+		Person,
+		Team,
+		Unternehmen
+	}
 
 	private static final long serialVersionUID = 1L;
 
@@ -12,6 +18,7 @@ public class Organisationseinheit extends BusinessObject{
 	/*private String vorname;
 	private String nachname;*/
 	private String name;
+	//TODO: variable "typ" muss als ein Enum definiert werden.
 	private String typ;
 	private String nickname;
 	private boolean status = false;

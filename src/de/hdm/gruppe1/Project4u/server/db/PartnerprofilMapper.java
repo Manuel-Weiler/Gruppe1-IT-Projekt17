@@ -165,6 +165,10 @@ public class PartnerprofilMapper {
 
 			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE id='"
 					+ p.getPartnerprofilId() + "'");
+			
+			//Wenn das Partnerprofil-Objekt aus der DB gelöscht wird, werden auch alle in Beziehung
+			//stehenden Eigenschaften gelöscht.
+			EigenschaftMapper.eigenschaftMapper().deleteAllEigenschaftOfPartnerprofil(p);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -4,7 +4,7 @@ com.google.gwt.user.client.rpc.RpcTokenException, true, true, false, false, com.
 com.google.gwt.user.client.rpc.XsrfToken, false, false, true, true, com.google.gwt.user.client.rpc.XsrfToken/4254043109, 4254043109
 de.hdm.gruppe1.Project4u.shared.Project4uAdministration, false, false, false, false, _, 2284310295
 de.hdm.gruppe1.Project4u.shared.bo.BusinessObject, true, false, true, false, de.hdm.gruppe1.Project4u.shared.bo.BusinessObject/287922484, 287922484
-de.hdm.gruppe1.Project4u.shared.bo.Nutzer, true, true, true, true, de.hdm.gruppe1.Project4u.shared.bo.Nutzer/1275835971, 1275835971
+de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit, true, true, true, true, de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit/2118845950, 2118845950
 java.lang.Exception, true, false, true, false, java.lang.Exception/1920171873, 1920171873
 java.lang.IllegalArgumentException, true, true, false, false, java.lang.IllegalArgumentException/1755012560, 1755012560
 java.lang.NumberFormatException, true, true, false, false, java.lang.NumberFormatException/3305228476, 3305228476
