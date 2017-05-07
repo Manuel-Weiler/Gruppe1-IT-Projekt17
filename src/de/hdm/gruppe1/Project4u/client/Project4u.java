@@ -34,9 +34,11 @@ public class Project4u implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		
+		//TODO: in Methode loadProject4u() verschieben, sobald die Login funktioniert.
 		NavigationsleisteWidget nt = new NavigationsleisteWidget();
 		RootPanel.get("nav").add(nt);
 		nt.homeButtonclick();
+		
 		
 		
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
@@ -71,11 +73,8 @@ public class Project4u implements EntryPoint {
 
 	private void loadProject4u() {
 
-		/*final Navigationsleiste navigationsleiste = new Navigationsleiste();
-		navigationsleiste.loadNavigation();
-		final Fusszeile fusszeile = new Fusszeile();
-		fusszeile.loadFusszeile();
-
+		
+		/*
 		Startseite startseite = new Startseite();
 		startseite.loadStartseite(); */
 		
