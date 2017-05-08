@@ -3,7 +3,6 @@ package de.hdm.gruppe1.Project4u.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 /**
