@@ -213,7 +213,42 @@ public class ProjektMapper {
 		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 
 
-		        //TO DO: 
+
+		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurückgeben
+		    return result;
+	 }
+	  
+	  public Vector<Projekt> findByName(String name) {
+		    Connection con = DBConnection.connection();
+		    Vector<Projekt> result = new Vector<Projekt>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT id, name, startdatum, enddatum, beschreibung"
+		      	  + "projektmarktplatz_id, organisationseinheit_id " + "FROM projekt "
+		          + "WHERE name LIKE '" + name + "' ORDER BY name");
+
+		      // Für jeden Eintrag im Suchergebnis wird nun ein Customer-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projekt p = new Projekt();
+		        p.setProjektId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setStartdatum(rs.getDate("startdatum"));
+		        p.setEnddatum(rs.getDate("enddatum"));
+		        p.setBeschreibung(rs.getString("beschreibung"));
+		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
 
 
 		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
@@ -226,6 +261,6 @@ public class ProjektMapper {
 
 		    // Ergebnisvektor zurückgeben
 		    return result;
-	
-	  }
+		  }
+
 }
