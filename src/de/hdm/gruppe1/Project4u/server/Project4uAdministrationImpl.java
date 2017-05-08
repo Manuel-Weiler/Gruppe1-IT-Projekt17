@@ -10,12 +10,14 @@ import de.hdm.gruppe1.Project4u.server.db.BewerbungMapper;
 import de.hdm.gruppe1.Project4u.server.db.EigenschaftMapper;
 import de.hdm.gruppe1.Project4u.server.db.OrganisationseinheitMapper;
 import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
+import de.hdm.gruppe1.Project4u.server.db.ProjektmarktplatzMapper;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
+import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 @SuppressWarnings("serial")
 public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration {
@@ -25,6 +27,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	private BeteiligungMapper beteiligungMapper = null;
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
+	private ProjektmarktplatzMapper projektmarktplatzMapper = null;
 
 	private EigenschaftMapper eigenschaftMapper = null;
 
@@ -43,7 +46,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		this.beteiligungMapper = BeteiligungMapper.beteiligungMapper(); 
 		this.organisationseinheitMapper = OrganisationseinheitMapper.organisationseinheitMapper();
 		this.partnerprofilMapper = PartnerprofilMapper.partnerprofilMapper();
-
+        this.projektmarktplatzMapper = ProjektmarktplatzMapper.projektmarktplatzMapper();
 	}
 
 	
@@ -301,5 +304,46 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * #########################################################################
 	 * 
 	 */
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Projektmarktplatz
+	 * #########################################################################
+	 * 
+	 */
+	
+	public Projektmarktplatz createProjektmarktplatz(int id, String name )
+			throws IllegalArgumentException {
 
+		Projektmarktplatz projektmarktplatz = new Projektmarktplatz();
+		projektmarktplatz.setProjektmarktplatzId(1);
+		projektmarktplatz.setName(name);
+		
+
+		return this.projektmarktplatzMapper.insert(projektmarktplatz);
+
+	}
+	
+	public Projektmarktplatz findProjektmarktplatzById(int id) throws IllegalArgumentException {
+		return this.projektmarktplatzMapper.findById(id);
+	}
+
+	public Vector<Projektmarktplatz> findAllProjektmarktplatz() throws IllegalArgumentException {
+		return this.projektmarktplatzMapper.findAll();
+	}
+
+	public void update(Projektmarktplatz p) throws IllegalArgumentException {
+		projektmarktplatzMapper.update(p);
+	}
+
+	public void delete(Projektmarktplatz p) throws IllegalArgumentException {
+		projektmarktplatzMapper.delete(p);
+	}	
+
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Ende: Projektmarktplatz
+	 * #########################################################################
+	 * 
+	 */
 }
