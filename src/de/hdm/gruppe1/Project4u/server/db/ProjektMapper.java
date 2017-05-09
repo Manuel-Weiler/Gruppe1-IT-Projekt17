@@ -92,7 +92,7 @@ public class ProjektMapper {
 		      p.setStartdatum(rs.getDate("startdatum"));
 		      p.setEnddatum(rs.getDate("enddatum"));
 		      p.setBeschreibung(rs.getString("beschreibung"));
-		      p.setProjektmarktplatzId(rs.getInt("projektmarktplatzi_id"));
+		      p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
 		      p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 		      
 		      return p;
