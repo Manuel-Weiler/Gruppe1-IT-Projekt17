@@ -4,9 +4,14 @@ import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
+
+import com.ibm.icu.text.SimpleDateFormat;
 
 import de.hdm.gruppe1.Project4u.server.db.DBConnection;
+import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 
 /**
  * Mapper-Klasse, die <code>Nutzerprofil</code>-Objekte auf eine relationale
@@ -70,20 +75,23 @@ public class BewerbungMapper {
 	 * @param bewerbung
 	 * @return bewerbung
 	 */
-	public Bewerbung insert(Bewerbung bewerbung) {
+	public Bewerbung insert(Bewerbung bewerbung, Ausschreibung a, Organisationseinheit o){
 		Connection con = DBConnection.connection();
 
-		try {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		bewerbung.setErstelldatum(date);
+		try{
 			Statement stmt = con.createStatement();
-
-			ResultSet rs = stmt.executeQuery("SELECT MAX(BewerbungID) AS maxid " + "FROM Bewerbung ");
-
-			if (rs.next()) {
-				bewerbung.setBewerbungID(rs.getInt("maxid") + 1);
-
-				stmt.executeUpdate("INSERT INTO Bewerbung (BewerbungID, Erstelldatum, Bewerbungstext)" + "VALUES ("
-						+ bewerbung.getBewerbungID() + "," + bewerbung.getErstelldatum() + ","
-						+ bewerbung.getBewerbungstext() + ")");
+			
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Bewerbung ");
+			
+			if(rs.next()){
+				bewerbung.setBewerbungID(rs.getInt("maxid")+1);
+				
+				stmt.executeUpdate("INSERT INTO Bewerbung (id, erstelldatum, bewerbungstext, ausschreibung_id, organisationseinheit_id)"
+						+ "VALUES ('" + bewerbung.getBewerbungID() + "','" + sdf.format(bewerbung.getErstelldatum()) + "','" 
+						+ bewerbung.getBewerbungstext() + "', '"+a.getAusschreibungID()+"', '"+o.getOrganisationseinheitId()+"')");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
