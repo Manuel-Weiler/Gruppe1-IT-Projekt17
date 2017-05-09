@@ -185,8 +185,8 @@ public class OrganisationseinheitMapper {
 
 		      // Statement ausfüllen und als Query an die DB schicken
 		      ResultSet rs = stmt
-		          .executeQuery("SELECT id, google_id, nachname, vorname FROM Organisationseinheit "
-		              + "WHERE id=" + id + " ORDER BY nachname");
+		          .executeQuery("SELECT id, google_id, name, typ FROM Organisationseinheit "
+		              + "WHERE id=" + id + " ORDER BY name");
 
 		      /*
 		       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -246,16 +246,16 @@ public class OrganisationseinheitMapper {
 		    return result;
 		  }
 	 
-	 public Vector<Organisationseinheit> findByNachname(String name) {
+	 public Vector<Organisationseinheit> findByName(String name) {
 		    Connection con = DBConnection.connection();
 		    Vector<Organisationseinheit> result = new Vector<Organisationseinheit>();
 
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT id, vorname, nachname "
-		          + "FROM Organisationseinheit " + "WHERE nachname LIKE '" + name
-		          + "' ORDER BY nachname");
+		      ResultSet rs = stmt.executeQuery("SELECT id, google_id, name, typ "
+		          + "FROM Organisationseinheit " + "WHERE name LIKE '" + name
+		          + "' ORDER BY name");
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
 		      // erstellt.
@@ -286,7 +286,7 @@ public class OrganisationseinheitMapper {
 		      Statement stmt = con.createStatement();
 
 		      ResultSet rs = stmt.executeQuery("SELECT id, google_id, name, typ "
-		          + "FROM Organisationseinheit " + "WHERE tpy LIKE '" + typ
+		          + "FROM Organisationseinheit " + "WHERE typ LIKE '" + typ
 		          + "' ORDER BY name");
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt

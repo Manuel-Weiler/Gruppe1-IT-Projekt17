@@ -11,7 +11,6 @@ public class Organisationseinheit extends BusinessObject{
 	private String google_id;
 	private String name;
 	private String typ;
-	private String nickname;
 	private boolean status = false;
 	
 
@@ -45,14 +44,6 @@ public class Organisationseinheit extends BusinessObject{
 
 	public void setGoogleId(String emailAddress) {
 		this.google_id = emailAddress;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
 	}
 
 	public boolean getStatus() {

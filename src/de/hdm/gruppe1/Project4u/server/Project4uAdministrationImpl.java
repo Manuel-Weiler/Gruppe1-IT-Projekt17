@@ -110,7 +110,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	public Vector<Organisationseinheit> findByNachname(String name) {
-		return this.organisationseinheitMapper.findByNachname(name);
+		return this.organisationseinheitMapper.findByName(name);
 	}
 
 	public void update(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
@@ -143,7 +143,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * @param o
 	 *            das Organisationseinheit-Objekt, dem das Partnerprofil
 	 *            zugeordnet ist.
-	 * @return das möglicherweise durch die Methode geänderte
+	 * @return das mï¿½glicherweise durch die Methode geï¿½nderte
 	 *         Partnerprofil-Objekt.
 	 */
 
@@ -156,11 +156,11 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	/**
-	 * Die Methode ändert das Änderungsdatum eines Partnerprofils Die id, das
-	 * Erstellungsdatum, sowie die Fremdschlüssel-id der zugehörigen
-	 * Organisationseinheit sind unveränderlich
+	 * Die Methode ï¿½ndert das ï¿½nderungsdatum eines Partnerprofils Die id, das
+	 * Erstellungsdatum, sowie die Fremdschlï¿½ssel-id der zugehï¿½rigen
+	 * Organisationseinheit sind unverï¿½nderlich
 	 * 
-	 * @return ein Partnerprofil-Objekt mit geändertem Änderungsdatum
+	 * @return ein Partnerprofil-Objekt mit geï¿½ndertem ï¿½nderungsdatum
 	 * 
 	 */
 	public Partnerprofil updatePartnerprofil(Partnerprofil p) throws IllegalArgumentException {
