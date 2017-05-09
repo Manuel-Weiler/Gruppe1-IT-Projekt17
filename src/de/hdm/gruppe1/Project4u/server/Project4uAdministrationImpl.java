@@ -10,6 +10,7 @@ import de.hdm.gruppe1.Project4u.server.db.BewerbungMapper;
 import de.hdm.gruppe1.Project4u.server.db.EigenschaftMapper;
 import de.hdm.gruppe1.Project4u.server.db.OrganisationseinheitMapper;
 import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
+import de.hdm.gruppe1.Project4u.server.db.ProjektMapper;
 import de.hdm.gruppe1.Project4u.server.db.ProjektmarktplatzMapper;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
@@ -17,6 +18,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
+import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 @SuppressWarnings("serial")
@@ -28,6 +30,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
 	private ProjektmarktplatzMapper projektmarktplatzMapper = null;
+	private ProjektMapper projektMapper = null;
 
 	private EigenschaftMapper eigenschaftMapper = null;
 
@@ -47,14 +50,12 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		this.organisationseinheitMapper = OrganisationseinheitMapper.organisationseinheitMapper();
 		this.partnerprofilMapper = PartnerprofilMapper.partnerprofilMapper();
         this.projektmarktplatzMapper = ProjektmarktplatzMapper.projektmarktplatzMapper();
+        this.projektMapper = ProjektMapper.projektMapper();
 	}
 
 	
 	
-	
-	
-	
-	
+
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Beginn: Beteiligung
@@ -343,6 +344,58 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Ende: Projektmarktplatz
+	 * #########################################################################
+	 * 
+	 */
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Projekt
+	 * #########################################################################
+	 * 
+	 */
+	
+	public Projekt createProjekt(int id, String name, Date startdatum, Date enddatum, String beschreibung,
+			                     int projektmarktplatz_id, int organisationseinheit_id)
+		   throws IllegalArgumentException {
+
+		Projekt projekt = new Projekt();
+		projekt.setProjektId(1);
+		projekt.setName(name);
+		projekt.setStartdatum(startdatum);
+		projekt.setEnddatum(enddatum);
+		projekt.setBeschreibung(beschreibung);
+		projekt.setProjektmarktplatzId(projektmarktplatz_id);
+		projekt.setOrganisationseinheitId(organisationseinheit_id);
+		
+		
+
+		return this.projektMapper.insert(projekt);
+
+	}
+	
+	public Projekt findProjektById(int id) throws IllegalArgumentException {
+		return this.projektMapper.findById(id);
+	}
+
+	public Vector<Projekt> findAllProjekt() throws IllegalArgumentException {
+		return this.projektMapper.findAll();
+	}
+
+	public void update(Projekt p) throws IllegalArgumentException {
+		projektMapper.update(p);
+	}
+
+	public void delete(Projekt p) throws IllegalArgumentException {
+		projektMapper.delete(p);
+	}	
+	
+	public Vector<Projekt> findByName(String name) throws IllegalArgumentException {
+		return this.projektMapper.findByName(name);
+	}
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Ende: Projekt
 	 * #########################################################################
 	 * 
 	 */
