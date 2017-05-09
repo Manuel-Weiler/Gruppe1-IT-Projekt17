@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.Vector;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
@@ -77,7 +78,7 @@ public class ProjektMapper {
 		   Statement stmt = con.createStatement();
 		   
 		   // Statement ausfüllen und als Query an die DB schicken
-		   ResultSet rs = stmt.executeQuery("SELECT * FROM projekt " + "WHERE ProjektId=" + id);
+		   ResultSet rs = stmt.executeQuery("SELECT * "  + "FROM projekt WHERE id='" + id + "'");
 		   
 		   /*
 	        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -86,13 +87,13 @@ public class ProjektMapper {
 		    if (rs.next()) {
 		      // Ergebnis-Tupel in Objekt umwandeln
 		      Projekt p = new Projekt();
-		      p.setProjektId(rs.getInt("projektId"));
+		      p.setProjektId(rs.getInt("id"));
 		      p.setName(rs.getString("name"));
 		      p.setStartdatum(rs.getDate("startdatum"));
 		      p.setEnddatum(rs.getDate("enddatum"));
 		      p.setBeschreibung(rs.getString("beschreibung"));
-		      p.setProjektmarktplatzId(rs.getInt("projektmarktplatzId"));
-		      p.setOrganisationseinheitId(rs.getInt("organisationseinheitId"));
+		      p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		      p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 		      
 		      return p;
 		      }
@@ -120,14 +121,14 @@ public class ProjektMapper {
 		  try{
 			  Statement stmt = con.createStatement();
 			  
-			  ResultSet rs = stmt.executeQuery("SELECT MAX(projektId) AS maxid " + "FROM projekt ");
+			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM projekt ");
 			  
 			  if (rs.next()) {
 	              p.setProjektId(rs.getInt("maxid") + 1);
 	            }
 			  
-			  stmt.executeUpdate("INSERT INTO projekt (projektId ,name, startdatum, enddatum, beschreibung," +
-				  		"projektmarktplatzId, organisationseinheitId) VALUES (" + p.getProjektId() + ", '" + sdf.format(p.getStartdatum()) + "', '"
+			  stmt.executeUpdate("INSERT INTO projekt (id ,name, startdatum, enddatum, beschreibung," +
+				  		"projektmarktplatz_id, organisationseinheit_id) VALUES (" + p.getProjektId() + ", '" + sdf.format(p.getStartdatum()) + "', '"
 				  		+ sdf.format(p.getEnddatum()) + "', '" + p.getName() + "', '" + p.getBeschreibung() + "', " + 
 				  		p.getOrganisationseinheitId() + ", " + p.getProjektmarktplatzId() + ")");
 			                    
@@ -154,8 +155,8 @@ public class ProjektMapper {
 
 	      stmt.executeUpdate("UPDATE projekt SET startdatum='" + sdf.format(p.getStartdatum()) + "', "
 			  		+ "enddatum='" + sdf.format(p.getEnddatum()) + "', " + "name='" + p.getName() + "', "
-					+ "beschreibung='" + p.getBeschreibung() + "', " + "organisationseinheitId=" + p.getOrganisationseinheitId()
-					+ ", " + "projektmarktplatzId=" + p.getProjektmarktplatzId() + " WHERE projektId=" + p.getProjektId());
+					+ "beschreibung='" + p.getBeschreibung() + "', " + "organisationseinheit_id=" + p.getOrganisationseinheitId()
+					+ ", " + "projektmarktplatz_id=" + p.getProjektmarktplatzId() + " WHERE id=" + p.getProjektId());
 
 	    }
 	    catch (SQLException e2) {
@@ -177,12 +178,88 @@ public class ProjektMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM projekt WHERE projektId=" + p.getProjektId());
+	      stmt.executeUpdate("DELETE FROM projekt WHERE id=" + p.getProjektId());
 
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
 	  }
-	
-	  }
+	  
+	  public Vector<Projekt> findAll() {
+		    Connection con = DBConnection.connection();
+		    // Ergebnisvektor vorbereiten
+		    Vector<Projekt> result = new Vector<Projekt>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT id, name, startdatum, enddatum, beschreibung,"
+		      		                         + "projektmarktplatz_id, organisationseinheit_id" 
+		    		                         + "FROM projekt" + "ORDER BY id");
+		   
+
+		      // FÃ¼r jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projekt p = new Projekt();
+		        p.setProjektId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setStartdatum(rs.getDate("startdatum"));
+		        p.setEnddatum(rs.getDate("enddatum"));
+		        p.setBeschreibung(rs.getString("beschreibung"));
+		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+
+
+		        // HinzufÃ¼gen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurÃ¼ckgeben
+		    return result;
+	 }
+	  
+	  public Vector<Projekt> findByName(String name) {
+		    Connection con = DBConnection.connection();
+		    Vector<Projekt> result = new Vector<Projekt>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT id, name, startdatum, enddatum, beschreibung"
+		      	  + "projektmarktplatz_id, organisationseinheit_id " + "FROM projekt "
+		          + "WHERE name LIKE '" + name + "' ORDER BY name");
+
+		      // FÃ¼r jeden Eintrag im Suchergebnis wird nun ein Customer-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projekt p = new Projekt();
+		        p.setProjektId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setStartdatum(rs.getDate("startdatum"));
+		        p.setEnddatum(rs.getDate("enddatum"));
+		        p.setBeschreibung(rs.getString("beschreibung"));
+		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+
+
+		        // HinzufÃ¼gen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurÃ¼ckgeben
+		    return result;
+		  }
+
+}

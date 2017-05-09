@@ -9,10 +9,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import de.hdm.gruppe1.Project4u.client.gui.Fusszeile;
-import de.hdm.gruppe1.Project4u.client.gui.Navigationsleiste;
+import de.hdm.gruppe1.Project4u.client.gui.NavigationsleisteWidget;
 import de.hdm.gruppe1.Project4u.client.gui.NutzerForm;
-import de.hdm.gruppe1.Project4u.client.gui.Startseite;
 import de.hdm.gruppe1.Project4u.shared.LoginService;
 import de.hdm.gruppe1.Project4u.shared.LoginServiceAsync;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
@@ -28,12 +26,21 @@ public class Project4u implements EntryPoint {
 	private Anchor signinLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 	Organisationseinheit nutzer = ClientsideSettings.getAktuellerUser();
-
+	
+	
 	/*
 	 * Diese Methode pr�ft den Login-Status
 	 * 
 	 */
 	public void onModuleLoad() {
+		
+		//TODO: in Methode loadProject4u() verschieben, sobald die Login funktioniert.
+		NavigationsleisteWidget nt = new NavigationsleisteWidget();
+		RootPanel.get("nav").add(nt);
+		nt.homeButtonclick();
+		
+		
+		
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 		loginService.login(GWT.getHostPageBaseURL() + "Project4u.html", new AsyncCallback<Organisationseinheit>() {
 			// f�ngt m�gliche Fehler ab
@@ -66,13 +73,12 @@ public class Project4u implements EntryPoint {
 
 	private void loadProject4u() {
 
-		final Navigationsleiste navigationsleiste = new Navigationsleiste();
-		navigationsleiste.loadNavigation();
-		final Fusszeile fusszeile = new Fusszeile();
-		fusszeile.loadFusszeile();
-
+		
+		/*
 		Startseite startseite = new Startseite();
-		startseite.loadStartseite();
+		startseite.loadStartseite(); */
+		
+		
 	}
 }
 
@@ -85,8 +91,7 @@ class CheckStatusNutzerCallback implements AsyncCallback<Organisationseinheit> {
 		ClientsideSettings.setAktuellerUser(nutzer);
 		final boolean status = nutzer.getStatus();
 		if(status == true){
-			Startseite startseite = new Startseite();
-			startseite.loadStartseite();
+			//TODO: Die Startseite wird geladen.
 		} else{
 			Window.alert("Diese Email ist nicht in der Datenbank vorhanden" 
 					+ "Erstelle ein neues Konto oder verwende eine andere Adresse");

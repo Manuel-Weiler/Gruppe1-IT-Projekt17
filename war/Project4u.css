@@ -36,162 +36,33 @@ h1 {
   margin: 15.0px 6.0px 6.0px;
 }
 
-/*Navigationsleiste */
 
-#naigation {	
-	
-	margin: 0;
-	padding: 0;
-	border-bottom:1px solid black;
-	/*margin: 0.0 auto;          /* standardkonforme horizontale Zentrierung */
-	top:0; 
-	right: 0;
-	left: 0;   
-	font-size: 80.0%;
-	text-align: center;
-	background: 	#97191d;
-	position:absolute;            /*Sorgt daf�r das die Leiste oben liegt */
-	width:100%;
-	overflow: hidden;
-	border-color: black;	
+#header {
+    background-color:#b30000;
+    color:white;
+    text-align:center;
+    padding:2px;
+    height:120px;
+    width:auto;
 }
-	
-/* Fusszeile */
-
-#trailer {
-	margin: 0;
-	padding: 0;
-	border-top:2px solid black;  
-	bottom:0; 
-	right: 0;
-	left: 0;   
-	font-size: 80.0%;
-	text-align: center;
-	background: 	#97191d;
-	position:fixed;            /*Sorgt daf�r das die Leiste oben liegt */
-	width:100%;
-	overflow: hidden;
-	border-color: black;
-	height: 25px;
+#nav {
+    line-height:30px;
+    background-color:#eeeeee;
+    height:750px;
+    width:20%;
+    float:left;
+    padding:5px;	      
 }
-
-.menuBar{
-	top:0.0;
-	position:absolute;
-	font-size: 100%;
-	font-weight: bold;
-
+#content {
+    width:77%;
+    height:500px;
+    float:left;
+    padding-left:10px;	
 }
-img {
-	position: absolute;
-	left: 32.0%;
-	top: 10.0%;
-}
-
-
-div#Navigation {
-	padding: 20.0px 0.0;
-	margin: 0.0 auto; /* standardkonforme horizontale Zentrierung */
-	font-size: 80.0%;
-	text-align: center;
-	background: 	#00BFFF;
-	position:absolute;
-	top:0.0;
-	width:99%;
-}
-
-#Zusinf{
-	border-width: 1px;
-	border-style: solid;
-	border-color: black;
-	
-}
-
-#Container{
-
-	background-repeat:no-repeat;
-	background-position: 80% 40%;
-	width: auto;
-	height: auto;
-	min-width: 400px;
-	min-height: 600px;
-	}
-	
-#Nutzer{
-	width: auto;
-	float: left;
-	min-width: 600px;
-	padding: 10px;
-	min-height: 800px;
-	height: auto;
-}
-
-#WeiterInhalt{
-	width: auto;
-	float: right;
-	padding: 10px;
-	min-height: 800px;
-	border: 1px solid black;
-	
-}
-
-.NutzerAnzeigenFlexTable{
-	border-width: 1px;
-  border-top: solid;
-  border-left: solid;
-  border-right: solid;
-  border-bottom: solid;
-  border-color: black;	
-}
-
-.NavigationsPos{	
-	align: center;
-	margin: 0px auto;
-}
-
-.gwt-Label{
-margin: 3px 2px 3px 2px;
-}
-
-.gwt-Button{
-	padding: 2px 4px !important;
-	margin-right: 5px !important;
-	margin-top: 5px !important;
-	margin-bottom: 5px !important;
-	background-color: #FFF !important;
-	color: black !important;
-	border-radius: 3px !important;
-	
-}
-
-.gwt-Button:hover{
-	background-color: #97191d !important;
-	color: white !important;
-}
-.gwt-FlexTabel{
-
-}
-
-.Abstand-Links{
-	margin-left: 20px;
-}
-
-.Label-Style{
-	background-color: #97191d;
-	color: white;
-	padding: 2px 4px;
-}
-
-.flexTable {
-	padding-top: 11px;
-    padding-bottom: 11px;
-    background-color: #97191d;
-    color: white;
-    padding: 2px;
-}
-
-.flexTable td{
-	width: 100px;
-	margin-riht: 5px;
-	padding: 3px;
+#footer {
+    background-color:#b30000;
+    color:white;
+    clear:both;
+    text-align:center;
+   padding:5px;	 	 
 }
