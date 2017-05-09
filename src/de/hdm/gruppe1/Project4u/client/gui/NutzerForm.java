@@ -89,8 +89,8 @@ class CreateNutzerCallback implements AsyncCallback<Organisationseinheit>{
 			Window.alert("Anlegen erfolgreich!");
 			RootPanel.get("Nutzer").clear();
 			Window.Location.reload();
-			Startseite loadStartseite = new Startseite();
-			loadStartseite.loadStartseite();
+			//Startseite loadStartseite = new Startseite();
+			//loadStartseite.loadStartseite();
 		}
 	}
 	

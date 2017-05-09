@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import de.hdm.gruppe1.Project4u.server.db.DBConnection;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 
 /**
@@ -64,8 +65,8 @@ public class BewerbungMapper {
 	
 	/**
 	 * Diese Methode bezieht ihre Informationen aus der
-	 * PartnerboerseAdministrationImpl und erstellt mit diesen einen neuen
-	 * Nutzer in der Datenbank.
+	 * Project4uImpl und erstellt mit diesen eine neue
+	 * Bewerbung in der Datenbank.
 	 * 
 	 * @param bewerbung
 	 * @return bewerbung
@@ -90,6 +91,48 @@ public class BewerbungMapper {
 		}
 		return bewerbung;
 	}
+	
+	/**
+	 * Diese Methode bezieht ihre Informationen aus der
+	 * Project4uImpl und ermöglicht es den Bewerbungstext
+	 * in der Datenbank zu ändern.
+	 * 
+	 * @param bewerbung
+	 * @return bewerbung
+	 */
+
+	public void updateBewerbung(Bewerbung bewerbung) {
+		Connection con = DBConnection.connection();
+		try{
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("UPDATE Bewerbung " 	+ "WHERE BewerbungID =" + bewerbung.getBewerbungID());
+			stmt = con.createStatement();
+			stmt.executeUpdate("UPDATE Bewerbung " + "SET Berbungstext=\"" + bewerbung.getBewerbungstext());
+		}catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+		
+	}
+	
+	/**
+	 * Diese Methode bezieht ihre Informationen aus der
+	 * Project4uImpl und ermöglicht es eine Bewerbung aus
+	 * der Datenbank zu löschen.
+	 * 
+	 * @param bewerbung
+	 * @return bewerbung
+	 */
+	
+	public void deleteBewerbung(Bewerbung bewerbung) {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+		      stmt.executeUpdate("DELETE FROM Bewerbung " + "WHERE BewerbungID=" + bewerbung.getBewerbungID());
+		    }
+		    catch (SQLException e2) {
+		      e2.printStackTrace();
+		    }
+		  }
 	
 
 }

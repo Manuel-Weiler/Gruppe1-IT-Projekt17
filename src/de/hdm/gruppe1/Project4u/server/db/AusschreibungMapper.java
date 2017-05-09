@@ -13,7 +13,6 @@ import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 
-
 public class AusschreibungMapper {
 	
 	private static AusschreibungMapper AusschreibungMapper = null; 
