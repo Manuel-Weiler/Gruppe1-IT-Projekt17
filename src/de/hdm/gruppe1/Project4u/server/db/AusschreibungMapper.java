@@ -12,17 +12,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
-/*
- *  Find by Person
- *  Insert Ausschreibung
- *  Update Ausschreibung
- *  getPartnerProfil Ausschreibung
- */
 
-/*
- * Insert
- * FindByID
- */
 
 public class AusschreibungMapper {
 	
