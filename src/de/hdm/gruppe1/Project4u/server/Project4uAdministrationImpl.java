@@ -89,7 +89,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Bewerbung createBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)
 			throws IllegalArgumentException {
 		Bewerbung bewerbung = new Bewerbung();
-		return this.bewerbungMapper.insert(bewerbung);
+		return this.bewerbungMapper.insert(bewerbung, null, null);
 	}
 
 	public void updateBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)
