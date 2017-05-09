@@ -27,11 +27,17 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 public class AusschreibungMapper {
 	
-	private static AusschreibungMapper AusschreibungMapper = null; 
+	private static AusschreibungMapper ausschreibungMapper = null; 
 	
 	private AusschreibungMapper () {
 	}
 	
+	public static AusschreibungMapper ausschreibungMapper() {
+		if (ausschreibungMapper == null) {
+			ausschreibungMapper = new AusschreibungMapper();
+		}
+		return ausschreibungMapper;
+	}
 	
 // EINFÜGEN EINER AUSSCHREIBUNG 
 	public Ausschreibung insert(Ausschreibung ausschreibung){

@@ -17,7 +17,7 @@ public class Ausschreibung extends BusinessObject{
 	
 	
 	
-	Ausschreibung Ausschreibung = new Ausschreibung (); 
+	//Ausschreibung Ausschreibung = new Ausschreibung (); 
 	
 	public String getBezeichnung() {
 		
