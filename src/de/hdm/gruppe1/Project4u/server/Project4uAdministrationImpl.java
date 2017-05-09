@@ -1,5 +1,6 @@
 package de.hdm.gruppe1.Project4u.server;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -19,6 +20,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	private BeteiligungMapper beteiligungMapper = null;
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
+	private AusschreibungMapper ausschreibungMapper = null;
 
 	public Project4uAdministrationImpl() throws IllegalArgumentException {
 
@@ -169,6 +171,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	public void deletePartnerprofil(Partnerprofil p) throws IllegalArgumentException {
 		partnerprofilMapper.deletePartnerprofil(p);
+	}
+
+	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {
+		return this.ausschreibungMapper.getAlleAusschreibungen();
 	}
 
 	/*
