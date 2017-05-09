@@ -53,9 +53,9 @@ public class Project4u implements EntryPoint {
 				loginInfo = result;
 				if (loginInfo.getLoggedIn()) {
 					Project4uVerwaltung.checkStatus(loginInfo, new CheckStatusNutzerCallback());
-					loadProject4u();
+					//loadProject4u();
 				} else {
-					loadLogin();
+					//loadLogin();
 				}
 			}
 		});
