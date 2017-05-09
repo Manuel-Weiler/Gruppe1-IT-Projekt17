@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.ibm.icu.text.SimpleDateFormat;
@@ -15,11 +16,17 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 public class AusschreibungMapper {
 	
-	private static AusschreibungMapper AusschreibungMapper = null; 
+	private static AusschreibungMapper ausschreibungMapper = null; 
 	
 	private AusschreibungMapper () {
 	}
 	
+	public static AusschreibungMapper ausschreibungMapper() {
+		if (ausschreibungMapper == null) {
+			ausschreibungMapper = new AusschreibungMapper();
+		}
+		return ausschreibungMapper;
+	}
 	
 // EINFÜGEN EINER AUSSCHREIBUNG 
 	public Ausschreibung insert(Ausschreibung ausschreibung){
@@ -133,6 +140,35 @@ public Ausschreibung findByProjekt(Projekt name) {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	//Auslesen alle Ausschreibungen
+	public ArrayList<Ausschreibung> getAlleAusschreibungen(){
+		Connection con = DBConnection.connection();
+		
+		ArrayList<Ausschreibung> result = new ArrayList<Ausschreibung>();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung");
+			
+			while(rs.next()){
+				Ausschreibung ausschreibung = new Ausschreibung();
+				ausschreibung.setAusschreibungID(rs.getInt("id")); //TODO in der DB steht "id" jedoch sollte das vielleicht "AusschreibungID" heißen
+				ausschreibung.setBezeichnung(rs.getString("bezeichnung"));
+				//TODO ausschreibung.setNameProjektleiter(rs.getString("name_projektleiter"));
+				ausschreibung.setAblaufdatum(rs.getDate("bewerbungsfrist")); //TODO setAblaufdatum sollte eigentlich bewerbungsfrist heißen oder umgekehrt --> EINEHITLICH!!!
+				ausschreibung.setAusschreibungstext(rs.getString("ausschreibungstext"));
+				//TODO ausschreibung.setErstelldatum(rs.getDate("erstelldatum")); fehlt noch!
+				//TODO ausschreibung.setProjektId(rs.getInt("projekt_id")); fehlt noch!
+				//TODO ausschreibung.setPartnerprofilId(rs.getInt("partnerprofil_id")); fehlt noch!
+				
+				result.add(ausschreibung);
+			}
+		} catch(SQLException e2) {
+			e2.printStackTrace();
+		}
+		return result;
 	}
 
 
