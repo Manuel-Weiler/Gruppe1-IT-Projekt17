@@ -9,12 +9,11 @@ public class Organisationseinheit extends BusinessObject{
 	private String loginUrl;
 	private String logoutUrl;
 	private String google_id;
-	/*private String vorname;
-	private String nachname;*/
 	private String name;
 	private String typ;
 	private String nickname;
 	private boolean status = false;
+	
 
 	public boolean getLoggedIn() {
 		return loggedIn;

@@ -12,4 +12,5 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Organisationseinheit checkStatus(Organisationseinheit loginInfo) throws IllegalArgumentException;
 
+
 }

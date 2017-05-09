@@ -83,8 +83,12 @@ public class OrganisationseinheitMapper {
 			if(rs.next()){
 				organisationseinheit.setOrganisationseinheitId(rs.getInt("maxid") +1);
 				
+				stmt = con.createStatement();
+				
 				stmt.executeUpdate("INSERT INTO Organisationseinheit (id, google_id, name, typ) "
-			            + "VALUES (" + organisationseinheit.getOrganisationseinheitId() + ",'" + organisationseinheit.getName() + "', '" + organisationseinheit.getTyp() + "')");
+			            + "VALUES (" + organisationseinheit.getOrganisationseinheitId() + ", '" + organisationseinheit.getGoogleId() + "','" + organisationseinheit.getName() + "', '" + organisationseinheit.getTyp() + "')");
+			
+			
 			}
 		} catch (SQLException e2){
 			e2.printStackTrace();
@@ -216,8 +220,8 @@ public class OrganisationseinheitMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT id, firstName, lastName "
-		          + "FROM customers " + "ORDER BY lastName");
+		      ResultSet rs = stmt.executeQuery("SELECT id, google_id, name, typ "
+		          + "FROM Organisationseinheit " + "ORDER BY name");
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
 		      // erstellt.
