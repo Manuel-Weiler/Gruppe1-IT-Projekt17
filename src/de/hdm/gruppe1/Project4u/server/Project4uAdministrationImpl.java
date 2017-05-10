@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+import de.hdm.gruppe1.Project4u.server.db.AusschreibungMapper;
 import de.hdm.gruppe1.Project4u.server.db.BeteiligungMapper;
 import de.hdm.gruppe1.Project4u.server.db.BewerbungMapper;
 import de.hdm.gruppe1.Project4u.server.db.EigenschaftMapper;
@@ -13,6 +14,7 @@ import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
 import de.hdm.gruppe1.Project4u.server.db.ProjektMapper;
 import de.hdm.gruppe1.Project4u.server.db.ProjektmarktplatzMapper;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
+import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
@@ -25,8 +27,8 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration {
 
 	private BewerbungMapper bewerbungMapper = null;
-	private static final Beteiligung Beteiligung = null;
 	private BeteiligungMapper beteiligungMapper = null;
+	private AusschreibungMapper ausschreibungMapper = null; 
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
 	private ProjektmarktplatzMapper projektmarktplatzMapper = null;
@@ -43,8 +45,6 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	//Initialisierung
 	public void init() throws IllegalArgumentException{
 
-		
-			
 		this.eigenschaftMapper = EigenschaftMapper.eigenschaftMapper();
 		this.beteiligungMapper = BeteiligungMapper.beteiligungMapper(); 
 		this.organisationseinheitMapper = OrganisationseinheitMapper.organisationseinheitMapper();
@@ -53,9 +53,6 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
         this.projektMapper = ProjektMapper.projektMapper();
 	}
 
-	
-	
-
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Beginn: Beteiligung
@@ -63,19 +60,33 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
-	public Beteiligung createBeteiligung () throws IllegalArgumentException {
-		    Beteiligung beteiligung = new Beteiligung();
-		    beteiligung.setBeteiligungId(beteiligung);
+//	PartnerprofilId und ProjektId Fehlt !!!
+	public Ausschreibung createAusschreibung(int ausschreibungId, String ausschreibungstext, 
+			Date bewerbungsfrist, String bezeichnung, Date erstellDatum, int id, String nameProjektleiter
+			)
+			throws IllegalArgumentException {
 
-
-		    beteiligung.setID(1);
-
-		    return this.beteiligungMapper.insert(beteiligung);
-		  }
-	
-	public void delete (Beteiligung delete){
-		beteiligungMapper.deleteBeteiligung(Beteiligung);
+		Ausschreibung ausschreibung = new Ausschreibung();
+		ausschreibung.setAusschreibungId(ausschreibungId);
+		ausschreibung.setAusschreibungstext(ausschreibungstext);
+		ausschreibung.setBewerbungsfrist(bewerbungsfrist);
+		ausschreibung.setBezeichnung(bezeichnung);
+		ausschreibung.setErstellDatum(erstellDatum);
+		ausschreibung.setID(id);
+		ausschreibung.setNameProjektleiter(nameProjektleiter);		
+		
+		return this.ausschreibungMapper.insertAusschreibung(ausschreibung);
 	}
+	
+	public void update(Ausschreibung ausschreibung) throws IllegalArgumentException {
+		ausschreibungMapper.updateAusschreibung(ausschreibung);
+	}
+	
+	public void delete(Ausschreibung ausschreibung) throws IllegalArgumentException {
+		ausschreibungMapper.deleteAusschreibung(ausschreibung);
+	}
+	
+	
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Ende: Beteiligung
@@ -291,20 +302,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * #########################################################################
 	 * 
 	 */
-	
-	/*
-	 * #########################################################################
-	 * ABSCHNITT, Beginn: Ausschreibung
-	 * #########################################################################
-	 * 
-	 */
 
-	/*
-	 * #########################################################################
-	 * ABSCHNITT, Ende: Ausschreibung
-	 * #########################################################################
-	 * 
-	 */
+
 	
 	/*
 	 * #########################################################################

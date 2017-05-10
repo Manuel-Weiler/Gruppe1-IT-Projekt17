@@ -124,7 +124,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		/**
 		 * Inhalt des Reports ID
 		 */
-		header.addSubParagraph(new SimpleParagraph("Ausschreibungs-ID: " + au.getAusschreibungID()));
+		header.addSubParagraph(new SimpleParagraph("Ausschreibungs-ID: " + au.getAusschreibungId()));
 
 		/**
 		 * Inhalt des Reports Bezeichnung
@@ -139,7 +139,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		/**
 		 * Inhalt des Reports Bewerbungsfrist/ Ablaufdatum
 		 */
-		header.addSubParagraph(new SimpleParagraph("Bezeichnung: " + au.getAblaufdatum()));
+		header.addSubParagraph(new SimpleParagraph("Bezeichnung: " + au.getBewerbungsfrist()));
 
 		/**
 		 * Inhalt des Reports Ausschreibungstext

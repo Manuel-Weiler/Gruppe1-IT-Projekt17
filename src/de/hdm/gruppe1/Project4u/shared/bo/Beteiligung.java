@@ -4,20 +4,16 @@ public class Beteiligung extends BusinessObject{
 		
 	private static final long serialVersionUID = 1L;
 	
-	Beteiligung Beteiligung = new Beteiligung (); 
-
-	
 	private int beteiligungId = 0;
-	
-	public int getbeteiligungId() {
-		
+
+	public int getBeteiligungId() {
 		return beteiligungId;
 	}
-
-	public void setBeteiligungId(Beteiligung beteiligung) {
-		this.Beteiligung = beteiligung ; 
- 		
+	public void setBeteiligungId(int beteiligungId) {
+		this.beteiligungId = beteiligungId;
 	}
+	
+
 
 	
 	
