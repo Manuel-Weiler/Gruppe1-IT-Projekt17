@@ -20,7 +20,8 @@ public class NavigationsleisteWidget extends Composite{
 	Button pMarktplatz = new Button("Projektmarktplätze");
 	Button eBewerbungen = new Button("Eingangsbewerbungen");
 	Button aBewerbungen = new Button("Ausgangsbewerbungen");
-	//TODO: Logout-Button
+	Button logout = new Button("Logout");
+	
 
 	public NavigationsleisteWidget() {
 
@@ -40,6 +41,15 @@ public class NavigationsleisteWidget extends Composite{
 		homeButton.setPixelSize(200, 40);
 		pMarktplatz.setPixelSize(200, 40);
 		aBewerbungen.setPixelSize(200, 40);
+		
+		logout.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Logout hinzufügen
+				
+			}
+		});
 
 		homeButton.addClickHandler(new ClickHandler() {
 			
@@ -55,7 +65,11 @@ public class NavigationsleisteWidget extends Composite{
 				
 				
 			}
+			
+			
 		});
+		
+		
 		
 		initWidget(menuPanel);
 	}
