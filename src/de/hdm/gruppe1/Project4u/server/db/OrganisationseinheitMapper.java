@@ -195,8 +195,13 @@ public class OrganisationseinheitMapper {
 
 		      // Statement ausfüllen und als Query an die DB schicken
 		      ResultSet rs = stmt
+<<<<<<< HEAD
 		          .executeQuery("SELECT id, google_id, name, typ FROM Organisationseinheit "
 		              + "WHERE id=" + id + " ORDER BY name");
+=======
+		          .executeQuery("SELECT id, google_id, name FROM Organisationseinheit "
+		              + "WHERE id=" + id +  "");
+>>>>>>> refs/heads/master
 
 		      /*
 		       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -208,7 +213,7 @@ public class OrganisationseinheitMapper {
 		        o.setOrganisationseinheitId(rs.getInt("id"));
 		        o.setName(rs.getString("name"));
 		        o.setGoogleId(rs.getString("google_id"));
-		        o.setTyp(rs.getString("typ"));
+		        //o.setTyp(rs.getString("typ"));
 		        
 
 		        return o;

@@ -1,6 +1,7 @@
 package de.hdm.gruppe1.Project4u.server.db;
 
 import java.sql.*;
+import java.util.Vector;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
@@ -132,7 +133,7 @@ public class ProjektmarktplatzMapper {
 		      Statement stmt = con.createStatement();
 
 		      stmt.executeUpdate("UPDATE projektmarktplatz SET Name =" + p.getName() 
-		                         + "WHERE projektmarktplatzId=" + p.getProjektmarktplatzId()); 
+		                         + "WHERE id=" + p.getProjektmarktplatzId()); 
 		    }
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
@@ -153,12 +154,44 @@ public class ProjektmarktplatzMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM projektmarktplatz" + "WHERE projektmarktplatzId=" + p.getProjektmarktplatzId()); 
+	      stmt.executeUpdate("DELETE FROM projektmarktplatz" + "WHERE id=" + p.getProjektmarktplatzId()); 
 
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
+	  }
+	  
+	  public Vector<Projektmarktplatz> findAll() {
+		    Connection con = DBConnection.connection();
+		    // Ergebnisvektor vorbereiten
+		    Vector<Projektmarktplatz> result = new Vector<Projektmarktplatz>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT id, name " + "FROM projektmarktplatz" + "ORDER BY id");
+		   
+
+		      // Für jeden Eintrag im Suchergebnis wird nun ein Projektmarktplatz-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projektmarktplatz p = new Projektmarktplatz();
+		        p.setProjektmarktplatzId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        
+
+		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurückgeben
+		    return result;
+	
 	  }
 	  
 	 
