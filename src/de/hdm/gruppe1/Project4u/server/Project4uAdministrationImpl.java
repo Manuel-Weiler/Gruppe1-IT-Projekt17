@@ -1,5 +1,6 @@
 package de.hdm.gruppe1.Project4u.server;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
@@ -32,16 +33,15 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	private AusschreibungMapper ausschreibungMapper = null; 
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
+	private AusschreibungMapper ausschreibungMapper = null;
 	private ProjektmarktplatzMapper projektmarktplatzMapper = null;
 	private ProjektMapper projektMapper = null;
-
 	private EigenschaftMapper eigenschaftMapper = null;
 
 	
 	public Project4uAdministrationImpl() throws IllegalArgumentException{
 		
 	}
-
 	
 	//Initialisierung
 	public void init() throws IllegalArgumentException{
@@ -52,6 +52,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		this.partnerprofilMapper = PartnerprofilMapper.partnerprofilMapper();
         this.projektmarktplatzMapper = ProjektmarktplatzMapper.projektmarktplatzMapper();
         this.projektMapper = ProjektMapper.projektMapper();
+<<<<<<< HEAD
 	}
 
 	/*
@@ -89,6 +90,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
+=======
+	}
+
+>>>>>>> refs/heads/master
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Beginn: Beteiligung
@@ -121,7 +126,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Bewerbung createBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)
 			throws IllegalArgumentException {
 		Bewerbung bewerbung = new Bewerbung();
-		return this.bewerbungMapper.insert(bewerbung);
+		return this.bewerbungMapper.insert(bewerbung, null, null);
 	}
 
 	public void updateBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)
@@ -233,6 +238,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	public void deletePartnerprofil(Partnerprofil p) throws IllegalArgumentException {
 		partnerprofilMapper.deletePartnerprofil(p);
+	}
+
+	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {
+		return this.ausschreibungMapper.getAlleAusschreibungen();
 	}
 
 	/*

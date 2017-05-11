@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class ReportByAllAusschreibungen extends CompositeReport implements IsSerializable, Serializable{
+public class ReportByAllAusschreibungen extends SimpleReport implements IsSerializable, Serializable{
 	
 	public static final long serialVersionUID = 1L; 
 

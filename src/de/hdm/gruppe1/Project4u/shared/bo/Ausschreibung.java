@@ -11,9 +11,13 @@ public class Ausschreibung extends BusinessObject{
 	private String nameProjektleiter;
 	private Date bewerbungsfrist; 
 	private String ausschreibungstext;
+
 	private Date erstellDatum;	
 	private int projektId;
 	private int partnerprofilId;
+
+
+	
 
 	public String getBezeichnung() {
 		return bezeichnung;
@@ -38,6 +42,23 @@ public class Ausschreibung extends BusinessObject{
 	public void setErstellDatum(Date erstellDatum) {
 		this.erstellDatum = erstellDatum;
 	}
+	
+/** Brauchen wir das?
+ * @author Dominik
+ * 
+ * 	public boolean equals(Object o){
+		if(o != null && o instanceof Ausschreibung){
+			Ausschreibung au = (Ausschreibung) o;
+			try{
+				return super.equals(au);
+			}
+			catch(IllegalArgumentException e){
+				return false;
+			}
+		}
+		return false;
+	}
+ */
 
 	public String getNameProjektleiter() {
 		return nameProjektleiter;
