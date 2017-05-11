@@ -168,11 +168,10 @@ public class PartnerprofilMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE id='"
-					+ p.getPartnerprofilId() + "'");
+			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE id=" + p.getPartnerprofilId());
 			
-			//Wenn das Partnerprofil-Objekt aus der DB gelöscht wird, werden auch alle in Beziehung
-			//stehenden Eigenschaften gelöscht.
+			//Wenn das Partnerprofil-Objekt aus der DB gelï¿½scht wird, werden auch alle in Beziehung
+			//stehenden Eigenschaften gelï¿½scht.
 			EigenschaftMapper.eigenschaftMapper().deleteAllEigenschaftOfPartnerprofil(p);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -213,6 +212,39 @@ public class PartnerprofilMapper {
 		
 		return EigenschaftMapper.eigenschaftMapper().selectAllEigenschaftOfPartnerprofil(p);
 	}
+	
+	
+	public Partnerprofil findByOrganisationseinheit (Organisationseinheit o) {
+		Connection con = DBConnection.connection();
+		Partnerprofil p = new Partnerprofil();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
+			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Partnerprofil WHERE organisationseinheit_id='" + o.getID() + "'");
+
+			if (rs.next()) {
+
+				/*
+				 * Dem Rï¿½ckgabeobjekt werden die Werte aus der Tabelle
+				 * zugewiesen und so das Tupel aus der Tabelle wieder in ein
+				 * Objekt transformiert.
+				 */
+				p.setID(rs.getInt("id"));
+				p.setErstelldatum(rs.getDate("erstelldatum"));
+				p.setAenderungsdatum(rs.getDate("ï¿½nderungsdatum"));
+			    
+				return p;
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		      return null;
+		    }
+
+		    return null;
+		  }
 	
 }
 

@@ -102,7 +102,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		bewerbung.setErstelldatum(erstelldatum);
 		bewerbung.setBewerbungstext(bewerbungstext);
 
-		this.bewerbungMapper.updateBewerbung(bewerbung);
+		this.bewerbungMapper.update(bewerbung);
 	}
 	/*
 	 * #########################################################################
@@ -135,16 +135,24 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	}
 	
-	public Organisationseinheit findByKey(int id) throws IllegalArgumentException {
+	public Organisationseinheit getOrganisationseinheitById(int id) throws IllegalArgumentException {
 		return this.organisationseinheitMapper.findByKey(id);
 	}
 
-	public Vector<Organisationseinheit> findAll() throws IllegalArgumentException {
+	public Vector<Organisationseinheit> getAllOrganisationseinheiten() throws IllegalArgumentException {
 		return this.organisationseinheitMapper.findAll();
 	}
 
-	public Vector<Organisationseinheit> findByNachname(String name) {
+	public Vector<Organisationseinheit> getOrganisationseinheitByName(String name) {
 		return this.organisationseinheitMapper.findByName(name);
+	}
+	
+	public Vector<Organisationseinheit> getOrganisationseinheitByTyp(String typ) {
+		return this.organisationseinheitMapper.findByTyp(typ);
+	}
+	
+	public void insert(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
+		organisationseinheitMapper.insert(organisationseinheit);
 	}
 
 	public void update(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
@@ -152,6 +160,23 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	public void delete(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
+		
+		//ZugehÃ¶rige Bewerbungen lÃ¶schen
+  		Vector<Bewerbung> vb = new Vector<Bewerbung>();
+  		vb = BewerbungMapper.bewerbungMapper().findByOrganisationseinheit(organisationseinheit);
+  		for(Bewerbung b: vb){
+  			BewerbungMapper.bewerbungMapper().delete(b);
+  		}
+      
+  		//ZugehÃ¶riges Partnerprofil lÃ¶schen
+      	PartnerprofilMapper.partnerprofilMapper().deletePartnerprofil(PartnerprofilMapper.partnerprofilMapper().findByOrganisationseinheit(organisationseinheit));
+      
+      	//ZugehÃ¶rige Projekte lÃ¶schen		      
+      	Vector<Projekt> vp = new Vector<Projekt>();
+      		vp = ProjektMapper.projektMapper().findByOrganisationseinheit(organisationseinheit);
+      		for(Projekt p: vp){
+      			ProjektMapper.projektMapper().delete(p);
+      		}
 		organisationseinheitMapper.delete(organisationseinheit);
 	}
 	/*
@@ -216,7 +241,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	
 	
-	/**Diese Methode gibt alle Eigenschaftsobjekte zu einem Partnerprofil-Objekt p zurück
+	/**Diese Methode gibt alle Eigenschaftsobjekte zu einem Partnerprofil-Objekt p zurï¿½ck
 	 * @param p Partnerprofil
 	 * @return 
 	 * @throws IllegalArgumentException
@@ -226,7 +251,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 	
 	
-	/**Diese Methode gibt die zugehörige Organisationseinheit zu einem Partnerprofil zurück.
+	/**Diese Methode gibt die zugehï¿½rige Organisationseinheit zu einem Partnerprofil zurï¿½ck.
 	 * @param p
 	 * @return
 	 * @throws IllegalArgumentException
@@ -251,8 +276,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
-	/**Die Methode vergibt dem zu speichernden Eigenschafts-Objekts einen Primärschlüssel und 
-	 * legt es in der DB ab. Zudem aktualisiert sie das Änderungsdatum des zugehörigen 
+	/**Die Methode vergibt dem zu speichernden Eigenschafts-Objekts einen Primï¿½rschlï¿½ssel und 
+	 * legt es in der DB ab. Zudem aktualisiert sie das ï¿½nderungsdatum des zugehï¿½rigen 
 	 * Partnerprofil-Objekts
 	 * @param e
 	 * @param p
@@ -270,7 +295,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		eigenschaftMapper.deleteEigenschaft(e);
 	}
 	
-	/**Die Methode löscht alle Eigenschaften, die in einer Fremdschlüsselbeziehung zu 
+	/**Die Methode lï¿½scht alle Eigenschaften, die in einer Fremdschlï¿½sselbeziehung zu 
 	 * einem Partnerprofil p stehen.
 	 * @param p
 	 * @throws IllegalArgumentException

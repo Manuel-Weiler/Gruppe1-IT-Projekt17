@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
+import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
@@ -123,21 +124,29 @@ public class OrganisationseinheitMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 		      
-		      	//Zugehöriges Partnerprofil löschen
-		      	PartnerprofilMapper.partnerprofilMapper().deletePartnerprofil(OrganisationseinheitMapper.organisationseinheitMapper().getPartnerprofilOfOrganisationseinheit(o));
+		      //TO DO: Applikationslogik oder in den Mappern?
+		     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+		      	//Zugehörige Bewerbungen löschen
+	      		Vector<Bewerbung> vb = new Vector<Bewerbung>();
+	      		vb = BewerbungMapper.bewerbungMapper().findByOrganisationseinheit(o);
+	      		for(Bewerbung b: vb){
+	      			BewerbungMapper.bewerbungMapper().delete(b);
+	      		}
+		      
+	      		//Zugehöriges Partnerprofil löschen
+		      	PartnerprofilMapper.partnerprofilMapper().deletePartnerprofil(PartnerprofilMapper.partnerprofilMapper().findByOrganisationseinheit(o));
 		      
 		      	//Zugehörige Projekte löschen		      
-		      	Vector<Projekt> v = new Vector<Projekt>();
-		      		v = OrganisationseinheitMapper.organisationseinheitMapper().getProjekteOfOrganisationseinheit(o);
-		      		for(Projekt p: v){
+		      	Vector<Projekt> vp = new Vector<Projekt>();
+		      		vp = ProjektMapper.projektMapper().findByOrganisationseinheit(o);
+		      		for(Projekt p: vp){
 		      			ProjektMapper.projektMapper().delete(p);
 		      		}
-				
-				//Zugehörige Bewerbungen löschen
+				//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 				
 		      
-		      
-		      stmt.executeUpdate("DELETE FROM Organisationseinheit " + "WHERE id=" + o.getOrganisationseinheitId());
+		      //Organisationseinheit löschen
+		      stmt.executeUpdate("DELETE FROM Organisationseinheit WHERE id=" + o.getOrganisationseinheitId());
 		      
 		      
 		      
@@ -218,7 +227,7 @@ public class OrganisationseinheitMapper {
 		        o.setOrganisationseinheitId(rs.getInt("id"));
 		        o.setName(rs.getString("name"));
 		        o.setGoogleId(rs.getString("google_id"));
-		        //o.setTyp(rs.getString("typ"));
+		        o.setTyp(rs.getString("typ"));
 		        
 
 		        return o;
@@ -330,74 +339,11 @@ public class OrganisationseinheitMapper {
 		    return result;
 		  }
 	 
-	 public Partnerprofil getPartnerprofilOfOrganisationseinheit (Organisationseinheit o) {
-			Connection con = DBConnection.connection();
-			Partnerprofil p = new Partnerprofil();
-
-			try {
-				Statement stmt = con.createStatement();
-
-				// Abfrage des gesuchten Partnerprofils zur <code>id</code>
-				ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Partnerprofil WHERE organisationseinheit_id='" + o.getID() + "'");
-
-				if (rs.next()) {
-
-					/*
-					 * Dem R�ckgabeobjekt werden die Werte aus der Tabelle
-					 * zugewiesen und so das Tupel aus der Tabelle wieder in ein
-					 * Objekt transformiert.
-					 */
-					p.setID(rs.getInt("id"));
-					p.setErstelldatum(rs.getDate("erstelldatum"));
-					p.setAenderungsdatum(rs.getDate("�nderungsdatum"));
-				    
-					return p;
-			      }
-			    }
-			    catch (SQLException e) {
-			      e.printStackTrace();
-			      return null;
-			    }
-
-			    return null;
-			  }
 	 
-	 public Vector<Projekt> getProjekteOfOrganisationseinheit(Organisationseinheit o) {
-		    Connection con = DBConnection.connection();
-		    // Ergebnisvektor vorbereiten
-		    Vector<Projekt> result = new Vector<Projekt>();
-
-		    try {
-		      Statement stmt = con.createStatement();
-
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE organisationseinheit_id='" + o.getID() + "' ORDER BY organisationseinheit_id");
-		   
-
-		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
-		      // erstellt.
-		      while (rs.next()) {
-		        Projekt p = new Projekt();
-		        p.setProjektId(rs.getInt("id"));
-		        p.setName(rs.getString("name"));
-		        p.setStartdatum(rs.getDate("startdatum"));
-		        p.setEnddatum(rs.getDate("enddatum"));
-		        p.setBeschreibung(rs.getString("beschreibung"));
-		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
-		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
-
-
-
-		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
-		        result.addElement(p);
-		      }
-		    }
-		    catch (SQLException e) {
-		      e.printStackTrace();
-		    }
-
-		    // Ergebnisvektor zurückgeben
-		    return result;
-	 }
+	 
+	 
+	 
+	 
 	 
 	 
 }
