@@ -75,6 +75,7 @@ public class BewerbungMapper {
 	 * @param bewerbung
 	 * @return bewerbung
 	 */
+	
 	public Bewerbung insert(Bewerbung bewerbung, Ausschreibung a, Organisationseinheit o){
 		Connection con = DBConnection.connection();
 
@@ -101,13 +102,13 @@ public class BewerbungMapper {
 
 	/**
 	 * Diese Methode bezieht ihre Informationen aus der Project4uImpl und
-	 * ermöglicht es den Bewerbungstext in der Datenbank zu ändern.
+	 * ermï¿½glicht es den Bewerbungstext in der Datenbank zu ï¿½ndern.
 	 * 
 	 * @param bewerbung
 	 * @return bewerbung
 	 */
 
-	public void updateBewerbung(Bewerbung bewerbung) {
+	public void update(Bewerbung bewerbung) {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
@@ -117,18 +118,17 @@ public class BewerbungMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
-
 	}
 
 	/**
 	 * Diese Methode bezieht ihre Informationen aus der Project4uImpl und
-	 * ermöglicht es eine Bewerbung aus der Datenbank zu löschen.
+	 * ermï¿½glicht es eine Bewerbung aus der Datenbank zu lï¿½schen.
 	 * 
 	 * @param bewerbung
 	 * @return bewerbung
 	 */
 
-	public void deleteBewerbung(Bewerbung bewerbung) {
+	public void delete(Bewerbung bewerbung) {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();

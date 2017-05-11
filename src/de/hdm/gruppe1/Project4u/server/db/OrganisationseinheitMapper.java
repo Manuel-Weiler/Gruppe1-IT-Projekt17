@@ -123,10 +123,19 @@ public class OrganisationseinheitMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 		      
-		      //Zugehöriges Partnerprofil löschen
-		      PartnerprofilMapper.partnerprofilMapper().deletePartnerprofil(OrganisationseinheitMapper.organisationseinheitMapper().getPartnerprofilOfOrganisationseinheit(o));
-		      //Zugehörige Projekte löschen
-		      ProjektMapper.projektMapper().delete(OrganisationseinheitMapper.organisationseinheitMapper().getProjektOfOrganisationseinheit(o));
+		      	//Zugehöriges Partnerprofil löschen
+		      	PartnerprofilMapper.partnerprofilMapper().deletePartnerprofil(OrganisationseinheitMapper.organisationseinheitMapper().getPartnerprofilOfOrganisationseinheit(o));
+		      
+		      	//Zugehörige Projekte löschen		      
+		      	Vector<Projekt> v = new Vector<Projekt>();
+		      		v = OrganisationseinheitMapper.organisationseinheitMapper().getProjekteOfOrganisationseinheit(o);
+		      		for(Projekt p: v){
+		      			ProjektMapper.projektMapper().delete(p);
+		      		}
+				
+				//Zugehörige Bewerbungen löschen
+				
+		      
 		      
 		      stmt.executeUpdate("DELETE FROM Organisationseinheit " + "WHERE id=" + o.getOrganisationseinheitId());
 		      
@@ -195,13 +204,9 @@ public class OrganisationseinheitMapper {
 
 		      // Statement ausfüllen und als Query an die DB schicken
 		      ResultSet rs = stmt
-<<<<<<< HEAD
+		    		  
 		          .executeQuery("SELECT id, google_id, name, typ FROM Organisationseinheit "
 		              + "WHERE id=" + id + " ORDER BY name");
-=======
-		          .executeQuery("SELECT id, google_id, name FROM Organisationseinheit "
-		              + "WHERE id=" + id +  "");
->>>>>>> refs/heads/master
 
 		      /*
 		       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -357,42 +362,42 @@ public class OrganisationseinheitMapper {
 			    return null;
 			  }
 	 
-	 public Projekt getProjektOfOrganisationseinheit(Organisationseinheit o) {
-		 // DB-Verbindung holen
-		 Connection con = DBConnection.connection();
-		 
-		 try {
-		   // Leeres SQL-Statement (JDBC) anlegen
-		   Statement stmt = con.createStatement();
+	 public Vector<Projekt> getProjekteOfOrganisationseinheit(Organisationseinheit o) {
+		    Connection con = DBConnection.connection();
+		    // Ergebnisvektor vorbereiten
+		    Vector<Projekt> result = new Vector<Projekt>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE organisationseinheit_id='" + o.getID() + "' ORDER BY organisationseinheit_id");
 		   
-		   // Statement ausf�llen und als Query an die DB schicken
-		   ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt " + "WHERE organisationseinheit_id=" + o.getID());
-		   
-		   /*
-	        * Da id Prim�rschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
-	        * werden. Pr�fe, ob ein Ergebnis vorliegt.
-	        */
-		    if (rs.next()) {
-		      // Ergebnis-Tupel in Objekt umwandeln
-		      Projekt p = new Projekt();
-		      p.setProjektId(rs.getInt("projektId"));
-		      p.setName(rs.getString("name"));
-		      p.setStartdatum(rs.getDate("startdatum"));
-		      p.setEnddatum(rs.getDate("enddatum"));
-		      p.setBeschreibung(rs.getString("beschreibung"));
-		      p.setProjektmarktplatzId(rs.getInt("projektmarktplatzId"));
-		      p.setOrganisationseinheitId(rs.getInt("organisationseinheitId"));
-		      
-		      return p;
+
+		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projekt p = new Projekt();
+		        p.setProjektId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setStartdatum(rs.getDate("startdatum"));
+		        p.setEnddatum(rs.getDate("enddatum"));
+		        p.setBeschreibung(rs.getString("beschreibung"));
+		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+
+
+		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
 		      }
 		    }
-           catch (SQLException e) {
-        	 e.printStackTrace();
-        	 return null; 
-           }
-		 
-		     return null;
-		   }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurückgeben
+		    return result;
+	 }
 	 
 	 
 }
