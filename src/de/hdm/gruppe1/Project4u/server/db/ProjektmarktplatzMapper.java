@@ -7,7 +7,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 /**
  * Mapper-Klasse, die <code>Projektmarktplatz</code>-Objekte auf eine relationale
- * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur VerfÃ¼gung
+ * Datenbank abgebildet. Hierzu wird eine Reihe von Methoden zur VerfÃ¼gung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
  * gelÃ¶scht werden kÃ¶nnen. Das Mapping ist bidirektional. D.h., Objekte kÃ¶nnen
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
@@ -71,7 +71,7 @@ public class ProjektmarktplatzMapper {
 		   Statement stmt = con.createStatement();
 		   
 		   // Statement ausfüllen und als Query an die DB schicken
-		   ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz " + "WHERE id='" + id+"'");
+		   ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz " + "WHERE id='" + id +"'");
 		   
 		   /*
 	        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -95,7 +95,7 @@ public class ProjektmarktplatzMapper {
 	  
 	  /**
 		 * Diese Methode bezieht ihre Informationen aus der
-		 * PartnerboerseAdministrationImpl und erstellt mit diesen einen neuen
+		 * Project4uAdministrationImpl und erstellt mit diesen einen neuen
 		 * Projektmarktplatz in der Datenbank.
 		 * 
 		 * @param projektmarktplatz
