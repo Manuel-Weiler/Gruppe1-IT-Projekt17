@@ -1,4 +1,4 @@
-/*package de.hdm.gruppe1.Project4u.test;
+package de.hdm.gruppe1.Project4u.test;
 
 import de.hdm.gruppe1.Project4u.server.db.OrganisationseinheitMapper;
 import de.hdm.gruppe1.Project4u.server.db.ProjektMapper;
@@ -31,4 +31,3 @@ public class ProjektTest {
 
 }
 }
-*/
