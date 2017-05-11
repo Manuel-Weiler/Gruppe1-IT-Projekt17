@@ -30,7 +30,7 @@ public class AusschreibungMapper {
 	}
 	
 
-	public Ausschreibung insertAusschreibung(Ausschreibung au) {
+	public Ausschreibung insertAusschreibung(Ausschreibung au, Partnerprofil pa, Projekt pr) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -55,15 +55,13 @@ public class AusschreibungMapper {
 						+ au.getBewerbungsfrist() + "','" 
 						+ au.getAusschreibungstext() + "','" 
 						+ au.getErstellDatum() + "','" 
-						+ au.getProjektId() + "','" 
-						+ au.getPartnerprofilId() + "')");
+						+ pr.getProjektId() + "','" 
+						+ pa.getPartnerprofilId() + "')");
 			}
 		} catch (SQLException s) {
 			s.printStackTrace();
 		}
 
-		// Soll hier noch eine Select- Methode hinein? da ID von Partnerprofil
-		// und ProjektId geholt wird?
 		return au;
 	}
 	

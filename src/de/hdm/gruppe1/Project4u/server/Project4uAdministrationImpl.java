@@ -17,6 +17,7 @@ import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
@@ -55,27 +56,13 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	/*
 	 * #########################################################################
-	 * ABSCHNITT, Beginn: Beteiligung
+	 * ABSCHNITT, Beginn: Ausschreibung
 	 * #########################################################################
 	 * 
 	 */
 	
-//	PartnerprofilId und ProjektId Fehlt !!!
-	public Ausschreibung createAusschreibung(int ausschreibungId, String ausschreibungstext, 
-			Date bewerbungsfrist, String bezeichnung, Date erstellDatum, int id, String nameProjektleiter
-			)
-			throws IllegalArgumentException {
-
-		Ausschreibung ausschreibung = new Ausschreibung();
-		ausschreibung.setAusschreibungId(ausschreibungId);
-		ausschreibung.setAusschreibungstext(ausschreibungstext);
-		ausschreibung.setBewerbungsfrist(bewerbungsfrist);
-		ausschreibung.setBezeichnung(bezeichnung);
-		ausschreibung.setErstellDatum(erstellDatum);
-		ausschreibung.setID(id);
-		ausschreibung.setNameProjektleiter(nameProjektleiter);		
-		
-		return this.ausschreibungMapper.insertAusschreibung(ausschreibung);
+	public Ausschreibung insertAusschreibung(Ausschreibung a, Partnerprofil pa, Projekt pr)throws IllegalArgumentException{
+		return this.ausschreibungMapper.insertAusschreibung(a, pa, pr);
 	}
 	
 	public void update(Ausschreibung ausschreibung) throws IllegalArgumentException {
@@ -86,13 +73,44 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		ausschreibungMapper.deleteAusschreibung(ausschreibung);
 	}
 	
+	public Vector<Ausschreibung> findbyPerson (String name)throws IllegalArgumentException{
+		return this.ausschreibungMapper.findByPerson(name);
+	}
 	
+	public Vector<Ausschreibung> findbyProjekt (String name)throws IllegalArgumentException{
+		return this.ausschreibungMapper.findByProjekt(name);
+	}
+	
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Ende: Ausschreibung
+	 * #########################################################################
+	 * 
+	 */
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Beteiligung
+	 * #########################################################################
+	 * 
+	 */
+
+	public Beteiligung insertBeteiligung( Beteiligung b, Organisationseinheit or, Bewertung be, Projekt pr)throws IllegalArgumentException{
+		return this.beteiligungMapper.insertBeteiligung(b, or, be, pr, be);
+	}
+	
+	
+	public void delete(Beteiligung b) throws IllegalArgumentException {
+		beteiligungMapper.deleteBeteiligung(b);
+	}
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Ende: Beteiligung
 	 * #########################################################################
 	 * 
 	 */
+	
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Beginn: Bewerbung
