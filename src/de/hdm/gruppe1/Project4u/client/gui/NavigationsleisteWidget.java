@@ -20,6 +20,7 @@ public class NavigationsleisteWidget extends Composite{
 	Button pMarktplatz = new Button("Projektmarktplätze");
 	Button eBewerbungen = new Button("Eingangsbewerbungen");
 	Button aBewerbungen = new Button("Ausgangsbewerbungen");
+	//TODO: Logout-Button
 
 	public NavigationsleisteWidget() {
 

@@ -17,7 +17,7 @@ public class Ausschreibung extends BusinessObject{
 	
 	
 	
-	Ausschreibung Ausschreibung = new Ausschreibung (); 
+	//Ausschreibung Ausschreibung = new Ausschreibung (); 
 	
 	public String getBezeichnung() {
 		
@@ -53,6 +53,22 @@ public class Ausschreibung extends BusinessObject{
 	public void setAusschreibungID(int ausschreibungID) {
 		this.ausschreibungID = ausschreibungID;
 	}
- 
+	
+/** Brauchen wir das?
+ * @author Dominik
+ * 
+ * 	public boolean equals(Object o){
+		if(o != null && o instanceof Ausschreibung){
+			Ausschreibung au = (Ausschreibung) o;
+			try{
+				return super.equals(au);
+			}
+			catch(IllegalArgumentException e){
+				return false;
+			}
+		}
+		return false;
+	}
+ */
 
 }

@@ -1,10 +1,12 @@
 package de.hdm.gruppe1.Project4u.server;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+import de.hdm.gruppe1.Project4u.server.db.AusschreibungMapper;
 import de.hdm.gruppe1.Project4u.server.db.BeteiligungMapper;
 import de.hdm.gruppe1.Project4u.server.db.BewerbungMapper;
 import de.hdm.gruppe1.Project4u.server.db.EigenschaftMapper;
@@ -13,6 +15,7 @@ import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
 import de.hdm.gruppe1.Project4u.server.db.ProjektMapper;
 import de.hdm.gruppe1.Project4u.server.db.ProjektmarktplatzMapper;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
+import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
@@ -29,16 +32,15 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	private BeteiligungMapper beteiligungMapper = null;
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
+	private AusschreibungMapper ausschreibungMapper = null;
 	private ProjektmarktplatzMapper projektmarktplatzMapper = null;
 	private ProjektMapper projektMapper = null;
-
 	private EigenschaftMapper eigenschaftMapper = null;
 
 	
 	public Project4uAdministrationImpl() throws IllegalArgumentException{
 		
 	}
-
 	
 	//Initialisierung
 	public void init() throws IllegalArgumentException{
@@ -52,9 +54,6 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
         this.projektmarktplatzMapper = ProjektmarktplatzMapper.projektmarktplatzMapper();
         this.projektMapper = ProjektMapper.projektMapper();
 	}
-
-	
-	
 
 	/*
 	 * #########################################################################
@@ -92,7 +91,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Bewerbung createBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)
 			throws IllegalArgumentException {
 		Bewerbung bewerbung = new Bewerbung();
-		return this.bewerbungMapper.insert(bewerbung);
+		return this.bewerbungMapper.insert(bewerbung, null, null);
 	}
 
 	public void updateBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)
@@ -204,6 +203,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	public void deletePartnerprofil(Partnerprofil p) throws IllegalArgumentException {
 		partnerprofilMapper.deletePartnerprofil(p);
+	}
+
+	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {
+		return this.ausschreibungMapper.getAlleAusschreibungen();
 	}
 
 	/*
