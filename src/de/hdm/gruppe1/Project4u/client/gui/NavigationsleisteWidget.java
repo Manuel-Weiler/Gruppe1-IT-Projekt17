@@ -79,6 +79,17 @@ public class NavigationsleisteWidget extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				/*
+				Projektmarktplatz test = new Projektmarktplatz();
+				test.setName("test");
+				test.setProjektmarktplatzId(1);
+				Vector<Projektmarktplatz> vtest = new Vector<Projektmarktplatz>();
+				vtest.add(test);
+				
+				RootPanel.get("content").clear();
+				RootPanel.get("content").add(new ProjektmarktplatzWidget(vtest));
+				*/
+				//
 				Project4uVerwaltung.findAllProjektmarktplatz(new AsyncCallback<Vector<Projektmarktplatz>>() {
 					
 					@Override
@@ -99,7 +110,7 @@ public class NavigationsleisteWidget extends Composite{
 						dBox.show();
 						
 					}
-				});
+				});//
 				
 			}
 		});

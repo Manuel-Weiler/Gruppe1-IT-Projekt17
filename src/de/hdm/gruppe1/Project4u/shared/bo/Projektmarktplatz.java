@@ -1,8 +1,6 @@
 package de.hdm.gruppe1.Project4u.shared.bo;
 
-import java.io.Serializable;
-
-public class Projektmarktplatz extends BusinessObject implements Serializable{
+public class Projektmarktplatz extends BusinessObject{
 	
 	private static final long serialVersionUID = 1L;
 	
