@@ -135,7 +135,7 @@ public class ProjektMapper {
 			  stmt.executeUpdate("INSERT INTO projekt (id ,name, startdatum, enddatum, beschreibung," +
 				  		"projektmarktplatz_id, organisationseinheit_id) VALUES (" + p.getProjektId() + ", '" + sdf.format(p.getStartdatum()) + "', '"
 				  		+ sdf.format(p.getEnddatum()) + "', '" + p.getName() + "', '" + p.getBeschreibung() + "', " + 
-				  		p.getOrganisationseinheitId() + ", " + p.getProjektmarktplatzId() + ")");
+				  		p.getOrganisationseinheitId() + "', '" + p.getProjektmarktplatzId() + "')");
 			                    
 			          }
 		      catch (SQLException e) {
@@ -161,8 +161,7 @@ public class ProjektMapper {
 
 	      stmt.executeUpdate("UPDATE projekt SET startdatum='" + sdf.format(p.getStartdatum()) + "', "
 			  		+ "enddatum='" + sdf.format(p.getEnddatum()) + "', " + "name='" + p.getName() + "', "
-					+ "beschreibung='" + p.getBeschreibung() + "', " + "organisationseinheit_id=" + p.getOrganisationseinheitId()
-					+ ", " + "projektmarktplatz_id=" + p.getProjektmarktplatzId() + " WHERE id=" + p.getProjektId());
+					+ "beschreibung='" + p.getBeschreibung() + "', " + " WHERE id=" + p.getProjektId());
 
 	    }
 	    catch (SQLException e2) {
@@ -184,7 +183,7 @@ public class ProjektMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM projekt WHERE id=" + p.getProjektId());
+	      stmt.executeUpdate("DELETE FROM projekt WHERE id=" + p.getProjektId() +"'");
 
 	    }
 	    catch (SQLException e2) {
@@ -202,7 +201,7 @@ public class ProjektMapper {
 
 		      ResultSet rs = stmt.executeQuery("SELECT id, name, startdatum, enddatum, beschreibung,"
 		      		                         + "projektmarktplatz_id, organisationseinheit_id" 
-		    		                         + "FROM projekt" + "ORDER BY id");
+		    		                         + "FROM projekt" + "ORDER BY id"+ "'");
 		   
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
