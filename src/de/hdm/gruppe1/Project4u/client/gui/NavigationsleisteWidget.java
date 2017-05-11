@@ -1,14 +1,24 @@
 package de.hdm.gruppe1.Project4u.client.gui;
 
+import java.util.Vector;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
+import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
+import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
+
 public class NavigationsleisteWidget extends Composite{
+	
+	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	/**
 	 * Menüleiste wird als Widget erstellt.
 	 */
@@ -61,12 +71,37 @@ public class NavigationsleisteWidget extends Composite{
 				RootPanel.get("contentHeader").add(startseiteLabel);
 
 				RootPanel.get("content").clear();
-				RootPanel.get("content").add(new StartseiteWidget());
-				
+				RootPanel.get("content").add(new StartseiteWidget());		
+			}
+		});
+		
+		pMarktplatz.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Project4uVerwaltung.findAllProjektmarktplatz(new AsyncCallback<Vector<Projektmarktplatz>>() {
+					
+					@Override
+					public void onSuccess(Vector<Projektmarktplatz> result) {
+						RootPanel.get("content").clear();
+						RootPanel.get("content").add(new ProjektmarktplatzWidget(result));
+						
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						DialogBox dBox = new DialogBox();
+						
+						Label label = new Label(caught.getMessage());
+						dBox.add(label);
+						dBox.center();
+						dBox.setAutoHideEnabled(true);
+						dBox.show();
+						
+					}
+				});
 				
 			}
-			
-			
 		});
 		
 		
