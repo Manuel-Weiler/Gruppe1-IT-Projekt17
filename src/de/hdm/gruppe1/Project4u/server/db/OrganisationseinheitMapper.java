@@ -7,6 +7,8 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
+import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 
 
@@ -114,14 +116,22 @@ public class OrganisationseinheitMapper {
 	    // Um Analogie zu insert(Customer c) zu wahren, geben wir c zurück
 	    return o;
 	  }
-	
+	//uuuu
 	 public void delete(Organisationseinheit o) {
 		    Connection con = DBConnection.connection();
 
 		    try {
 		      Statement stmt = con.createStatement();
-
+		      
+		      //Zugehöriges Partnerprofil löschen
+		      PartnerprofilMapper.partnerprofilMapper().deletePartnerprofil(OrganisationseinheitMapper.organisationseinheitMapper().getPartnerprofilOfOrganisationseinheit(o));
+		      //Zugehörige Projekte löschen
+		      ProjektMapper.projektMapper().delete(OrganisationseinheitMapper.organisationseinheitMapper().getProjektOfOrganisationseinheit(o));
+		      
 		      stmt.executeUpdate("DELETE FROM Organisationseinheit " + "WHERE id=" + o.getOrganisationseinheitId());
+		      
+		      
+		      
 		    }
 		    catch (SQLException e) {
 		      e.printStackTrace();
@@ -309,6 +319,76 @@ public class OrganisationseinheitMapper {
 		    // Ergebnisvektor zurückgeben
 		    return result;
 		  }
+	 
+	 public Partnerprofil getPartnerprofilOfOrganisationseinheit (Organisationseinheit o) {
+			Connection con = DBConnection.connection();
+			Partnerprofil p = new Partnerprofil();
+
+			try {
+				Statement stmt = con.createStatement();
+
+				// Abfrage des gesuchten Partnerprofils zur <code>id</code>
+				ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Partnerprofil WHERE organisationseinheit_id='" + o.getID() + "'");
+
+				if (rs.next()) {
+
+					/*
+					 * Dem R�ckgabeobjekt werden die Werte aus der Tabelle
+					 * zugewiesen und so das Tupel aus der Tabelle wieder in ein
+					 * Objekt transformiert.
+					 */
+					p.setID(rs.getInt("id"));
+					p.setErstelldatum(rs.getDate("erstelldatum"));
+					p.setAenderungsdatum(rs.getDate("�nderungsdatum"));
+				    
+					return p;
+			      }
+			    }
+			    catch (SQLException e) {
+			      e.printStackTrace();
+			      return null;
+			    }
+
+			    return null;
+			  }
+	 
+	 public Projekt getProjektOfOrganisationseinheit(Organisationseinheit o) {
+		 // DB-Verbindung holen
+		 Connection con = DBConnection.connection();
+		 
+		 try {
+		   // Leeres SQL-Statement (JDBC) anlegen
+		   Statement stmt = con.createStatement();
+		   
+		   // Statement ausf�llen und als Query an die DB schicken
+		   ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt " + "WHERE organisationseinheit_id=" + o.getID());
+		   
+		   /*
+	        * Da id Prim�rschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
+	        * werden. Pr�fe, ob ein Ergebnis vorliegt.
+	        */
+		    if (rs.next()) {
+		      // Ergebnis-Tupel in Objekt umwandeln
+		      Projekt p = new Projekt();
+		      p.setProjektId(rs.getInt("projektId"));
+		      p.setName(rs.getString("name"));
+		      p.setStartdatum(rs.getDate("startdatum"));
+		      p.setEnddatum(rs.getDate("enddatum"));
+		      p.setBeschreibung(rs.getString("beschreibung"));
+		      p.setProjektmarktplatzId(rs.getInt("projektmarktplatzId"));
+		      p.setOrganisationseinheitId(rs.getInt("organisationseinheitId"));
+		      
+		      return p;
+		      }
+		    }
+           catch (SQLException e) {
+        	 e.printStackTrace();
+        	 return null; 
+           }
+		 
+		     return null;
+		   }
+	 
 	 
 }
 

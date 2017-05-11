@@ -24,7 +24,7 @@ public class PartnerprofilMapper {
 
 	/*
 	 * Der private Konstruktor verhindert, dass eine Instanz der Klasse
-	 * PartnerprofilMapper über <code>new</code> erzeugt werden kann.
+	 * PartnerprofilMapper ï¿½ber <code>new</code> erzeugt werden kann.
 	 */
 	private PartnerprofilMapper() {
 	}
@@ -50,7 +50,7 @@ public class PartnerprofilMapper {
 	 * <code>id</code> vergeben und das Partnerprofil in der Datenbank abgelegt.
 	 * @param p das Partnerprofil-Objekt, dass in der Datenbank abgelegt wird.
 	 * @param o das Organisationseinheit-Objekt, dem das Partnerprofil zugeordnet ist.
-	 * @return das möglicherweise durch die Methode geänderte Partnerprofil-Objekt.
+	 * @return das mï¿½glicherweise durch die Methode geï¿½nderte Partnerprofil-Objekt.
 	 * @author Tobias
 	 */
 	public Partnerprofil insertPartnerprofil(Partnerprofil p, Organisationseinheit o){
@@ -64,13 +64,13 @@ public class PartnerprofilMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      //Abfrage der größten bisher vergebnen <code>id</code>
+		      //Abfrage der grï¿½ï¿½ten bisher vergebnen <code>id</code>
 		      ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
 		          + "FROM Partnerprofil ");
 
 		      if (rs.next()) {
 		        /*
-		         * Der bisher größte Primärschlüssel wird um 1 erhöht und dem 
+		         * Der bisher grï¿½ï¿½te Primï¿½rschlï¿½ssel wird um 1 erhï¿½ht und dem 
 		         * Partnerprofil-Objekt zugewiesen.
 		         */
 		        p.setPartnerprofilId(rs.getInt("maxid") + 1);
@@ -80,7 +80,7 @@ public class PartnerprofilMapper {
 		        
 
 		        // Jetzt erst erfolgt die tatsÃ¤chliche EinfÃ¼geoperation
-		        stmt.executeUpdate("INSERT INTO Partnerprofil (id, erstelldatum, änderungsdatum, Organisationseinheit_id) "
+		        stmt.executeUpdate("INSERT INTO Partnerprofil (id, erstelldatum, ï¿½nderungsdatum, Organisationseinheit_id) "
 		            + "VALUES (" + p.getPartnerprofilId() + ",'" + sdf.format(p.getErstelldatum()) + "','"
 		            + sdf.format(p.getAenderungsdatum()) + "','"+o.getOrganisationseinheitId()+"')"); 
 		      }
@@ -90,9 +90,9 @@ public class PartnerprofilMapper {
 		    }
 
 		    /*
-		     * Rückgabe, des evtl. korrigierten Partnerprofil-Objekts.
-		     * P.S: Diese Rückgabe ist nicht zwingend notwendig, da die Verweise auf das bisherige 
-		     * Objekt auch auf das geänderte Objekt verweisen würden. 
+		     * Rï¿½ckgabe, des evtl. korrigierten Partnerprofil-Objekts.
+		     * P.S: Diese Rï¿½ckgabe ist nicht zwingend notwendig, da die Verweise auf das bisherige 
+		     * Objekt auch auf das geï¿½nderte Objekt verweisen wï¿½rden. 
 		     */
 		 
 		return p;
@@ -120,23 +120,28 @@ public class PartnerprofilMapper {
 			if (rs.next()) {
 
 				/*
-				 * Dem Rückgabeobjekt werden die Werte aus der Tabelle
+				 * Dem Rï¿½ckgabeobjekt werden die Werte aus der Tabelle
 				 * zugewiesen und so das Tupel aus der Tabelle wieder in ein
 				 * Objekt transformiert.
 				 */
 				p.setID(rs.getInt("id"));
 				p.setErstelldatum(rs.getDate("erstelldatum"));
-				p.setAenderungsdatum(rs.getDate("änderungsdatum"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return p;
-	}
+				p.setAenderungsdatum(rs.getDate("ï¿½nderungsdatum"));
+			    
+				return p;
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		      return null;
+		    }
+
+		    return null;
+		  }
 
 
 	/*
-	 * Die nachfolgende Methode speichert Veränderungen am Partnerprofilobjekt
+	 * Die nachfolgende Methode speichert Verï¿½nderungen am Partnerprofilobjekt
 	 * in der Datenbank
 	 */
 	public Partnerprofil updatePartnerprofil(Partnerprofil p) {
@@ -147,7 +152,7 @@ public class PartnerprofilMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE Partnerprofil " + "SET änderungsdatum='" + sdf.format(d) + "' WHERE id='"
+			stmt.executeUpdate("UPDATE Partnerprofil " + "SET ï¿½nderungsdatum='" + sdf.format(d) + "' WHERE id='"
 					+ p.getPartnerprofilId() + "'");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -156,7 +161,7 @@ public class PartnerprofilMapper {
 	}
 	
 	/*
-	 * Diese Methode löscht ein Partnerprofil aus der Datebank.
+	 * Diese Methode lï¿½scht ein Partnerprofil aus der Datebank.
 	 */
 	public void deletePartnerprofil (Partnerprofil p){
 		Connection con = DBConnection.connection();
@@ -171,7 +176,7 @@ public class PartnerprofilMapper {
 //////////////////////////	
 	}
 	/* TODO: Anpassen, wenn Klasse Ausschreibung&Ausschreibungsmapper existiert
-	 * Diese Methode gibt die Ausschreibung zurück, die durch das Partnerprofil-Objekt 
+	 * Diese Methode gibt die Ausschreibung zurï¿½ck, die durch das Partnerprofil-Objekt 
 	 * beschrieben wird.
 	public Ausschreibung getAusschreibungOf(Partnerprofil p)
 	{
@@ -180,7 +185,7 @@ public class PartnerprofilMapper {
 /////////////////////////
 	
 	/*
-	 * Diese Methode gibt die zugehörige Organisationseinheit zu einem Partnerprofil zurück.
+	 * Diese Methode gibt die zugehï¿½rige Organisationseinheit zu einem Partnerprofil zurï¿½ck.
 	 * Dabei wird sich des Mappers der Klasse OrganisationseinheitMapper bedient.
 	 */
 	public Organisationseinheit getOrganisationseinheitOfPartnerprofil (Partnerprofil p){
@@ -188,11 +193,13 @@ public class PartnerprofilMapper {
 		return OrganisationseinheitMapper.organisationseinheitMapper().findByKey(p.getOrganisationseinheitId());
 	}
 	
+	
+	
 ////////////////////////
 	
 	
 	/**
-	 * Diese Methode gibt alle Eigenschaftsobjekte zu einem Partnerprofil-Objekt p zurück
+	 * Diese Methode gibt alle Eigenschaftsobjekte zu einem Partnerprofil-Objekt p zurï¿½ck
 	 * @param p
 	 * @return
 	 */
