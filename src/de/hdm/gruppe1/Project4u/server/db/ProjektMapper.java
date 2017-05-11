@@ -5,9 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
+import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 /**
  * Mapper-Klasse, die <code>Projekt</code>-Objekte auf eine relationale
@@ -23,7 +26,6 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 public class ProjektMapper {
 
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	/**
 	 * Die Klasse ProjektmarktplatzMapper wird nur einmal instantiiert. Man spricht
@@ -115,9 +117,12 @@ public class ProjektMapper {
 		 * @return projekt
 		 */
 	  
-	  public Projekt insert(Projekt p){
+	  public Projekt insert(Projekt p, Projektmarktplatz pm, Organisationseinheit o){
 		  Connection con = DBConnection.connection();
-		  
+		  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		  Date date = new Date();
+		  p.setStartdatum(date);
+		 // p.setEnddatum(date);
 		  try{
 			  Statement stmt = con.createStatement();
 			  
@@ -149,6 +154,7 @@ public class ProjektMapper {
 	   */
 	  public Projekt update(Projekt p) {
 	    Connection con = DBConnection.connection();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	    try {
 	      Statement stmt = con.createStatement();

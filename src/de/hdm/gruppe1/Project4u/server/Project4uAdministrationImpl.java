@@ -370,7 +370,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		
 		
 
-		return this.projektMapper.insert(projekt);
+		
+     return this.projektMapper.insert(projekt, null, null);
 
 	}
 	
