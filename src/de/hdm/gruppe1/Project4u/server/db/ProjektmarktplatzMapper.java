@@ -132,7 +132,7 @@ public class ProjektmarktplatzMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      stmt.executeUpdate("UPDATE projektmarktplatz SET Name =" + p.getName() 
+		      stmt.executeUpdate("UPDATE Projektmarktplatz SET Name =" + p.getName() 
 		                         + "WHERE id=" + p.getProjektmarktplatzId()); 
 		    }
 		    catch (SQLException e2) {
@@ -154,7 +154,7 @@ public class ProjektmarktplatzMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM projektmarktplatz" + "WHERE id=" + p.getProjektmarktplatzId()); 
+	      stmt.executeUpdate("DELETE FROM Projektmarktplatz" + "WHERE id=" + p.getProjektmarktplatzId()); 
 
 	    }
 	    catch (SQLException e2) {
@@ -170,7 +170,7 @@ public class ProjektmarktplatzMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT id, name " + "FROM projektmarktplatz" + "ORDER BY id");
+		      ResultSet rs = stmt.executeQuery("SELECT id, name " + "FROM Projektmarktplatz" + "ORDER BY id");
 		   
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Projektmarktplatz-Objekt

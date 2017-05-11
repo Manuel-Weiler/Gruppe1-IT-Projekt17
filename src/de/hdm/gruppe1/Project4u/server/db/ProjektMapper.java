@@ -28,7 +28,7 @@ public class ProjektMapper {
 	
 
 	/**
-	 * Die Klasse ProjektmarktplatzMapper wird nur einmal instantiiert. Man spricht
+	 * Die Klasse ProjektMapper wird nur einmal instantiiert. Man spricht
 	 * hierbei von einem sogenannten <b>Singleton</b>.
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
@@ -80,7 +80,7 @@ public class ProjektMapper {
 		   Statement stmt = con.createStatement();
 		   
 		   // Statement ausfüllen und als Query an die DB schicken
-		   ResultSet rs = stmt.executeQuery("SELECT * "  + "FROM projekt WHERE id='" + id + "'");
+		   ResultSet rs = stmt.executeQuery("SELECT * "  + "FROM Projekt WHERE id='" + id + "'");
 		   
 		   /*
 	        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -110,7 +110,7 @@ public class ProjektMapper {
 	  
 	  /**
 		 * Diese Methode bezieht ihre Informationen aus der
-		 * PartnerboerseAdministrationImpl und erstellt mit diesen einen neuen
+		 * Project4uAdministrationImpl und erstellt mit diesen einen neuen
 		 * Projekt in der Datenbank.
 		 * 
 		 * @param projekt
@@ -122,17 +122,17 @@ public class ProjektMapper {
 		  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		  Date date = new Date();
 		  p.setStartdatum(date);
-		 // p.setEnddatum(date);
+		//p.setEnddatum(date);
+		  
 		  try{
 			  Statement stmt = con.createStatement();
-			  
-			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM projekt ");
+			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Projekt ");
 			  
 			  if (rs.next()) {
 	              p.setProjektId(rs.getInt("maxid") + 1);
 	            }
 			  
-			  stmt.executeUpdate("INSERT INTO projekt (id ,name, startdatum, enddatum, beschreibung," +
+			  stmt.executeUpdate("INSERT INTO Projekt (id ,name, startdatum, enddatum, beschreibung," +
 				  		"projektmarktplatz_id, organisationseinheit_id) VALUES (" + p.getProjektId() + ", '" + sdf.format(p.getStartdatum()) + "', '"
 				  		+ sdf.format(p.getEnddatum()) + "', '" + p.getName() + "', '" + p.getBeschreibung() + "', " + 
 				  		p.getOrganisationseinheitId() + "', '" + p.getProjektmarktplatzId() + "')");
@@ -159,7 +159,7 @@ public class ProjektMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("UPDATE projekt SET startdatum='" + sdf.format(p.getStartdatum()) + "', "
+	      stmt.executeUpdate("UPDATE Projekt SET startdatum='" + sdf.format(p.getStartdatum()) + "', "
 			  		+ "enddatum='" + sdf.format(p.getEnddatum()) + "', " + "name='" + p.getName() + "', "
 					+ "beschreibung='" + p.getBeschreibung() + "', " + " WHERE id=" + p.getProjektId());
 
@@ -183,7 +183,7 @@ public class ProjektMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM projekt WHERE id=" + p.getProjektId() +"'");
+	      stmt.executeUpdate("DELETE FROM Projekt WHERE id=" + p.getProjektId() +"'");
 
 	    }
 	    catch (SQLException e2) {
@@ -201,7 +201,7 @@ public class ProjektMapper {
 
 		      ResultSet rs = stmt.executeQuery("SELECT id, name, startdatum, enddatum, beschreibung,"
 		      		                         + "projektmarktplatz_id, organisationseinheit_id" 
-		    		                         + "FROM projekt" + "ORDER BY id"+ "'");
+		    		                         + "FROM Projekt" + "ORDER BY id"+ "'");
 		   
 
 		      // FÃ¼r jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
@@ -238,7 +238,7 @@ public class ProjektMapper {
 		      Statement stmt = con.createStatement();
 
 		      ResultSet rs = stmt.executeQuery("SELECT id, name, startdatum, enddatum, beschreibung"
-		      	  + "projektmarktplatz_id, organisationseinheit_id " + "FROM projekt "
+		      	  + "projektmarktplatz_id, organisationseinheit_id " + "FROM Projekt "
 		          + "WHERE name LIKE '" + name + "' ORDER BY name");
 
 		      // FÃ¼r jeden Eintrag im Suchergebnis wird nun ein Customer-Objekt
