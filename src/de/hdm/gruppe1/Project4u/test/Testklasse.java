@@ -13,24 +13,28 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 public class Testklasse {
 	public static void main(String[] args) {
-		Ausschreibung ausschreibung = new Ausschreibung();
+		Ausschreibung a = new Ausschreibung (); 
 		
-		ausschreibung.setAusschreibungstext("Testtext");
-		ausschreibung.setBezeichnung("Testbezeichnung");
-	//	ausschreibung.setErstellDatum(Date);
-		ausschreibung.setID(2);
-		ausschreibung.setNameProjektleiter("HS");
-		ausschreibung.setPartnerprofilId(3);
-		ausschreibung.setProjektId(5);
-	
-		Partnerprofil partnerprofil = new Partnerprofil();
-		Projekt projekt = new Projekt (); 
 		
-		AusschreibungMapper ausschreibungMapper = AusschreibungMapper.ausschreibungMapper();
-		ProjektMapper projektMapper = ProjektMapper.projektMapper();
-		PartnerprofilMapper partnerprofilMapper  = PartnerprofilMapper.partnerprofilMapper();
-		projekt = projektMapper.findById(1);
-		partnerprofil = partnerprofilMapper.findById(1);
+		a.setAusschreibungstext("Test Text");
+	//	a.setBewerbungsfrist(2017-06-15);
+		a.setBezeichnung("Test bezeichnung");
+	//	a.setErstellDatum(2017,05,12);
+		a.setID(1);
+		a.setNameProjektleiter("HS");
+		a.setPartnerprofilId(2);
+		a.setProjektId(3);
+		
+		Partnerprofil pa = new Partnerprofil();
+		Projekt pr = new Projekt ();
+		
+		
+		PartnerprofilMapper p = PartnerprofilMapper.partnerprofilMapper();
+		ProjektMapper l = ProjektMapper.projektMapper();
+		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
+	//	p=p.findById(0);
+		
+		am.insertAusschreibung(a, pa, pr);
 		/*
 		 * Vector<Eigenschaft> ev= new Vector<Eigenschaft>();
 		
