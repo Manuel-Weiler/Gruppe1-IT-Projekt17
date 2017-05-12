@@ -1,27 +1,49 @@
 package de.hdm.gruppe1.Project4u.test;
 
+import java.util.Date;
 import java.util.Vector;
 
+import com.ibm.icu.text.SimpleDateFormat;
+
+import de.hdm.gruppe1.Project4u.server.db.AusschreibungMapper;
 import de.hdm.gruppe1.Project4u.server.db.EigenschaftMapper;
 import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
+import de.hdm.gruppe1.Project4u.server.db.ProjektMapper;
+import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
+import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 public class Testklasse {
 	public static void main(String[] args) {
-		Eigenschaft e = new Eigenschaft();
+		
+		String strDate  = "13-05-2017";
+		String ctrDate  = "14-05-2017";
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		//Date date = sdf.parse(strDate); 
+		
+		Ausschreibung a = new Ausschreibung (); 
 		
 		
-		e.setName("alter");
-		e.setWert("97"); 
-		Partnerprofil p = new Partnerprofil();
+		a.setAusschreibungstext("Test Text");
+		//a.setBewerbungsfrist(date);
+		a.setBezeichnung("Test bezeichnung");
+		a.setID(1);
+		a.setNameProjektleiter("HS");
+		a.setPartnerprofilId(2);
+		a.setProjektId(3);
+		
+		Partnerprofil pa = new Partnerprofil();
+		Projekt pr = new Projekt ();
 		
 		
-		PartnerprofilMapper pm = PartnerprofilMapper.partnerprofilMapper();
-		EigenschaftMapper em = EigenschaftMapper.eigenschaftMapper();
-		p=pm.findById(0);
+		PartnerprofilMapper p = PartnerprofilMapper.partnerprofilMapper();
+		ProjektMapper l = ProjektMapper.projektMapper();
+		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
+	//	p=p.findById(0);
 		
-		em.insertEigenschaft(e, p);
+		am.insertAusschreibung(a, pa, pr);
 		/*
 		 * Vector<Eigenschaft> ev= new Vector<Eigenschaft>();
 		

@@ -15,13 +15,11 @@ public class Organisationseinheit extends BusinessObject{
 	private String loginUrl;
 	private String logoutUrl;
 	private String google_id;
-	/*private String vorname;
-	private String nachname;*/
 	private String name;
 	//TODO: variable "typ" muss als ein Enum definiert werden.
 	private String typ;
-	private String nickname;
 	private boolean status = false;
+	
 
 	public boolean getLoggedIn() {
 		return loggedIn;
@@ -53,14 +51,6 @@ public class Organisationseinheit extends BusinessObject{
 
 	public void setGoogleId(String emailAddress) {
 		this.google_id = emailAddress;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
 	}
 
 	public boolean getStatus() {

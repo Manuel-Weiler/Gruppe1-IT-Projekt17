@@ -131,6 +131,50 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		//Kopfdaten zum Report hinzufügen
 		result.setHeaderData(header);
 
+		/**
+		 * Inhalt des Reports ID
+		 */
+		header.addSubParagraph(new SimpleParagraph("Ausschreibungs-ID: " + au.getAusschreibungId()));
+
+		/**
+		 * Inhalt des Reports Bezeichnung
+		 */
+		header.addSubParagraph(new SimpleParagraph("Bezeichnung: " + au.getBezeichnung()));
+
+		/**
+		 * Inhalt des Reports Projektleiter
+		 */
+		header.addSubParagraph(new SimpleParagraph("Projektleiter: "));
+
+		/**
+		 * Inhalt des Reports Bewerbungsfrist/ Ablaufdatum
+		 */
+		header.addSubParagraph(new SimpleParagraph("Bezeichnung: " + au.getBewerbungsfrist()));
+
+		/**
+		 * Inhalt des Reports Ausschreibungstext
+		 */
+		header.addSubParagraph(new SimpleParagraph("Ausschreibungstext: " + au.getAusschreibungstext()));
+
+		/**
+		 * Inhalt des Reports Erstelldatum
+		 */
+		header.addSubParagraph(new SimpleParagraph("Erstelldatum: "));
+
+		/**
+		 * Inhalt des Reports Projekt-ID
+		 */
+		header.addSubParagraph(new SimpleParagraph("Projekt-ID: "));
+
+		/**
+		 * Inhalt des Reports Partnerprofil-ID
+		 */
+		header.addSubParagraph(new SimpleParagraph("Partnerprofil-ID: "));
+
+		/**
+		 * Report ausgeben
+		 */
+
 		
 		//Kopfzeile für die Tabelle anlegen:
 		Row headline = new Row();
@@ -155,10 +199,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			//neue, leere Zeile anlegen
 			Row ausschreibungRow = new Row();
 			//für jede Spalte dieser Zeile wird nun der Inhalt geschrieben
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungID())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBezeichnung())));
 			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektleiter())));
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAblaufdatum())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungstext())));
 			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstelldatum())));
 			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektID())));

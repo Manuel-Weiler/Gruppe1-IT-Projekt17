@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.Vector;
 
 import com.ibm.icu.text.SimpleDateFormat;
 
@@ -75,15 +76,16 @@ public class BewerbungMapper {
 	 * @param bewerbung
 	 * @return bewerbung
 	 */
-	public Bewerbung insert(Bewerbung bewerbung, Ausschreibung a, Organisationseinheit o){
+
+	public Bewerbung insert(Bewerbung bewerbung, Ausschreibung a, Organisationseinheit o) {
 		Connection con = DBConnection.connection();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		bewerbung.setErstelldatum(date);
-		try{
+		try {
 			Statement stmt = con.createStatement();
-			
+
 			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Bewerbung ");
 			
 			if(rs.next()){
@@ -91,7 +93,8 @@ public class BewerbungMapper {
 				
 				stmt.executeUpdate("INSERT INTO Bewerbung (id, erstelldatum, bewerbungstext, ausschreibung_id, organisationseinheit_id)"
 						+ "VALUES ('" + bewerbung.getBewerbungID() + "','" + sdf.format(bewerbung.getErstelldatum()) + "','" 
-						+ bewerbung.getBewerbungstext() + "', '"+a.getAusschreibungID()+"', '"+o.getOrganisationseinheitId()+"')");
+						+ bewerbung.getBewerbungstext() + "', '"+a.getAusschreibungId()+"', '"+o.getOrganisationseinheitId()+"')");
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -101,34 +104,35 @@ public class BewerbungMapper {
 
 	/**
 	 * Diese Methode bezieht ihre Informationen aus der Project4uImpl und
-	 * erm�glicht es den Bewerbungstext in der Datenbank zu �ndern.
+	 * erm�glicht es den Bewerbungstext in der Datenbank zu �ndern.
 	 * 
 	 * @param bewerbung
 	 * @return bewerbung
 	 */
 
-	public void updateBewerbung(Bewerbung bewerbung) {
+	public void update(Bewerbung bewerbung){
 		Connection con = DBConnection.connection();
+
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("UPDATE Bewerbung " + "WHERE BewerbungID =" + bewerbung.getBewerbungID());
-			stmt = con.createStatement();
-			stmt.executeUpdate("UPDATE Bewerbung " + "SET Berbungstext=\"" + bewerbung.getBewerbungstext());
+			stmt.executeUpdate(
+					"UPDATE Bewerbung SET bewerbungstext = '" + bewerbung.getBewerbungstext() + "' WHERE id = '"
+							+ bewerbung.getBewerbungID()+"';");
+
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
-
 	}
 
 	/**
 	 * Diese Methode bezieht ihre Informationen aus der Project4uImpl und
-	 * erm�glicht es eine Bewerbung aus der Datenbank zu l�schen.
+	 * erm�glicht es eine Bewerbung aus der Datenbank zu l�schen.
 	 * 
 	 * @param bewerbung
 	 * @return bewerbung
 	 */
 
-	public void deleteBewerbung(Bewerbung bewerbung) {
+	public void delete(Bewerbung bewerbung) {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
@@ -136,6 +140,136 @@ public class BewerbungMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
+	}
+
+	public Bewerbung findById(int id) {
+		// DB-Verbindung holen
+		Connection con = DBConnection.connection();
+		Bewerbung b = new Bewerbung();
+
+		try {
+			// Leeres SQL-Statement (JDBC) anlegen
+			Statement stmt = con.createStatement();
+
+			// Statement ausfüllen und als Query an die DB schicken
+			ResultSet rs = stmt.executeQuery(
+							"SELECT * FROM Bewerbung WHERE id= '" + id + "'");
+
+			/*
+			 * Da id Primärschlüssel ist, kann max. nur ein Tupel
+			 * zurückgegeben werden. Prüfe, ob ein Ergebnis vorliegt.
+			 */
+			if (rs.next()) {
+				// Ergebnis-Tupel in Objekt umwandeln
+				b.setBewerbungID(rs.getInt("id"));
+				b.setErstelldatum(rs.getDate("erstelldatum"));
+				b.setBewerbungstext(rs.getString("bewerbungstext"));
+				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
+				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+				return b;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		return null;
+	}
+
+	public Vector<Bewerbung> findAll() {
+		Connection con = DBConnection.connection();
+		// Ergebnisvektor vorbereiten
+		Vector<Bewerbung> result = new Vector<Bewerbung>();
+
+		try {
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT id, erstelldatum, bewerbungstext, "
+					+ "ausschreibung_id, organisationseinheit_id " + "FROM Bewerbung ORDER BY id");
+
+			// Für jeden Eintrag im Suchergebnis wird nun ein
+			// Organisationseinheit-Objekt
+			// erstellt.
+			while (rs.next()) {
+				Bewerbung b = new Bewerbung();
+				b.setBewerbungID(rs.getInt("id"));
+				b.setErstelldatum(rs.getDate("erstelldatum"));
+				b.setBewerbungstext(rs.getString("bewerbungstext"));
+				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
+				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+				// Hinzufügen des neuen Objekts zum Ergebnisvektor
+				result.addElement(b);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// Ergebnisvektor zurückgeben
+		return result;
+	}
+
+	public Vector<Bewerbung> findByOrganisationseinheit(Organisationseinheit o) {
+		Connection con = DBConnection.connection();
+		// Ergebnisvektor vorbereiten
+		Vector<Bewerbung> result = new Vector<Bewerbung>();
+
+
+
+	    try {
+	    	
+	    	Statement stmt = con.createStatement();
+	    	ResultSet rs = stmt.executeQuery("SELECT id, erstelldatum, bewerbungstext, "
+	    	 		+ "ausschreibung_id, organisationseinheit_id "
+	   	          	+ "FROM Bewerbung WHERE organisationseinheit_id= '" + o.getOrganisationseinheitId() + "' ORDER BY id");
+
+			// Für jeden Eintrag im Suchergebnis wird nun ein
+			// Organisationseinheit-Objekt
+			// erstellt.
+			while (rs.next()) {
+				Bewerbung b = new Bewerbung();
+				b.setBewerbungID(rs.getInt("id"));
+				b.setErstelldatum(rs.getDate("erstelldatum"));
+				b.setBewerbungstext(rs.getString("bewerbungstext"));
+				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
+				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+				// Hinzufügen des neuen Objekts zum Ergebnisvektor
+				result.addElement(b);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// Ergebnisvektor zurückgeben
+		return result;
+
+	  }
+	
+	public void deleteBewerbungOfOrganisationseinheit(Organisationseinheit o) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Bewerbung WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
+			
+		} catch (Exception e2) {
+			 e2.printStackTrace();
+		}
+	}
+	
+	public void deleteBewerbungOfAusschreibung(Ausschreibung a) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Bewerbung WHERE ausschreibung_id= " + a.getAusschreibungId());
+			
+		} catch (Exception e2) {
+			 e2.printStackTrace();
+		}
+
 	}
 
 }

@@ -17,4 +17,5 @@ public interface Project4uAdministration extends RemoteService{
 	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException;
 	
 
+
 }
