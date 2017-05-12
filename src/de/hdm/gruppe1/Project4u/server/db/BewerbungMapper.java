@@ -23,7 +23,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
  * 
  * 
  * @author Thies
- * @author Dominik
+ * @author Sasse
  */
 
 public class BewerbungMapper {
@@ -136,7 +136,7 @@ public class BewerbungMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Bewerbung " + "WHERE BewerbungID=" + bewerbung.getBewerbungID());
+			stmt.executeUpdate("DELETE FROM Bewerbung " + "WHERE id=" + bewerbung.getBewerbungID());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
