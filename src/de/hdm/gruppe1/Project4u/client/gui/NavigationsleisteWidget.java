@@ -89,7 +89,27 @@ public class NavigationsleisteWidget extends Composite{
 				RootPanel.get("content").clear();
 				RootPanel.get("content").add(new ProjektmarktplatzWidget(vtest));
 				*/
-				//
+				
+				Project4uVerwaltung.testMethode(new AsyncCallback<String>() {
+					
+					@Override
+					public void onSuccess(String result) {
+						Label label = new Label(result);
+						DialogBox db = new DialogBox();
+						db.add(label);
+						db.center();
+						db.show();
+						
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				
+				/*
 				Project4uVerwaltung.findAllProjektmarktplatz(new AsyncCallback<Vector<Projektmarktplatz>>() {
 					
 					@Override
@@ -110,7 +130,7 @@ public class NavigationsleisteWidget extends Composite{
 						dBox.show();
 						
 					}
-				});//
+				});*/
 				
 			}
 		});

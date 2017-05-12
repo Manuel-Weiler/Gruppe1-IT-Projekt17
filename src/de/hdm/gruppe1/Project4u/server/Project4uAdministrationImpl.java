@@ -399,4 +399,9 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * #########################################################################
 	 * 
 	 */
+	public String testMethode (){
+		String test = "was geht ab?";
+		return test;
+	}
+	
 }

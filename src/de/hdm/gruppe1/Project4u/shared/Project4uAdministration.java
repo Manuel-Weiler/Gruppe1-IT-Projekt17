@@ -17,4 +17,6 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Vector<Projektmarktplatz> findAllProjektmarktplatz() throws IllegalArgumentException;
 
+	public String testMethode();
+
 }
