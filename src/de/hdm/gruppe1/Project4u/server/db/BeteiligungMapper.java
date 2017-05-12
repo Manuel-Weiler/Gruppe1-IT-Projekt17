@@ -77,4 +77,28 @@ public class BeteiligungMapper {
 		}
 	}
 
+	public void deleteBeteiligungOfProjekt(Projekt p) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Beteiligung WHERE projekt_id= " + p.getProjektId());
+			
+		} catch (Exception e2) {
+			 e2.printStackTrace();
+		}
+	}
+	
+	public void deleteBeteiligungOfBewertung(Bewertung b) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Beteiligung WHERE bewertung_id= " + b.getBewertungID());
+			
+		} catch (Exception e2) {
+			 e2.printStackTrace();
+		}
+	}
+
 }

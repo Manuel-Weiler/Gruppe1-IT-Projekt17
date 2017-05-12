@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 /**
@@ -66,7 +67,7 @@ public class ProjektMapper {
 	
 	/**
 	 ** @param id
-	 ** @return Liefert ein Projekt entsprechend der übergebenen id zurueck.
+	 ** @return Liefert ein Projekt entsprechend der ï¿½bergebenen id zurueck.
 	 **/
 
       public Projekt findById(int id){
@@ -77,12 +78,12 @@ public class ProjektMapper {
 		   // Leeres SQL-Statement (JDBC) anlegen
 		   Statement stmt = con.createStatement();
 		   
-		   // Statement ausfüllen und als Query an die DB schicken
+		   // Statement ausfï¿½llen und als Query an die DB schicken
 		   ResultSet rs = stmt.executeQuery("SELECT * "  + "FROM projekt WHERE id='" + id + "'");
 		   
 		   /*
-	        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
-	        * werden. Prüfe, ob ein Ergebnis vorliegt.
+	        * Da id Primï¿½rschlï¿½ssel ist, kann max. nur ein Tupel zurï¿½ckgegeben
+	        * werden. Prï¿½fe, ob ein Ergebnis vorliegt.
 	        */
 		    if (rs.next()) {
 		      // Ergebnis-Tupel in Objekt umwandeln
@@ -261,5 +262,52 @@ public class ProjektMapper {
 		    // Ergebnisvektor zurÃ¼ckgeben
 		    return result;
 		  }
+	  
+	  public Vector<Projekt> findByOrganisationseinheit(Organisationseinheit o) {
+		    Connection con = DBConnection.connection();
+		    // Ergebnisvektor vorbereiten
+		    Vector<Projekt> result = new Vector<Projekt>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE organisationseinheit_id='" + o.getOrganisationseinheitId() + "' ORDER BY organisationseinheit_id");
+		   
+
+		      // FÃ¼r jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projekt p = new Projekt();
+		        p.setProjektId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setStartdatum(rs.getDate("startdatum"));
+		        p.setEnddatum(rs.getDate("enddatum"));
+		        p.setBeschreibung(rs.getString("beschreibung"));
+		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+		        // HinzufÃ¼gen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurÃ¼ckgeben
+		    return result;
+	 }
+	  
+	  public void deleteProjektOfOrganisationseinheit(Organisationseinheit o) {
+			Connection con = DBConnection.connection();
+			
+			try {
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate("DELETE FROM Partnerprofil WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
+				
+			} catch (Exception e2) {
+				 e2.printStackTrace();
+			}
+		}
 
 }

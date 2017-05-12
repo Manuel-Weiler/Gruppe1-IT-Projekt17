@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 
 /**
  * Mapper-Klasse, die <code>Bewertung</code>-Objekte auf eine relationale
@@ -86,5 +88,18 @@ public class BewertungMapper {
 			e2.printStackTrace();
 		}
 		return bewertung;
+	}
+	
+	
+	public void deleteBewertungOfBewerbung(Bewerbung o) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Bewertung WHERE bewerbung_id= " + o.getBewerbungID());
+			
+		} catch (Exception e2) {
+			 e2.printStackTrace();
+		}
 	}
 }

@@ -6,16 +6,34 @@ public class Bewerbung{
 
 	private static final long serialVersionUID = 1L;
 	
-	private int bewerbungID = 0;
+	private int bewerbungId = 0;
+	private int organisationseinheitId;
+	private int ausschreibungId;
 	private Date erstelldatum = null;
 	private String bewerbungstext = null;
 
 	public int getBewerbungID() {
-		return bewerbungID;
+		return bewerbungId;
 	}
 
 	public void setBewerbungID(int bewerbungID) {
-		this.bewerbungID = bewerbungID;
+		this.bewerbungId = bewerbungID;
+	}
+	
+	public int getOrganisationseinheitId() {
+		return organisationseinheitId;
+	}
+	
+	public void setOrganisationseinheitId(int organisationseinheitId) {
+		this.organisationseinheitId = organisationseinheitId;
+	}
+	
+	public int getAusschreibungId() {
+		return ausschreibungId;
+	}
+	
+	public void setAusschreibungId(int ausschreibungId) {
+		this.ausschreibungId = ausschreibungId;
 	}
 
 	public Date getErstelldatum() {
