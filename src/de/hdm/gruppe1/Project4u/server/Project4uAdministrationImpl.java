@@ -33,7 +33,6 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	private AusschreibungMapper ausschreibungMapper = null; 
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
-	private AusschreibungMapper ausschreibungMapper = null;
 	private ProjektmarktplatzMapper projektmarktplatzMapper = null;
 	private ProjektMapper projektMapper = null;
 	private EigenschaftMapper eigenschaftMapper = null;
@@ -52,7 +51,6 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		this.partnerprofilMapper = PartnerprofilMapper.partnerprofilMapper();
         this.projektmarktplatzMapper = ProjektmarktplatzMapper.projektmarktplatzMapper();
         this.projektMapper = ProjektMapper.projektMapper();
-<<<<<<< HEAD
 	}
 
 	/*
@@ -74,6 +72,17 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		ausschreibungMapper.deleteAusschreibung(ausschreibung);
 	}
 	
+	public Ausschreibung findByIdAusschreibung (int id) throws IllegalArgumentException {
+		return this.ausschreibungMapper.findByIdAusschreibung(id);
+	}
+	
+	public Ausschreibung findByNameAusschreibung(String bezeichnung) throws IllegalArgumentException {
+		return this.ausschreibungMapper.findByNameAusschreibung(bezeichnung);
+	}
+	/*
+	 * Find by Name
+	 */
+	
 	public Vector<Ausschreibung> findbyPerson (String name)throws IllegalArgumentException{
 		return this.ausschreibungMapper.findByPerson(name);
 	}
@@ -90,10 +99,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
-=======
-	}
+	
 
->>>>>>> refs/heads/master
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Beginn: Beteiligung

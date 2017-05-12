@@ -145,7 +145,7 @@ public class AusschreibungMapper {
 		return au;
 	}
 // So oder mit einem Vector?
-	public Ausschreibung  findByName (String bezeichnung) {
+	public Ausschreibung  findByNameAusschreibung (String bezeichnung) {
 		Connection con = DBConnection.connection();
 		Ausschreibung au = new Ausschreibung();
 		
