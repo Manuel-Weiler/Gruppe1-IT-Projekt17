@@ -13,10 +13,11 @@ public class ProjektmarktplatzTest {
 		
 		
 	ProjektmarktplatzMapper pm = ProjektmarktplatzMapper.projektmarktplatzMapper();
-    p=pm.findById(1);
     
-    System.out.println(p.getName());
-
-	//pm.insert(p);
+    
+   p=pm.findById(1);
+   System.out.println(p.getName());
+   p.setName("HDM");
+   pm.update(p);
 }
 }
