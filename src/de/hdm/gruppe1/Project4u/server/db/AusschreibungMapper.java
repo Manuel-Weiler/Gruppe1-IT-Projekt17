@@ -10,6 +10,7 @@ import java.util.Date;
 import com.ibm.icu.text.SimpleDateFormat;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
@@ -28,7 +29,7 @@ public class AusschreibungMapper {
 		return ausschreibungMapper;
 	}
 	
-// EINFÜGEN EINER AUSSCHREIBUNG 
+// EINFï¿½GEN EINER AUSSCHREIBUNG 
 	public Ausschreibung insert(Ausschreibung ausschreibung){
 		Connection con = DBConnection.connection();
 		
@@ -56,7 +57,7 @@ public class AusschreibungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Ausschreibung WHERE id='" + i + "'");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung WHERE id='" + i + "'");
 
 			if (rs.next()) {
 
@@ -111,7 +112,7 @@ public Ausschreibung findByProjekt(Projekt name) {
 
 	
 // BEARBEITEN EINER AUSSCHREIBUNG
-	public Ausschreibung updateAusschreibung (Ausschreibung ausschreibung) {
+	public Ausschreibung update (Ausschreibung ausschreibung) {
 		Connection con = DBConnection.connection();
 		Date d = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -119,7 +120,7 @@ public Ausschreibung findByProjekt(Projekt name) {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE Partnerprofil " + "SET änderungsdatum='" + sdf.format(d) + "' WHERE id='"
+			stmt.executeUpdate("UPDATE Partnerprofil " + "SET ï¿½nderungsdatum='" + sdf.format(d) + "' WHERE id='"
 					+ ausschreibung.getAusschreibungID() + "'");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -128,8 +129,8 @@ public Ausschreibung findByProjekt(Projekt name) {
 	}
 	
 
-// Löschen einer Ausschreibung
-	public void deleteAusschreibung (Ausschreibung ausschreibung){
+// Lï¿½schen einer Ausschreibung
+	public void delete (Ausschreibung ausschreibung) {
 		Connection con = DBConnection.connection();
 		
 		try {
@@ -143,7 +144,7 @@ public Ausschreibung findByProjekt(Projekt name) {
 	}
 	
 	//Auslesen alle Ausschreibungen
-	public ArrayList<Ausschreibung> getAlleAusschreibungen(){
+	public ArrayList<Ausschreibung> findAll(){
 		Connection con = DBConnection.connection();
 		
 		ArrayList<Ausschreibung> result = new ArrayList<Ausschreibung>();
@@ -154,10 +155,10 @@ public Ausschreibung findByProjekt(Projekt name) {
 			
 			while(rs.next()){
 				Ausschreibung ausschreibung = new Ausschreibung();
-				ausschreibung.setAusschreibungID(rs.getInt("id")); //TODO in der DB steht "id" jedoch sollte das vielleicht "AusschreibungID" heißen
+				ausschreibung.setAusschreibungID(rs.getInt("id")); //TODO in der DB steht "id" jedoch sollte das vielleicht "AusschreibungID" heiï¿½en
 				ausschreibung.setBezeichnung(rs.getString("bezeichnung"));
 				//TODO ausschreibung.setNameProjektleiter(rs.getString("name_projektleiter"));
-				ausschreibung.setAblaufdatum(rs.getDate("bewerbungsfrist")); //TODO setAblaufdatum sollte eigentlich bewerbungsfrist heißen oder umgekehrt --> EINEHITLICH!!!
+				ausschreibung.setAblaufdatum(rs.getDate("bewerbungsfrist")); //TODO setAblaufdatum sollte eigentlich bewerbungsfrist heiï¿½en oder umgekehrt --> EINEHITLICH!!!
 				ausschreibung.setAusschreibungstext(rs.getString("ausschreibungstext"));
 				//TODO ausschreibung.setErstelldatum(rs.getDate("erstelldatum")); fehlt noch!
 				//TODO ausschreibung.setProjektId(rs.getInt("projekt_id")); fehlt noch!
@@ -169,6 +170,18 @@ public Ausschreibung findByProjekt(Projekt name) {
 			e2.printStackTrace();
 		}
 		return result;
+	}
+	
+	public void deleteAusschreibungOfProjekt(Projekt p) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Ausschreibung WHERE projekt_id= " + p.getOrganisationseinheitId());
+			
+		} catch (Exception e2) {
+			 e2.printStackTrace();
+		}
 	}
 
 

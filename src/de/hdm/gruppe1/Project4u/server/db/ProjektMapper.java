@@ -271,7 +271,7 @@ public class ProjektMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE organisationseinheit_id='" + o.getID() + "' ORDER BY organisationseinheit_id");
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE organisationseinheit_id='" + o.getOrganisationseinheitId() + "' ORDER BY organisationseinheit_id");
 		   
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
@@ -297,5 +297,17 @@ public class ProjektMapper {
 		    // Ergebnisvektor zurückgeben
 		    return result;
 	 }
+	  
+	  public void deleteProjektOfOrganisationseinheit(Organisationseinheit o) {
+			Connection con = DBConnection.connection();
+			
+			try {
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate("DELETE FROM Partnerprofil WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
+				
+			} catch (Exception e2) {
+				 e2.printStackTrace();
+			}
+		}
 
 }

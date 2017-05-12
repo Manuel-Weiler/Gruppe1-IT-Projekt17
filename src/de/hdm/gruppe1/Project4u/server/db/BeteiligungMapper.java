@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 
 public class BeteiligungMapper {
@@ -32,7 +35,7 @@ public class BeteiligungMapper {
 			ResultSet rs = stmt.executeQuery("SELECT MAX(beteiligungId) AS maxid " + "FROM Beteiligung ");
 			if(rs.next()){
 				
-// BeteiligungsID muss eine ID hochzählen
+// BeteiligungsID muss eine ID hochzï¿½hlen
 			
 			}	
 		}
@@ -55,6 +58,30 @@ public class BeteiligungMapper {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void deleteBeteiligungOfProjekt(Projekt p) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Beteiligung WHERE projekt_id= " + p.getProjektId());
+			
+		} catch (Exception e2) {
+			 e2.printStackTrace();
+		}
+	}
+	
+	public void deleteBeteiligungOfBewertung(Bewertung b) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Beteiligung WHERE bewertung_id= " + b.getBewertungID());
+			
+		} catch (Exception e2) {
+			 e2.printStackTrace();
 		}
 	}
 

@@ -221,7 +221,7 @@ public class BewerbungMapper {
 	    	Statement stmt = con.createStatement();
 	    	ResultSet rs = stmt.executeQuery("SELECT id, erstelldatum, bewerbungstext, "
 	    	 		+ "ausschreibung_id, organisationseinheit_id "
-	   	          	+ "FROM Bewerbung WHERE organisationseinheit_id= '" + o.getID() + "' ORDER BY id");
+	   	          	+ "FROM Bewerbung WHERE organisationseinheit_id= '" + o.getOrganisationseinheitId() + "' ORDER BY id");
 
 	      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
 	      // erstellt.
@@ -244,5 +244,29 @@ public class BewerbungMapper {
 	    // Ergebnisvektor zurückgeben
 	    return result;
 	  }
+	
+	public void deleteBewerbungOfOrganisationseinheit(Organisationseinheit o) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Bewerbung WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
+			
+		} catch (Exception e2) {
+			 e2.printStackTrace();
+		}
+	}
+	
+	public void deleteBewerbungOfAusschreibung(Ausschreibung a) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Bewerbung WHERE ausschreibung_id= " + a.getAusschreibungID());
+			
+		} catch (Exception e2) {
+			 e2.printStackTrace();
+		}
+	}
 
 }

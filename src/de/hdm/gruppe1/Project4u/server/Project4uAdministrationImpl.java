@@ -152,16 +152,16 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 	
 	public void insert(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
-		organisationseinheitMapper.insert(organisationseinheit);
+		this.organisationseinheitMapper.insert(organisationseinheit);
 	}
 
 	public void update(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
-		organisationseinheitMapper.update(organisationseinheit);
+		this.organisationseinheitMapper.update(organisationseinheit);
 	}
 
 	public void delete(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
 		
-		//Zugehörige Bewerbungen löschen
+		/*//Zugehörige Bewerbungen löschen
   		Vector<Bewerbung> vb = new Vector<Bewerbung>();
   		vb = BewerbungMapper.bewerbungMapper().findByOrganisationseinheit(organisationseinheit);
   		for(Bewerbung b: vb){
@@ -176,8 +176,13 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
       		vp = ProjektMapper.projektMapper().findByOrganisationseinheit(organisationseinheit);
       		for(Projekt p: vp){
       			ProjektMapper.projektMapper().delete(p);
-      		}
-		organisationseinheitMapper.delete(organisationseinheit);
+      		}*/
+		
+		this.bewerbungMapper.deleteBewerbungOfOrganisationseinheit(organisationseinheit);
+		this.partnerprofilMapper.deletePartnerprofilOfOrganisationseinheit(organisationseinheit);
+		this.projektMapper.deleteProjektOfOrganisationseinheit(organisationseinheit);
+		
+		this.organisationseinheitMapper.delete(organisationseinheit);
 	}
 	/*
 	 * #########################################################################
@@ -231,7 +236,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {
-		return this.ausschreibungMapper.getAlleAusschreibungen();
+		return this.ausschreibungMapper.findAll();
 	}
 
 	/*
@@ -310,7 +315,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * @throws IllegalArgumentException
 	 */
 	public Vector<Eigenschaft> selectAllEigenschaftOfPartnerprofil(Partnerprofil p)throws IllegalArgumentException{
-		return this.eigenschaftMapper.selectAllEigenschaftOfPartnerprofil(p);
+		return this.eigenschaftMapper.findByPartnerprofil(p);
 	}
 	
 	/*
