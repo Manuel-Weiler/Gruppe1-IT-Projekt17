@@ -54,7 +54,9 @@ public class Testklasse {
 		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
 	//	p=p.findById(0);
 		
-		am.insertAusschreibung(a, pa, pr);
+		am.findByPartnerprofil(pa);
+		
+		//am.insertAusschreibung(a, pa, pr);
 		/*
 		 * Vector<Eigenschaft> ev= new Vector<Eigenschaft>();
 		

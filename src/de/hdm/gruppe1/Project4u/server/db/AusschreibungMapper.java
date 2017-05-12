@@ -175,7 +175,7 @@ public class AusschreibungMapper {
 	}
 	
 //FINDEN EINER AUSSCHREIBUNG NACH PROJEKT
-public Ausschreibung findByProjekt(Projekt name) {
+/*public Ausschreibung findByProjekt(Projekt name) {
 		Connection con = DBConnection.connection();
 		Ausschreibung ausschreibung = new Ausschreibung();
 
@@ -193,7 +193,7 @@ public Ausschreibung findByProjekt(Projekt name) {
 		}
 		return ausschreibung;
 	}
-
+*/
 
 	
 // BEARBEITEN EINER AUSSCHREIBUNG
@@ -281,16 +281,14 @@ public Ausschreibung findByProjekt(Projekt name) {
 		}
 		return au;
 	}
-		public Vector<Ausschreibung> findByProjekt (String name) {
+		public Vector<Ausschreibung> findByProjekt (Projekt projekt) {
 		    Connection con = DBConnection.connection();
 		    Vector<Ausschreibung> result = new Vector<Ausschreibung>();
 
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT name "
-		          + "FROM Projekt " + "WHERE name LIKE '" + name
-		          + "' ORDER BY name");
+		      ResultSet rs = stmt.executeQuery("SELECT * WHERE projekt_id='"+projekt.getProjektId()+"';");
 
 		 
 		      while (rs.next()) {
@@ -312,17 +310,19 @@ public Ausschreibung findByProjekt(Projekt name) {
 		    return result;
 		  }
 		
-		public Vector<Ausschreibung> findByPerson (String name) {
+		/**Diese Methode is voll für n arsch
+		 * @param profil
+		 * @return
+		 */
+		public Vector<Ausschreibung> findByPartnerprofil (Partnerprofil profil) {
 		    Connection con = DBConnection.connection();
 		    Vector<Ausschreibung> result = new Vector<Ausschreibung>();
 
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT name_projektleiter "
-		          + "FROM Ausschreibung " + "WHERE name_projektleiter LIKE '" 
-		    		  + name
-		          + "' ORDER BY name_projektleiter");
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung " + 
+		      "WHERE partnerprofil_id ='"+profil.getPartnerprofilId()+"';");
 
 		 
 		      while (rs.next()) {
