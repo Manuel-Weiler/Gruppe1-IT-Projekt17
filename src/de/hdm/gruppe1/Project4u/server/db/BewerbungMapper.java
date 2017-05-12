@@ -87,15 +87,14 @@ public class BewerbungMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Bewerbung ");
+			
+			if(rs.next()){
+				bewerbung.setBewerbungID(rs.getInt("maxid")+1);
+				
+				stmt.executeUpdate("INSERT INTO Bewerbung (id, erstelldatum, bewerbungstext, ausschreibung_id, organisationseinheit_id)"
+						+ "VALUES ('" + bewerbung.getBewerbungID() + "','" + sdf.format(bewerbung.getErstelldatum()) + "','" 
+						+ bewerbung.getBewerbungstext() + "', '"+a.getAusschreibungId()+"', '"+o.getOrganisationseinheitId()+"')");
 
-			if (rs.next()) {
-				bewerbung.setBewerbungID(rs.getInt("maxid") + 1);
-
-				stmt.executeUpdate(
-						"INSERT INTO Bewerbung (id, erstelldatum, bewerbungstext, ausschreibung_id, organisationseinheit_id)"
-								+ "VALUES ('" + bewerbung.getBewerbungID() + "','"
-								+ sdf.format(bewerbung.getErstelldatum()) + "','" + bewerbung.getBewerbungstext()
-								+ "', '" + a.getAusschreibungID() + "', '" + o.getOrganisationseinheitId() + "')");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -265,7 +264,7 @@ public class BewerbungMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Bewerbung WHERE ausschreibung_id= " + a.getAusschreibungID());
+			stmt.executeUpdate("DELETE FROM Bewerbung WHERE ausschreibung_id= " + a.getAusschreibungId());
 			
 		} catch (Exception e2) {
 			 e2.printStackTrace();

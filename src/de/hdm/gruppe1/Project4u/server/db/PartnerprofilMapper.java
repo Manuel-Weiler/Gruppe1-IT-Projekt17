@@ -263,7 +263,7 @@ public class PartnerprofilMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE ausschreibung_id= " + a.getAusschreibungID());
+			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE ausschreibung_id= " + a.getAusschreibungId());
 			
 		} catch (Exception e2) {
 			 e2.printStackTrace();
