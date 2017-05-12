@@ -171,7 +171,7 @@ public class EigenschaftMapper {
 	}
 	
 	
-	public void deleteEigenschaftOf(Partnerprofil p) {
+	public void deleteEigenschaftOfPartnerprofil(Partnerprofil p) {
 		Connection con = DBConnection.connection();
 		
 		try {

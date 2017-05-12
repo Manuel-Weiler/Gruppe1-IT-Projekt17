@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
@@ -27,40 +28,55 @@ public class BeteiligungMapper {
 	}
 	
 	
-	public Beteiligung insert(Beteiligung beteiligung){
+	public Beteiligung insertBeteiligung(Beteiligung b, Organisationseinheit o, Bewertung be2, Projekt p, Bewertung be ) {
 		Connection con = DBConnection.connection();
-		
-		try{
+
+		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(beteiligungId) AS maxid " + "FROM Beteiligung ");
-			if(rs.next()){
-				
-// BeteiligungsID muss eine ID hochz�hlen
-			
-			}	
+
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + 
+			"FROM Beteiligung ");
+
+			if (rs.next()) {
+		
+				b.setBeteiligungId(rs.getInt("maxid") + 1);
+
+				stmt = con.createStatement();
+
+				stmt.executeUpdate("INSERT INTO Beteiligung "
+						+ "(id, startdatum, enddatum, "
+						+ "persontage, organisationseinheit_id, projekt_id, "
+						+ "bewertung_id) " 
+						+ "VALUES ("
+						+ be.getBewertungID() + ",'" 
+						+ b.getStartdatum() + "','" 
+						+ b.getEnddatum() + "','" 
+						+ b.getPersonentage() + "','" 
+						+ o.getOrganisationseinheitId() + "','" 
+						+ p.getProjektId() + "','" 
+						+ be.getBewertungID() + "')");
+			}
+		} catch (SQLException s) {
+			s.printStackTrace();
+		}
+
+
+		return b;
 		}
 		
-		catch (SQLException e2){
-			e2.printStackTrace();
-		}
-		
-		return beteiligung;
-	}
 	
-	
-	public void deleteBeteiligung (Beteiligung beteiligung){
+	public void deleteBeteiligung(Beteiligung b) {
 		Connection con = DBConnection.connection();
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Beteiligung WHERE id='"
-					+ beteiligung.getbeteiligungId() + "'");
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
+			stmt.executeUpdate("DELETE FROM Beteiligung WHERE id='" 
+			+ b.getBeteiligungId() + "'");
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
 	}
-	
+
 	public void deleteBeteiligungOfProjekt(Projekt p) {
 		Connection con = DBConnection.connection();
 		
@@ -84,6 +100,5 @@ public class BeteiligungMapper {
 			 e2.printStackTrace();
 		}
 	}
-
 
 }
