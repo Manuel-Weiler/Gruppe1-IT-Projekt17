@@ -262,7 +262,7 @@ public class BewerbungMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Bewerbung WHERE ausschreibung_id= " + a.getAusschreibungID());
+			stmt.executeUpdate("DELETE FROM Bewerbung WHERE ausschreibung_id= " + a.getAusschreibungId());
 			
 		} catch (Exception e2) {
 			 e2.printStackTrace();

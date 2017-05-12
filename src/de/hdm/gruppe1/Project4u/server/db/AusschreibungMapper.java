@@ -40,7 +40,8 @@ public class AusschreibungMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
 			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + 
 			"FROM Ausschreibung ");
 
@@ -51,15 +52,16 @@ public class AusschreibungMapper {
 				stmt = con.createStatement();
 
 				stmt.executeUpdate("INSERT INTO Ausschreibung "
-						+ "(id, bezeichnung, name_Projektleiter, "
+						+ "(id, bezeichnung, name_projektleiter, "
 						+ "bewerbungsfrist, ausschreibungstext, erstelldatum, "
 						+ "projekt_id, partnerprofil_id) " 
-						+ "VALUES ("
-						+ au.getAusschreibungId() + ",'" 
+						+ "VALUES ('"
+						+ au.getAusschreibungId() + "','" 
 						+ au.getBezeichnung() + "','" 
-						+ au.getBewerbungsfrist() + "','" 
+						+ au.getNameProjektleiter()+"','"
+						+ sdf.format(au.getBewerbungsfrist()) + "','" 
 						+ au.getAusschreibungstext() + "','" 
-						+ au.getErstellDatum() + "','" 
+						+ sdf.format(au.getErstellDatum()) + "','" 
 						+ pr.getProjektId() + "','" 
 						+ pa.getPartnerprofilId() + "')");
 			}
