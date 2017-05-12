@@ -9,11 +9,11 @@ public class ProjektmarktplatzTest {
 		Projektmarktplatz p = new Projektmarktplatz();
 		
 		
-		p.setName("Project4u");
+	 p.setName("hdm");
 		
 		
-		ProjektmarktplatzMapper pm = ProjektmarktplatzMapper.projektmarktplatzMapper();
-		
-		pm.insert(p);
+	ProjektmarktplatzMapper pm = ProjektmarktplatzMapper.projektmarktplatzMapper();
+
+	pm.insert(p);
 }
 }

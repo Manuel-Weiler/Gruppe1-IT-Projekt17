@@ -14,20 +14,20 @@ public class ProjektTest {
 		
 		Projekt p = new Projekt();
 		
-		p.setName("project4u");
-    	// p.setEnddatum(enddatum);
-		p.setBeschreibung("für it_projekt");
+	     p.setName("hdm");
+		 p.setBeschreibung("für it_projekt");
 		
+		// p.setEnddatum(enddatum); TODO eigenes Datum setzen!
 		
 	   ProjektMapper pm = ProjektMapper.projektMapper();
 	   ProjektmarktplatzMapper pmm = ProjektmarktplatzMapper.projektmarktplatzMapper();
        OrganisationseinheitMapper om= OrganisationseinheitMapper.organisationseinheitMapper();
-	   Projektmarktplatz projektmarktplatz = new Projektmarktplatz();
-	   projektmarktplatz = pmm.findById(1);
-	   Organisationseinheit organisationseinheit = new Organisationseinheit();
-	   organisationseinheit = om.findByKey(2);
+	   Projektmarktplatz projektmarkt = new Projektmarktplatz();
+	   projektmarkt = pmm.findById(1);
+	   Organisationseinheit orga = new Organisationseinheit();
+	   orga = om.findByKey(2);
 				
-	   pm.insert(p, projektmarktplatz, organisationseinheit );
+	   pm.insert(p, projektmarkt, orga );
 
 }
 }

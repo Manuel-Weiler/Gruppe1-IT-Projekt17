@@ -132,8 +132,8 @@ public class ProjektmarktplatzMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      stmt.executeUpdate("UPDATE Projektmarktplatz SET Name =" + p.getName() 
-		                         + "WHERE id=" + p.getProjektmarktplatzId()); 
+		      stmt.executeUpdate("UPDATE Projektmarktplatz" + "SET Name ='" + p.getName() 
+		                         + "'WHERE id='" + p.getProjektmarktplatzId()+"'"); 
 		    }
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
@@ -154,7 +154,7 @@ public class ProjektmarktplatzMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM Projektmarktplatz" + "WHERE id=" + p.getProjektmarktplatzId()); 
+	      stmt.executeUpdate("DELETE FROM Projektmarktplatz" + "WHERE id='" + p.getProjektmarktplatzId()+ "'"); 
 
 	    }
 	    catch (SQLException e2) {

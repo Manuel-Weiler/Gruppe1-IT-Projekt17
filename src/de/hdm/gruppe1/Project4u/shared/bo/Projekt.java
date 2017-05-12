@@ -7,7 +7,7 @@ public class Projekt extends BusinessObject{
    private static final long serialVersionUID = 1L;
 
    private int projektId = 0;
-   private String name = "";
+   private String name ;
    private Date startdatum;
    private Date enddatum;
    private String beschreibung;

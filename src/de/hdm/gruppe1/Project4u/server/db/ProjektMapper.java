@@ -122,7 +122,7 @@ public class ProjektMapper {
 		  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		  Date date = new Date();
 		  p.setStartdatum(date);
-		//p.setEnddatum(date);
+		 // p.setEnddatum(date);
 		  
 		  try{
 			  Statement stmt = con.createStatement();
@@ -133,9 +133,10 @@ public class ProjektMapper {
 	            }
 			  
 			  stmt.executeUpdate("INSERT INTO Projekt (id ,name, startdatum, enddatum, beschreibung," +
-				  		"projektmarktplatz_id, organisationseinheit_id) VALUES (" + p.getProjektId() + ", '" + sdf.format(p.getStartdatum()) + "', '"
-				  		+ sdf.format(p.getEnddatum()) + "', '" + p.getName() + "', '" + p.getBeschreibung() + "', " + 
-				  		p.getOrganisationseinheitId() + "', '" + p.getProjektmarktplatzId() + "')");
+				  		"projektmarktplatz_id, organisationseinheit_id)  VALUES (" + p.getProjektId() + ", '" + p.getName()
+				  		+ "', '" + sdf.format(p.getStartdatum()) + "', '"
+				  		+ sdf.format(p.getEnddatum()) + "', '"  + p.getBeschreibung() + "', '" + 
+				  		p.getProjektmarktplatzId() + "', '" + o.getOrganisationseinheitId() + "')");
 			                    
 			          }
 		      catch (SQLException e) {
