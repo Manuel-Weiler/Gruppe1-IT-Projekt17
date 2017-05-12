@@ -232,6 +232,11 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	public void deletePartnerprofil(Partnerprofil p) throws IllegalArgumentException {
+		
+		//Zugehörige EIgenschaften löschen
+		this.eigenschaftMapper.deleteEigenschaftOfPartnerprofil(p);
+		
+		//Partnerprofil löschen
 		partnerprofilMapper.deletePartnerprofil(p);
 	}
 
@@ -305,6 +310,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * @param p
 	 * @throws IllegalArgumentException
 	 */
+	
 	public void deleteAllEigenschaftOfPartnerprofil(Partnerprofil p)throws IllegalArgumentException{
 		eigenschaftMapper.deleteAllEigenschaftOfPartnerprofil(p);
 	}
