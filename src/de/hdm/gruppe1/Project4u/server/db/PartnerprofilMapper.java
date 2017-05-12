@@ -210,7 +210,7 @@ public class PartnerprofilMapper {
 		
 		
 		
-		return EigenschaftMapper.eigenschaftMapper().selectAllEigenschaftOfPartnerprofil(p);
+		return EigenschaftMapper.eigenschaftMapper().findByPartnerprofil(p);
 	}
 	
 	
@@ -222,7 +222,7 @@ public class PartnerprofilMapper {
 			Statement stmt = con.createStatement();
 
 			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
-			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Partnerprofil WHERE organisationseinheit_id='" + o.getID() + "'");
+			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Partnerprofil WHERE organisationseinheit_id='" + o.getOrganisationseinheitId() + "'");
 
 			if (rs.next()) {
 
@@ -245,6 +245,30 @@ public class PartnerprofilMapper {
 
 		    return null;
 		  }
+	
+	public void deletePartnerprofilOfOrganisationseinheit(Organisationseinheit o) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
+			
+		} catch (Exception e2) {
+			 e2.printStackTrace();
+		}
+	}
+	
+	public void deletePartnerprofilOfAusschreibung(Ausschreibung a) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE ausschreibung_id= " + a.getAusschreibungID());
+			
+		} catch (Exception e2) {
+			 e2.printStackTrace();
+		}
+	}
 	
 }
 

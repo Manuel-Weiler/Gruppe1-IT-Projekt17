@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 
 
@@ -22,14 +23,14 @@ public class EigenschaftMapper {
 	
 	/*
 	 * Der private Konstruktor verhindert, dass eine Instanz der Klasse
-	 * EigenschaftMapper über <code>new</code> erzeugt werden kann.
+	 * EigenschaftMapper ï¿½ber <code>new</code> erzeugt werden kann.
 	 */
 	private EigenschaftMapper() {
 	}
 	
 	
 	/**
-	 * Die Methode erzeug eine Instanz der Klasse EigenschaftMapper für den Fall, dass es bisher
+	 * Die Methode erzeug eine Instanz der Klasse EigenschaftMapper fï¿½r den Fall, dass es bisher
 	 * keine Instanz von EigenschaftMapper gibt
 	 * @return EingenschaftMapper
 	 * @author Tobias
@@ -42,8 +43,8 @@ public class EigenschaftMapper {
 	}
 	
 	/**
-	 * Die Methode vergibt dem zu speichernden Eigenschafts-Objekts einen Primärschlüssel und legt es in 
-	 * der DB ab. Zudem aktualisiert sie das Änderungsdatum des zugehörigen Partnerprofil-Objekts
+	 * Die Methode vergibt dem zu speichernden Eigenschafts-Objekts einen Primï¿½rschlï¿½ssel und legt es in 
+	 * der DB ab. Zudem aktualisiert sie das ï¿½nderungsdatum des zugehï¿½rigen Partnerprofil-Objekts
 	 * @param e Eigenschaft
 	 * @param p Partnerprofil
 	 * @return Eigenschaft
@@ -55,12 +56,12 @@ public class EigenschaftMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			// Abfrage der größten bisher vergebnen <code>id</code>
+			// Abfrage der grï¿½ï¿½ten bisher vergebnen <code>id</code>
 			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Eigenschaft ");
 
 			if (rs.next()) {
 				/*
-				 * Der bisher größte Primärschlüssel wird um 1 erhöht und dem
+				 * Der bisher grï¿½ï¿½te Primï¿½rschlï¿½ssel wird um 1 erhï¿½ht und dem
 				 * Eigenschaft-Objekt zugewiesen.
 				 */
 				e.setEigenschaftId(rs.getInt("maxid") + 1);
@@ -78,15 +79,15 @@ public class EigenschaftMapper {
 
 		/*
 		 * Im Anschluss an das Speichern des Eigenschaft-Objekts wird das
-		 * Änderungsdatum des verknüpften Partnerprofils aktualisiert.
+		 * ï¿½nderungsdatum des verknï¿½pften Partnerprofils aktualisiert.
 		 */
 		PartnerprofilMapper.partnerprofilMapper().updatePartnerprofil(p);
 		
 		
 		/*
-		 * Rückgabe, des evtl. korrigierten Partnerprofil-Objekts. P.S: Diese
-		 * Rückgabe ist nicht zwingend notwendig, da die Verweise auf das
-		 * bisherige Objekt auch auf das geänderte Objekt verweisen würden.
+		 * Rï¿½ckgabe, des evtl. korrigierten Partnerprofil-Objekts. P.S: Diese
+		 * Rï¿½ckgabe ist nicht zwingend notwendig, da die Verweise auf das
+		 * bisherige Objekt auch auf das geï¿½nderte Objekt verweisen wï¿½rden.
 		 */
 		return e;
 	}
@@ -106,7 +107,7 @@ public class EigenschaftMapper {
 	
 	
 	/**
-	 * Löscht ein Eigenschaftsobjekt aus der Datenbank
+	 * Lï¿½scht ein Eigenschaftsobjekt aus der Datenbank
 	 * 
 	 * @param e Eigenschaft
 	 */
@@ -122,7 +123,7 @@ public class EigenschaftMapper {
 	}
 	
 	/**
-	 * Die Methode löscht alle Eigenschaften, die in einer Fremdschlüsselbeziehung
+	 * Die Methode lï¿½scht alle Eigenschaften, die in einer Fremdschlï¿½sselbeziehung
 	 * zu einem Partnerprofil p stehen.
 	 * @param p Partnerprofil
 	 */
@@ -131,9 +132,9 @@ public class EigenschaftMapper {
 		
 		//Zuerst wird ein Vector mit allen Eigenschaften erzeugt, die mit dem Partnerprofil-Objekt in
 		//Beziehung stehen.
-		eigenschaften=selectAllEigenschaftOfPartnerprofil(p);
+		eigenschaften=findByPartnerprofil(p);
 		
-		//Für jedes Element dieses Vectors wird nun die Methode deleteEigenschaft() aufgerufen.
+		//Fï¿½r jedes Element dieses Vectors wird nun die Methode deleteEigenschaft() aufgerufen.
 		for(Eigenschaft e : eigenschaften){
 			EigenschaftMapper.eigenschaftMapper().deleteEigenschaft(e);
 		}
@@ -142,9 +143,9 @@ public class EigenschaftMapper {
 	/**
 	 * Die Methode gibt alle Eigenschaftsobjekte eines Partnernprofils wieder
 	 * @param p Partnerprofil
-	 * @return Vektor mit allen Eigenschaftsobjekten die mit einem Partneprofil verknüpft sind.
+	 * @return Vektor mit allen Eigenschaftsobjekten die mit einem Partneprofil verknï¿½pft sind.
 	 */
-	public Vector<Eigenschaft> selectAllEigenschaftOfPartnerprofil(Partnerprofil p){
+	public Vector<Eigenschaft> findByPartnerprofil(Partnerprofil p){
 		Connection con = DBConnection.connection();
 		Vector<Eigenschaft> ergebnis = new Vector<Eigenschaft>();
 		
@@ -167,6 +168,19 @@ public class EigenschaftMapper {
 			e.printStackTrace();
 		}
 		return ergebnis;
+	}
+	
+	
+	public void deleteEigenschaftOf(Partnerprofil p) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Eigenschaft WHERE organisationseinheit_id= " + p.getPartnerprofilId());
+			
+		} catch (Exception e2) {
+			 e2.printStackTrace();
+		}
 	}
 	
 	
