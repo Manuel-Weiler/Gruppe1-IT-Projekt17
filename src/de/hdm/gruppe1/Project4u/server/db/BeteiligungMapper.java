@@ -48,13 +48,13 @@ public class BeteiligungMapper {
 						+ "persontage, organisationseinheit_id, projekt_id, "
 						+ "bewertung_id) " 
 						+ "VALUES ("
-						+ be.getBewertungID() + ",'" 
+						+ be.getBewertungId() + ",'" 
 						+ b.getStartdatum() + "','" 
 						+ b.getEnddatum() + "','" 
 						+ b.getPersonentage() + "','" 
 						+ o.getOrganisationseinheitId() + "','" 
 						+ p.getProjektId() + "','" 
-						+ be.getBewertungID() + "')");
+						+ be.getBewertungId() + "')");
 			}
 		} catch (SQLException s) {
 			s.printStackTrace();
@@ -94,7 +94,7 @@ public class BeteiligungMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Beteiligung WHERE bewertung_id= " + b.getBewertungID());
+			stmt.executeUpdate("DELETE FROM Beteiligung WHERE bewertung_id= " + b.getBewertungId());
 			
 		} catch (Exception e2) {
 			 e2.printStackTrace();

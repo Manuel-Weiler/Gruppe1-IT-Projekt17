@@ -69,20 +69,20 @@ public class BewertungMapper {
 	 * @return bewertung
 	 */
 
-	public Bewertung insert(Bewertung bewertung) {
+	public Bewertung insert(Bewertung bewertung, Bewerbung bew) {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT MAX(BewertungID) AS maxid " + "FROM Bewertung ");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Bewertung ");
 
 			if (rs.next()) {
-				bewertung.setBewertungID(rs.getInt("maxid") + 1);
+				bewertung.setBewertungId(rs.getInt("maxid") + 1);
 
-				stmt.executeUpdate("INSERT INTO Bewertung (BewertungID, Bewertungspunkte, Stellungnahme)" + "VALUES ("
-						+ bewertung.getBewertungID() + "," + bewertung.getBewertungspunkte() + ","
-						+ bewertung.getStellungnahme() + ")");
+				stmt.executeUpdate("INSERT INTO Bewertung (id, bewertungspunkte, stellungnahme, bewerbung_id)" 
+				+ "VALUES ('"+ bewertung.getBewertungId() + "', '" + bewertung.getBewertungspunkte() + "', '"
+				+ bewertung.getStellungnahme() + "', '"+ bew.getBewerbungId() + "')");
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -96,7 +96,7 @@ public class BewertungMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Bewertung WHERE bewerbung_id= " + o.getBewerbungID());
+			stmt.executeUpdate("DELETE FROM Bewertung WHERE bewerbung_id= " + o.getBewerbungId());
 			
 		} catch (Exception e2) {
 			 e2.printStackTrace();

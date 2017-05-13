@@ -2,16 +2,16 @@ package de.hdm.gruppe1.Project4u.shared.bo;
 
 public class Bewertung {
 
-	private int bewertungID = 0;
+	private int bewertungId = 0;
 	private float bewertungspunkte = 0;
 	private String stellungnahme = null;
 
-	public int getBewertungID() {
-		return bewertungID;
+	public int getBewertungId() {
+		return bewertungId;
 	}
 
-	public void setBewertungID(int bewertungID) {
-		this.bewertungID = bewertungID;
+	public void setBewertungId(int bewertungID) {
+		this.bewertungId = bewertungID;
 	}
 
 	public float getBewertungspunkte() {
