@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -80,6 +81,9 @@ public class NavigationsleisteWidget extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 				/*
+				 * Mit diesem Code wurde die Funktionsfähigkeit des ProjektmarktplatzWidgets getestet 
+				 * und bestätigt.
+				 * 
 				Projektmarktplatz test = new Projektmarktplatz();
 				test.setName("test");
 				test.setProjektmarktplatzId(1);
@@ -90,6 +94,7 @@ public class NavigationsleisteWidget extends Composite{
 				RootPanel.get("content").add(new ProjektmarktplatzWidget(vtest));
 				*/
 				
+				Window.alert("clickhandler funktioniert");
 				Project4uVerwaltung.testMethode(new AsyncCallback<String>() {
 					
 					@Override
@@ -114,6 +119,7 @@ public class NavigationsleisteWidget extends Composite{
 				});
 				
 				/*
+				 * Anstelle des obigen Testcodes soll dieser Code implementiert werden.
 				Project4uVerwaltung.findAllProjektmarktplatz(new AsyncCallback<Vector<Projektmarktplatz>>() {
 					
 					@Override

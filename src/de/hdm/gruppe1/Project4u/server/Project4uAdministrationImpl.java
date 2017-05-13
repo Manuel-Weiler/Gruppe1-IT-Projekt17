@@ -403,7 +403,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	
 	//TODO: Testmethode
 	public String testMethode (){
-		String test = "was geht ab?";
+		String test = "Dies ist ein Test-String";
 		return test;
 	}
 	
