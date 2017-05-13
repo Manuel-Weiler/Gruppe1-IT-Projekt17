@@ -1,5 +1,6 @@
 package de.hdm.gruppe1.Project4u.server;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Vector;
 
@@ -22,7 +23,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 @SuppressWarnings("serial")
-public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration {
+public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration, Serializable{
 
 	private BewerbungMapper bewerbungMapper = null;
 	private static final Beteiligung Beteiligung = null;
@@ -399,6 +400,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * #########################################################################
 	 * 
 	 */
+	
+	//TODO: Testmethode
 	public String testMethode (){
 		String test = "was geht ab?";
 		return test;

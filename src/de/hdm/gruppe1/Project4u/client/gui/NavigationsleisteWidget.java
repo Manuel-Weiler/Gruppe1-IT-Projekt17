@@ -104,7 +104,11 @@ public class NavigationsleisteWidget extends Composite{
 					
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
+						Label label = new Label(caught.getMessage());
+						DialogBox db = new DialogBox();
+						db.add(label);
+						db.center();
+						db.show();
 						
 					}
 				});
