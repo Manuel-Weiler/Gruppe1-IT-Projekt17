@@ -534,4 +534,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * #########################################################################
 	 * 
 	 */
+
+	@Override
+	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
