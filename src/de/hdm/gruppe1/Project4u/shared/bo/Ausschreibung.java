@@ -4,55 +4,101 @@ import java.util.Date;
 
 public class Ausschreibung extends BusinessObject{
 
-	
 	private static final long serialVersionUID = 1L;
-
-	private int ausschreibungID = 0; 
 	
+	private int ausschreibungId = 0; 
 	private String bezeichnung;
-	
-	private Date ablaufdatum; 
-	
+	private String nameProjektleiter;
+	private Date bewerbungsfrist; 
 	private String ausschreibungstext;
+
+	private Date erstellDatum;	
+	private int projektId;
+	private int partnerprofilId;
+
+
 	
-	
-	
-	Ausschreibung Ausschreibung = new Ausschreibung (); 
-	
+
 	public String getBezeichnung() {
-		
 		return bezeichnung;
 	}
-	
-	public void setBezeichnung (String bezeichnung) {
+
+	public void setBezeichnung(String bezeichnung) {
 		this.bezeichnung = bezeichnung;
 	}
-	
-	public Date getAblaufdatum() {
-		
-		return ablaufdatum;
-	}
-	
-	public void setAblaufdatum (Date ablaufdatum) {
-		this.ablaufdatum = ablaufdatum;
-	}
-	
+
 	public String getAusschreibungstext() {
-		
 		return ausschreibungstext;
 	}
-	
-	public void setAusschreibungstext (String ausschreibungstext) {
+
+	public void setAusschreibungstext(String ausschreibungstext) {
 		this.ausschreibungstext = ausschreibungstext;
 	}
 
-	public int getAusschreibungID() {
-		return ausschreibungID;
+	public Date getErstellDatum() {
+		return erstellDatum;
 	}
 
-	public void setAusschreibungID(int ausschreibungID) {
-		this.ausschreibungID = ausschreibungID;
+	public void setErstellDatum(Date erstellDatum) {
+		this.erstellDatum = erstellDatum;
 	}
- 
+	
+/** Brauchen wir das?
+ * @author Dominik
+ * 
+ * 	public boolean equals(Object o){
+		if(o != null && o instanceof Ausschreibung){
+			Ausschreibung au = (Ausschreibung) o;
+			try{
+				return super.equals(au);
+			}
+			catch(IllegalArgumentException e){
+				return false;
+			}
+		}
+		return false;
+	}
+ */
 
+	public String getNameProjektleiter() {
+		return nameProjektleiter;
+	}
+
+	public void setNameProjektleiter(String nameProjektleiter) {
+		this.nameProjektleiter = nameProjektleiter;
+	}
+
+	public Date getBewerbungsfrist() {
+		return bewerbungsfrist;
+	}
+
+	public void setBewerbungsfrist(Date bewerbungsfrist) {
+		this.bewerbungsfrist = bewerbungsfrist;
+	}
+
+	public int getProjektId() {
+		return projektId;
+	}
+
+	public void setProjektId(int projektId) {
+		this.projektId = projektId;
+	}
+
+	public int getPartnerprofilId() {
+		return partnerprofilId;
+	}
+
+	public void setPartnerprofilId(int partnerprofilId) {
+		this.partnerprofilId = partnerprofilId;
+	}
+
+	public int getAusschreibungId() {
+		return ausschreibungId;
+	}
+
+	public void setAusschreibungId(int ausschreibungId) {
+		this.ausschreibungId = ausschreibungId;
+	}
+	
 }
+	

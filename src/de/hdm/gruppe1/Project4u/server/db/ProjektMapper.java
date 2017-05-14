@@ -5,9 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
+import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 /**
  * Mapper-Klasse, die <code>Projekt</code>-Objekte auf eine relationale
@@ -23,10 +26,9 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 public class ProjektMapper {
 
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	/**
-	 * Die Klasse ProjektmarktplatzMapper wird nur einmal instantiiert. Man spricht
+	 * Die Klasse ProjektMapper wird nur einmal instantiiert. Man spricht
 	 * hierbei von einem sogenannten <b>Singleton</b>.
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
@@ -66,7 +68,7 @@ public class ProjektMapper {
 	
 	/**
 	 ** @param id
-	 ** @return Liefert ein Projekt entsprechend der übergebenen id zurueck.
+	 ** @return Liefert ein Projekt entsprechend der ï¿½bergebenen id zurueck.
 	 **/
 
       public Projekt findById(int id){
@@ -77,12 +79,15 @@ public class ProjektMapper {
 		   // Leeres SQL-Statement (JDBC) anlegen
 		   Statement stmt = con.createStatement();
 		   
+
 		   // Statement ausfüllen und als Query an die DB schicken
-		   ResultSet rs = stmt.executeQuery("SELECT * "  + "FROM projekt WHERE id='" + id + "'");
+		   ResultSet rs = stmt.executeQuery("SELECT * "  + "FROM Projekt WHERE id='" + id + "'");
+
+	
 		   
 		   /*
-	        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
-	        * werden. Prüfe, ob ein Ergebnis vorliegt.
+	        * Da id Primï¿½rschlï¿½ssel ist, kann max. nur ein Tupel zurï¿½ckgegeben
+	        * werden. Prï¿½fe, ob ein Ergebnis vorliegt.
 	        */
 		    if (rs.next()) {
 		      // Ergebnis-Tupel in Objekt umwandeln
@@ -108,29 +113,33 @@ public class ProjektMapper {
 	  
 	  /**
 		 * Diese Methode bezieht ihre Informationen aus der
-		 * PartnerboerseAdministrationImpl und erstellt mit diesen einen neuen
+		 * Project4uAdministrationImpl und erstellt mit diesen einen neuen
 		 * Projekt in der Datenbank.
 		 * 
 		 * @param projekt
 		 * @return projekt
 		 */
 	  
-	  public Projekt insert(Projekt p){
+	  public Projekt insert(Projekt p, Projektmarktplatz pm, Organisationseinheit o){
 		  Connection con = DBConnection.connection();
+		  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		  Date date = new Date();
+		  p.setStartdatum(date);
+		 // p.setEnddatum(date);
 		  
 		  try{
 			  Statement stmt = con.createStatement();
-			  
-			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM projekt ");
+			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Projekt ");
 			  
 			  if (rs.next()) {
 	              p.setProjektId(rs.getInt("maxid") + 1);
 	            }
 			  
-			  stmt.executeUpdate("INSERT INTO projekt (id ,name, startdatum, enddatum, beschreibung," +
-				  		"projektmarktplatz_id, organisationseinheit_id) VALUES (" + p.getProjektId() + ", '" + sdf.format(p.getStartdatum()) + "', '"
-				  		+ sdf.format(p.getEnddatum()) + "', '" + p.getName() + "', '" + p.getBeschreibung() + "', " + 
-				  		p.getOrganisationseinheitId() + ", " + p.getProjektmarktplatzId() + ")");
+			  stmt.executeUpdate("INSERT INTO Projekt (id ,name, startdatum, enddatum, beschreibung," +
+				  		"projektmarktplatz_id, organisationseinheit_id)  VALUES (" + p.getProjektId() + ", '" + p.getName()
+				  		+ "', '" + sdf.format(p.getStartdatum()) + "', '"
+				  		+ sdf.format(p.getEnddatum()) + "', '"  + p.getBeschreibung() + "', '" + 
+				  		p.getProjektmarktplatzId() + "', '" + o.getOrganisationseinheitId() + "')");
 			                    
 			          }
 		      catch (SQLException e) {
@@ -149,14 +158,14 @@ public class ProjektMapper {
 	   */
 	  public Projekt update(Projekt p) {
 	    Connection con = DBConnection.connection();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("UPDATE projekt SET startdatum='" + sdf.format(p.getStartdatum()) + "', "
+	      stmt.executeUpdate("UPDATE Projekt SET startdatum='" + sdf.format(p.getStartdatum()) + "', "
 			  		+ "enddatum='" + sdf.format(p.getEnddatum()) + "', " + "name='" + p.getName() + "', "
-					+ "beschreibung='" + p.getBeschreibung() + "', " + "organisationseinheit_id=" + p.getOrganisationseinheitId()
-					+ ", " + "projektmarktplatz_id=" + p.getProjektmarktplatzId() + " WHERE id=" + p.getProjektId());
+					+ "beschreibung='" + p.getBeschreibung() + "', " + " WHERE id=" + p.getProjektId());
 
 	    }
 	    catch (SQLException e2) {
@@ -178,7 +187,7 @@ public class ProjektMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM projekt WHERE id=" + p.getProjektId());
+	      stmt.executeUpdate("DELETE FROM Projekt WHERE id=" + p.getProjektId() +"'");
 
 	    }
 	    catch (SQLException e2) {
@@ -196,7 +205,7 @@ public class ProjektMapper {
 
 		      ResultSet rs = stmt.executeQuery("SELECT id, name, startdatum, enddatum, beschreibung,"
 		      		                         + "projektmarktplatz_id, organisationseinheit_id" 
-		    		                         + "FROM projekt" + "ORDER BY id");
+		    		                         + "FROM Projekt" + "ORDER BY id"+ "'");
 		   
 
 		      // FÃ¼r jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
@@ -233,7 +242,7 @@ public class ProjektMapper {
 		      Statement stmt = con.createStatement();
 
 		      ResultSet rs = stmt.executeQuery("SELECT id, name, startdatum, enddatum, beschreibung"
-		      	  + "projektmarktplatz_id, organisationseinheit_id " + "FROM projekt "
+		      	  + "projektmarktplatz_id, organisationseinheit_id " + "FROM Projekt "
 		          + "WHERE name LIKE '" + name + "' ORDER BY name");
 
 		      // FÃ¼r jeden Eintrag im Suchergebnis wird nun ein Customer-Objekt
@@ -261,5 +270,53 @@ public class ProjektMapper {
 		    // Ergebnisvektor zurÃ¼ckgeben
 		    return result;
 		  }
+	  
+	  public Vector<Projekt> findByOrganisationseinheit(Organisationseinheit o) {
+		    Connection con = DBConnection.connection();
+		    // Ergebnisvektor vorbereiten
+		    Vector<Projekt> result = new Vector<Projekt>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE organisationseinheit_id='" + o.getOrganisationseinheitId() + "'"
+		      									+ " ORDER BY organisationseinheit_id");
+		   
+
+		      // FÃ¼r jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projekt p = new Projekt();
+		        p.setProjektId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setStartdatum(rs.getDate("startdatum"));
+		        p.setEnddatum(rs.getDate("enddatum"));
+		        p.setBeschreibung(rs.getString("beschreibung"));
+		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+		        // HinzufÃ¼gen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurÃ¼ckgeben
+		    return result;
+	 }
+	  
+	  public void deleteProjektOfOrganisationseinheit(Organisationseinheit o) {
+			Connection con = DBConnection.connection();
+			
+			try {
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate("DELETE FROM Partnerprofil WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
+				
+			} catch (Exception e2) {
+				 e2.printStackTrace();
+			}
+		}
 
 }

@@ -6,7 +6,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
+import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
+import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 
 
@@ -83,8 +86,12 @@ public class OrganisationseinheitMapper {
 			if(rs.next()){
 				organisationseinheit.setOrganisationseinheitId(rs.getInt("maxid") +1);
 				
+				stmt = con.createStatement();
+				
 				stmt.executeUpdate("INSERT INTO Organisationseinheit (id, google_id, name, typ) "
-			            + "VALUES (" + organisationseinheit.getOrganisationseinheitId() + ",'" + organisationseinheit.getName() + "', '" + organisationseinheit.getTyp() + "')");
+			            + "VALUES (" + organisationseinheit.getOrganisationseinheitId() + ", '" + organisationseinheit.getGoogleId() + "','" + organisationseinheit.getName() + "', '" + organisationseinheit.getTyp() + "')");
+			
+			
 			}
 		} catch (SQLException e2){
 			e2.printStackTrace();
@@ -110,14 +117,39 @@ public class OrganisationseinheitMapper {
 	    // Um Analogie zu insert(Customer c) zu wahren, geben wir c zurück
 	    return o;
 	  }
-	
+	//uuuu
 	 public void delete(Organisationseinheit o) {
 		    Connection con = DBConnection.connection();
 
 		    try {
 		      Statement stmt = con.createStatement();
-
-		      stmt.executeUpdate("DELETE FROM Organisationseinheit " + "WHERE id=" + o.getOrganisationseinheitId());
+		      
+		      //TO DO: Applikationslogik oder in den Mappern?
+		     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+		      	//Zugehörige Bewerbungen löschen
+	      		Vector<Bewerbung> vb = new Vector<Bewerbung>();
+	      		vb = BewerbungMapper.bewerbungMapper().findByOrganisationseinheit(o);
+	      		for(Bewerbung b: vb){
+	      			BewerbungMapper.bewerbungMapper().delete(b);
+	      		}
+		      
+	      		//Zugehöriges Partnerprofil löschen
+		      	PartnerprofilMapper.partnerprofilMapper().deletePartnerprofil(PartnerprofilMapper.partnerprofilMapper().findByOrganisationseinheit(o));
+		      
+		      	//Zugehörige Projekte löschen		      
+		      	Vector<Projekt> vp = new Vector<Projekt>();
+		      		vp = ProjektMapper.projektMapper().findByOrganisationseinheit(o);
+		      		for(Projekt p: vp){
+		      			ProjektMapper.projektMapper().delete(p);
+		      		}
+				//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+				
+		      
+		      //Organisationseinheit löschen
+		      stmt.executeUpdate("DELETE FROM Organisationseinheit WHERE id=" + o.getOrganisationseinheitId());
+		      
+		      
+		      
 		    }
 		    catch (SQLException e) {
 		      e.printStackTrace();
@@ -181,8 +213,9 @@ public class OrganisationseinheitMapper {
 
 		      // Statement ausfüllen und als Query an die DB schicken
 		      ResultSet rs = stmt
-		          .executeQuery("SELECT id, google_id, nachname, vorname FROM Organisationseinheit "
-		              + "WHERE id=" + id + " ORDER BY nachname");
+		    		  
+		          .executeQuery("SELECT id, google_id, name, typ FROM Organisationseinheit "
+		              + "WHERE id=" + id + " ORDER BY name");
 
 		      /*
 		       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -216,8 +249,8 @@ public class OrganisationseinheitMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT id, firstName, lastName "
-		          + "FROM customers " + "ORDER BY lastName");
+		      ResultSet rs = stmt.executeQuery("SELECT id, google_id, name, typ "
+		          + "FROM Organisationseinheit " + "ORDER BY name");
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
 		      // erstellt.
@@ -242,16 +275,16 @@ public class OrganisationseinheitMapper {
 		    return result;
 		  }
 	 
-	 public Vector<Organisationseinheit> findByNachname(String name) {
+	 public Vector<Organisationseinheit> findByName(String name) {
 		    Connection con = DBConnection.connection();
 		    Vector<Organisationseinheit> result = new Vector<Organisationseinheit>();
 
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT id, vorname, nachname "
-		          + "FROM Organisationseinheit " + "WHERE nachname LIKE '" + name
-		          + "' ORDER BY nachname");
+		      ResultSet rs = stmt.executeQuery("SELECT id, google_id, name, typ "
+		          + "FROM Organisationseinheit " + "WHERE name LIKE '" + name
+		          + "' ORDER BY name");
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
 		      // erstellt.
@@ -282,7 +315,7 @@ public class OrganisationseinheitMapper {
 		      Statement stmt = con.createStatement();
 
 		      ResultSet rs = stmt.executeQuery("SELECT id, google_id, name, typ "
-		          + "FROM Organisationseinheit " + "WHERE tpy LIKE '" + typ
+		          + "FROM Organisationseinheit " + "WHERE typ LIKE '" + typ
 		          + "' ORDER BY name");
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
@@ -305,6 +338,13 @@ public class OrganisationseinheitMapper {
 		    // Ergebnisvektor zurückgeben
 		    return result;
 		  }
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 	 
 }
 
