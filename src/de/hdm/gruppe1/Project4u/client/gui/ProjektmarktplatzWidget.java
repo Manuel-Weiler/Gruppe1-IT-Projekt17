@@ -28,7 +28,8 @@ public class ProjektmarktplatzWidget extends Composite {
 	Button addProjektmarktplatz = new Button("Projektmarktplatz anlegen");//TODO: Clickhandler und Maske für Projektmarktplatz anlegen implementieren
 	Button deleteProjektmarktplatz = new Button("Projektmarktplatz löschen"); //TODO: anlegen
 	Button seeProjektmarktplatz = new Button("Projektmarktplatz ansehen"); //TODO: Clickhandler: mit ProjektWidget verknüpfen
-
+	Button changeProjektmarktplatz = new Button("Projektmarktplatz bearbeiten");
+	
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch einzelne Objekte der
 	 * in der Liste weiter verarbeitet werden können. 
@@ -90,12 +91,14 @@ public class ProjektmarktplatzWidget extends Composite {
 				@Override
 				public void onSelectionChange(SelectionChangeEvent event) {
 					DialogBox dBox = new DialogBox();
-					HorizontalPanel hPanel = new HorizontalPanel();
-					hPanel.add(seeProjektmarktplatz);
-					hPanel.add(deleteProjektmarktplatz);
-					dBox.add(hPanel);
+					VerticalPanel vPanel = new VerticalPanel();
+					vPanel.add(seeProjektmarktplatz);
+					vPanel.add(deleteProjektmarktplatz);
+					vPanel.add(changeProjektmarktplatz);
+					dBox.add(vPanel);
 					seeProjektmarktplatz.setPixelSize(270, 30);
 					deleteProjektmarktplatz.setPixelSize(270, 30);
+					changeProjektmarktplatz.setPixelSize(270, 30);
 					
 					seeProjektmarktplatz.addClickHandler(new ClickHandler() {
 						
@@ -115,6 +118,7 @@ public class ProjektmarktplatzWidget extends Composite {
 							
 						}
 					});
+					
 					dBox.setAutoHideEnabled(true);
 					dBox.center();
 					dBox.show();
