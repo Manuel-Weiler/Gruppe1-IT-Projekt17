@@ -25,9 +25,9 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 public class ProjektmarktplatzWidget extends Composite {
 	
-	Button addProjektmarktplatz = new Button("Projektmarktplatz anlegen");
-	Button deleteProjektmarktplatz = new Button("Projektmarktplatz löschen");
-	Button seeProjektmarktplatz = new Button("Projektmarktplatz ansehen");
+	Button addProjektmarktplatz = new Button("Projektmarktplatz anlegen");//TODO: Clickhandler und Maske für Projektmarktplatz anlegen implementieren
+	Button deleteProjektmarktplatz = new Button("Projektmarktplatz löschen"); //TODO: anlegen
+	Button seeProjektmarktplatz = new Button("Projektmarktplatz ansehen"); //TODO: Clickhandler: mit ProjektWidget verknüpfen
 
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch einzelne Objekte der
