@@ -53,7 +53,7 @@ public class PartnerprofilMapper {
 	 * @return das m�glicherweise durch die Methode ge�nderte Partnerprofil-Objekt.
 	 * @author Tobias
 	 */
-	public Partnerprofil insertPartnerprofil(Partnerprofil p, Organisationseinheit o){
+	public Partnerprofil insertPartnerprofil(Partnerprofil p) {
 		 
 		 Connection con = DBConnection.connection();
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -82,7 +82,7 @@ public class PartnerprofilMapper {
 		        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
 		        stmt.executeUpdate("INSERT INTO Partnerprofil (id, erstelldatum, �nderungsdatum, Organisationseinheit_id) "
 		            + "VALUES (" + p.getPartnerprofilId() + ",'" + sdf.format(p.getErstelldatum()) + "','"
-		            + sdf.format(p.getAenderungsdatum()) + "','"+o.getOrganisationseinheitId()+"')"); 
+		            + sdf.format(p.getAenderungsdatum()) + "','"+p.getOrganisationseinheitId()+"')"); 
 		      }
 		    }
 		    catch (SQLException e) {

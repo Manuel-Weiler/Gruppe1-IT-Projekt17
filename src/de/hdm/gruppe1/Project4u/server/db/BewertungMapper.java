@@ -8,6 +8,7 @@ import java.sql.Statement;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 
 /**
  * Mapper-Klasse, die <code>Bewertung</code>-Objekte auf eine relationale
@@ -89,6 +90,40 @@ public class BewertungMapper {
 		}
 		return bewertung;
 	}
+	
+	public Bewertung findByBewerbung (Bewerbung b) {
+		Connection con = DBConnection.connection();
+		Bewertung bewertung = new Bewertung();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Bewertung WHERE Bewerbung_id=" + b.getBewerbungID());
+
+			if (rs.next()) {
+
+				/*
+				 * Dem R�ckgabeobjekt werden die Werte aus der Tabelle
+				 * zugewiesen und so das Tupel aus der Tabelle wieder in ein
+				 * Objekt transformiert.
+				 */
+				bewertung.setBewertungID(rs.getInt("id"));
+				bewertung.setBewertungspunkte(rs.getInt("bewertungspunkte"));
+				bewertung.setStellungnahme(rs.getString("stellungnahme"));
+			    
+				return bewertung;
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		      return null;
+		    }
+
+		    return null;
+		  }
+	
+	
 	
 	
 	public void deleteBewertungOfBewerbung(Bewerbung o) {

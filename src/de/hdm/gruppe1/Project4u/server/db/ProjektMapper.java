@@ -279,7 +279,8 @@ public class ProjektMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE organisationseinheit_id='" + o.getOrganisationseinheitId() + "' ORDER BY organisationseinheit_id");
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE organisationseinheit_id='" + o.getOrganisationseinheitId() + "'"
+		      									+ " ORDER BY organisationseinheit_id");
 		   
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt

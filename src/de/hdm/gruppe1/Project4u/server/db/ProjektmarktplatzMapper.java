@@ -170,7 +170,10 @@ public class ProjektmarktplatzMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT id, name " + "FROM Projektmarktplatz" + "ORDER BY id");
+
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz");
+
+
 		   
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Projektmarktplatz-Objekt

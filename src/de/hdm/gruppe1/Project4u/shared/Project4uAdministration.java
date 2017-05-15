@@ -1,10 +1,19 @@
 package de.hdm.gruppe1.Project4u.shared;
 
+
+import java.util.Vector;
+
 import java.util.ArrayList;
+
 
 import com.google.gwt.user.client.rpc.RemoteService;
 
+
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
+
 import de.hdm.gruppe1.Project4u.shared.bo.*;
+
 
 public interface Project4uAdministration extends RemoteService{
 
@@ -14,8 +23,14 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Organisationseinheit checkStatus(Organisationseinheit loginInfo) throws IllegalArgumentException;
 	
+
+	public Vector<Projektmarktplatz> findAllProjektmarktplatz() throws IllegalArgumentException;
+
+	String testMethode();
+
 	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException;
 	
+
 
 
 }
