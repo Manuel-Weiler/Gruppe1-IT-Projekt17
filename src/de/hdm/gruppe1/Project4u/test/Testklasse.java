@@ -1,5 +1,6 @@
 package de.hdm.gruppe1.Project4u.test;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Vector;
 
@@ -15,19 +16,17 @@ import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 public class Testklasse {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 		
 		String strDate  = "13-05-2017";
-		String ctrDate  = "14-05-2017";
-
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		Date date = sdf.parse(strDate); 
+		Date date1 = sdf.parse("13-05-2017"); 
 		
 		Ausschreibung a = new Ausschreibung (); 
 		
 		
 		a.setAusschreibungstext("Test Text");
-		a.setBewerbungsfrist(date);
+		a.setBewerbungsfrist(date1);
 		a.setBezeichnung("Test bezeichnung");
 		a.setID(1);
 		a.setNameProjektleiter("HS");
