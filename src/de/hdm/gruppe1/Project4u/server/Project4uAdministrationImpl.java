@@ -83,13 +83,13 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * Find by Name
 	 */
 	
-	public Vector<Ausschreibung> findbyPerson (String name)throws IllegalArgumentException{
-		return this.ausschreibungMapper.findByPerson(name);
-	}
-	
-	public Vector<Ausschreibung> findbyProjekt (String name)throws IllegalArgumentException{
-		return this.ausschreibungMapper.findByProjekt(name);
-	}
+//	public Vector<Ausschreibung> findbyPerson (String name)throws IllegalArgumentException{
+//		return this.ausschreibungMapper.findByPerson(name);
+//	}
+//	
+//	public Vector<Ausschreibung> findbyProjekt (String name)throws IllegalArgumentException{
+//		return this.ausschreibungMapper.findByProjekt(name);
+//	}
 	
 	
 	/*

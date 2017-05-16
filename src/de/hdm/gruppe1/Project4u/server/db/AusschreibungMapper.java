@@ -40,7 +40,8 @@ public class AusschreibungMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
 			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + 
 			"FROM Ausschreibung ");
 
@@ -51,15 +52,16 @@ public class AusschreibungMapper {
 				stmt = con.createStatement();
 
 				stmt.executeUpdate("INSERT INTO Ausschreibung "
-						+ "(id, bezeichnung, name_Projektleiter, "
+						+ "(id, bezeichnung, name_projektleiter, "
 						+ "bewerbungsfrist, ausschreibungstext, erstelldatum, "
 						+ "projekt_id, partnerprofil_id) " 
-						+ "VALUES ("
-						+ au.getAusschreibungId() + ",'" 
+						+ "VALUES ('"
+						+ au.getAusschreibungId() + "','" 
 						+ au.getBezeichnung() + "','" 
-						+ au.getBewerbungsfrist() + "','" 
+						+ au.getNameProjektleiter()+"','"
+						+ sdf.format(au.getBewerbungsfrist()) + "','" 
 						+ au.getAusschreibungstext() + "','" 
-						+ au.getErstellDatum() + "','" 
+						+ sdf.format(au.getErstellDatum()) + "','" 
 						+ pr.getProjektId() + "','" 
 						+ pa.getPartnerprofilId() + "')");
 			}
@@ -173,17 +175,14 @@ public class AusschreibungMapper {
 	}
 	
 //FINDEN EINER AUSSCHREIBUNG NACH PROJEKT
-public Ausschreibung findByProjekt(Projekt name) {
+/*public Ausschreibung findByProjekt(Projekt name) {
 		Connection con = DBConnection.connection();
 		Ausschreibung ausschreibung = new Ausschreibung();
-
 		try {
 			Statement stmt = con.createStatement();
-
 			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Ausschreibung WHERE Projekt='" + "");
 				//get. of
 			if (rs.next()) {
-
 				ausschreibung.setID(rs.getInt("id"));
 							}
 		} catch (SQLException e) {
@@ -191,7 +190,7 @@ public Ausschreibung findByProjekt(Projekt name) {
 		}
 		return ausschreibung;
 	}
-
+*/
 
 	
 // BEARBEITEN EINER AUSSCHREIBUNG
@@ -279,16 +278,14 @@ public Ausschreibung findByProjekt(Projekt name) {
 		}
 		return au;
 	}
-		public Vector<Ausschreibung> findByProjekt (String name) {
+		public Vector<Ausschreibung> findByProjekt (Projekt projekt) {
 		    Connection con = DBConnection.connection();
 		    Vector<Ausschreibung> result = new Vector<Ausschreibung>();
 
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT name "
-		          + "FROM Projekt " + "WHERE name LIKE '" + name
-		          + "' ORDER BY name");
+		      ResultSet rs = stmt.executeQuery("SELECT * WHERE projekt_id='"+projekt.getProjektId()+"';");
 
 		 
 		      while (rs.next()) {
@@ -310,17 +307,19 @@ public Ausschreibung findByProjekt(Projekt name) {
 		    return result;
 		  }
 		
-		public Vector<Ausschreibung> findByPerson (String name) {
+		/**Diese Methode is voll für n arsch
+		 * @param profil
+		 * @return
+		 */
+		public Vector<Ausschreibung> findByPartnerprofil (Partnerprofil profil) {
 		    Connection con = DBConnection.connection();
 		    Vector<Ausschreibung> result = new Vector<Ausschreibung>();
 
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT name_projektleiter "
-		          + "FROM Ausschreibung " + "WHERE name_projektleiter LIKE '" 
-		    		  + name
-		          + "' ORDER BY name_projektleiter");
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung " + 
+		      "WHERE partnerprofil_id ='"+profil.getPartnerprofilId()+"';");
 
 		 
 		      while (rs.next()) {
