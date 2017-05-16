@@ -40,7 +40,7 @@ public class Project4u implements EntryPoint {
 		nt.homeButtonclick();
 		
 		
-		
+		/*
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 		loginService.login(GWT.getHostPageBaseURL() + "Project4u.html", new AsyncCallback<Organisationseinheit>() {
 			// f�ngt m�gliche Fehler ab
@@ -53,9 +53,9 @@ public class Project4u implements EntryPoint {
 				loginInfo = result;
 				if (loginInfo.getLoggedIn()) {
 					Project4uVerwaltung.checkStatus(loginInfo, new CheckStatusNutzerCallback());
-					loadProject4u();
+					//loadProject4u();
 				} else {
-					loadLogin();
+					//loadLogin();
 				}
 			}
 		});
@@ -81,7 +81,7 @@ public class Project4u implements EntryPoint {
 		
 	}
 }
-
+/*
 class CheckStatusNutzerCallback implements AsyncCallback<Organisationseinheit> {
 	public void onFailure(Throwable caught) {
 		Window.alert("Datenbank nicht da!");
@@ -100,4 +100,5 @@ class CheckStatusNutzerCallback implements AsyncCallback<Organisationseinheit> {
 		}
 		
 	}
-}
+	}*/
+
