@@ -163,9 +163,9 @@ public class ProjektMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("UPDATE Projekt SET name='" + p.getName() + "'startdatum='" + sdf.format(p.getStartdatum())
-			  		+ "'enddatum='" + sdf.format(p.getEnddatum()) +  "'beschreibung='" 
-	    		    + p.getBeschreibung() + "' WHERE id='" + p.getProjektId());
+	      stmt.executeUpdate("UPDATE Projekt " + "SET name=\""
+		          + p.getName() + "\", " + "startdatum=\"" + sdf.format(p.getStartdatum()) + "\", " + "enddatum=\"" + sdf.format(p.getEnddatum()) + "\", "
+		          + "beschreibung=\"" + p.getBeschreibung() + "\" " + "WHERE id=" + p.getProjektId() );
 
 	    }
 	    catch (SQLException e2) {
@@ -312,7 +312,7 @@ public class ProjektMapper {
 			
 			try {
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM Partnerprofil WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
+				stmt.executeUpdate("DELETE FROM Projekt WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
 				
 			} catch (Exception e2) {
 				 e2.printStackTrace();

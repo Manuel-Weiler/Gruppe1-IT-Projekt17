@@ -12,14 +12,15 @@ public class ProjektTest {
  public static void main(String[] args) {
 		
 		
-		Projekt p = new Projekt();
+	   Projekt p = new Projekt();
 		
-	   //  p.setName("test123");
+	    // p.setName("test123");
 		// p.setBeschreibung("testen");
 		
 		// p.setEnddatum(enddatum); TODO eigenes Datum setzen!
 		
 	   ProjektMapper pm = ProjektMapper.projektMapper();
+	 
 	  // ProjektmarktplatzMapper pmm = ProjektmarktplatzMapper.projektmarktplatzMapper();
       // OrganisationseinheitMapper om= OrganisationseinheitMapper.organisationseinheitMapper();
 	  // Projektmarktplatz projektmarkt = new Projektmarktplatz();
@@ -30,6 +31,7 @@ public class ProjektTest {
 	   p=pm.findById(0);
 	   System.out.println(p.getName());
 	   p.setName("neuster test");
+	   p.setBeschreibung("neuneu");
 	   pm.update(p);
 
 }
