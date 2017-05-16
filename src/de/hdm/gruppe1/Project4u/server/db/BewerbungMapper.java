@@ -271,5 +271,7 @@ public class BewerbungMapper {
 		}
 
 	}
+	
+	
 
 }

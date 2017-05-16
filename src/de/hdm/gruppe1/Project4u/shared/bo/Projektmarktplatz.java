@@ -7,6 +7,9 @@ public class Projektmarktplatz extends BusinessObject{
 	private int projektmarktplatzId = 0;
 	private String name = "";
 	
+	public Projektmarktplatz(){
+		
+	}
 	
 	public String getName() {
 		return name;

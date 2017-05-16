@@ -8,14 +8,25 @@ import com.ibm.icu.text.SimpleDateFormat;
 import de.hdm.gruppe1.Project4u.server.db.AusschreibungMapper;
 import de.hdm.gruppe1.Project4u.server.db.EigenschaftMapper;
 import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
+
+import de.hdm.gruppe1.Project4u.server.db.ProjektmarktplatzMapper;
+
 import de.hdm.gruppe1.Project4u.server.db.ProjektMapper;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
+
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
+
+import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
+
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
+
 
 public class Testklasse {
 	public static void main(String[] args) {
+
+		/*Eigenschaft e = new Eigenschaft();
+
 		
 		String strDate  = "13-05-2017";
 		String ctrDate  = "14-05-2017";
@@ -24,8 +35,23 @@ public class Testklasse {
 		//Date date = sdf.parse(strDate); 
 		
 		Ausschreibung a = new Ausschreibung (); 
+
 		
 		
+
+		e.setName("alter");
+		e.setWert("97"); 
+		*/
+		//Partnerprofil p = new Partnerprofil();
+		//PartnerprofilMapper pm = PartnerprofilMapper.partnerprofilMapper();
+		//EigenschaftMapper em = EigenschaftMapper.eigenschaftMapper();
+		//p=pm.findById(0);
+		
+		/*
+		ProjektmarktplatzMapper ppm = ProjektmarktplatzMapper.projektmarktplatzMapper();
+		Vector<Projektmarktplatz> v = new Vector<Projektmarktplatz>();
+		v=ppm.findAll();
+
 		a.setAusschreibungstext("Test Text");
 		//a.setBewerbungsfrist(date);
 		a.setBezeichnung("Test bezeichnung");
@@ -36,25 +62,30 @@ public class Testklasse {
 		
 		Partnerprofil pa = new Partnerprofil();
 		Projekt pr = new Projekt ();
+
 		
 		
+
+
 		PartnerprofilMapper p = PartnerprofilMapper.partnerprofilMapper();
 		ProjektMapper l = ProjektMapper.projektMapper();
 		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
 	//	p=p.findById(0);
 		
 		am.insertAusschreibung(a, pa, pr);
+
 		/*
 		 * Vector<Eigenschaft> ev= new Vector<Eigenschaft>();
 		
 		 * ev=em.selectAllEigenschaftOfPartnerprofil(p);
 		 *
-		
-		for(Eigenschaft e: ev){
-			System.out.println(e.getName());
+		*/
+		/*
+		for(Projektmarktplatz proji: v){
+			System.out.println(proji.getName());
 			
-		} */
-		
+		} 
+		*/
 		
 		
 		
