@@ -83,20 +83,18 @@ public class NavigationsleisteWidget extends Composite {
 				/*
 				 * Mit diesem Code wurde die Funktionsfähigkeit des
 				 * ProjektmarktplatzWidgets getestet und bestätigt.
-				 * 
-				 * Projektmarktplatz test = new Projektmarktplatz();
-				 * test.setName("test"); test.setProjektmarktplatzId(1);
-				 * Vector<Projektmarktplatz> vtest = new
-				 * Vector<Projektmarktplatz>(); vtest.add(test);
-				 * 
-				 * RootPanel.get("content").clear();
-				 * RootPanel.get("content").add(new
-				 * ProjektmarktplatzWidget(vtest));
 				 */
+				Projektmarktplatz test = new Projektmarktplatz();
+				test.setName("test");
+				test.setProjektmarktplatzId(1);
+				Vector<Projektmarktplatz> vtest = new Vector<Projektmarktplatz>();
+				vtest.add(test);
+
+				RootPanel.get("content").clear();
+				RootPanel.get("content").add(new ProjektmarktplatzWidget(vtest));
 
 				Window.alert("clickhandler funktioniert");
 
-								
 				Project4uVerwaltung.findAllProjektmarktplatz(new AsyncCallback<Vector<Projektmarktplatz>>() {
 
 					@Override
