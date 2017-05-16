@@ -18,12 +18,17 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
 
+import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
+import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 
 
 
 public class ProjektmarktplatzWidget extends Composite {
+	
+	Project4uAdministrationAsync project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
+	//TODO: Informationen des aktuellen Nutzers abrufen
 	
 	Button addProjektmarktplatz = new Button("Projektmarktplatz anlegen");//TODO: Clickhandler und Maske für Projektmarktplatz anlegen implementieren
 	Button deleteProjektmarktplatz = new Button("Projektmarktplatz löschen"); //TODO: anlegen

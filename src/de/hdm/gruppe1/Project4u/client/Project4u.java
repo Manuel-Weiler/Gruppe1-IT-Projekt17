@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.gui.NavigationsleisteWidget;
 import de.hdm.gruppe1.Project4u.client.gui.NutzerForm;
+import de.hdm.gruppe1.Project4u.client.gui.StartseiteWidget;
 import de.hdm.gruppe1.Project4u.shared.LoginService;
 import de.hdm.gruppe1.Project4u.shared.LoginServiceAsync;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
@@ -26,20 +27,18 @@ public class Project4u implements EntryPoint {
 	private Anchor signinLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 	Organisationseinheit nutzer = ClientsideSettings.getAktuellerUser();
-	
-	
+
 	/*
 	 * Diese Methode pr�ft den Login-Status
 	 * 
 	 */
 	public void onModuleLoad() {
-		
+
 		//TODO: in Methode loadProject4u() verschieben, sobald die Login funktioniert.
 		NavigationsleisteWidget nt = new NavigationsleisteWidget();
 		RootPanel.get("nav").add(nt);
 		nt.homeButtonclick();
-		
-		
+
 		/*
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 		loginService.login(GWT.getHostPageBaseURL() + "Project4u.html", new AsyncCallback<Organisationseinheit>() {
@@ -53,52 +52,50 @@ public class Project4u implements EntryPoint {
 				loginInfo = result;
 				if (loginInfo.getLoggedIn()) {
 					Project4uVerwaltung.checkStatus(loginInfo, new CheckStatusNutzerCallback());
-					//loadProject4u();
+					// loadProject4u();
 				} else {
-					//loadLogin();
+					// loadLogin();
 				}
 			}
 		});
-
+*/
 	}
 
+	/*
 	private void loadLogin() {
 		signinLink.setHref(loginInfo.getLoginUrl());
 		loginPanel.add(loginLabel);
 		loginPanel.add(signinLink);
 		RootPanel.get("NutzerForm").add(loginPanel);
-		
+
 		RootPanel.get("Nutzer").setVisible(false);
 	}
 
 	private void loadProject4u() {
 
-		
-		/*
-		Startseite startseite = new Startseite();
-		startseite.loadStartseite(); */
-		
-		
+		StartseiteWidget startseite = new StartseiteWidget();
+		startseite.loadStartseite();
+
 	}
 }
-/*
+
 class CheckStatusNutzerCallback implements AsyncCallback<Organisationseinheit> {
 	public void onFailure(Throwable caught) {
 		Window.alert("Datenbank nicht da!");
 	}
 
-	public void onSuccess(Organisationseinheit nutzer){
+	public void onSuccess(Organisationseinheit nutzer) {
 		ClientsideSettings.setAktuellerUser(nutzer);
 		final boolean status = nutzer.getStatus();
-		if(status == true){
-			//TODO: Die Startseite wird geladen.
-		} else{
-			Window.alert("Diese Email ist nicht in der Datenbank vorhanden" 
+		if (status == true) {
+			StartseiteWidget startseite = new StartseiteWidget();
+			//TODO: startseite.loadStartseite();
+		} else {
+			Window.alert("Diese Email ist nicht in der Datenbank vorhanden"
 					+ "Erstelle ein neues Konto oder verwende eine andere Adresse");
 			NutzerForm nutzerForm = new NutzerForm();
 			nutzerForm.loadNutzerForm(nutzer.getGoogleId());
 		}
-		
-	}
-	}*/
 
+	}*/
+}
