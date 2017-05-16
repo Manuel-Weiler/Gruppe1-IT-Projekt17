@@ -99,7 +99,7 @@ public class BewertungMapper {
 			Statement stmt = con.createStatement();
 
 			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Bewertung WHERE Bewerbung_id=" + b.getBewerbungID());
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Bewertung WHERE Bewerbung_id=" + b.getBewerbungId());
 
 			if (rs.next()) {
 
@@ -108,7 +108,7 @@ public class BewertungMapper {
 				 * zugewiesen und so das Tupel aus der Tabelle wieder in ein
 				 * Objekt transformiert.
 				 */
-				bewertung.setBewertungID(rs.getInt("id"));
+				bewertung.setBewertungId(rs.getInt("id"));
 				bewertung.setBewertungspunkte(rs.getInt("bewertungspunkte"));
 				bewertung.setStellungnahme(rs.getString("stellungnahme"));
 			    
