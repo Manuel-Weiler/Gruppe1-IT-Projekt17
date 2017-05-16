@@ -125,7 +125,7 @@ public class ProjektMapper {
 		  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		  Date date = new Date();
 		  p.setStartdatum(date);
-		 // p.setEnddatum(date);
+		  p.setEnddatum(date);
 		  
 		  try{
 			  Statement stmt = con.createStatement();
@@ -135,11 +135,11 @@ public class ProjektMapper {
 	              p.setProjektId(rs.getInt("maxid") + 1);
 	            }
 			  
-			  stmt.executeUpdate("INSERT INTO Projekt (id ,name, startdatum, enddatum, beschreibung," +
-				  		"projektmarktplatz_id, organisationseinheit_id)  VALUES (" + p.getProjektId() + ", '" + p.getName()
-				  		+ "', '" + sdf.format(p.getStartdatum()) + "', '"
-				  		+ sdf.format(p.getEnddatum()) + "', '"  + p.getBeschreibung() + "', '" + 
-				  		p.getProjektmarktplatzId() + "', '" + o.getOrganisationseinheitId() + "')");
+			  stmt.executeUpdate("INSERT INTO Projekt (id ,name, startdatum, enddatum, beschreibung, projektmarktplatz_id, organisationseinheit_id)"
+			  		+ "VALUES (" + p.getProjektId() + ", '" + p.getName() + "', '" 
+					+ sdf.format(p.getStartdatum()) + "', '"+ sdf.format(p.getEnddatum()) + "', '" 
+			  		+ p.getBeschreibung() + "', '" + p.getProjektmarktplatzId() + "', '"
+					+ o.getOrganisationseinheitId() + "')");
 			                    
 			          }
 		      catch (SQLException e) {
@@ -163,9 +163,9 @@ public class ProjektMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("UPDATE Projekt SET startdatum='" + sdf.format(p.getStartdatum()) + "', "
-			  		+ "enddatum='" + sdf.format(p.getEnddatum()) + "', " + "name='" + p.getName() + "', "
-					+ "beschreibung='" + p.getBeschreibung() + "', " + " WHERE id=" + p.getProjektId());
+	      stmt.executeUpdate("UPDATE Projekt SET name='" + p.getName() + "'startdatum='" + sdf.format(p.getStartdatum())
+			  		+ "'enddatum='" + sdf.format(p.getEnddatum()) +  "'beschreibung='" 
+	    		    + p.getBeschreibung() + "' WHERE id='" + p.getProjektId());
 
 	    }
 	    catch (SQLException e2) {
@@ -187,7 +187,7 @@ public class ProjektMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM Projekt WHERE id=" + p.getProjektId() +"'");
+	      stmt.executeUpdate("DELETE FROM Projekt WHERE id=" + p.getProjektId());
 
 	    }
 	    catch (SQLException e2) {
