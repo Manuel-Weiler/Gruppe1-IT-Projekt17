@@ -47,45 +47,18 @@ public class Testklasse {
 		//EigenschaftMapper em = EigenschaftMapper.eigenschaftMapper();
 		//p=pm.findById(0);
 		
-		/*
+		
+		
 		ProjektmarktplatzMapper ppm = ProjektmarktplatzMapper.projektmarktplatzMapper();
 		Vector<Projektmarktplatz> v = new Vector<Projektmarktplatz>();
 		v=ppm.findAll();
 
-		a.setAusschreibungstext("Test Text");
-		//a.setBewerbungsfrist(date);
-		a.setBezeichnung("Test bezeichnung");
-		a.setID(1);
-		a.setNameProjektleiter("HS");
-		a.setPartnerprofilId(2);
-		a.setProjektId(3);
 		
-		Partnerprofil pa = new Partnerprofil();
-		Projekt pr = new Projekt ();
-
-		
-		
-
-
-		PartnerprofilMapper p = PartnerprofilMapper.partnerprofilMapper();
-		ProjektMapper l = ProjektMapper.projektMapper();
-		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
-	//	p=p.findById(0);
-		
-		am.insertAusschreibung(a, pa, pr);
-
-		/*
-		 * Vector<Eigenschaft> ev= new Vector<Eigenschaft>();
-		
-		 * ev=em.selectAllEigenschaftOfPartnerprofil(p);
-		 *
-		*/
-		/*
 		for(Projektmarktplatz proji: v){
 			System.out.println(proji.getName());
 			
 		} 
-		*/
+		
 		
 		
 		
