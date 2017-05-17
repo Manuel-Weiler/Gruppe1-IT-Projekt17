@@ -15,9 +15,9 @@ public class ProjektmarktplatzTest {
 	ProjektmarktplatzMapper pm = ProjektmarktplatzMapper.projektmarktplatzMapper();
     
     
-   p=pm.findById(1);
+   p=pm.findById(4);
    System.out.println(p.getName());
-   //p.setName("HDM");
-   pm.delete(p);
+   //p.setName("Test123");
+  // pm.delete(p);
 }
 }
