@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import com.ibm.icu.text.SimpleDateFormat;
 
+import de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl;
 import de.hdm.gruppe1.Project4u.server.db.AusschreibungMapper;
 import de.hdm.gruppe1.Project4u.server.db.EigenschaftMapper;
 import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
@@ -42,7 +43,7 @@ public class Testklasse {
 		e.setName("alter");
 		e.setWert("97"); 
 		*/
-		//Partnerprofil p = new Partnerprofil();
+		//Projektmarktplatz p = new Projektmarktplatz();
 		//PartnerprofilMapper pm = PartnerprofilMapper.partnerprofilMapper();
 		//EigenschaftMapper em = EigenschaftMapper.eigenschaftMapper();
 		//p=pm.findById(0);
@@ -52,7 +53,10 @@ public class Testklasse {
 		ProjektmarktplatzMapper ppm = ProjektmarktplatzMapper.projektmarktplatzMapper();
 		Vector<Projektmarktplatz> v = new Vector<Projektmarktplatz>();
 		v=ppm.findAll();
-
+		
+		
+		
+		
 		
 		for(Projektmarktplatz proji: v){
 			System.out.println(proji.getName());
