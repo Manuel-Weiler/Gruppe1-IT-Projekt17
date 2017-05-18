@@ -94,7 +94,7 @@ public class NavigationsleisteWidget extends Composite{
 				RootPanel.get("content").add(new ProjektmarktplatzWidget(vtest));
 				*/
 				
-				Window.alert("clickhandler funktioniert");
+				/*
 				Project4uVerwaltung.testMethode(new AsyncCallback<String>() {
 					
 					@Override
@@ -117,9 +117,9 @@ public class NavigationsleisteWidget extends Composite{
 						
 					}
 				});
-				
+				*/
 				/*
-				 * Anstelle des obigen Testcodes soll dieser Code implementiert werden.
+				 * Anstelle des obigen Testcodes soll dieser Code implementiert werden.*/
 				Project4uVerwaltung.findAllProjektmarktplatz(new AsyncCallback<Vector<Projektmarktplatz>>() {
 					
 					@Override
@@ -140,7 +140,7 @@ public class NavigationsleisteWidget extends Composite{
 						dBox.show();
 						
 					}
-				});*/
+				});
 				
 			}
 		});
