@@ -7,8 +7,8 @@
     Allows App Engine to send multiple requests to one instance in parallel:
   -->
   <threadsafe>true</threadsafe>
-
-  <!-- Configure serving/caching of GWT files -->
+  
+   <!-- Configure serving/caching of GWT files -->
   <static-files>
     <include path="**" />
 
@@ -38,5 +38,7 @@
     stale session data. For details, see
     http://code.google.com/appengine/docs/java/config/appconfig.html#Enabling_Sessions
   -->
+  
+  <use-google-connector-j>true</use-google-connector-j>
 
 </appengine-web-app>

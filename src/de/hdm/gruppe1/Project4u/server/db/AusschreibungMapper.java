@@ -249,7 +249,7 @@ public Vector<Ausschreibung> findByProjekt(Projekt projekt) {
 			
 			while(rs.next()){
 				Ausschreibung au = new Ausschreibung();
-				au.setAusschreibungId(rs.getInt("id")); //TODO in der DB steht "id" jedoch sollte das vielleicht "AusschreibungID" hei�en
+				au.setAusschreibungId(rs.getInt("id")); 
 				au.setBezeichnung(rs.getString("bezeichnung"));
 				au.setNameProjektleiter(rs.getString("name_projektleiter"));
 				au.setBewerbungsfrist(rs.getDate("bewerbungsfrist"));

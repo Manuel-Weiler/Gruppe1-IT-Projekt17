@@ -14,7 +14,7 @@ public class TestBewerbungsmapper {
 		Bewerbung b = new Bewerbung();
 
 		BewerbungMapper bm = BewerbungMapper.bewerbungMapper();
-		b = bm.findById(3);
+		b = bm.findById(2);
 		//System.out.println(b.getBewerbungstext());
 		//b.setBewerbungstext("Hallo");
 		// bm.insert(b,ausschreibung,orga);

@@ -1,21 +1,34 @@
 package de.hdm.gruppe1.Project4u.server.db;
 
 import java.sql.*;
-import java.sql.DriverManager;
+
+import com.google.appengine.api.utils.SystemProperty;
 
 public class DBConnection {
 	private static Connection con = null;
-	//private static String googleUrl = "'jdbc:mysql://173.194.86.227:3306/project4u', 'TobiasReumann', null"; // <-- da muss unsere Google-DatenbankURL rein!
-	//private static String localUrl = ""; // <-- da muss unsere lokale DatenbankURL rein!
-	
-	//Datenbankverbindung aufbauen
-	public static Connection connection(){
-		if (con == null) {
 
+	// Deployment URL http://1-dot-project4u-165512.appspot.com/
+
+	private static String googleUrl = "jdbc:google:mysql://project4u-165512:hdm-project4u/Project4u?user=root&password=test";
+	
+	//lokale URL: http://127.0.0.1:8888/Project4u.html
+	private static String localUrl = "jdbc:mysql://127.0.0.1:8888/Project4u?user=root";
+
+	// Datenbankverbindung aufbauen
+	public static Connection connection() {
+		if (con == null) {
+			String url = null;
 			try {
 
-				con = DriverManager.getConnection("jdbc:mysql://173.194.86.227:3306/project4u", "TobiasReumann", null);
-			
+				if(SystemProperty.environment.value() == SystemProperty.Environment.Value.Production){
+					Class.forName("com.mysql.jdbc.GoogleDriver");
+					url = googleUrl;
+				} else{
+					Class.forName("com.mysql.jdbc.Driver");
+					url = localUrl;
+				}
+				con = DriverManager.getConnection(url);
+
 			} catch (Exception e) {
 				con = null;
 				e.printStackTrace();
@@ -23,15 +36,20 @@ public class DBConnection {
 		}
 		return con;
 	}
-    /**
+
+	/**
 	 * Schließt das ResultSet, das Statement und die Connection.
-	 * @param rs ResultSet
-	 * @param stmt Statement
-	 * @param con Datenbankverbindung
+	 * 
+	 * @param rs
+	 *            ResultSet
+	 * @param stmt
+	 *            Statement
+	 * @param con
+	 *            Datenbankverbindung
 	 * @throws Exception
 	 */
-	public static void closeAll(ResultSet rs, Statement stmt, Connection con) throws IllegalArgumentException{
-		
+	public static void closeAll(ResultSet rs, Statement stmt, Connection con) throws IllegalArgumentException {
+
 	}
 
 }

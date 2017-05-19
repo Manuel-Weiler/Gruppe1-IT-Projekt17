@@ -11,7 +11,6 @@ public class ProjektmarktplatzTest {
 		
 	// p.setName("hdm");
 		
-		
 	ProjektmarktplatzMapper pm = ProjektmarktplatzMapper.projektmarktplatzMapper();
     
     

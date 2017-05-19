@@ -11,6 +11,7 @@ import de.hdm.gruppe1.Project4u.shared.report.Column;
 import de.hdm.gruppe1.Project4u.shared.report.CompositeParagraph;
 import de.hdm.gruppe1.Project4u.shared.report.Report;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAllAusschreibungen;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
 import de.hdm.gruppe1.Project4u.shared.report.Row;
 import de.hdm.gruppe1.Project4u.shared.report.SimpleParagraph;
 import de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl;
@@ -201,12 +202,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			//für jede Spalte dieser Zeile wird nun der Inhalt geschrieben
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBezeichnung())));
-			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektleiter())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getNameProjektleiter())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungstext())));
-			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstelldatum())));
-			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektID())));
-			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilID())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
 			
 			//Zeile dem Report hinzufügen
 			result.addRow(ausschreibungRow);
@@ -216,5 +217,95 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		return result;
 
 	}
+	
+	@Override
+	public ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Ausschreibung au)
+			throws IllegalArgumentException{
+		
+		if (this.getProject4uAdministration() == null)
+			return null;
+		/**
+		 * leeren Report anlegen
+		 */
+		
+		ReportByAusschreibungenForPartnerprofil result = new ReportByAusschreibungenForPartnerprofil();
+		
+		/**
+		 * Titel und Bezeichung des Reports
+		 */
+		result.setTitle("Meine Ausschreibungen");
+		
+		//Impressum hinzufuegen
+		result.setCreated(new Date());
+		
+		//Kopfdaten des Reports
+		
+		CompositeParagraph header = new CompositeParagraph();
+		
+		header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Ausschreibungen die Ihrerm Partnerprofil entsprechen"));
+		
+		//Kopfdaten zu Report hinzufügen
+		result.setHeaderData(header);
+		
+		/**
+		 * Inhalt des Reports ID
+		 */
+		
+		header.addSubParagraph(new SimpleParagraph("Ausschreibungs-ID: " + au.getAusschreibungId()));
+		
+		/**
+		 * Inhalt des Reports Bezeichung
+		 */
+		header.addSubParagraph(new SimpleParagraph("Bezeichnung: " + au.getBezeichnung()));
+	
+		
+		return result;
+				
+	}
+	
 
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
