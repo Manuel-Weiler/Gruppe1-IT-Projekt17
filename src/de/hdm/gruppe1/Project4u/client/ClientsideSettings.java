@@ -13,7 +13,7 @@ public class ClientsideSettings extends CommonSettings{
 	
 	//Leere Objektvariablen, um Project4uAdministrationAsync einmalig zu instaziieren
 	
-	private static Project4uAdministrationAsync project4uAdministration = null;
+	//private static Project4uAdministrationAsync project4uAdministration = null;
 	private static Project4uAdministrationAsync project4uVerwaltung = null;
 	private static ReportGeneratorAsync reportGenerator = null;
 	private static Organisationseinheit aktuellerUser = null;
@@ -34,13 +34,13 @@ public class ClientsideSettings extends CommonSettings{
 	}
 
 	//Verbindung zu project4u Administration
-	public static Project4uAdministrationAsync getProject4uAdministration() {
+	/*public static Project4uAdministrationAsync getProject4uAdministration() {
 		
 		if(project4uAdministration == null){
 			project4uAdministration = GWT.create(Project4uAdministration.class);
 		}
 		return project4uAdministration;
-	}
+	}*/
 	//Sollte es keine Instanz dieser Klasse geben, so wird diese hier erzeugt.
 	public static Project4uAdministrationAsync getProject4uVerwaltung(){
 		

@@ -94,6 +94,7 @@ public class BewerbungMapper {
 				stmt.executeUpdate("INSERT INTO Bewerbung (id, erstelldatum, bewerbungstext, ausschreibung_id, organisationseinheit_id)"
 						+ "VALUES ('" + bewerbung.getBewerbungID() + "','" + sdf.format(bewerbung.getErstelldatum()) + "','" 
 						+ bewerbung.getBewerbungstext() + "', '"+a.getAusschreibungId()+"', '"+o.getOrganisationseinheitId()+"')");
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -270,5 +271,7 @@ public class BewerbungMapper {
 		}
 
 	}
+	
+	
 
 }

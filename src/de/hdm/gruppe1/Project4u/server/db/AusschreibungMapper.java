@@ -173,24 +173,35 @@ public class AusschreibungMapper {
 	}
 	
 //FINDEN EINER AUSSCHREIBUNG NACH PROJEKT
-public Ausschreibung findByProjekt(Projekt name) {
-		Connection con = DBConnection.connection();
-		Ausschreibung ausschreibung = new Ausschreibung();
+public Vector<Ausschreibung> findByProjekt(Projekt projekt) {
+	Connection con = DBConnection.connection();
+    Vector<Ausschreibung> result = new Vector<Ausschreibung>();
 
-		try {
-			Statement stmt = con.createStatement();
+    try {
+      Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Ausschreibung WHERE Projekt='" + "");
-				//get. of
-			if (rs.next()) {
+      ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt " + "WHERE name LIKE '" + projekt.getName()
+    		  							+ "' ORDER BY name");
 
-				ausschreibung.setID(rs.getInt("id"));
-							}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return ausschreibung;
-	}
+ 
+      while (rs.next()) {
+        Ausschreibung au = new Ausschreibung();
+		au.setID(rs.getInt("id"));
+		au.setBezeichnung (rs.getString("bezeichnung"));
+		au.setNameProjektleiter (rs.getString("name_projektleiter"));
+		au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
+		au.setAusschreibungstext (rs.getString("ausschreibungstext"));
+		au.setErstellDatum(rs.getDate("erstelldatum"));
+
+        result.addElement(au);
+      }
+    }
+    catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return result;
+  }
 
 
 	

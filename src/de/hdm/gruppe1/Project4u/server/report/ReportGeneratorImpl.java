@@ -176,6 +176,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		 */
 
 		// Kopfzeile für die Tabelle anlegen:
+
 		Row headline = new Row();
 
 		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
@@ -200,8 +201,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			// für jede Spalte dieser Zeile wird nun der Inhalt geschrieben
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBezeichnung())));
-			// TODO ausschreibungRow.addColumn(new
-			// Column(String.valueOf(a.getProjektleiter())));
+			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektleiter())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungstext())));
 			// TODO ausschreibungRow.addColumn(new
