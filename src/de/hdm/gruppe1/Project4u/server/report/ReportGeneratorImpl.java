@@ -11,12 +11,14 @@ import de.hdm.gruppe1.Project4u.shared.report.Column;
 import de.hdm.gruppe1.Project4u.shared.report.CompositeParagraph;
 import de.hdm.gruppe1.Project4u.shared.report.Report;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAllAusschreibungen;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByAllBewerbungenForAusschreibung;
 import de.hdm.gruppe1.Project4u.shared.report.Row;
 import de.hdm.gruppe1.Project4u.shared.report.SimpleParagraph;
 import de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.ReportGenerator;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 
 /**
  * Implementierung ReportGenerator-Interface
@@ -24,7 +26,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 
 @SuppressWarnings("serial")
 public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportGenerator {
-	//Logger log = Logger.getLogger("logger");
+	// Logger log = Logger.getLogger("logger");
 
 	/**
 	 * Reportgenerator braucht Zugriff auf Project4uAdministration
@@ -47,7 +49,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 * 
 	 * @throws IllegalArgumentException
 	 */
-	
+
 	@Override
 	public void init() throws IllegalArgumentException {
 		Project4uAdministrationImpl a = new Project4uAdministrationImpl();
@@ -77,27 +79,26 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 */
 	protected void addImprint(Report r) {
 
-		
-		//Das Impressum kann aus mehreren Zeilen bestehen
+		// Das Impressum kann aus mehreren Zeilen bestehen
 		CompositeParagraph imprint = new CompositeParagraph();
-		
-		//1.Zeile:
+
+		// 1.Zeile:
 		imprint.addSubParagraph(new SimpleParagraph("Project4u"));
-		
-		//weitere Zeilen können ergänzt wrden
-		
-		//Das eigentliche Hinzufuegen des Impressums zum Report
+
+		// weitere Zeilen können ergänzt wrden
+
+		// Das eigentliche Hinzufuegen des Impressums zum Report
 		r.setImprint(imprint);
 	}
 
 	/**
 	 * Methode um alle Ausschreibungen in einem Report ausgeben zu können
+	 * 
 	 * @return der fertige Report
 	 */
 
 	@Override
-	public ReportByAllAusschreibungen createAllAusschreibungenReport(Ausschreibung au) 
-			throws IllegalArgumentException {
+	public ReportByAllAusschreibungen createAllAusschreibungenReport(Ausschreibung au) throws IllegalArgumentException {
 
 		if (this.getProject4uAdministration() == null)
 			return null;
@@ -113,8 +114,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		 */
 
 		result.setTitle("Alle Ausschreibungen");
-		
-		//Impressum hinzufuegen
+
+		// Impressum hinzufuegen
 		this.addImprint(result);
 
 		/*
@@ -122,13 +123,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		 */
 		result.setCreated(new Date());
 
-		
-		//Kopfdaten des Reports:
+		// Kopfdaten des Reports:
 
 		CompositeParagraph header = new CompositeParagraph();
 		header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Ausschreibungen der Projektplattform"));
-		
-		//Kopfdaten zum Report hinzufügen
+
+		// Kopfdaten zum Report hinzufügen
 		result.setHeaderData(header);
 
 		/**
@@ -175,11 +175,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		 * Report ausgeben
 		 */
 
-		
-		//Kopfzeile für die Tabelle anlegen:
+		// Kopfzeile für die Tabelle anlegen:
 		Row headline = new Row();
-		
-		//Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
+
+		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
 		headline.addColumn(new Column("Ausschreibungs-ID"));
 		headline.addColumn(new Column("Bezeichnung"));
 		headline.addColumn(new Column("Projektleiter"));
@@ -188,33 +187,43 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		headline.addColumn(new Column("Erstelldatum:"));
 		headline.addColumn(new Column("Projekt-ID"));
 		headline.addColumn(new Column("Partnerprofil-ID"));
-		
-		//Kopfzeile wird dem Report hinzugefuegt
+
+		// Kopfzeile wird dem Report hinzugefuegt
 		result.addRow(headline);
-		
-		//Reportinhalt:
+
+		// Reportinhalt:
 		ArrayList<Ausschreibung> allAusschreibungen = this.project4uAdministration.getAllAusschreibungen();
-		
-		for(Ausschreibung a : allAusschreibungen){
-			//neue, leere Zeile anlegen
+
+		for (Ausschreibung a : allAusschreibungen) {
+			// neue, leere Zeile anlegen
 			Row ausschreibungRow = new Row();
-			//für jede Spalte dieser Zeile wird nun der Inhalt geschrieben
+			// für jede Spalte dieser Zeile wird nun der Inhalt geschrieben
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBezeichnung())));
-			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektleiter())));
+			// TODO ausschreibungRow.addColumn(new
+			// Column(String.valueOf(a.getProjektleiter())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungstext())));
-			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstelldatum())));
-			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektID())));
-			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilID())));
-			
-			//Zeile dem Report hinzufügen
+			// TODO ausschreibungRow.addColumn(new
+			// Column(String.valueOf(a.getErstelldatum())));
+			// TODO ausschreibungRow.addColumn(new
+			// Column(String.valueOf(a.getProjektID())));
+			// TODO ausschreibungRow.addColumn(new
+			// Column(String.valueOf(a.getPartnerprofilID())));
+
+			// Zeile dem Report hinzufügen
 			result.addRow(ausschreibungRow);
 		}
-		
-		//Report ausgeben
+
+		// Report ausgeben
 		return result;
 
+	}
+
+	@Override
+	public ReportByAllBewerbungenForAusschreibung createAllBewerbungenForAllAusschreibungReport(Bewerbung be) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
