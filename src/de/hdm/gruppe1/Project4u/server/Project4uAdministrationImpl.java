@@ -545,6 +545,15 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		String test = "Dies ist ein Test-String";
 		return test;
 	}
+	
+	public Vector<Projektmarktplatz> testMethode2(){
+		Projektmarktplatz test = new Projektmarktplatz();
+		test.setName("test");
+		test.setProjektmarktplatzId(1);
+		Vector<Projektmarktplatz> vtest = new Vector<Projektmarktplatz>();
+		vtest.add(test);
+		return vtest;
+	}
 
 	@Override
 	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {

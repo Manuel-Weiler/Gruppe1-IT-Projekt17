@@ -33,4 +33,6 @@ public interface Project4uAdministrationAsync {
 	
 	void getAllAusschreibungen(AsyncCallback<ArrayList<Ausschreibung>> callback);
 
+	void testMethode2(AsyncCallback<Vector<Projektmarktplatz>> callback);
+
 }
