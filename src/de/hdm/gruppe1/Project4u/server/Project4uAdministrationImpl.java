@@ -107,6 +107,9 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return this.ausschreibungMapper.findByProjekt(name);
 	}
 	
+	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {
+		return this.ausschreibungMapper.findAll();
+	}
 	
 	/*
 	 * #########################################################################
@@ -180,6 +183,11 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * #########################################################################
 	 * 
 	 */
+	@Override
+	public ArrayList<Bewerbung> getBewerbungenOf(Ausschreibung aus)  
+			throws IllegalArgumentException{
+		return this.bewerbungMapper.findByAusschreibung(aus);
+	}
 	
 	/*
 	 * #########################################################################
@@ -548,9 +556,4 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return test;
 	}
 
-	@Override
-	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

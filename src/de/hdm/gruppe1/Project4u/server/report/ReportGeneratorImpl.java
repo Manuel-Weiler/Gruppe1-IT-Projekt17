@@ -201,15 +201,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			// für jede Spalte dieser Zeile wird nun der Inhalt geschrieben
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBezeichnung())));
-			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektleiter())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getNameProjektleiter())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungstext())));
-			// TODO ausschreibungRow.addColumn(new
-			// Column(String.valueOf(a.getErstelldatum())));
-			// TODO ausschreibungRow.addColumn(new
-			// Column(String.valueOf(a.getProjektID())));
-			// TODO ausschreibungRow.addColumn(new
-			// Column(String.valueOf(a.getPartnerprofilID())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
 
 			// Zeile dem Report hinzufügen
 			result.addRow(ausschreibungRow);
@@ -221,9 +218,60 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 
 	@Override
-	public ReportByAllBewerbungenForAusschreibung createAllBewerbungenForAllAusschreibungReport(Bewerbung be) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public ReportByAllBewerbungenForAusschreibung createAllBewerbungenForAllAusschreibungReport(Ausschreibung aus)
+			throws IllegalArgumentException {
 
+		if (this.getProject4uAdministration() == null)
+		
+		return null;
+
+		// Leeren Report anlegen
+		ReportByAllBewerbungenForAusschreibung result = new ReportByAllBewerbungenForAusschreibung();
+
+		// Titel und Bezeichung des Reports
+		result.setTitle("Alle Bewerbungen auf Ihre Ausschreibungen: ");
+
+		// Impressm hinzufuegen
+		this.addImprint(result);
+
+		// Erstelldatum des Reports hinzufuegen
+		result.setCreated(new Date());
+
+		// Kopfdaten des Reports
+		CompositeParagraph header = new CompositeParagraph();
+		header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Bewerbungen auf Ihre Ausschreibung: "));
+
+		// Kopfdaten zum Report hinzufügen
+		result.setHeaderData(header);
+
+		// Inhalt des Reports: Ausschreibungs-ID
+		header.addSubParagraph(new SimpleParagraph("Ausschreibungs-ID: " + aus.getAusschreibungId()));
+
+		// nun muss der Report ausgegeben werden.
+		// Kopfzeile der Report-Tabelle:
+		Row headline = new Row();
+		headline.addColumn(new Column("Bewerbung-ID"));
+		headline.addColumn(new Column("Erstelldatum"));
+		headline.addColumn(new Column("Bewerbungstext"));
+
+		// Kopfzeile dem Report hinzufuegen.
+		result.addRow(headline);
+
+		// Report mit Inhalt befuellen.
+		ArrayList<Bewerbung> bewerbungen = this.project4uAdministration.getBewerbungenOf(aus);
+
+		for (Bewerbung be : bewerbungen) {
+			// Leere Zeile anlegen
+			Row bewerbungRow = new Row();
+
+			// Erste Spalte BewerbungId hinzufuegen
+			bewerbungRow.addColumn(new Column(String.valueOf(be.getBewerbungID())));
+			bewerbungRow.addColumn(new Column(String.valueOf(be.getBewerbungstext())));
+			bewerbungRow.addColumn(new Column(String.valueOf(be.getErstelldatum())));
+
+			result.addRow(bewerbungRow);
+		}
+
+		return result;
+	}
 }

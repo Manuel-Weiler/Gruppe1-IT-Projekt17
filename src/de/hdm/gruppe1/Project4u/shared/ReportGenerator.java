@@ -13,6 +13,6 @@ public interface ReportGenerator extends RemoteService{
 	
 	ReportByAllAusschreibungen createAllAusschreibungenReport(Ausschreibung au);
 	
-	ReportByAllBewerbungenForAusschreibung createAllBewerbungenForAllAusschreibungReport(Bewerbung be);
+	ReportByAllBewerbungenForAusschreibung createAllBewerbungenForAllAusschreibungReport(Ausschreibung aus);
 
 }

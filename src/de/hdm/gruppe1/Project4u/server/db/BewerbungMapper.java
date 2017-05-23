@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
@@ -164,7 +165,6 @@ public class BewerbungMapper {
 				b.setBewerbungID(rs.getInt("id"));
 				b.setErstelldatum(rs.getDate("erstelldatum"));
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
-				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
 				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 
 				return b;
@@ -196,7 +196,6 @@ public class BewerbungMapper {
 				b.setBewerbungID(rs.getInt("id"));
 				b.setErstelldatum(rs.getDate("erstelldatum"));
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
-				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
 				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 
 				// Hinzufügen des neuen Objekts zum Ergebnisvektor
@@ -232,7 +231,6 @@ public class BewerbungMapper {
 				b.setBewerbungID(rs.getInt("id"));
 				b.setErstelldatum(rs.getDate("erstelldatum"));
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
-				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
 				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 
 				// Hinzufügen des neuen Objekts zum Ergebnisvektor
@@ -272,6 +270,29 @@ public class BewerbungMapper {
 
 	}
 	
-	
+	//Auslesen aller Bewerbungen auf eine spezifische Ausschreibung
+	public ArrayList<Bewerbung> findByAusschreibung(int aus){
+		Connection con = DBConnection.connection();
+		ArrayList<Bewerbung> result = new ArrayList<Bewerbung>();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("Select * FROM Bewerbung"
+					+ "WHERE ausschreibung =" + aus + " ORDER BY id");
+		
+			while (rs.next()){
+				Bewerbung be = new Bewerbung();
+				be.setBewerbungID(rs.getInt("id"));
+				be.setBewerbungstext(rs.getString("bewerbungstext"));
+				be.setErstelldatum(rs.getDate("erstelldatum"));
+				
+				result.add(be);
+			}
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 }

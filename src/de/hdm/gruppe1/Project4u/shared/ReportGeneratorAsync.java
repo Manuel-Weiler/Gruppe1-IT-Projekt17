@@ -18,7 +18,7 @@ public interface ReportGeneratorAsync {
 
 	void createAllAusschreibungenReport(Ausschreibung au, AsyncCallback<ReportByAllAusschreibungen> callback);
 
-	void createAllBewerbungenForAllAusschreibungReport(Bewerbung be,
+	void createAllBewerbungenForAllAusschreibungReport(Ausschreibung aus,
 			AsyncCallback<ReportByAllBewerbungenForAusschreibung> callback);
 
 }

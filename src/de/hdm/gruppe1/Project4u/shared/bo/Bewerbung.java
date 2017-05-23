@@ -8,7 +8,6 @@ public class Bewerbung{
 	
 	private int bewerbungId = 0;
 	private int organisationseinheitId;
-	private int ausschreibungId;
 	private Date erstelldatum = null;
 	private String bewerbungstext = null;
 
@@ -26,14 +25,6 @@ public class Bewerbung{
 	
 	public void setOrganisationseinheitId(int organisationseinheitId) {
 		this.organisationseinheitId = organisationseinheitId;
-	}
-	
-	public int getAusschreibungId() {
-		return ausschreibungId;
-	}
-	
-	public void setAusschreibungId(int ausschreibungId) {
-		this.ausschreibungId = ausschreibungId;
 	}
 
 	public Date getErstelldatum() {

@@ -10,6 +10,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
@@ -32,5 +33,7 @@ public interface Project4uAdministrationAsync {
 
 	
 	void getAllAusschreibungen(AsyncCallback<ArrayList<Ausschreibung>> callback);
+
+	void getBewerbungenOf(Ausschreibung aus, AsyncCallback<ArrayList<Bewerbung>> callback);
 
 }
