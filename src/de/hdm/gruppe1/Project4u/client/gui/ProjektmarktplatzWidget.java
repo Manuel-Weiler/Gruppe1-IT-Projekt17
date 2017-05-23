@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
+import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
@@ -48,10 +49,11 @@ public class ProjektmarktplatzWidget extends Composite {
 		}
 	};
 	
+	
 	public ProjektmarktplatzWidget(Vector <Projektmarktplatz> projektmarktplaetze){
 		
 		
-		Button addProjektmarktplatz = new Button("Projektmarktplatz anlegen");
+		Button addProjektmarktplatz = new Button("Projektmarktplatz anlegen");	
 		addProjektmarktplatz.addClickHandler(new addProjektmarktplatzClickHandler());
 		
 		final Button changeProjektmarktplatz = new Button("Projektmarktplatz bearbeiten");
@@ -90,7 +92,6 @@ public class ProjektmarktplatzWidget extends Composite {
 			pMarktplatzeTable.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
 			
 			
-			
 			/*
 			 * Das SelectionModel wird zur Tabelle der Projektmarktplätze hinzugefügt
 			 * und gewährleistet, ähnlich einem ClickHandler, dass beim Klicken auf
@@ -98,6 +99,7 @@ public class ProjektmarktplatzWidget extends Composite {
 			 */
 			final SingleSelectionModel<Projektmarktplatz> selectionModel = new SingleSelectionModel<Projektmarktplatz>(KEY_PROVIDER);
 
+			
 			pMarktplatzeTable.setSelectionModel(selectionModel);
 
 			/*
@@ -108,17 +110,82 @@ public class ProjektmarktplatzWidget extends Composite {
 				
 				@Override
 				public void onSelectionChange(SelectionChangeEvent event) {
-					DialogBox dBox = new DialogBox();
+					final DialogBox diBox = new DialogBox();
 					VerticalPanel vPanel = new VerticalPanel();
 					vPanel.add(seeProjektmarktplatz);
 					vPanel.add(deleteProjektmarktplatz);
 					vPanel.add(changeProjektmarktplatz);
-					dBox.add(vPanel);
+					diBox.add(vPanel);
 					seeProjektmarktplatz.setPixelSize(270, 30);
 					deleteProjektmarktplatz.setPixelSize(270, 30);
 					changeProjektmarktplatz.setPixelSize(270, 30);
 					
-					changeProjektmarktplatz.addClickHandler(new updateProjektmarktplatzClickHandler());
+					changeProjektmarktplatz.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							diBox.hide();
+							final DialogBox Box = new DialogBox();
+							
+							VerticalPanel vPanel = new VerticalPanel();
+							Label name = new Label("Name des Projektmarktplatzes");
+							final TextBox pName = new TextBox();
+							pName.setValue(selectionModel.getSelectedObject().getName()); 
+							Button update = new Button("Änderungen am Projektmarktplatz speichern");
+							
+							update.addClickHandler(new ClickHandler() {
+								
+								@Override
+								public void onClick(ClickEvent event) {
+									if (pName.getValue()!=null){
+										
+										Projektmarktplatz p = selectionModel.getSelectedObject();
+										p.setName(pName.getValue());
+										Project4uVerwaltung.update(p, new AsyncCallback<Void>() {
+											
+											@Override
+											public void onSuccess(Void result) {
+												Project4uVerwaltung.findAllProjektmarktplatz(new AsyncCallback<Vector<Projektmarktplatz>>() {
+
+													
+													public void onSuccess(Vector<Projektmarktplatz> result) {
+														
+														RootPanel.get("content").clear();
+														RootPanel.get("content").add(new ProjektmarktplatzWidget(result));
+
+													}
+													
+													@Override
+													public void onFailure(Throwable caught) {							
+													}
+												});
+											}
+											
+											@Override
+											public void onFailure(Throwable caught) {
+											Window.alert(caught.getMessage());
+											}
+										});
+										Box.hide();
+									}
+									else {
+										Window.alert("Bitte einen Namen eingeben");
+									}
+								}
+							});
+							
+							vPanel.add(name);
+							vPanel.add(pName);
+							vPanel.add(update);
+							Box.add(vPanel);
+							Box.center();
+							Box.setAutoHideEnabled(true);
+							Box.show();
+							
+							
+							
+						}
+					});
 					
 					seeProjektmarktplatz.addClickHandler(new ClickHandler() {
 						
@@ -126,6 +193,7 @@ public class ProjektmarktplatzWidget extends Composite {
 						public void onClick(ClickEvent event) {
 							// TODO: Die Projektmarktplatzinstanz wird an eine Projektinstanz weitergegeben,
 							//und diese im content Bereich angezeigt.
+							
 							
 						}
 					});
@@ -139,9 +207,9 @@ public class ProjektmarktplatzWidget extends Composite {
 						}
 					});
 					
-					dBox.setAutoHideEnabled(true);
-					dBox.center();
-					dBox.show();
+					diBox.setAutoHideEnabled(true);
+					diBox.center();
+					diBox.show();
 					
 					
 				}
@@ -223,20 +291,11 @@ public class ProjektmarktplatzWidget extends Composite {
 		}}
 	
 	
-		private class updateProjektmarktplatzClickHandler implements ClickHandler{
+		
 
-			public void onClick(ClickEvent event) {
-				 DialogBox dBox = new DialogBox();
-				
-				VerticalPanel vPanel = new VerticalPanel();
-				Label name = new Label("Name des neuen Projektmarktplatzes");
-				TextBox pName = new TextBox();
-				Button createP = new Button("Neuen Projektmarktplatz anlegen");
-				
-				
-			}
+			
 			
 		}
-	}
+	
 	
 

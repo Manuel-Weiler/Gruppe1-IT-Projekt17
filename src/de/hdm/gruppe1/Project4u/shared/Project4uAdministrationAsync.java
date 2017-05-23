@@ -37,4 +37,6 @@ public interface Project4uAdministrationAsync {
 
 	void createProjektmarktplatz(Projektmarktplatz p, AsyncCallback<Projektmarktplatz> callback);
 
+	void update(Projektmarktplatz p, AsyncCallback<Void> callback);
+
 }

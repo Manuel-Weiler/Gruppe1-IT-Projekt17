@@ -132,7 +132,7 @@ public class ProjektmarktplatzMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      stmt.executeUpdate("UPDATE Projektmarktplatz SET name = '" + p.getName() 
+		      stmt.executeUpdate("UPDATE projektmarktplatz SET name = '" + p.getName() 
 		                         + "' WHERE id ='" + p.getProjektmarktplatzId() + "';"); 
 		    }
 		    catch (SQLException e2) {
