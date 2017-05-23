@@ -33,15 +33,15 @@ public class ProjektmarktplatzWidget extends Composite {
 	
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	
-	Button deleteProjektmarktplatz = new Button("Projektmarktplatz löschen"); //TODO: anlegen
-	Button seeProjektmarktplatz = new Button("Projektmarktplatz ansehen"); //TODO: Clickhandler: mit ProjektWidget verknüpfen
+	Button deleteProjektmarktplatz = new Button("Projektmarktplatz lÃ¶schen"); //TODO: anlegen
+	Button seeProjektmarktplatz = new Button("Projektmarktplatz ansehen"); //TODO: Clickhandler: mit ProjektWidget verknï¿½pfen
 	
 	
 	
 	
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch einzelne Objekte der
-	 * in der Liste weiter verarbeitet werden können. 
+	 * in der Liste weiter verarbeitet werden kï¿½nnen. 
 	 */
 	public static final ProvidesKey<Projektmarktplatz> KEY_PROVIDER = new ProvidesKey<Projektmarktplatz>() {
 		public Object getKey(Projektmarktplatz item) {
@@ -60,7 +60,7 @@ public class ProjektmarktplatzWidget extends Composite {
 				
 
 		
-		//Abfrage, ob bisher überhaupt Projektmarktplätze existieren.
+		//Abfrage, ob bisher ï¿½berhaupt Projektmarktplï¿½tze existieren.
 		if (projektmarktplaetze.isEmpty()){
 			VerticalPanel vPanel = new VerticalPanel();
 			Label noProjektmarktplatz = new Label("Es existiert noch kein Projektmarktplatz, lege einen an!");
@@ -79,13 +79,13 @@ public class ProjektmarktplatzWidget extends Composite {
 			};
 			
 			/**
-			 * Hinzufügen der Spalten zur Tabelle, in der Reihenfolge von Links nach
+			 * Hinzufï¿½gen der Spalten zur Tabelle, in der Reihenfolge von Links nach
 			 * Rechts. Definition der Spaltennamen.
 			 */
 			
 			pMarktplatzeTable.addColumn(nameColumn, "Name");
 			
-			//Füllen der Tabelle ab dem Index 0.
+			//Fï¿½llen der Tabelle ab dem Index 0.
 			pMarktplatzeTable.setRowData(0, projektmarktplaetze);
 			
 			//Anpassen des Widgets an die Breite des div-Elements "content"
@@ -93,9 +93,9 @@ public class ProjektmarktplatzWidget extends Composite {
 			
 			
 			/*
-			 * Das SelectionModel wird zur Tabelle der Projektmarktplätze hinzugefügt
-			 * und gewährleistet, ähnlich einem ClickHandler, dass beim Klicken auf
-			 * eine Tabellenzeile das jeweilige Objekt zurückgegeben wird.
+			 * Das SelectionModel wird zur Tabelle der Projektmarktplï¿½tze hinzugefï¿½gt
+			 * und gewï¿½hrleistet, ï¿½hnlich einem ClickHandler, dass beim Klicken auf
+			 * eine Tabellenzeile das jeweilige Objekt zurï¿½ckgegeben wird.
 			 */
 			final SingleSelectionModel<Projektmarktplatz> selectionModel = new SingleSelectionModel<Projektmarktplatz>(KEY_PROVIDER);
 
@@ -103,8 +103,8 @@ public class ProjektmarktplatzWidget extends Composite {
 			pMarktplatzeTable.setSelectionModel(selectionModel);
 
 			/*
-			 * Der durch den SelectionHandler zurückgegebene Projektmarktplatz kann an eine
-			 * Instanz des ProjekteWidgets übergeben werden. 
+			 * Der durch den SelectionHandler zurï¿½ckgegebene Projektmarktplatz kann an eine
+			 * Instanz des ProjekteWidgets ï¿½bergeben werden. 
 			 */
 			selectionModel.addSelectionChangeHandler(new Handler() {
 				
@@ -131,7 +131,7 @@ public class ProjektmarktplatzWidget extends Composite {
 							Label name = new Label("Name des Projektmarktplatzes");
 							final TextBox pName = new TextBox();
 							pName.setValue(selectionModel.getSelectedObject().getName()); 
-							Button update = new Button("Änderungen am Projektmarktplatz speichern");
+							Button update = new Button("Ã„nderungen am Projektmarktplatz speichern");
 							
 							update.addClickHandler(new ClickHandler() {
 								
@@ -201,7 +201,7 @@ public class ProjektmarktplatzWidget extends Composite {
 						
 						@Override
 						public void onClick(ClickEvent event) {
-							// TODO: Löschen des Projektmarktplatzes nach vorangegangener Prüfung, ob
+							// TODO: Lï¿½schen des Projektmarktplatzes nach vorangegangener Prï¿½fung, ob
 							//der Nutzer der Ersteller ist.
 							
 						}
@@ -222,7 +222,7 @@ public class ProjektmarktplatzWidget extends Composite {
 	}
 	
 	/*
-	 * Clickhandler für das Hinzufügen eines neuen Projektmarktplatzes. Der neu erzeugte Projektmarktplatz
+	 * Clickhandler fï¿½r das Hinzufï¿½gen eines neuen Projektmarktplatzes. Der neu erzeugte Projektmarktplatz
 	 * wird in die DB geschrieben und das ProjektmarktplatzWidget wird neu erzeugt.
 	 */
 	private class addProjektmarktplatzClickHandler implements ClickHandler{
@@ -248,7 +248,7 @@ public class ProjektmarktplatzWidget extends Composite {
 							@Override
 							public void onSuccess(Projektmarktplatz result) {
 								
-								//...anschließend wird das ProjektmarktplatzWidget neu erzeugt
+								//...anschlieï¿½end wird das ProjektmarktplatzWidget neu erzeugt
 								Project4uVerwaltung.findAllProjektmarktplatz(new AsyncCallback<Vector<Projektmarktplatz>>() {
 
 									

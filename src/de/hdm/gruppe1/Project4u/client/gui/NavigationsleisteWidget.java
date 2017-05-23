@@ -28,7 +28,7 @@ public class NavigationsleisteWidget extends Composite{
 
 	Button profilButton = new Button("Nutzerprofil");
 	Button homeButton = new Button("Startseite");
-	Button pMarktplatz = new Button("Projektmarktplätze");
+	Button pMarktplatz = new Button("ProjektmarktplÃ¤tze");
 	Button eBewerbungen = new Button("Eingangsbewerbungen");
 	Button aBewerbungen = new Button("Ausgangsbewerbungen");
 	Button logout = new Button("Logout");
@@ -57,7 +57,7 @@ public class NavigationsleisteWidget extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO Logout hinzufügen
+				// TODO Logout hinzufï¿½gen
 				
 			}
 		});
@@ -66,7 +66,7 @@ public class NavigationsleisteWidget extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				Label startseiteLabel = new Label("Willkommen auf Project4u, der Projektmarktplatz für Projekte");
+				Label startseiteLabel = new Label("Willkommen auf Project4u, der Projektmarktplatz fÃ¼r Projekte");
 
 				RootPanel.get("contentHeader").clear();
 				RootPanel.get("contentHeader").add(startseiteLabel);
