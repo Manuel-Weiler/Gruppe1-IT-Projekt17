@@ -6,8 +6,9 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+import de.hdm.gruppe1.Project4u.shared.LoginInfo;
 import de.hdm.gruppe1.Project4u.shared.LoginService;
-import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+//import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 /**
  * Implementierungsklasse des Interfaces LoginService
  * @see LoginService
@@ -24,14 +25,16 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 	 * @param requestUri 
 	 * @return loginInfos
 	 */
-  public Organisationseinheit login(String requestUri) {
+	    //Organisationseinheit
+  public LoginInfo login(String requestUri) {
     UserService userService = UserServiceFactory.getUserService();
     User user = userService.getCurrentUser();
-    Organisationseinheit loginInfo = new Organisationseinheit();
+    LoginInfo loginInfo = new LoginInfo();
 
     if (user != null) {
       loginInfo.setLoggedIn(true);
-      loginInfo.setGoogleId(user.getEmail());
+      loginInfo.setEmailAddress(user.getEmail());    //googleId
+	  loginInfo.setNickname(user.getNickname());
       loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
     } else {
       loginInfo.setLoggedIn(false);

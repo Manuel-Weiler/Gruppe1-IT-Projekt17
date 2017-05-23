@@ -34,6 +34,7 @@ public class Project4u implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 
+
 		//TODO: in Methode loadProject4u() verschieben, sobald die Login funktioniert.
 		NavigationsleisteWidget nt = new NavigationsleisteWidget();
 		RootPanel.get("nav").add(nt);

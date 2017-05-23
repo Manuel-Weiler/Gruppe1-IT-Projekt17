@@ -4,30 +4,28 @@ import java.sql.*;
 
 import com.google.appengine.api.utils.SystemProperty;
 
+import com.google.appengine.api.utils.SystemProperty;
+
 public class DBConnection {
 	private static Connection con = null;
-
-	// Deployment URL http://1-dot-project4u-165512.appspot.com/
-
-	private static String googleUrl = "jdbc:google:mysql://project4u-165512:hdm-project4u/Project4u?user=root&password=test";
-	
-	//lokale URL: http://127.0.0.1:8888/Project4u.html
-	private static String localUrl = "jdbc:mysql://127.0.0.1:8888/Project4u?user=root";
 
 	// Datenbankverbindung aufbauen
 	public static Connection connection() {
 		if (con == null) {
-			String url = null;
 			try {
 
-				if(SystemProperty.environment.value() == SystemProperty.Environment.Value.Production){
+				if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+					// Load the class that provides the new
+					// "jdbc:google:mysql://" prefix.
 					Class.forName("com.mysql.jdbc.GoogleDriver");
-					url = googleUrl;
-				} else{
+					con = DriverManager
+							.getConnection("jdbc:google:mysql://project4u-165512:hdm-project4u/project4u?user=root");
+
+				} else {
+					// Local MySQL instance to use during development.
 					Class.forName("com.mysql.jdbc.Driver");
-					url = localUrl;
+					con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project4u", "root", null);
 				}
-				con = DriverManager.getConnection(url);
 
 			} catch (Exception e) {
 				con = null;
