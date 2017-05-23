@@ -6,18 +6,23 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
 
+import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
+import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 
@@ -25,10 +30,13 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 public class ProjektmarktplatzWidget extends Composite {
 	
-	Button addProjektmarktplatz = new Button("Projektmarktplatz anlegen");//TODO: Clickhandler und Maske für Projektmarktplatz anlegen implementieren
+	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
+	
 	Button deleteProjektmarktplatz = new Button("Projektmarktplatz löschen"); //TODO: anlegen
 	Button seeProjektmarktplatz = new Button("Projektmarktplatz ansehen"); //TODO: Clickhandler: mit ProjektWidget verknüpfen
-	Button changeProjektmarktplatz = new Button("Projektmarktplatz bearbeiten");
+	
+	
+	
 	
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch einzelne Objekte der
@@ -41,6 +49,16 @@ public class ProjektmarktplatzWidget extends Composite {
 	};
 	
 	public ProjektmarktplatzWidget(Vector <Projektmarktplatz> projektmarktplaetze){
+		
+		
+		Button addProjektmarktplatz = new Button("Projektmarktplatz anlegen");
+		addProjektmarktplatz.addClickHandler(new addProjektmarktplatzClickHandler());
+		
+		final Button changeProjektmarktplatz = new Button("Projektmarktplatz bearbeiten");
+				
+
+		
+		//Abfrage, ob bisher überhaupt Projektmarktplätze existieren.
 		if (projektmarktplaetze.isEmpty()){
 			VerticalPanel vPanel = new VerticalPanel();
 			Label noProjektmarktplatz = new Label("Es existiert noch kein Projektmarktplatz, lege einen an!");
@@ -48,7 +66,7 @@ public class ProjektmarktplatzWidget extends Composite {
 			vPanel.add(addProjektmarktplatz);
 		}
 		else{
-			
+			VerticalPanel vPanel = new VerticalPanel();
 			CellTable<Projektmarktplatz> pMarktplatzeTable = new CellTable<Projektmarktplatz>(KEY_PROVIDER);
 			
 			//Die Spalte der Projektmarktplatz-Tabelle wird erstellt und deren Inhalt definiert.
@@ -100,6 +118,8 @@ public class ProjektmarktplatzWidget extends Composite {
 					deleteProjektmarktplatz.setPixelSize(270, 30);
 					changeProjektmarktplatz.setPixelSize(270, 30);
 					
+					changeProjektmarktplatz.addClickHandler(new updateProjektmarktplatzClickHandler());
+					
 					seeProjektmarktplatz.addClickHandler(new ClickHandler() {
 						
 						@Override
@@ -126,11 +146,97 @@ public class ProjektmarktplatzWidget extends Composite {
 					
 				}
 			});
-			initWidget(pMarktplatzeTable);
+			vPanel.add(pMarktplatzeTable);
+			vPanel.add(addProjektmarktplatz);
+			initWidget(vPanel);
 		}
 		
 	}
 	
+	/*
+	 * Clickhandler für das Hinzufügen eines neuen Projektmarktplatzes. Der neu erzeugte Projektmarktplatz
+	 * wird in die DB geschrieben und das ProjektmarktplatzWidget wird neu erzeugt.
+	 */
+	private class addProjektmarktplatzClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+			final DialogBox dBox = new DialogBox();
+		
+			VerticalPanel vPanel = new VerticalPanel();
+			Label name = new Label("Name des neuen Projektmarktplatzes");
+			final TextBox pName = new TextBox();
+			Button createP = new Button("Neuen Projektmarktplatz anlegen");
+			createP.addClickHandler(new ClickHandler() {
+
+				public void onClick(ClickEvent event) {
+					if (pName.getValue() != null){
+						Projektmarktplatz pPlatz = new Projektmarktplatz();
+						pPlatz.setName(pName.getValue());
+						
+						//Dem neu erzeugten Projektmarktplatz wird der Name zugewiesen und er wird in der DB abgelegt
+						Project4uVerwaltung.createProjektmarktplatz(pPlatz, new AsyncCallback<Projektmarktplatz>() {
+							
+							@Override
+							public void onSuccess(Projektmarktplatz result) {
+								
+								//...anschließend wird das ProjektmarktplatzWidget neu erzeugt
+								Project4uVerwaltung.findAllProjektmarktplatz(new AsyncCallback<Vector<Projektmarktplatz>>() {
+
+									
+									public void onSuccess(Vector<Projektmarktplatz> result) {
+										RootPanel.get("content").clear();
+										RootPanel.get("content").add(new ProjektmarktplatzWidget(result));
+
+									}
+									
+									@Override
+									public void onFailure(Throwable caught) {							
+									}
+								});
+								
+							}
+							
+							@Override
+							public void onFailure(Throwable caught) {
+								Window.alert(caught.getMessage());
+								
+							}
+						});
+												
+						dBox.hide();
+					}
+					else{
+						Window.alert("Bitte einen Namen eingeben");
+					}
+					
+				}
+			});
+			vPanel.add(name);
+			vPanel.add(pName);
+			vPanel.add(createP);
+			dBox.add(vPanel);
+			dBox.center();
+			dBox.show();
+			dBox.setAutoHideEnabled(true);
+			
+		}}
 	
 	
-}
+		private class updateProjektmarktplatzClickHandler implements ClickHandler{
+
+			public void onClick(ClickEvent event) {
+				 DialogBox dBox = new DialogBox();
+				
+				VerticalPanel vPanel = new VerticalPanel();
+				Label name = new Label("Name des neuen Projektmarktplatzes");
+				TextBox pName = new TextBox();
+				Button createP = new Button("Neuen Projektmarktplatz anlegen");
+				
+				
+			}
+			
+		}
+	}
+	
+

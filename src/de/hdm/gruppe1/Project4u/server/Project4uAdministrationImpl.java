@@ -439,15 +439,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
-	public Projektmarktplatz createProjektmarktplatz(int id, String name )
+	public Projektmarktplatz createProjektmarktplatz(Projektmarktplatz p)
 			throws IllegalArgumentException {
 
-		Projektmarktplatz projektmarktplatz = new Projektmarktplatz();
-		projektmarktplatz.setProjektmarktplatzId(1);
-		projektmarktplatz.setName(name);
-		
-
-		return this.projektmarktplatzMapper.insert(projektmarktplatz);
+		return this.projektmarktplatzMapper.insert(p);
 
 	}
 	

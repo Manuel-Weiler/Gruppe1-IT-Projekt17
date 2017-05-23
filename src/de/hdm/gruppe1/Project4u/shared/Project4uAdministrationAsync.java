@@ -35,4 +35,6 @@ public interface Project4uAdministrationAsync {
 
 	void testMethode2(AsyncCallback<Vector<Projektmarktplatz>> callback);
 
+	void createProjektmarktplatz(Projektmarktplatz p, AsyncCallback<Projektmarktplatz> callback);
+
 }

@@ -108,7 +108,7 @@ public class ProjektmarktplatzMapper {
 		  try{
 			  Statement stmt = con.createStatement();
 			  
-			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Projektmarktplatz ");
+			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM Projektmarktplatz");
 			  
 			  if (rs.next()) {
 	              p.setProjektmarktplatzId(rs.getInt("maxid") + 1);

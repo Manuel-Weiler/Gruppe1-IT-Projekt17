@@ -26,13 +26,15 @@ public interface Project4uAdministration extends RemoteService{
 
 	public Vector<Projektmarktplatz> findAllProjektmarktplatz() throws IllegalArgumentException;
 
+	//TODO: Testmethode löschen
 	String testMethode();
 
 	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException;
 	
+	//TODO: Testmethode löschen
 	public Vector<Projektmarktplatz> testMethode2() throws IllegalArgumentException;
 	
-
+	public Projektmarktplatz createProjektmarktplatz(Projektmarktplatz p) throws IllegalArgumentException;
 
 
 }
