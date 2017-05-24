@@ -57,18 +57,19 @@ public class ProjektmarktplatzWidget extends Composite {
 		addProjektmarktplatz.addClickHandler(new addProjektmarktplatzClickHandler());
 		
 		final Button changeProjektmarktplatz = new Button("Projektmarktplatz bearbeiten");
-				
+		VerticalPanel vPanel = new VerticalPanel();		
 
 		
 		//Abfrage, ob bisher �berhaupt Projektmarktpl�tze existieren.
 		if (projektmarktplaetze.isEmpty()){
-			VerticalPanel vPanel = new VerticalPanel();
+			vPanel.clear();
 			Label noProjektmarktplatz = new Label("Es existiert noch kein Projektmarktplatz, lege einen an!");
 			vPanel.add(noProjektmarktplatz);
 			vPanel.add(addProjektmarktplatz);
+			initWidget(vPanel);
 		}
 		else{
-			VerticalPanel vPanel = new VerticalPanel();
+			vPanel.clear();
 			CellTable<Projektmarktplatz> pMarktplatzeTable = new CellTable<Projektmarktplatz>(KEY_PROVIDER);
 			
 			//Die Spalte der Projektmarktplatz-Tabelle wird erstellt und deren Inhalt definiert.

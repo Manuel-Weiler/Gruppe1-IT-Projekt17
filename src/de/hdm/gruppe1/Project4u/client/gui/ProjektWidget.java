@@ -10,6 +10,7 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -21,6 +22,7 @@ public class ProjektWidget extends Composite{
 	
 	//TODO: Projekt anlegen-Maske implementieren & Clickhandler hinzuf�gen
 	Button addProjekt = new Button("Projekt anlegen");
+	
 	
 
 
@@ -35,16 +37,18 @@ public class ProjektWidget extends Composite{
 	};
 	
 	public ProjektWidget (Vector<Projekt> projekte){
+		VerticalPanel vPanel = new VerticalPanel();
+		
 		//Pr�fung, ob schon Projekte zum Projektmarktplatz existieren
 		if (projekte.isEmpty()){
-			VerticalPanel vPanel = new VerticalPanel();
+			vPanel.clear();
 			Label noProjekt = new Label("Es existiert noch kein Projekt, lege eines an!");
 			vPanel.add(noProjekt);
 			vPanel.add(addProjekt);
-			
+			initWidget(vPanel);
 		}
 		else{
-			
+			vPanel.clear();
 			CellTable<Projekt> projektTabelle = new CellTable<Projekt>(KEY_PROVIDER);
 			
 			//Die Spalte der Projekt-Tabelle wird erstellt und deren Inhalt definiert.
@@ -78,7 +82,6 @@ public class ProjektWidget extends Composite{
 			 * Rechts. Definition der Spaltennamen.
 			 */
 			
-			
 			projektTabelle.addColumn(nameColumn, "Name");
 			projektTabelle.addColumn(startdatum, "Startdatum");
 			projektTabelle.addColumn(enddatum, "Enddatum");
@@ -88,8 +91,12 @@ public class ProjektWidget extends Composite{
 			
 			//Anpassen des Widgets an die Breite des div-Elements "content"
 			projektTabelle.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
-		
+			vPanel.add(projektTabelle);
+			initWidget(vPanel);
 	}
-	
+		
 }
+	
+	
+	
 }
