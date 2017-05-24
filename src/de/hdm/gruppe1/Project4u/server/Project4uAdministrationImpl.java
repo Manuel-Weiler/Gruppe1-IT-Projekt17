@@ -476,23 +476,14 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
-	public Projekt createProjekt(int id, String name, Date startdatum, Date enddatum, String beschreibung,
-			                     int projektmarktplatz_id, int organisationseinheit_id)
+	public Projekt createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o)
 		   throws IllegalArgumentException {
 
 		Projekt projekt = new Projekt();
-		projekt.setProjektId(1);
-		projekt.setName(name);
-		projekt.setStartdatum(startdatum);
-		projekt.setEnddatum(enddatum);
-		projekt.setBeschreibung(beschreibung);
-		projekt.setProjektmarktplatzId(projektmarktplatz_id);
-		projekt.setOrganisationseinheitId(organisationseinheit_id);
-		
-		
-
-		
-     return this.projektMapper.insert(projekt, null, null);
+        projekt.setProjektmarktplatzId(pm.getProjektmarktplatzId());
+		projekt.setOrganisationseinheitId(o.getOrganisationseinheitId());
+     
+		return this.projektMapper.insert(projekt, null, null);
 
 	}
 	
