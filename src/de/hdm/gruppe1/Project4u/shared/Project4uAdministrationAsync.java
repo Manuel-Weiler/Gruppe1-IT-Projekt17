@@ -11,9 +11,9 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
-@RemoteServiceRelativePath("projectadministration")
 public interface Project4uAdministrationAsync {
 
 	void createOrganisationseinheit(String google_id, String name, String typ, AsyncCallback<Organisationseinheit> callback);
@@ -32,5 +32,13 @@ public interface Project4uAdministrationAsync {
 
 	
 	void getAllAusschreibungen(AsyncCallback<ArrayList<Ausschreibung>> callback);
+
+	void testMethode2(AsyncCallback<Vector<Projektmarktplatz>> callback);
+
+	void createProjektmarktplatz(Projektmarktplatz p, AsyncCallback<Projektmarktplatz> callback);
+
+	void update(Projektmarktplatz p, AsyncCallback<Void> callback);
+
+	void findAllProjekteOfProjektmarktplatz(Projektmarktplatz pp, AsyncCallback<Vector<Projekt>> callback);
 
 }

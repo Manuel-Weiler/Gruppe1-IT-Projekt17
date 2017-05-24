@@ -80,7 +80,7 @@ public class ProjektMapper {
 		   Statement stmt = con.createStatement();
 		   
 
-		   // Statement ausf�llen und als Query an die DB schicken
+		   // Statement ausf�llen und als Query an die DB schicken
 		   ResultSet rs = stmt.executeQuery("SELECT * "  + "FROM Projekt WHERE id='" + id + "'");
 
 	
@@ -125,7 +125,7 @@ public class ProjektMapper {
 		  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		  Date date = new Date();
 		  p.setStartdatum(date);
-		 // p.setEnddatum(date);
+		  p.setEnddatum(date);
 		  
 		  try{
 			  Statement stmt = con.createStatement();
@@ -135,11 +135,11 @@ public class ProjektMapper {
 	              p.setProjektId(rs.getInt("maxid") + 1);
 	            }
 			  
-			  stmt.executeUpdate("INSERT INTO Projekt (id ,name, startdatum, enddatum, beschreibung," +
-				  		"projektmarktplatz_id, organisationseinheit_id)  VALUES (" + p.getProjektId() + ", '" + p.getName()
-				  		+ "', '" + sdf.format(p.getStartdatum()) + "', '"
-				  		+ sdf.format(p.getEnddatum()) + "', '"  + p.getBeschreibung() + "', '" + 
-				  		p.getProjektmarktplatzId() + "', '" + o.getOrganisationseinheitId() + "')");
+			  stmt.executeUpdate("INSERT INTO Projekt (id ,name, startdatum, enddatum, beschreibung, projektmarktplatz_id, organisationseinheit_id)"
+			  		+ "VALUES (" + p.getProjektId() + ", '" + p.getName() + "', '" 
+					+ sdf.format(p.getStartdatum()) + "', '"+ sdf.format(p.getEnddatum()) + "', '" 
+			  		+ p.getBeschreibung() + "', '" + p.getProjektmarktplatzId() + "', '"
+					+ o.getOrganisationseinheitId() + "')");
 			                    
 			          }
 		      catch (SQLException e) {
@@ -163,9 +163,9 @@ public class ProjektMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("UPDATE Projekt SET startdatum='" + sdf.format(p.getStartdatum()) + "', "
-			  		+ "enddatum='" + sdf.format(p.getEnddatum()) + "', " + "name='" + p.getName() + "', "
-					+ "beschreibung='" + p.getBeschreibung() + "', " + " WHERE id=" + p.getProjektId());
+	      stmt.executeUpdate("UPDATE Projekt " + "SET name=\""
+		          + p.getName() + "\", " + "startdatum=\"" + sdf.format(p.getStartdatum()) + "\", " + "enddatum=\"" + sdf.format(p.getEnddatum()) + "\", "
+		          + "beschreibung=\"" + p.getBeschreibung() + "\" " + "WHERE id=" + p.getProjektId() );
 
 	    }
 	    catch (SQLException e2) {
@@ -187,7 +187,7 @@ public class ProjektMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM Projekt WHERE id=" + p.getProjektId() +"'");
+	      stmt.executeUpdate("DELETE FROM Projekt WHERE id=" + p.getProjektId());
 
 	    }
 	    catch (SQLException e2) {
@@ -312,11 +312,53 @@ public class ProjektMapper {
 			
 			try {
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM Partnerprofil WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
+				stmt.executeUpdate("DELETE FROM Projekt WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
 				
 			} catch (Exception e2) {
 				 e2.printStackTrace();
 			}
 		}
+	  
+	  /**
+	   * Diese Methode gibt alle Projekte wieder, die zu einem Projektmarktplatz pp gehören
+	 * @param pp
+	 * @return
+	 * @author Tobias
+	 */
+	public Vector<Projekt> findAllProjekteOfProjektmarktplatz(Projektmarktplatz pp){
+		  Connection con = DBConnection.connection();
+		    // Ergebnisvektor vorbereiten
+		    Vector<Projekt> result = new Vector<Projekt>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM projekt WHERE projektmarktplatz_id='" + pp.getProjektmarktplatzId() + "'"
+		      									+" ORDER BY id");
+		   
+
+		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projekt p = new Projekt();
+		        p.setProjektId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setStartdatum(rs.getDate("startdatum"));
+		        p.setEnddatum(rs.getDate("enddatum"));
+		        p.setBeschreibung(rs.getString("beschreibung"));
+		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurückgeben
+		    return result;
+	  }
 
 }

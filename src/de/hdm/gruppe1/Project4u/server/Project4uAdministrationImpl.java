@@ -302,11 +302,25 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		    	this.deleteAusschreibung(ausschreibung);
 		    }
 		}
+		this.projektMapper.delete(p);
 	}	
 	
 	public Vector<Projekt> findByName(String name) throws IllegalArgumentException {
 		return this.projektMapper.findByName(name);
 	}
+	
+	/**
+	 * Diese Methode gibt alle Projekte wieder, die zu einem Projektmarktplatz pp gehören
+	 * @param pp
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @author Tobias
+	 */
+	public Vector<Projekt> findAllProjekteOfProjektmarktplatz(Projektmarktplatz pp) throws IllegalArgumentException{
+		return this.projektMapper.findAllProjekteOfProjektmarktplatz(pp);
+		
+	}
+	
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Ende: Projekt
@@ -499,15 +513,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
-	public Projektmarktplatz createProjektmarktplatz(int id, String name )
+	public Projektmarktplatz createProjektmarktplatz(Projektmarktplatz p)
 			throws IllegalArgumentException {
 
-		Projektmarktplatz projektmarktplatz = new Projektmarktplatz();
-		projektmarktplatz.setProjektmarktplatzId(1);
-		projektmarktplatz.setName(name);
-		
-
-		return this.projektmarktplatzMapper.insert(projektmarktplatz);
+		return this.projektmarktplatzMapper.insert(p);
 
 	}
 	
@@ -534,13 +543,21 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
-	
 
 	
 	//TODO: Testmethode
 	public String testMethode (){
 		String test = "Dies ist ein Test-String";
 		return test;
+	}
+	
+	public Vector<Projektmarktplatz> testMethode2(){
+		Projektmarktplatz test = new Projektmarktplatz();
+		test.setName("test");
+		test.setProjektmarktplatzId(1);
+		Vector<Projektmarktplatz> vtest = new Vector<Projektmarktplatz>();
+		vtest.add(test);
+		return vtest;
 	}
 
 	@Override
