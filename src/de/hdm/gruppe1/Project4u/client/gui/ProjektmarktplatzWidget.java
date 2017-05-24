@@ -201,7 +201,7 @@ public class ProjektmarktplatzWidget extends Composite {
 						
 						@Override
 						public void onClick(ClickEvent event) {
-							// TODO: L�schen des Projektmarktplatzes nach vorangegangener Pr�fung, ob
+							// TODO: Löschen des Projektmarktplatzes nach vorangegangener Pr�fung, ob
 							//der Nutzer der Ersteller ist.
 							
 						}
