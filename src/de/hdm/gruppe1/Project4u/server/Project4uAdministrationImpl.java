@@ -527,6 +527,18 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Vector<Projekt> findByName(String name) throws IllegalArgumentException {
 		return this.projektMapper.findByName(name);
 	}
+	
+	/**
+	 * Diese Methode gibt alle Projekte wieder, die zu einem Projektmarktplatz pp gehören
+	 * @param pp
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @author Tobias
+	 */
+	public Vector<Projekt> findAllProjekteOfProjektmarktplatz(Projektmarktplatz pp) throws IllegalArgumentException{
+		return this.projektMapper.findAllProjekteOfProjektmarktplatz(pp);
+		
+	}
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Ende: Projekt
