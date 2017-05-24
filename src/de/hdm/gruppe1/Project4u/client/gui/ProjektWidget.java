@@ -37,6 +37,9 @@ public class ProjektWidget extends Composite{
 	};
 	
 	public ProjektWidget (Vector<Projekt> projekte){
+		
+		
+		
 		VerticalPanel vPanel = new VerticalPanel();
 		
 		//Pr�fung, ob schon Projekte zum Projektmarktplatz existieren

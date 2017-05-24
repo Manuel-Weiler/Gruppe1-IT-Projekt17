@@ -24,6 +24,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
+import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 
@@ -34,7 +35,7 @@ public class ProjektmarktplatzWidget extends Composite {
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	
 	Button deleteProjektmarktplatz = new Button("Projektmarktplatz löschen"); //TODO: anlegen
-	Button seeProjektmarktplatz = new Button("Projektmarktplatz ansehen"); //TODO: Clickhandler: mit ProjektWidget verkn�pfen
+	Button seeProjektmarktplatz = new Button("Projektmarktplatz ansehen"); 
 	
 	
 	
@@ -51,7 +52,8 @@ public class ProjektmarktplatzWidget extends Composite {
 	
 	
 	public ProjektmarktplatzWidget(Vector <Projektmarktplatz> projektmarktplaetze){
-		
+		RootPanel.get("contentHeader").clear();
+		RootPanel.get("contentHeader").add(new Label("Alle Projektmarktplätze:"));
 		
 		Button addProjektmarktplatz = new Button("Projektmarktplatz anlegen");	
 		addProjektmarktplatz.addClickHandler(new addProjektmarktplatzClickHandler());
@@ -153,7 +155,7 @@ public class ProjektmarktplatzWidget extends Composite {
 														
 														RootPanel.get("content").clear();
 														RootPanel.get("content").add(new ProjektmarktplatzWidget(result));
-
+														
 													}
 													
 													@Override
@@ -188,16 +190,34 @@ public class ProjektmarktplatzWidget extends Composite {
 						}
 					});
 					
+					/*
+					 * Mit dem Klick auf den Button <code>seeProjektmarktplatz</code> wird die Ansicht der Projektmarktplätze geschlossen
+					 * und alle Projekte zum gewählten Projektmarktplatz angezeigt.
+					 */
 					seeProjektmarktplatz.addClickHandler(new ClickHandler() {
-						
-						@Override
+												
 						public void onClick(ClickEvent event) {
-							// TODO: Die Projektmarktplatzinstanz wird an eine Projektinstanz weitergegeben,
-							//und diese im content Bereich angezeigt.
-							
+
+							Project4uVerwaltung.findAllProjekteOfProjektmarktplatz(selectionModel.getSelectedObject(),
+									new AsyncCallback<Vector<Projekt>>() {
+								
+								public void onSuccess(Vector<Projekt> result) {
+									diBox.hide();
+									RootPanel.get("content").clear();
+									RootPanel.get("content").add(new ProjektWidget(result));
+									RootPanel.get("contentHeader").clear();
+									RootPanel.get("contentHeader")
+											.add(new Label("Alle Projekte des Projektmarktplatzes "
+													+ selectionModel.getSelectedObject().getName()));
+								}
+								@Override
+								public void onFailure(Throwable caught) {												
+								}
+							});
 							
 						}
 					});
+					
 					deleteProjektmarktplatz.addClickHandler(new ClickHandler() {
 						
 						@Override
