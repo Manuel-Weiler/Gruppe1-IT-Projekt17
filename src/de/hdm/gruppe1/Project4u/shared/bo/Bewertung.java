@@ -3,6 +3,7 @@ package de.hdm.gruppe1.Project4u.shared.bo;
 public class Bewertung {
 
 	private int bewertungID = 0;
+	private int bewerbungID = 0;
 	private float bewertungspunkte = 0;
 	private String stellungnahme = null;
 
@@ -13,6 +14,15 @@ public class Bewertung {
 	public void setBewertungID(int bewertungID) {
 		this.bewertungID = bewertungID;
 	}
+	
+	public int getBewerbungID() {
+		return bewerbungID;
+	}
+
+	public void setBewerbungID(int bewerbungID) {
+		this.bewerbungID = bewerbungID;
+	}
+
 
 	public float getBewertungspunkte() {
 		return bewertungspunkte;

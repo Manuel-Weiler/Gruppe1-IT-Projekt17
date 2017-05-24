@@ -123,8 +123,19 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 
-	public Beteiligung insertBeteiligung( Beteiligung b, Organisationseinheit or, Bewertung be, Projekt pr)throws IllegalArgumentException{
-		return this.beteiligungMapper.insertBeteiligung(b, or, be, pr, be);
+	public Beteiligung createBeteiligung(	Date startdatum, Date enddatum, int personentage, 
+											Organisationseinheit organisationseinheit, Projekt projekt, 
+											Bewertung bewertung) throws IllegalArgumentException {
+		
+		Beteiligung beteiligung = new Beteiligung();
+		beteiligung.setStartdatum(startdatum);
+		beteiligung.setEnddatum(enddatum);
+		beteiligung.setPersonentage(personentage);
+		beteiligung.setOrganisationseinheitId(organisationseinheit.getOrganisationseinheitId());
+		beteiligung.setBewertungId(bewertung.getBewertungID());
+		beteiligung.setProjektId(projekt.getProjektId());
+		
+		return this.beteiligungMapper.insertBeteiligung(beteiligung);
 	}
 	
 	
@@ -138,6 +149,50 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Bewertung
+	 * #########################################################################
+	 * 
+	 */
+	
+	public Bewertung createBewertung(Bewerbung bewerbung, float bewertungspunkte, String stellungnahme) throws IllegalArgumentException {
+		Bewertung bewertung = new Bewertung();
+		bewertung.setBewerbungID(bewerbung.getBewerbungID());
+		bewertung.setBewertungspunkte(bewertungspunkte);
+		bewertung.setStellungnahme(stellungnahme);
+		return this.bewertungMapper.insert(bewertung);
+	}
+	
+	public void updateBewertung(Bewertung bewertung) throws IllegalArgumentException {
+		this.bewertungMapper.update(bewertung);
+	}
+	
+	public void deleteBewertung(Bewertung bewertung) {
+		
+		//Zugehörige Bewertungen löschen
+		Beteiligung beteiligung = this.beteiligungMapper.findByBewertung(bewertung);
+  		if (beteiligung != null) {
+  			//TODO Bewertungen löschen --> delete Bewertung anlegen
+  			}
+  		//this.bewertungMapper.deleteBewertungOfBewerbung(bewerbung);
+		this.bewertungMapper.delete(bewertung);
+  		}
+	
+	
+	
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Ende: Bewertung
+	 * #########################################################################
+	 * 
+	 */
+	
+	
+	
+	
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Beginn: Bewerbung
@@ -145,8 +200,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 
-	public Bewerbung createBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)
-			throws IllegalArgumentException {
+	public Bewerbung createBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext) throws IllegalArgumentException {
 		Bewerbung bewerbung = new Bewerbung();
 		return this.bewerbungMapper.insert(bewerbung, null, null);
 	}
@@ -163,12 +217,12 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public void deleteBewerbung(Bewerbung bewerbung) {
 		
 		//Zugehörige Bewertungen löschen
-		Bewertung b = this.bewertungMapper.findByBewerbung(bewerbung);
-  		if (b != null) {
-  			//TODO Bewertungen löschen --> delete Bewertung anlegen
+		Bewertung bewertung = this.bewertungMapper.findByBewerbung(bewerbung);
+  		if (bewertung != null) {
+  			this.deleteBewertung(bewertung);
   			}
-  		/*this.bewertungMapper.deleteBewertungOfBewerbung(bewerbung);
-		this.bewerbungMapper.delete(bewerbung);*/
+  		this.bewerbungMapper.delete(bewerbung);
+  		//this.bewertungMapper.deleteBewertungOfBewerbung(bewerbung);
   		}
 		
 		
