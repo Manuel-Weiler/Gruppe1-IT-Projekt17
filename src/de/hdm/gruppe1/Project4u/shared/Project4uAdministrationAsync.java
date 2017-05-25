@@ -13,7 +13,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
-@RemoteServiceRelativePath("projectadministration")
+
 public interface Project4uAdministrationAsync {
 
 	void createOrganisationseinheit(String google_id, String name, String typ, AsyncCallback<Organisationseinheit> callback);
@@ -32,5 +32,7 @@ public interface Project4uAdministrationAsync {
 
 	
 	void getAllAusschreibungen(AsyncCallback<ArrayList<Ausschreibung>> callback);
+
+	void testMethode2(AsyncCallback<Vector<Projektmarktplatz>> callback);
 
 }

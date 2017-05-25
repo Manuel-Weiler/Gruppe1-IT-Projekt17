@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
   <application>project4u-165512</application>
-  <version>1</version>
+  <version>2</version>
 
   <!--
     Allows App Engine to send multiple requests to one instance in parallel:
   -->
   <threadsafe>true</threadsafe>
-
-  <!-- Configure serving/caching of GWT files -->
+  
+   <!-- Configure serving/caching of GWT files -->
   <static-files>
     <include path="**" />
 
@@ -38,5 +38,7 @@
     stale session data. For details, see
     http://code.google.com/appengine/docs/java/config/appconfig.html#Enabling_Sessions
   -->
+  
+  <use-google-connector-j>true</use-google-connector-j>
 
 </appengine-web-app>

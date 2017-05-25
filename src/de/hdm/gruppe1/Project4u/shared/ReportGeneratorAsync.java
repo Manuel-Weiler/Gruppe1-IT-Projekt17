@@ -4,6 +4,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAllAusschreibungen;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
 
 public interface ReportGeneratorAsync {
 	
@@ -15,5 +16,8 @@ public interface ReportGeneratorAsync {
 	public void init(AsyncCallback<Void> callback);
 
 	void createAllAusschreibungenReport(Ausschreibung au, AsyncCallback<ReportByAllAusschreibungen> callback);
+
+	void createAusschreibungenForPartnerprofil(Ausschreibung au,
+			AsyncCallback<ReportByAusschreibungenForPartnerprofil> callback);
 
 }
