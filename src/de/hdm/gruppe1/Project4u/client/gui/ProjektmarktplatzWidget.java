@@ -123,6 +123,7 @@ public class ProjektmarktplatzWidget extends Composite {
 					deleteProjektmarktplatz.setPixelSize(270, 30);
 					changeProjektmarktplatz.setPixelSize(270, 30);
 					
+					
 					changeProjektmarktplatz.addClickHandler(new ClickHandler() {
 						
 						@Override
@@ -222,8 +223,7 @@ public class ProjektmarktplatzWidget extends Composite {
 						
 						@Override
 						public void onClick(ClickEvent event) {
-							// TODO: Löschen des Projektmarktplatzes nach vorangegangener Pr�fung, ob
-							//der Nutzer der Ersteller ist.
+							// TODO: Löschen des Projektmarktplatzes 
 							
 						}
 					});
