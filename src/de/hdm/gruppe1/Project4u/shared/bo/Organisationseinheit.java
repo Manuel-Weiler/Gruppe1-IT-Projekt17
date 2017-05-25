@@ -11,6 +11,7 @@ public class Organisationseinheit extends BusinessObject{
 	private static final long serialVersionUID = 1L;
 
 	private int organisationseinheitId = 0;
+	private int partnerprofilId;
 	private boolean loggedIn = false;
 	private String loginUrl;
 	private String logoutUrl;
@@ -28,6 +29,7 @@ public class Organisationseinheit extends BusinessObject{
 	public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
 	}
+	
 
 	public String getLoginUrl() {
 		return loginUrl;
@@ -67,6 +69,14 @@ public class Organisationseinheit extends BusinessObject{
 
 	public void setOrganisationseinheitId(int organisationseinheitId) {
 		this.organisationseinheitId = organisationseinheitId;
+	}
+	
+	public int getPartnerprofilId() {
+		return partnerprofilId;
+	}
+	
+	public void setPartnerprofilId(int partnerprofilId) {
+		this.partnerprofilId = partnerprofilId;
 	}
 	
 	public String getName() {

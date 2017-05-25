@@ -214,7 +214,7 @@ public class PartnerprofilMapper {
 	}
 	
 	
-	public Partnerprofil findByOrganisationseinheit (Organisationseinheit o) {
+	/*public Partnerprofil findByOrganisationseinheit (Organisationseinheit o) {
 		Connection con = DBConnection.connection();
 		Partnerprofil p = new Partnerprofil();
 
@@ -226,11 +226,11 @@ public class PartnerprofilMapper {
 
 			if (rs.next()) {
 
-				/*
+				
 				 * Dem R�ckgabeobjekt werden die Werte aus der Tabelle
 				 * zugewiesen und so das Tupel aus der Tabelle wieder in ein
 				 * Objekt transformiert.
-				 */
+				 
 				p.setID(rs.getInt("id"));
 				p.setErstelldatum(rs.getDate("erstelldatum"));
 				p.setAenderungsdatum(rs.getDate("�nderungsdatum"));
@@ -244,7 +244,8 @@ public class PartnerprofilMapper {
 		    }
 
 		    return null;
-		  }
+		  }*/
+	
 	
 	public void deletePartnerprofilOfOrganisationseinheit(Organisationseinheit o) {
 		Connection con = DBConnection.connection();
