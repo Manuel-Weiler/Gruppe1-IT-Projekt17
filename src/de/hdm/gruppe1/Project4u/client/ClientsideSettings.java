@@ -45,7 +45,7 @@ public class ClientsideSettings extends CommonSettings{
 
 	//Verbindung zu project4u Administration
 	/*public static Project4uAdministrationAsync getProject4uAdministration() {
-		
+		 
 		if(project4uAdministration == null){
 			project4uAdministration = GWT.create(Project4uAdministration.class);
 		}
