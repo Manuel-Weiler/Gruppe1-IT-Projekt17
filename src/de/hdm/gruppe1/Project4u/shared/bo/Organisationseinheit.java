@@ -11,7 +11,7 @@ public class Organisationseinheit extends BusinessObject{
 	private static final long serialVersionUID = 1L;
 
 	private int organisationseinheitId = 0;
-	private boolean loggedIn = false;
+	private boolean loggedIn;
 	private String loginUrl;
 	private String logoutUrl;
 	private String google_id;
