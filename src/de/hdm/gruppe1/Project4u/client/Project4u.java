@@ -33,10 +33,10 @@ public class Project4u implements EntryPoint {
 	 * 
 	 */
 	public void onModuleLoad() {
+		loadProject4u();
+	}
 		
-		
-		
-		LoginServiceAsync loginService = GWT.create(LoginService.class);
+	/*	LoginServiceAsync loginService = GWT.create(LoginService.class);
 		
 		loginService.login(GWT.getHostPageBaseURL() + "Project4u.html", new AsyncCallback<Organisationseinheit>() {
 			// f�ngt m�gliche Fehler ab
@@ -93,7 +93,7 @@ public class Project4u implements EntryPoint {
 		
 		//RootPanel.get("Nutzer").setVisible(false);
 	}
-
+*/
 	private void loadProject4u() {
 		
 	//TODO: in Methode loadProject4u() soll geladen werden, sobald der Nutzer eingelogt ist.
