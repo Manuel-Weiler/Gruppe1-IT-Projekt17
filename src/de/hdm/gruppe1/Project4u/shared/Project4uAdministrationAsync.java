@@ -41,4 +41,8 @@ public interface Project4uAdministrationAsync {
 
 	void findAllProjekteOfProjektmarktplatz(Projektmarktplatz pp, AsyncCallback<Vector<Projekt>> callback);
 
+	void update(Projekt p, AsyncCallback<Void> callback);
+
+	void createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o, AsyncCallback<Projekt> callback);
+
 }
