@@ -565,4 +565,11 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Projekt createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o)
+			throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
