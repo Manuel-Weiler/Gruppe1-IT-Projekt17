@@ -350,8 +350,8 @@ public class OrganisationseinheitMapper {
 
 		      ResultSet rs = stmt
 		    		  
-		          .executeQuery("SELECT id, google_id, name, typ FROM Organisationseinheit "
-		              + "WHERE googleId=" + googleId +"'");
+		          .executeQuery("SELECT id, google_id, name, typ FROM organisationseinheit "
+		              + "WHERE google_id='" + googleId +"'");
 
 		  
 		      if (rs.next()) {

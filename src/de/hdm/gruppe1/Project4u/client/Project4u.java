@@ -35,45 +35,71 @@ public class Project4u implements EntryPoint {
 	public void onModuleLoad() {
 		
 		
-		//TODO: in Methode loadProject4u() verschieben, sobald die Login funktioniert.
-		NavigationsleisteWidget nt = new NavigationsleisteWidget();
-		RootPanel.get("nav").add(nt);
-		nt.homeButtonclick();
 		
-		
-		/*
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
+		
 		loginService.login(GWT.getHostPageBaseURL() + "Project4u.html", new AsyncCallback<Organisationseinheit>() {
 			// f�ngt m�gliche Fehler ab
 			public void onFailure(Throwable error) {
-
+				//Window.alert(error.getMessage());
 			}
 
 			// Falls keine Fehler auftreten:
 			public void onSuccess(Organisationseinheit result) {
 				loginInfo = result;
 				if (loginInfo.getLoggedIn()) {
-					Project4uVerwaltung.checkStatus(loginInfo, new CheckStatusNutzerCallback());
-					//loadProject4u();
+					
+					
+					
+					Project4uVerwaltung.checkStatus(loginInfo, new AsyncCallback<Organisationseinheit>() {
+						
+						@Override
+						public void onSuccess(Organisationseinheit result) {
+							ClientsideSettings.setAktuellerUser(nutzer);
+							boolean status = result.getStatus();
+							if(status == true){
+							loadProject4u();}
+							else{
+								Window.alert("Diese Email ist nicht in der Datenbank vorhanden" 
+										+ "Erstelle ein neues Konto oder verwende eine andere Adresse");
+							
+						}
+						}
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("Datenbank nicht da!");
+							
+						}
+					});
+					
+					
 				} else {
-					//loadLogin();
+					loadLogin();
 				}
-			}
-		});
+			
+		}});
 
 	}
 
+	
+	
+	
+	
 	private void loadLogin() {
 		signinLink.setHref(loginInfo.getLoginUrl());
 		loginPanel.add(loginLabel);
 		loginPanel.add(signinLink);
-		RootPanel.get("NutzerForm").add(loginPanel);
+		RootPanel.get("content").add(loginPanel);
 		
-		RootPanel.get("Nutzer").setVisible(false);
+		//RootPanel.get("Nutzer").setVisible(false);
 	}
 
 	private void loadProject4u() {
-
+		
+	//TODO: in Methode loadProject4u() soll geladen werden, sobald der Nutzer eingelogt ist.
+			NavigationsleisteWidget nt = new NavigationsleisteWidget();
+			RootPanel.get("nav").add(nt);
+			nt.homeButtonclick();
 		
 		/*
 		Startseite startseite = new Startseite();
@@ -82,24 +108,4 @@ public class Project4u implements EntryPoint {
 		
 	}
 }
-/*
-class CheckStatusNutzerCallback implements AsyncCallback<Organisationseinheit> {
-	public void onFailure(Throwable caught) {
-		Window.alert("Datenbank nicht da!");
-	}
-
-	public void onSuccess(Organisationseinheit nutzer){
-		ClientsideSettings.setAktuellerUser(nutzer);
-		final boolean status = nutzer.getStatus();
-		if(status == true){
-			//TODO: Die Startseite wird geladen.
-		} else{
-			Window.alert("Diese Email ist nicht in der Datenbank vorhanden" 
-					+ "Erstelle ein neues Konto oder verwende eine andere Adresse");
-			NutzerForm nutzerForm = new NutzerForm();
-			nutzerForm.loadNutzerForm(nutzer.getGoogleId());
-		}
-		
-	}
-	}*/
 
