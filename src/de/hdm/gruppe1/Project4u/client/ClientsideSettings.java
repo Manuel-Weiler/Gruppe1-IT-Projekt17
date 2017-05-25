@@ -43,18 +43,7 @@ public class ClientsideSettings extends CommonSettings{
 		ClientsideSettings.aktuellerUser = nutzer;
 	}
 
-<<<<<<< HEAD
-	//Verbindung zu project4u Administration
-	/*public static Project4uAdministrationAsync getProject4uAdministration() {
-		 
-		if(project4uAdministration == null){
-			project4uAdministration = GWT.create(Project4uAdministration.class);
-		}
-		return project4uAdministration;
-	}*/
-=======
-	
->>>>>>> branch 'master' of https://github.com/Manuel-Weiler/Gruppe1-IT-Projekt17.git
+
 	//Sollte es keine Instanz dieser Klasse geben, so wird diese hier erzeugt.
 	public static Project4uAdministrationAsync getProject4uVerwaltung(){
 		
