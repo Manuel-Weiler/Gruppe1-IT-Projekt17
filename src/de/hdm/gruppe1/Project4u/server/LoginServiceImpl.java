@@ -27,7 +27,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 	 * 	@param Domain der Startseite
 	 * 	@return neues oder eingeloggtes Profil
 	 */
-	@SuppressWarnings("deprecation")
+
 	public Organisationseinheit login(String requestUri) throws Exception {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
