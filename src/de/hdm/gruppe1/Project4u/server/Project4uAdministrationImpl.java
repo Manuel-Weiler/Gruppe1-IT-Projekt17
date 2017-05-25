@@ -44,7 +44,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	private EigenschaftMapper eigenschaftMapper = null;
 
 	
-	public Project4uAdministrationImpl() throws IllegalArgumentException{
+	public Project4uAdministrationImpl() throws IllegalArgumentException {
 		
 	}
 	
@@ -74,13 +74,14 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 			return this.organisationseinheitMapper.checkStatus(loginInfo);
 		}
 
-	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ)
+	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ, Partnerprofil partnerprofil)
 			throws IllegalArgumentException {
 
 		Organisationseinheit organisationseinheit = new Organisationseinheit();
 		organisationseinheit.setGoogleId(google_id);
 		organisationseinheit.setName(name);
 		organisationseinheit.setTyp(typ);
+		organisationseinheit.setPartnerprofilId(partnerprofil.getPartnerprofilId());
 
 		return this.organisationseinheitMapper.insert(organisationseinheit);
 
@@ -164,9 +165,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 *         Partnerprofil-Objekt.
 	 */
 
-	public Partnerprofil createPartnerprofil(Organisationseinheit o) throws IllegalArgumentException {		
+	public Partnerprofil createPartnerprofil() throws IllegalArgumentException {		
 		Partnerprofil p = new Partnerprofil();
-		p.setOrganisationseinheitId(o.getOrganisationseinheitId());	
 		return this.partnerprofilMapper.insertPartnerprofil(p);
 	}
 
@@ -202,10 +202,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Vector <Eigenschaft> getEigenschaftenOfPartnerprofil (Partnerprofil p)throws IllegalArgumentException{
 		return this.partnerprofilMapper.getEigenschaftenOfPartnerprofil(p);
 	}
-	
-	public Organisationseinheit getOrganisationseinheitOfPartnerprofil (Partnerprofil p)throws IllegalArgumentException{
-		return this.partnerprofilMapper.getOrganisationseinheitOfPartnerprofil(p);
-	}
+
 	
 	/*
 	 * #########################################################################

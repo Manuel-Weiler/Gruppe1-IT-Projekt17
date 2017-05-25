@@ -82,7 +82,7 @@ public class PartnerprofilMapper {
 		        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
 		        stmt.executeUpdate("INSERT INTO Partnerprofil (id, erstelldatum, �nderungsdatum, Organisationseinheit_id) "
 		            + "VALUES (" + p.getPartnerprofilId() + ",'" + sdf.format(p.getErstelldatum()) + "','"
-		            + sdf.format(p.getAenderungsdatum()) + "','"+p.getOrganisationseinheitId()+"')"); 
+		            + sdf.format(p.getAenderungsdatum()) + "')"); 
 		      }
 		    }
 		    catch (SQLException e) {
@@ -185,20 +185,7 @@ public class PartnerprofilMapper {
 	{
 		return a;
 	} */
-/////////////////////////
-	
-	/*
-	 * Diese Methode gibt die zugeh�rige Organisationseinheit zu einem Partnerprofil zur�ck.
-	 * Dabei wird sich des Mappers der Klasse OrganisationseinheitMapper bedient.
-	 */
-	public Organisationseinheit getOrganisationseinheitOfPartnerprofil (Partnerprofil p){
-		
-		return OrganisationseinheitMapper.organisationseinheitMapper().findByKey(p.getOrganisationseinheitId());
-	}
-	
-	
-	
-////////////////////////
+
 	
 	
 	/**

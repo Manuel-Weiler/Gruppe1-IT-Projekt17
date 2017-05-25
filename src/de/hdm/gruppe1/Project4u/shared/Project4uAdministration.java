@@ -16,7 +16,7 @@ public interface Project4uAdministration extends RemoteService{
 
 	public void init() throws IllegalArgumentException;
 	
-	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ);
+	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ, Partnerprofil partnerprofil);
 	
 	public Organisationseinheit checkStatus(Organisationseinheit loginInfo) throws IllegalArgumentException;
 	
