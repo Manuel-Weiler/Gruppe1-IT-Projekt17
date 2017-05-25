@@ -264,6 +264,12 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
+	public Projekt createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o)
+			throws IllegalArgumentException {
+		
+		return this.projektMapper.insert(p, pm, o);
+	}
+	
 	public Projekt createProjekt(int id, String name, Date startdatum, Date enddatum, String beschreibung,
 			                     int projektmarktplatz_id, int organisationseinheit_id) throws IllegalArgumentException {
 
@@ -387,6 +393,11 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return this.ausschreibungMapper.findByProjekt(name);
 	}
 	
+	@Override
+	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {
+		// TODO Methode als Mapper nicht implementiert.
+		return null;
+	}
 	
 	/*
 	 * #########################################################################
@@ -560,16 +571,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return vtest;
 	}
 
-	@Override
-	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
-	@Override
-	public Projekt createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	
 }
