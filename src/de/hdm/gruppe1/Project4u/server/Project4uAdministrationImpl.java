@@ -456,7 +456,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		bewertung.setBewerbungID(bewerbung.getBewerbungId());
 		bewertung.setBewertungspunkte(bewertungspunkte);
 		bewertung.setStellungnahme(stellungnahme);
-		return this.bewertungMapper.insert(bewertung);
+		return this.bewertungMapper.insert(bewertung, bewerbung);
 	}
 	
 	public void updateBewertung(Bewertung bewertung) throws IllegalArgumentException {
