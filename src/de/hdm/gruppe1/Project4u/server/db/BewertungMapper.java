@@ -90,6 +90,30 @@ public class BewertungMapper {
 		}
 		return bewertung;
 	}
+	public void update(Bewertung bewertung){
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(
+					"UPDATE Bewertung SET bewerbungspunkte = " + bewertung.getBewertungspunkte() + ", stellungnahme = '" + bewertung.getStellungnahme() + 
+					"' WHERE id = "+ bewertung.getBewertungId() + ";");
+
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+	}
+	
+	public void delete(Bewertung bewertung) {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Bewertung WHERE id=" + bewertung.getBewertungId());
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+	}
+
 	
 	public Bewertung findByBewerbung (Bewerbung b) {
 		Connection con = DBConnection.connection();
@@ -138,3 +162,4 @@ public class BewertungMapper {
 		}
 	}
 }
+

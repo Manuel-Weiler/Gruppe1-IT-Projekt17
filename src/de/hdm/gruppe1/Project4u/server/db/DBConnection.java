@@ -14,19 +14,24 @@ public class DBConnection {
 		if (con == null) {
 			try {
 
-				if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
-					// Load the class that provides the new
-					// "jdbc:google:mysql://" prefix.
-					Class.forName("com.mysql.jdbc.GoogleDriver");
-					con = DriverManager
-							.getConnection("jdbc:google:mysql://project4u-165512:hdm-project4u/project4u?user=root");
-
-				} else {
-					// Local MySQL instance to use during development.
-					Class.forName("com.mysql.jdbc.Driver");
-					con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project4u", "root", null);
-				}
-
+				/* if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+	                    // Load the class that provides the new
+	                    // "jdbc:google:mysql://" prefix.
+	                    Class.forName("com.mysql.jdbc.GoogleDriver");
+	                    con = DriverManager.getConnection("jdbc:google:mysql://project4u-165512:hdm-project4u/project4u?user=root");
+	                    
+	                    
+	                } else {
+	                    // Local MySQL instance to use during development.
+	                    Class.forName("com.mysql.jdbc.Driver");
+	                    con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project4u", "root", null);
+	                }
+				*/
+				 // Local MySQL instance to use during development.
+                 Class.forName("com.mysql.jdbc.Driver");
+                 con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project4u?user=root&password=");
+				
+			
 			} catch (Exception e) {
 				con = null;
 				e.printStackTrace();

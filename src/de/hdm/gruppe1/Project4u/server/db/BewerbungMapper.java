@@ -247,6 +247,37 @@ public class BewerbungMapper {
 
 	  }
 	
+	public Vector<Bewerbung> findByAusschreibung(Ausschreibung ausschreibung) {
+		Connection con = DBConnection.connection();
+		// Ergebnisvektor vorbereiten
+		Vector<Bewerbung> result = new Vector<Bewerbung>();
+
+	    try {
+	    	
+	    	Statement stmt = con.createStatement();
+	    	ResultSet rs = stmt.executeQuery(	"SELECT * FROM Bewerbung WHERE ausschreibung_id= " + 
+	    										ausschreibung.getAusschreibungId() + " ORDER BY id");
+
+			while (rs.next()) {
+				Bewerbung b = new Bewerbung();
+				b.setBewerbungId(rs.getInt("id"));
+				b.setErstelldatum(rs.getDate("erstelldatum"));
+				b.setBewerbungstext(rs.getString("bewerbungstext"));
+				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
+				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+				// Hinzufügen des neuen Objekts zum Ergebnisvektor
+				result.addElement(b);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// Ergebnisvektor zurückgeben
+		return result;
+
+	  }
+	
 	public void deleteBewerbungOfOrganisationseinheit(Organisationseinheit o) {
 		Connection con = DBConnection.connection();
 		

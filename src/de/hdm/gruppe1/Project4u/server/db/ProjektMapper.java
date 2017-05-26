@@ -80,7 +80,7 @@ public class ProjektMapper {
 		   Statement stmt = con.createStatement();
 		   
 
-		   // Statement ausf�llen und als Query an die DB schicken
+		   // Statement ausf�llen und als Query an die DB schicken
 		   ResultSet rs = stmt.executeQuery("SELECT * "  + "FROM Projekt WHERE id='" + id + "'");
 
 	
@@ -318,5 +318,47 @@ public class ProjektMapper {
 				 e2.printStackTrace();
 			}
 		}
+	  
+	  /**
+	   * Diese Methode gibt alle Projekte wieder, die zu einem Projektmarktplatz pp gehören
+	 * @param pp
+	 * @return
+	 * @author Tobias
+	 */
+	public Vector<Projekt> findAllProjekteOfProjektmarktplatz(Projektmarktplatz pp){
+		  Connection con = DBConnection.connection();
+		    // Ergebnisvektor vorbereiten
+		    Vector<Projekt> result = new Vector<Projekt>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM projekt WHERE projektmarktplatz_id='" + pp.getProjektmarktplatzId() + "'"
+		      									+" ORDER BY id");
+		   
+
+		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projekt p = new Projekt();
+		        p.setProjektId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setStartdatum(rs.getDate("startdatum"));
+		        p.setEnddatum(rs.getDate("enddatum"));
+		        p.setBeschreibung(rs.getString("beschreibung"));
+		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurückgeben
+		    return result;
+	  }
 
 }
