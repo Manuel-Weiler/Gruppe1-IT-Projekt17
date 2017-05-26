@@ -6,11 +6,12 @@ import java.util.Vector;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 /**
- * Mapper-Klasse, die <code>Projektmarktplatz</code>-Objekte auf eine relationale
- * Datenbank abgebildet. Hierzu wird eine Reihe von Methoden zur Verfügung
- * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
- * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
+ * Mapper-Klasse, die <code>Projektmarktplatz</code>-Objekte auf eine
+ * relationale Datenbank abgebildet. Hierzu wird eine Reihe von Methoden zur
+ * Verfügung gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt,
+ * modifiziert und gelöscht werden können. Das Mapping ist bidirektional.
+ * D.h., Objekte können in DB-Strukturen und DB-Strukturen in Objekte
+ * umgewandelt werden.
  * 
  * 
  * @author Thies
@@ -19,8 +20,8 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 public class ProjektmarktplatzMapper {
 
 	/**
-	 * Die Klasse ProjektmarktplatzMapper wird nur einmal instantiiert. Man spricht
-	 * hierbei von einem sogenannten <b>Singleton</b>.
+	 * Die Klasse ProjektmarktplatzMapper wird nur einmal instantiiert. Man
+	 * spricht hierbei von einem sogenannten <b>Singleton</b>.
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
 	 * fuer saemtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
@@ -28,176 +29,169 @@ public class ProjektmarktplatzMapper {
 	 * 
 	 */
 	private static ProjektmarktplatzMapper projektmarktplatzMapper = null;
-	
+
 	/**
 	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
-	protected ProjektmarktplatzMapper(){
-		
+	protected ProjektmarktplatzMapper() {
+
 	}
-	
+
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch
-	 * <code>ProjektmarktplatzMapper.projektmarktplatzMapper()</code>. Sie stellt die
-	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
-	 * einzige Instanz von <code>ProjektmarktplatzMapper</code> existiert.
+	 * <code>ProjektmarktplatzMapper.projektmarktplatzMapper()</code>. Sie
+	 * stellt die Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur
+	 * eine einzige Instanz von <code>ProjektmarktplatzMapper</code> existiert.
 	 * <p>
 	 * 
-	 * <b>Fazit:</b> ProjektmarktplatzMapper sollte nicht mittels <code>new</code>
-	 * instantiiert werden, sondern stets durch Aufruf dieser statischen
-	 * Methode.
+	 * <b>Fazit:</b> ProjektmarktplatzMapper sollte nicht mittels
+	 * <code>new</code> instantiiert werden, sondern stets durch Aufruf dieser
+	 * statischen Methode.
 	 * 
-	 * @return projektmarktplatzMapper <code>ProjektmartkplatzMapper</code>-Objekt.
+	 * @return projektmarktplatzMapper
+	 *         <code>ProjektmartkplatzMapper</code>-Objekt.
 	 */
 	public static ProjektmarktplatzMapper projektmarktplatzMapper() {
-	    if (projektmarktplatzMapper == null) {
-	      projektmarktplatzMapper = new ProjektmarktplatzMapper();
-	    }
-         return projektmarktplatzMapper;
-	  }
-	
+		if (projektmarktplatzMapper == null) {
+			projektmarktplatzMapper = new ProjektmarktplatzMapper();
+		}
+		return projektmarktplatzMapper;
+	}
+
 	/**
 	 ** @param id
-	 ** @return Liefert ein Projektmarktplatz entsprechend der �bergebenen id zurueck.
+	 ** @return Liefert ein Projektmarktplatz entsprechend der �bergebenen id
+	 *         zurueck.
 	 **/
 
-      public Projektmarktplatz findById(int id){
-		 // DB-Verbindung holen
-		 Connection con = DBConnection.connection();
-		 Projektmarktplatz p = new Projektmarktplatz();
-		 try {
-		   // Leeres SQL-Statement (JDBC) anlegen
-		   Statement stmt = con.createStatement();
-		   
-		   // Statement ausf�llen und als Query an die DB schicken
-		   ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz " + "WHERE id='" + id +"'");
-		   
-		   /*
-	        * Da id Prim�rschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
-	        * werden. Pr�fe, ob ein Ergebnis vorliegt.
-	        */
-		    if (rs.next()) {
-		      // Ergebnis-Tupel in Objekt umwandeln
-		      
-		      p.setProjektmarktplatzId(rs.getInt("id"));
-		      p.setName(rs.getString("name"));
-		      
-		      }
-		    }
-           catch (SQLException e) {
-        	 e.printStackTrace();
-        	 
-           }
-		 
-		 	return p;
-		   }
-	  
-	  /**
-		 * Diese Methode bezieht ihre Informationen aus der
-		 * Project4uAdministrationImpl und erstellt mit diesen einen neuen
-		 * Projektmarktplatz in der Datenbank.
-		 * 
-		 * @param projektmarktplatz
-		 * @return projektmarktplatz
-		 */
-	  
-	  public Projektmarktplatz insert(Projektmarktplatz p){
-		  Connection con = DBConnection.connection();
-		  
-		  try{
-			  Statement stmt = con.createStatement();
-			  
-			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM Projektmarktplatz");
-			  
-			  if (rs.next()) {
-	              p.setProjektmarktplatzId(rs.getInt("maxid") + 1);
-	            }
-			  
-			  stmt.executeUpdate("INSERT INTO Projektmarktplatz (id, name) " 
-			           + "VALUES ('" + p.getProjektmarktplatzId() + "','" + p.getName()+"')");
-			                    
-			          }
-		      catch (SQLException e) {
-		    	 e.printStackTrace();
-		    	 }
-		  
+	public Projektmarktplatz findById(int id) {
+		// DB-Verbindung holen
+		Connection con = DBConnection.connection();
+		Projektmarktplatz p = new Projektmarktplatz();
+		try {
+			// Leeres SQL-Statement (JDBC) anlegen
+			Statement stmt = con.createStatement();
+
+			// Statement ausf�llen und als Query an die DB schicken
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz " + "WHERE id='" + id + "'");
+
+			/*
+			 * Da id Prim�rschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
+			 * werden. Pr�fe, ob ein Ergebnis vorliegt.
+			 */
+			if (rs.next()) {
+				// Ergebnis-Tupel in Objekt umwandeln
+
+				p.setProjektmarktplatzId(rs.getInt("id"));
+				p.setName(rs.getString("name"));
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+
+		return p;
+	}
+
+	/**
+	 * Diese Methode bezieht ihre Informationen aus der
+	 * Project4uAdministrationImpl und erstellt mit diesen einen neuen
+	 * Projektmarktplatz in der Datenbank.
+	 * 
+	 * @param projektmarktplatz
+	 * @return projektmarktplatz
+	 */
+
+	public Projektmarktplatz insert(Projektmarktplatz p) {
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM Projektmarktplatz");
+
+			if (rs.next()) {
+				p.setProjektmarktplatzId(rs.getInt("maxid") + 1);
+			}
+
+			stmt.executeUpdate("INSERT INTO Projektmarktplatz (id, name) " + "VALUES ('" + p.getProjektmarktplatzId()
+					+ "','" + p.getName() + "')");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 		return p;
 
-		   }
-	  
-	 public Projektmarktplatz update(Projektmarktplatz p) {
-		    Connection con = DBConnection.connection();
+	}
 
-		    try {
-		      Statement stmt = con.createStatement();
+	public Projektmarktplatz update(Projektmarktplatz p) {
+		Connection con = DBConnection.connection();
 
-		      stmt.executeUpdate("UPDATE projektmarktplatz SET name = '" + p.getName() 
-		                         + "' WHERE id ='" + p.getProjektmarktplatzId() + "';"); 
-		    }
-		    catch (SQLException e2) {
-		      e2.printStackTrace();
-		    }
+		try {
+			Statement stmt = con.createStatement();
 
-		    // Um Analogie zu insert(Projektmarktplatz p) zu wahren, geben wir p zurück
-		    return p;
-		  }
-	 
-	 /**
-	   * Löschen der Daten eines <code>Projektmarktplatz</code>-Objekts aus der Datenbank.
-	   * 
-	   * @param p das aus der DB zu löschende "Objekt"
-	   */
-	  public void delete(Projektmarktplatz p) {
-	    Connection con = DBConnection.connection();
+			stmt.executeUpdate("UPDATE projektmarktplatz SET name = '" + p.getName() + "' WHERE id ='"
+					+ p.getProjektmarktplatzId() + "';");
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 
-	    try {
-	      Statement stmt = con.createStatement();
+		// Um Analogie zu insert(Projektmarktplatz p) zu wahren, geben wir p
+		// zurück
+		return p;
+	}
 
-	      stmt.executeUpdate("DELETE FROM Projektmarktplatz WHERE id='" + p.getProjektmarktplatzId()+ "'"); 
+	/**
+	 * Löschen der Daten eines <code>Projektmarktplatz</code>-Objekts aus der
+	 * Datenbank.
+	 * 
+	 * @param p
+	 *            das aus der DB zu löschende "Objekt"
+	 */
+	public void delete(Projektmarktplatz p) {
+		Connection con = DBConnection.connection();
 
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	    }
-	  }
-	  
-	  public Vector<Projektmarktplatz> findAll() {
-		    Connection con = DBConnection.connection();
-		    // Ergebnisvektor vorbereiten
-		    Vector<Projektmarktplatz> result = new Vector<Projektmarktplatz>();
+		try {
+			Statement stmt = con.createStatement();
 
-		    try {
-		      Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Projektmarktplatz WHERE id='" + p.getProjektmarktplatzId() + "'");
 
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+	}
 
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz");
+	public Vector<Projektmarktplatz> findAll() {
+		Connection con = DBConnection.connection();
+		// Ergebnisvektor vorbereiten
+		Vector<Projektmarktplatz> result = new Vector<Projektmarktplatz>();
 
+		try {
+			Statement stmt = con.createStatement();
 
-		   
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz");
 
-		      // Für jeden Eintrag im Suchergebnis wird nun ein Projektmarktplatz-Objekt
-		      // erstellt.
-		      while (rs.next()) {
-		        Projektmarktplatz p = new Projektmarktplatz();
-		        p.setProjektmarktplatzId(rs.getInt("id"));
-		        p.setName(rs.getString("name"));
-		        
+			// Für jeden Eintrag im Suchergebnis wird nun ein
+			// Projektmarktplatz-Objekt
+			// erstellt.
+			while (rs.next()) {
+				Projektmarktplatz p = new Projektmarktplatz();
+				p.setProjektmarktplatzId(rs.getInt("id"));
+				p.setName(rs.getString("name"));
 
-		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
-		        result.addElement(p);
-		      }
-		    }
-		    catch (SQLException e) {
-		      e.printStackTrace();
-		    }
+				// Hinzufügen des neuen Objekts zum Ergebnisvektor
+				result.addElement(p);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-		    // Ergebnisvektor zurückgeben
-		    return result;
-	
-	  }
-	  
-	 
+		// Ergebnisvektor zurückgeben
+		return result;
+
+	}
+
 }
-	
-
