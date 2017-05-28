@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import com.google.gwt.cell.client.DateCell;
+import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
@@ -33,6 +34,7 @@ import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
+import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
@@ -116,6 +118,31 @@ public class ProjektWidget extends Composite{
 				}
 			};
 			
+			Project4uVerwaltung.findAusschreibungbyProjekt(projekt, new AsyncCallback<Vector<Ausschreibung>>() {
+				
+				@Override
+				public void onSuccess(Vector<Ausschreibung> result) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
+			SelectionCell ausschreibungen = new SelectionCell(null);
+			Column<Projekt, String> ausschreibungSpalte = new Column<Projekt, String>(ausschreibungen) {
+				
+				@Override
+				public String getValue(Projekt object) {
+					// TODO Auto-generated method stub
+					return null;
+				}
+			};
+			
 			/*
 			 * Das SelectionModel wird zur Tabelle der Projektmarktpl�tze hinzugef�gt
 			 * und gew�hrleistet, �hnlich einem ClickHandler, dass beim Klicken auf
@@ -168,6 +195,7 @@ public class ProjektWidget extends Composite{
 			
 			//Anpassen des Widgets an die Breite des div-Elements "content"
 			projektTabelle.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
+			
 			
 			vPanel.add(projektTabelle);
 			initWidget(vPanel);
@@ -320,6 +348,5 @@ public class ProjektWidget extends Composite{
 		db.show();
 		
 	}
-	
-	
+
 }

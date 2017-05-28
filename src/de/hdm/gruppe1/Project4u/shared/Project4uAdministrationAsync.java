@@ -45,4 +45,6 @@ public interface Project4uAdministrationAsync {
 
 	void createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o, AsyncCallback<Projekt> callback);
 
+	void findAusschreibungbyProjekt(Projekt projekt, AsyncCallback<Vector<Ausschreibung>> callback);
+
 }

@@ -388,12 +388,12 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 //	public Vector<Ausschreibung> findbyPerson (String name)throws IllegalArgumentException{
 //		return this.ausschreibungMapper.findByPerson(name);
 //	}
-//	
-//	public Vector<Ausschreibung> findbyProjekt (String name)throws IllegalArgumentException{
-//		return this.ausschreibungMapper.findByProjekt(name);
-//	}
 	
-	@Override
+	public Vector<Ausschreibung> findAusschreibungbyProjekt (Projekt projekt)throws IllegalArgumentException{
+		return this.ausschreibungMapper.findByProjekt(projekt);
+	}
+	
+	
 	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {
 		// TODO Methode als Mapper nicht implementiert.
 		return null;

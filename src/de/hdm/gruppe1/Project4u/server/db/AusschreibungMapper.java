@@ -263,7 +263,7 @@ public class AusschreibungMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM ausschreibung");
 			
 			while(rs.next()){
 				Ausschreibung au = new Ausschreibung();
@@ -315,7 +315,7 @@ public class AusschreibungMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT * WHERE projekt_id='"+projekt.getProjektId()+"';");
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM ausschreibung WHERE projekt_id='"+projekt.getProjektId()+"';");
 
 		 
 		      while (rs.next()) {
@@ -326,6 +326,8 @@ public class AusschreibungMapper {
 				au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
 				au.setAusschreibungstext (rs.getString("ausschreibungstext"));
 				au.setErstellDatum(rs.getDate("erstelldatum"));
+				au.setProjektId(rs.getInt("projekt_id"));
+				au.setPartnerprofilId(rs.getInt("partnerprofil_id"));
 
 		        result.addElement(au);
 		      }
@@ -337,7 +339,7 @@ public class AusschreibungMapper {
 		    return result;
 		  }
 		
-		/**Diese Methode is voll für n arsch
+		/**Diese Methode is voll fï¿½r n arsch
 		 * @param profil
 		 * @return
 		 */
