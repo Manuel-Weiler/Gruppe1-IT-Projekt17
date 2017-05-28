@@ -29,7 +29,7 @@ public class DBConnection {
 				*/
 				 // Local MySQL instance to use during development.
                  Class.forName("com.mysql.jdbc.Driver");
-                 con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project4u?user=root&password=");
+                 con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project4u?user=root&password=1234");
 				
 			
 			} catch (Exception e) {
