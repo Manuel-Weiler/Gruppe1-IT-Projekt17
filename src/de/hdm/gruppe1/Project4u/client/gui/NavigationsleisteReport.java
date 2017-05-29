@@ -62,8 +62,8 @@ public class NavigationsleisteReport extends Composite{
 					
 					@Override
 					public void onSuccess(ArrayList<Ausschreibung> result){
-						RootPanel.get("content").clear();
-						RootPanel.get("content").add(new AlleAusschreibungenReport(result));
+						RootPanel.get("contentR").clear();
+						RootPanel.get("contentR").add(new AlleAusschreibungenReport());
 					}
 					
 					@Override

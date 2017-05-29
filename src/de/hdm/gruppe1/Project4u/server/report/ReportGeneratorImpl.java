@@ -96,8 +96,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 * @return der fertige Report
 	 */
 
-	@Override
-	public ReportByAllAusschreibungen createAllAusschreibungenReport(Ausschreibung au) 
+	public ReportByAllAusschreibungen createAllAusschreibungenReport() 
 			throws IllegalArgumentException {
 
 		if (this.getProject4uAdministration() == null)
@@ -133,44 +132,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		result.setHeaderData(header);
 
 		/**
-		 * Inhalt des Reports ID
+		 * TODO: Sobald der Login implementiert ist kann ein Nutzer identifiziert werden
+		 * und in einem Header nochmal über dem Report ausgegeben werden.
 		 */
-		header.addSubParagraph(new SimpleParagraph("Ausschreibungs-ID: " + au.getAusschreibungId()));
+		header.addSubParagraph(new SimpleParagraph("Nutzer-ID:"));
 
-		/**
-		 * Inhalt des Reports Bezeichnung
-		 */
-		header.addSubParagraph(new SimpleParagraph("Bezeichnung: " + au.getBezeichnung()));
 
-		/**
-		 * Inhalt des Reports Projektleiter
-		 */
-		header.addSubParagraph(new SimpleParagraph("Projektleiter: "));
-
-		/**
-		 * Inhalt des Reports Bewerbungsfrist/ Ablaufdatum
-		 */
-		header.addSubParagraph(new SimpleParagraph("Bezeichnung: " + au.getBewerbungsfrist()));
-
-		/**
-		 * Inhalt des Reports Ausschreibungstext
-		 */
-		header.addSubParagraph(new SimpleParagraph("Ausschreibungstext: " + au.getAusschreibungstext()));
-
-		/**
-		 * Inhalt des Reports Erstelldatum
-		 */
-		header.addSubParagraph(new SimpleParagraph("Erstelldatum: "));
-
-		/**
-		 * Inhalt des Reports Projekt-ID
-		 */
-		header.addSubParagraph(new SimpleParagraph("Projekt-ID: "));
-
-		/**
-		 * Inhalt des Reports Partnerprofil-ID
-		 */
-		header.addSubParagraph(new SimpleParagraph("Partnerprofil-ID: "));
 
 		/**
 		 * Report ausgeben

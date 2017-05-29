@@ -10,7 +10,7 @@ public interface ReportGenerator extends RemoteService{
 	
 	public void init() throws IllegalArgumentException;
 	
-	ReportByAllAusschreibungen createAllAusschreibungenReport(Ausschreibung au);
+	ReportByAllAusschreibungen createAllAusschreibungenReport();
 
 	ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Ausschreibung au);
 

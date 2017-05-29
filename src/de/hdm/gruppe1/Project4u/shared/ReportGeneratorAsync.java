@@ -15,7 +15,7 @@ public interface ReportGeneratorAsync {
 	 */
 	public void init(AsyncCallback<Void> callback);
 
-	void createAllAusschreibungenReport(Ausschreibung au, AsyncCallback<ReportByAllAusschreibungen> callback);
+	void createAllAusschreibungenReport(AsyncCallback<ReportByAllAusschreibungen> callback);
 
 	void createAusschreibungenForPartnerprofil(Ausschreibung au,
 			AsyncCallback<ReportByAusschreibungenForPartnerprofil> callback);
