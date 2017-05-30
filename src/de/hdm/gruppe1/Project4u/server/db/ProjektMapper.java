@@ -69,42 +69,8 @@ public class ProjektMapper {
 	 ** @return Liefert ein Projekt entsprechend der �bergebenen id zurueck.
 	 **/
 
-	public Projekt findById(int id) {
-		// DB-Verbindung holen
-		Connection con = DBConnection.connection();
 
-		try {
-			// Leeres SQL-Statement (JDBC) anlegen
-			Statement stmt = con.createStatement();
-
-			// Statement ausf�llen und als Query an die DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Projekt WHERE id='" + id + "'");
-
-			/*
-			 * Da id Prim�rschl�ssel ist, kann max. nur ein Tupel
-			 * zur�ckgegeben werden. Pr�fe, ob ein Ergebnis vorliegt.
-			 */
-			if (rs.next()) {
-				// Ergebnis-Tupel in Objekt umwandeln
-				Projekt p = new Projekt();
-				p.setProjektId(rs.getInt("id"));
-				p.setName(rs.getString("name"));
-				p.setStartdatum(rs.getDate("startdatum"));
-				p.setEnddatum(rs.getDate("enddatum"));
-				p.setBeschreibung(rs.getString("beschreibung"));
-				p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
-				p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
-
-				return p;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-
-		return null;
-	}
-
+	
 	/**
 	 * Diese Methode bezieht ihre Informationen aus der
 	 * Project4uAdministrationImpl und erstellt mit diesen einen neuen Projekt
@@ -114,31 +80,81 @@ public class ProjektMapper {
 	 * @return projekt
 	 */
 
-	public Projekt insert(Projekt p, Projektmarktplatz pm, Organisationseinheit o) {
-		Connection con = DBConnection.connection();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
-		p.setStartdatum(date);
-		p.setEnddatum(date);
+	
 
-		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Projekt ");
+      public Projekt findById(int id){
+		 // DB-Verbindung holen
+		 Connection con = DBConnection.connection();
+		 
+		 try {
+		   // Leeres SQL-Statement (JDBC) anlegen
+		   Statement stmt = con.createStatement();
+		   
 
-			if (rs.next()) {
-				p.setProjektId(rs.getInt("maxid") + 1);
-			}
+		   // Statement ausf�llen und als Query an die DB schicken
+		   ResultSet rs = stmt.executeQuery("SELECT * "  + "FROM Projekt WHERE id='" + id + "'");
 
-			stmt.executeUpdate(
-					"INSERT INTO Projekt (id ,name, startdatum, enddatum, beschreibung, projektmarktplatz_id, organisationseinheit_id)"
-							+ "VALUES (" + p.getProjektId() + ", '" + p.getName() + "', '"
-							+ sdf.format(p.getStartdatum()) + "', '" + sdf.format(p.getEnddatum()) + "', '"
-							+ p.getBeschreibung() + "', '" + p.getProjektmarktplatzId() + "', '"
-							+ o.getOrganisationseinheitId() + "')");
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	
+		   
+		   /*
+	        * Da id Prim�rschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
+	        * werden. Pr�fe, ob ein Ergebnis vorliegt.
+	        */
+		    if (rs.next()) {
+		      // Ergebnis-Tupel in Objekt umwandeln
+		      Projekt p = new Projekt();
+		      p.setProjektId(rs.getInt("id"));
+		      p.setName(rs.getString("name"));
+		      p.setStartdatum(rs.getDate("startdatum"));
+		      p.setEnddatum(rs.getDate("enddatum"));
+		      p.setBeschreibung(rs.getString("beschreibung"));
+		      p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		      p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+		      
+		      return p;
+		      }
+		    }
+           catch (SQLException e) {
+        	 e.printStackTrace();
+        	 return null; 
+           }
+		 
+		     return null;
+		   }
+	  
+	  /**
+		 * Diese Methode bezieht ihre Informationen aus der
+		 * Project4uAdministrationImpl und erstellt mit diesen einen neuen
+		 * Projekt in der Datenbank.
+		 * 
+		 * @param projekt
+		 * @return projekt
+		 */
+	  
+	  public Projekt insert(Projekt p, Projektmarktplatz pm, Organisationseinheit o){
+		  Connection con = DBConnection.connection();
+		  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		  
+		  
+		  try{
+			  Statement stmt = con.createStatement();
+			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Projekt ");
+			  
+			  if (rs.next()) {
+	              p.setProjektId(rs.getInt("maxid") + 1);
+	            }
+			  
+			  stmt.executeUpdate("INSERT INTO Projekt (id ,name, startdatum, enddatum, beschreibung, projektmarktplatz_id, organisationseinheit_id)"
+			  		+ "VALUES (" + p.getProjektId() + ", '" + p.getName() + "', '" 
+					+ sdf.format(p.getStartdatum()) + "', '"+ sdf.format(p.getEnddatum()) + "', '" 
+			  		+ p.getBeschreibung() + "', '" + p.getProjektmarktplatzId() + "', '"
+					+ o.getOrganisationseinheitId() + "')");
+			                    
+			          }
+		      catch (SQLException e) {
+		    	 e.printStackTrace();
+		    	 }
+		  
 
 		return p;
 

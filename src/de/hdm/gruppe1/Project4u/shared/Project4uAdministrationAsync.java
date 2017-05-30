@@ -11,12 +11,13 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 public interface Project4uAdministrationAsync {
 
-	void createOrganisationseinheit(String google_id, String name, String typ, AsyncCallback<Organisationseinheit> callback);
+	void createOrganisationseinheit(String google_id, String name, String typ, Partnerprofil partnerprofil, AsyncCallback<Organisationseinheit> callback);
 
 	/**
 	 * @param callback
