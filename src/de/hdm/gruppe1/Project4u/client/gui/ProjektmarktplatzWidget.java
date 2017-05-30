@@ -202,7 +202,7 @@ public class ProjektmarktplatzWidget extends Composite {
 
 							Project4uVerwaltung.findAllProjekteOfProjektmarktplatz(selectionModel.getSelectedObject(),
 									new AsyncCallback<Vector<Projekt>>() {
-								
+								 
 								public void onSuccess(Vector<Projekt> result) {
 									diBox.hide();
 									RootPanel.get("content").clear();

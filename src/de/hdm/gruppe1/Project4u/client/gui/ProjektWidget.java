@@ -5,7 +5,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
+import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.DateCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -154,7 +156,7 @@ public class ProjektWidget extends Composite{
 						@Override
 						public void onClick(ClickEvent event) {
 							diBox.hide();
-							ausschreibungAnsehen(new Projekt()); //TODO: new Project ersetzen
+							ausschreibungAnsehen(selectionModel.getSelectedObject()); 
 							
 						}
 					});
@@ -350,7 +352,7 @@ public class ProjektWidget extends Composite{
 		db.show();
 		
 	}
-
+	Vector<Ausschreibung> chosenAusschreibungen = new Vector<Ausschreibung>();
 	protected void ausschreibungAnsehen(Projekt p){
 		
 		if (vPanel.getWidgetCount()>1){
@@ -358,10 +360,26 @@ public class ProjektWidget extends Composite{
 			vPanel.remove(i);
 			}
 		}
+		
+		
 		HorizontalPanel hPanel = new HorizontalPanel();
 		HTML hr = new HTML("<hr style= 'border: 0; height: 3px; background: #333; background-image: linear-gradient(to right, #ccc, #333, #ccc);'>");
 		vPanel.add(hr);
 		
+		Project4uVerwaltung.findAusschreibungbyProjekt(p, new AsyncCallback<Vector<Ausschreibung>>() {
+			
+			@Override
+			public void onSuccess(Vector<Ausschreibung> result) {
+				chosenAusschreibungen=result;
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		CellTable<Ausschreibung> ausschreibungTabelle = new CellTable<Ausschreibung>(KEY_PROVIDER_AUSSCHREIBUNG);
 		
@@ -383,9 +401,40 @@ public class ProjektWidget extends Composite{
 			@Override
 			public Date getValue(Ausschreibung object) {
 				return object.getBewerbungsfrist();
+				
 			}	
 		};
 		
+		ButtonCell buttonCell = new ButtonCell();
+		Column<Ausschreibung, String> buttonColumn = new Column<Ausschreibung, String>(buttonCell) {
+		  @Override
+		  public String getValue(Ausschreibung au) {
+		    // The value to display in the button.
+		    return "Details";
+		  }
+		};
 		
+
+		//You can then set a FieldUpdater on the Column to be notified of clicks.
+		
+		buttonColumn.setFieldUpdater(new FieldUpdater <Ausschreibung, String>() {
+		  public void update(int index, Ausschreibung object, String value) {
+		    // Value is the button value.  Object is the row object.
+		    Window.alert("You clicked: " + object.getAusschreibungstext());
+		  }
+		});
+		
+		ausschreibungTabelle.addColumn(nameAusschreibung, "Bezeichnung");
+		ausschreibungTabelle.addColumn(projektleiter, "Projektleiter");
+		ausschreibungTabelle.addColumn(bewerbungsfrist, "Bewerbungsfrist");
+		ausschreibungTabelle.addColumn(buttonColumn, "");
+		
+		//Füllen der Tabelle ab dem Index 0.
+		ausschreibungTabelle.setRowData(0, chosenAusschreibungen);
+		
+		//Anpassen des Widgets an die Breite des div-Elements "content"
+		ausschreibungTabelle.setWidth("100%");
+		
+		hPanel.add(ausschreibungTabelle);
 	}
 }
