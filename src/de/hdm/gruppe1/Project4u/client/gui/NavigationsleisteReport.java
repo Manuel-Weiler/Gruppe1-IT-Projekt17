@@ -45,11 +45,11 @@ public class NavigationsleisteReport extends Composite{
 			public void onClick(ClickEvent event){
 				Label startseiteReportLabel = new Label("Willkommen! Hier finden Sie Ihre Reports");
 				
-				RootPanel.get("contentHeader").clear();
-				RootPanel.get("contentHeader").add(startseiteReportLabel);
+				RootPanel.get("contentRHeader").clear();
+				RootPanel.get("contentRHeader").add(startseiteReportLabel);
 				
-				RootPanel.get("content").clear();
-				RootPanel.get("content").add(new StartseiteReport());
+				RootPanel.get("contentR").clear();
+				RootPanel.get("contentR").add(new StartseiteReport());
 			}
 		});
 		
@@ -58,12 +58,13 @@ public class NavigationsleisteReport extends Composite{
 			@Override
 			public void onClick(ClickEvent event){
 				
-				Project4uVerwaltung.getAllAusschreibungen(new AsyncCallback<ArrayList<Ausschreibung>>() {
+				Project4uVerwaltung.getAlleAusschreibungen(new AsyncCallback<ArrayList<Ausschreibung>>() {
 					
 					@Override
 					public void onSuccess(ArrayList<Ausschreibung> result){
+						
 						RootPanel.get("contentR").clear();
-						RootPanel.get("contentR").add(new AlleAusschreibungenReport());
+						RootPanel.get("contentR").add(new AlleAusschreibungenReport(result));
 					}
 					
 					@Override

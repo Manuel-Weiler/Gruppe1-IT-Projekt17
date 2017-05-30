@@ -43,22 +43,6 @@ public class Ausschreibung extends BusinessObject{
 		this.erstellDatum = erstellDatum;
 	}
 	
-/** Brauchen wir das?
- * @author Dominik
- * 
- * 	public boolean equals(Object o){
-		if(o != null && o instanceof Ausschreibung){
-			Ausschreibung au = (Ausschreibung) o;
-			try{
-				return super.equals(au);
-			}
-			catch(IllegalArgumentException e){
-				return false;
-			}
-		}
-		return false;
-	}
- */
 
 	public String getNameProjektleiter() {
 		return nameProjektleiter;

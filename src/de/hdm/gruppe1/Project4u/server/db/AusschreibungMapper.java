@@ -106,28 +106,8 @@ public class AusschreibungMapper {
 			e1.printStackTrace();
 		}
 	}
-	/*
-	 * 
-	*
-	*
-*public Ausschreibung findByIdAusschreibung (int i) {
-*		Connection con = DBConnection.connection();
-	*	Ausschreibung au = new Ausschreibung();
-		
-	*	try {
-	*
-	*		ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Ausschreibung WHERE id='" + i + "'");
-	*		if (rs.next()) {
-*
-*				au.setID(rs.getInt("id"));
-*				au.setErstellDatum(rs.getDate("erstelldatum"));
-*			}
-*		} catch (SQLException e) {
-*			e.printStackTrace();
-*		}
-*		return au;
-*	}
-*/	
+
+	
 	public Ausschreibung findByIdAusschreibung (int i) {
 		Connection con = DBConnection.connection();
 		
@@ -255,7 +235,8 @@ public class AusschreibungMapper {
 		}
 	}
 	
-	//Auslesen alle Ausschreibungen
+	
+	//Auslesen aller Ausschreibungen
 	public ArrayList<Ausschreibung> findAll(){
 		Connection con = DBConnection.connection();
 		
@@ -283,6 +264,9 @@ public class AusschreibungMapper {
 		}
 		return result;
 	}
+	
+	
+	
 // So oder mit einem Vector?
 	public Ausschreibung  findByNameAusschreibung (String bezeichnung) {
 		Connection con = DBConnection.connection();
@@ -337,7 +321,7 @@ public class AusschreibungMapper {
 		    return result;
 		  }
 		
-		/**Diese Methode is voll für n arsch
+		/**TODO: Diese Methode is voll für n arsch
 		 * @param profil
 		 * @return
 		 */

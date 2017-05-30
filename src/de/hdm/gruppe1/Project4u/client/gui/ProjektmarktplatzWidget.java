@@ -36,11 +36,11 @@ public class ProjektmarktplatzWidget extends Composite {
 	Button seeProjektmarktplatz = new Button("Projektmarktplatz ansehen");
 
 	/*
-	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id,
-	 * damit auch einzelne Objekte der in der Liste weiter verarbeitet werden
-	 * k�nnen. ======= Der Key-Provider vergibt jedem Objekt der Tabelle eine
-	 * Id, damit auch einzelne Objekte der in der Liste weiter verarbeitet
-	 * werden k�nnen.
+	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch
+	 * einzelne Objekte der in der Liste weiter verarbeitet werden k�nnen.
+	 * ======= Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit
+	 * auch einzelne Objekte der in der Liste weiter verarbeitet werden
+	 * k�nnen.
 	 */
 	public static final ProvidesKey<Projektmarktplatz> KEY_PROVIDER = new ProvidesKey<Projektmarktplatz>() {
 		public Object getKey(Projektmarktplatz item) {
@@ -48,26 +48,24 @@ public class ProjektmarktplatzWidget extends Composite {
 		}
 	};
 
-	public ProjektmarktplatzWidget(Vector <Projektmarktplatz> projektmarktplaetze){
+	public ProjektmarktplatzWidget(Vector<Projektmarktplatz> projektmarktplaetze) {
 		RootPanel.get("contentHeader").clear();
 		RootPanel.get("contentHeader").add(new Label("Alle Projektmarktplätze:"));
-		
-		Button addProjektmarktplatz = new Button("Projektmarktplatz anlegen");	
-		addProjektmarktplatz.addClickHandler(new addProjektmarktplatzClickHandler());
-		
-		final Button changeProjektmarktplatz = new Button("Projektmarktplatz bearbeiten");
-		VerticalPanel vPanel = new VerticalPanel();		
 
-		
-		//Abfrage, ob bisher �berhaupt Projektmarktpl�tze existieren.
-		if (projektmarktplaetze.isEmpty()){
+		Button addProjektmarktplatz = new Button("Projektmarktplatz anlegen");
+		addProjektmarktplatz.addClickHandler(new addProjektmarktplatzClickHandler());
+
+		final Button changeProjektmarktplatz = new Button("Projektmarktplatz bearbeiten");
+		VerticalPanel vPanel = new VerticalPanel();
+
+		// Abfrage, ob bisher �berhaupt Projektmarktpl�tze existieren.
+		if (projektmarktplaetze.isEmpty()) {
 			vPanel.clear();
 			Label noProjektmarktplatz = new Label("Es existiert noch kein Projektmarktplatz, lege einen an!");
 			vPanel.add(noProjektmarktplatz);
 			vPanel.add(addProjektmarktplatz);
 			initWidget(vPanel);
-		}
-		else{
+		} else {
 			vPanel.clear();
 			CellTable<Projektmarktplatz> pMarktplatzeTable = new CellTable<Projektmarktplatz>(KEY_PROVIDER);
 
@@ -80,32 +78,32 @@ public class ProjektmarktplatzWidget extends Composite {
 			};
 
 			/*
-			 * Hinzuf�gen der Spalten zur Tabelle, in der Reihenfolge von Links nach
-			 * Rechts. Definition der Spaltennamen.
+			 * Hinzuf�gen der Spalten zur Tabelle, in der Reihenfolge von
+			 * Links nach Rechts. Definition der Spaltennamen.
 			 */
 
 			pMarktplatzeTable.addColumn(nameColumn, "Name");
-			
-			//F�llen der Tabelle ab dem Index 0.
+
+			// F�llen der Tabelle ab dem Index 0.
 			pMarktplatzeTable.setRowData(0, projektmarktplaetze);
-			
-			//Anpassen des Widgets an die Breite des div-Elements "content"
-			pMarktplatzeTable.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
+
+			// Anpassen des Widgets an die Breite des div-Elements "content"
+			pMarktplatzeTable.setWidth(RootPanel.get("content").getOffsetWidth() + "px");
 
 			/*
-			 * Das SelectionModel wird zur Tabelle der Projektmarktpl�tze hinzugef�gt
-			 * und gew�hrleistet, �hnlich einem ClickHandler, dass beim Klicken auf
-			 * eine Tabellenzeile das jeweilige Objekt zur�ckgegeben wird.
+			 * Das SelectionModel wird zur Tabelle der Projektmarktpl�tze
+			 * hinzugef�gt und gew�hrleistet, �hnlich einem ClickHandler,
+			 * dass beim Klicken auf eine Tabellenzeile das jeweilige Objekt
+			 * zur�ckgegeben wird.
 			 */
 			final SingleSelectionModel<Projektmarktplatz> selectionModel = new SingleSelectionModel<Projektmarktplatz>(
 					KEY_PROVIDER);
 
-			
 			pMarktplatzeTable.setSelectionModel(selectionModel);
 
 			/*
-			 * Der durch den SelectionHandler zur�ckgegebene Projektmarktplatz kann an eine
-			 * Instanz des ProjekteWidgets �bergeben werden. 
+			 * Der durch den SelectionHandler zur�ckgegebene Projektmarktplatz
+			 * kann an eine Instanz des ProjekteWidgets �bergeben werden.
 			 */
 			selectionModel.addSelectionChangeHandler(new Handler() {
 
@@ -120,7 +118,7 @@ public class ProjektmarktplatzWidget extends Composite {
 					seeProjektmarktplatz.setPixelSize(270, 30);
 					deleteProjektmarktplatz.setPixelSize(270, 30);
 					changeProjektmarktplatz.setPixelSize(270, 30);
-	
+
 					changeProjektmarktplatz.addClickHandler(new ClickHandler() {
 
 						@Override
@@ -128,54 +126,54 @@ public class ProjektmarktplatzWidget extends Composite {
 
 							diBox.hide();
 							final DialogBox Box = new DialogBox();
-							
+
 							VerticalPanel vPanel = new VerticalPanel();
 							Label name = new Label("Name des Projektmarktplatzes");
 							final TextBox pName = new TextBox();
-							pName.setValue(selectionModel.getSelectedObject().getName()); 
+							pName.setValue(selectionModel.getSelectedObject().getName());
 							Button update = new Button("Änderungen am Projektmarktplatz speichern");
-							
+
 							update.addClickHandler(new ClickHandler() {
-								
+
 								@Override
 								public void onClick(ClickEvent event) {
-									if (pName.getValue()!=null){
-										
+									if (pName.getValue() != null) {
+
 										Projektmarktplatz p = selectionModel.getSelectedObject();
 										p.setName(pName.getValue());
 										Project4uVerwaltung.update(p, new AsyncCallback<Void>() {
-											
+
 											@Override
 											public void onSuccess(Void result) {
-												Project4uVerwaltung.findAllProjektmarktplatz(new AsyncCallback<Vector<Projektmarktplatz>>() {
+												Project4uVerwaltung.findAllProjektmarktplatz(
+														new AsyncCallback<Vector<Projektmarktplatz>>() {
 
-													
-													public void onSuccess(Vector<Projektmarktplatz> result) {
-														
-														RootPanel.get("content").clear();
-														RootPanel.get("content").add(new ProjektmarktplatzWidget(result));
-														
-													}
-													
-													@Override
-													public void onFailure(Throwable caught) {							
-													}
-												});
+															public void onSuccess(Vector<Projektmarktplatz> result) {
+
+																RootPanel.get("content").clear();
+																RootPanel.get("content")
+																		.add(new ProjektmarktplatzWidget(result));
+
+															}
+
+															@Override
+															public void onFailure(Throwable caught) {
+															}
+														});
 											}
-											
+
 											@Override
 											public void onFailure(Throwable caught) {
-											Window.alert(caught.getMessage());
+												Window.alert(caught.getMessage());
 											}
 										});
 										Box.hide();
-									}
-									else {
+									} else {
 										Window.alert("Bitte einen Namen eingeben");
 									}
 								}
 							});
-							
+
 							vPanel.add(name);
 							vPanel.add(pName);
 							vPanel.add(update);
@@ -186,45 +184,49 @@ public class ProjektmarktplatzWidget extends Composite {
 
 						}
 					});
-					
+
 					/*
-					 * Mit dem Klick auf den Button <code>seeProjektmarktplatz</code> wird die Ansicht der Projektmarktplätze geschlossen
-					 * und alle Projekte zum gewählten Projektmarktplatz angezeigt.
+					 * Mit dem Klick auf den Button
+					 * <code>seeProjektmarktplatz</code> wird die Ansicht der
+					 * Projektmarktplätze geschlossen und alle Projekte zum
+					 * gewählten Projektmarktplatz angezeigt.
 					 */
 					seeProjektmarktplatz.addClickHandler(new ClickHandler() {
-												
+
 						public void onClick(ClickEvent event) {
 
 							Project4uVerwaltung.findAllProjekteOfProjektmarktplatz(selectionModel.getSelectedObject(),
 									new AsyncCallback<Vector<Projekt>>() {
-								
-								public void onSuccess(Vector<Projekt> result) {
-									diBox.hide();
-									RootPanel.get("content").clear();
-									RootPanel.get("content").add(new ProjektWidget(result, selectionModel.getSelectedObject()));
-									RootPanel.get("contentHeader").clear();
-									RootPanel.get("contentHeader")
-											.add(new Label("Alle Projekte des Projektmarktplatzes "
-													+ selectionModel.getSelectedObject().getName()));
-								}
-								@Override
-								public void onFailure(Throwable caught) {												
-								}
-							});
-							
+
+										public void onSuccess(Vector<Projekt> result) {
+											diBox.hide();
+											RootPanel.get("content").clear();
+											RootPanel.get("content")
+													.add(new ProjektWidget(result, selectionModel.getSelectedObject()));
+											RootPanel.get("contentHeader").clear();
+											RootPanel.get("contentHeader")
+													.add(new Label("Alle Projekte des Projektmarktplatzes "
+															+ selectionModel.getSelectedObject().getName()));
+										}
+
+										@Override
+										public void onFailure(Throwable caught) {
+										}
+									});
+
 						}
 					});
-					
+
 					deleteProjektmarktplatz.addClickHandler(new ClickHandler() {
 
 						@Override
 						public void onClick(ClickEvent event) {
 
-							// TODO: Löschen des Projektmarktplatzes 
+							// TODO: Löschen des Projektmarktplatzes
 
 						}
 					});
-					
+
 					diBox.setAutoHideEnabled(true);
 					diBox.center();
 					diBox.show();
@@ -235,76 +237,78 @@ public class ProjektmarktplatzWidget extends Composite {
 			initWidget(vPanel);
 		}
 
-}
-
-/*
- * Clickhandler f�r das Hinzuf�gen eines neuen Projektmarktplatzes. Der neu
- * erzeugte Projektmarktplatz wird in die DB geschrieben und das
- * ProjektmarktplatzWidget wird neu erzeugt.
- */
-private class addProjektmarktplatzClickHandler implements ClickHandler {
-
-	@Override
-	public void onClick(ClickEvent event) {
-		final DialogBox dBox = new DialogBox();
-
-		VerticalPanel vPanel = new VerticalPanel();
-		Label name = new Label("Name des neuen Projektmarktplatzes");
-		final TextBox pName = new TextBox();
-		Button createP = new Button("Neuen Projektmarktplatz anlegen");
-		createP.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				if (!pName.getValue().isEmpty()) {
-					Projektmarktplatz pPlatz = new Projektmarktplatz();
-					pPlatz.setName(pName.getValue());
-
-					// Dem neu erzeugten Projektmarktplatz wird der Name
-					// zugewiesen und er wird in der DB abgelegt
-					Project4uVerwaltung.createProjektmarktplatz(pPlatz, new AsyncCallback<Projektmarktplatz>() {
-
-						@Override
-						public void onSuccess(Projektmarktplatz result) {
-
-							// ...anschlie�end wird das ProjektmarktplatzWidget neu erzeugt
-							Project4uVerwaltung.findAllProjektmarktplatz(new AsyncCallback<Vector<Projektmarktplatz>>() {
-
-										public void onSuccess(Vector<Projektmarktplatz> result) {
-											RootPanel.get("content").clear();
-											RootPanel.get("content").add(new ProjektmarktplatzWidget(result));
-
-										}
-
-										@Override
-										public void onFailure(Throwable caught) {
-										}
-									});
-
-						}
-
-						@Override
-						public void onFailure(Throwable caught) {
-							Window.alert(caught.getMessage());
-
-						}
-					});
-
-					dBox.hide();
-				} else {
-					Window.alert("Bitte einen Namen eingeben");
-				}
-
-			}
-		});
-		vPanel.add(name);
-		vPanel.add(pName);
-		vPanel.add(createP);
-		dBox.add(vPanel);
-		dBox.center();
-		dBox.show();
-		dBox.setAutoHideEnabled(true);
-
 	}
-}
+
+	/*
+	 * Clickhandler f�r das Hinzuf�gen eines neuen Projektmarktplatzes. Der
+	 * neu erzeugte Projektmarktplatz wird in die DB geschrieben und das
+	 * ProjektmarktplatzWidget wird neu erzeugt.
+	 */
+	private class addProjektmarktplatzClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			final DialogBox dBox = new DialogBox();
+
+			VerticalPanel vPanel = new VerticalPanel();
+			Label name = new Label("Name des neuen Projektmarktplatzes");
+			final TextBox pName = new TextBox();
+			Button createP = new Button("Neuen Projektmarktplatz anlegen");
+			createP.addClickHandler(new ClickHandler() {
+
+				public void onClick(ClickEvent event) {
+					if (!pName.getValue().isEmpty()) {
+						Projektmarktplatz pPlatz = new Projektmarktplatz();
+						pPlatz.setName(pName.getValue());
+
+						// Dem neu erzeugten Projektmarktplatz wird der Name
+						// zugewiesen und er wird in der DB abgelegt
+						Project4uVerwaltung.createProjektmarktplatz(pPlatz, new AsyncCallback<Projektmarktplatz>() {
+
+							@Override
+							public void onSuccess(Projektmarktplatz result) {
+
+								// ...anschlie�end wird das
+								// ProjektmarktplatzWidget neu erzeugt
+								Project4uVerwaltung
+										.findAllProjektmarktplatz(new AsyncCallback<Vector<Projektmarktplatz>>() {
+
+											public void onSuccess(Vector<Projektmarktplatz> result) {
+												RootPanel.get("content").clear();
+												RootPanel.get("content").add(new ProjektmarktplatzWidget(result));
+
+											}
+
+											@Override
+											public void onFailure(Throwable caught) {
+											}
+										});
+
+							}
+
+							@Override
+							public void onFailure(Throwable caught) {
+								Window.alert(caught.getMessage());
+
+							}
+						});
+
+						dBox.hide();
+					} else {
+						Window.alert("Bitte einen Namen eingeben");
+					}
+
+				}
+			});
+			vPanel.add(name);
+			vPanel.add(pName);
+			vPanel.add(createP);
+			dBox.add(vPanel);
+			dBox.center();
+			dBox.show();
+			dBox.setAutoHideEnabled(true);
+
+		}
+	}
 
 }

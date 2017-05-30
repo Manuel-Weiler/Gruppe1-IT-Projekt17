@@ -10,7 +10,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import de.hdm.gruppe1.Project4u.shared.report.Column;
 import de.hdm.gruppe1.Project4u.shared.report.CompositeParagraph;
 import de.hdm.gruppe1.Project4u.shared.report.Report;
-import de.hdm.gruppe1.Project4u.shared.report.ReportByAllAusschreibungen;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
 import de.hdm.gruppe1.Project4u.shared.report.Row;
 import de.hdm.gruppe1.Project4u.shared.report.SimpleParagraph;
@@ -96,7 +96,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 * @return der fertige Report
 	 */
 
-	public ReportByAllAusschreibungen createAllAusschreibungenReport() 
+	public ReportByAlleAusschreibungen createAlleAusschreibungenReport() 
 			throws IllegalArgumentException {
 
 		if (this.getProject4uAdministration() == null)
@@ -106,7 +106,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		 * Leeren Report anlegen
 		 */
 
-		ReportByAllAusschreibungen result = new ReportByAllAusschreibungen();
+		ReportByAlleAusschreibungen result = new ReportByAlleAusschreibungen();
 
 		/**
 		 * Titel und Bezeichnung des Reports
@@ -161,7 +161,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		result.addRow(headline);
 		
 		//Reportinhalt:
-		ArrayList<Ausschreibung> allAusschreibungen = this.project4uAdministration.getAllAusschreibungen();
+		ArrayList<Ausschreibung> allAusschreibungen = this.project4uAdministration.getAlleAusschreibungen();
 		
 		for(Ausschreibung a : allAusschreibungen){
 			//neue, leere Zeile anlegen

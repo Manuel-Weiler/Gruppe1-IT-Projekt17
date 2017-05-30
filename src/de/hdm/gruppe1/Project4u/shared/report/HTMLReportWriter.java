@@ -104,11 +104,10 @@ public class HTMLReportWriter {
 	 * auszulesen.
 	 */
 	
-	public void process(ReportByAllAusschreibungen a){
+	public void process(ReportByAlleAusschreibungen a){
 		this.resetReportText();
 		StringBuffer result = new StringBuffer();
 		
-
 		result.append("<H3>" + a.getTitle() + "</H3>");
 
 		Vector<Row> rows = a.getRows();
