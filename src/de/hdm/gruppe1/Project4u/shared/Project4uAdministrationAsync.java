@@ -22,6 +22,14 @@ public interface Project4uAdministrationAsync {
 	/**
 	 * @param callback
 	 */
+	
+	//Organisationseinheit
+	void deleteOrganisationseinheit(Organisationseinheit organisationseinheit, AsyncCallback<Void> callback);
+
+	void getOrganisationseinheitById(int id, AsyncCallback<Organisationseinheit> callback);
+	
+	
+	
 	void init(AsyncCallback<Void> callback);
 	
 	void checkStatus(Organisationseinheit loginInfo, AsyncCallback<Organisationseinheit> callback);
@@ -46,4 +54,7 @@ public interface Project4uAdministrationAsync {
 
 	void createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o, AsyncCallback<Projekt> callback);
 
+	
+
+	
 }

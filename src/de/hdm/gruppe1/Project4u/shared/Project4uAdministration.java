@@ -18,9 +18,15 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ, Partnerprofil partnerprofil);
 	
+	public void deleteOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException;
+	
+	public Organisationseinheit getOrganisationseinheitById(int id) throws IllegalArgumentException;
+	
 	public Organisationseinheit checkStatus(Organisationseinheit loginInfo) throws IllegalArgumentException;
 	
 
+	
+	
 	public Vector<Projektmarktplatz> findAllProjektmarktplatz() throws IllegalArgumentException;
 
 	//TODO: Testmethode l�schen
