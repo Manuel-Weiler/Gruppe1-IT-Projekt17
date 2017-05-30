@@ -395,8 +395,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	
 	
 	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {
-		// TODO Methode als Mapper nicht implementiert.
-		return null;
+		
+		return this.ausschreibungMapper.findAllAusschreibungen();
 	}
 	
 	/*

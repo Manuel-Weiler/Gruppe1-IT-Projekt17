@@ -1,5 +1,6 @@
 package de.hdm.gruppe1.Project4u.client.gui;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -21,6 +22,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
@@ -46,7 +49,7 @@ public class ProjektWidget extends Composite{
 	
 	//TODO: Projekt anlegen-Maske implementieren & Clickhandler hinzuf�gen
 	Button addProjekt = new Button("Projekt anlegen");
-	
+	VerticalPanel vPanel = new VerticalPanel();
 	//TODO: Projekt löschen,  Ausschreibungen
 
 
@@ -60,11 +63,22 @@ public class ProjektWidget extends Composite{
 		}
 	};
 	
+	public static final ProvidesKey<Ausschreibung> KEY_PROVIDER_AUSSCHREIBUNG = new ProvidesKey<Ausschreibung>() {
+		public Object getKey(Ausschreibung item) {
+			return item == null ? null : item.getAusschreibungId();
+		}
+	};
+	
+	
+	
+	
+	
+	
 	public ProjektWidget (Vector<Projekt> projekte, Projektmarktplatz pMarktpl){
 		
 		this.projektmarktplatz =pMarktpl;
 		
-		VerticalPanel vPanel = new VerticalPanel();
+		
 		
 		//Pr�fung, ob schon Projekte zum Projektmarktplatz existieren
 		if (projekte.isEmpty()){
@@ -118,30 +132,8 @@ public class ProjektWidget extends Composite{
 				}
 			};
 			
-			Project4uVerwaltung.findAusschreibungbyProjekt(projekt, new AsyncCallback<Vector<Ausschreibung>>() {
-				
-				@Override
-				public void onSuccess(Vector<Ausschreibung> result) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					
-				}
-			});
 			
-			SelectionCell ausschreibungen = new SelectionCell(null);
-			Column<Projekt, String> ausschreibungSpalte = new Column<Projekt, String>(ausschreibungen) {
-				
-				@Override
-				public String getValue(Projekt object) {
-					// TODO Auto-generated method stub
-					return null;
-				}
-			};
+			
 			
 			/*
 			 * Das SelectionModel wird zur Tabelle der Projektmarktpl�tze hinzugef�gt
@@ -156,7 +148,16 @@ public class ProjektWidget extends Composite{
 				public void onSelectionChange(SelectionChangeEvent event) {
 					final DialogBox diBox = new DialogBox();
 					VerticalPanel vPanel = new VerticalPanel();
-					Button seeProjekt = new Button("Projekt ansehen");
+					Button seeProjekt = new Button("Ausschreibungen zum Projekt ansehen");
+					seeProjekt.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							diBox.hide();
+							ausschreibungAnsehen(new Projekt()); //TODO: new Project ersetzen
+							
+						}
+					});
 					Button deleteProjekt = new Button("Projekt löschen");
 					Button changeProjekt = new Button("Projekt bearbeiten");
 					changeProjekt.addClickHandler(new ClickHandler() {
@@ -189,6 +190,7 @@ public class ProjektWidget extends Composite{
 			projektTabelle.addColumn(startdatum, "Startdatum");
 			projektTabelle.addColumn(enddatum, "Enddatum");
 			projektTabelle.addColumn(description, "Beschreibung");
+			
 			
 			//F�llen der Tabelle ab dem Index 0.
 			projektTabelle.setRowData(0,  projekte);
@@ -305,7 +307,7 @@ public class ProjektWidget extends Composite{
 					or.setOrganisationseinheitId(2);
 					Project4uVerwaltung.createProjekt(p, m, or, new AsyncCallback<Projekt>() {
 						
-						@Override
+						
 						public void onSuccess(Projekt result) {
 							
 							//Nach dem Speichern des Projektes wird das ProjektWidget erstellt und im contend-div angezeigt.
@@ -321,7 +323,7 @@ public class ProjektWidget extends Composite{
 											.add(new Label("Alle Projekte des Projektmarktplatzes "
 													+ m.getName()));
 								}
-								@Override
+								
 								public void onFailure(Throwable caught) {												
 								}
 							});
@@ -329,7 +331,7 @@ public class ProjektWidget extends Composite{
 							
 							}
 
-							@Override
+							
 							public void onFailure(Throwable caught) {
 
 							}
@@ -349,4 +351,41 @@ public class ProjektWidget extends Composite{
 		
 	}
 
+	protected void ausschreibungAnsehen(Projekt p){
+		
+		if (vPanel.getWidgetCount()>1){
+			for(int i=2; i<=vPanel.getWidgetCount(); i++){
+			vPanel.remove(i);
+			}
+		}
+		HorizontalPanel hPanel = new HorizontalPanel();
+		HTML hr = new HTML("<hr style= 'border: 0; height: 3px; background: #333; background-image: linear-gradient(to right, #ccc, #333, #ccc);'>");
+		vPanel.add(hr);
+		
+		
+		CellTable<Ausschreibung> ausschreibungTabelle = new CellTable<Ausschreibung>(KEY_PROVIDER_AUSSCHREIBUNG);
+		
+		TextColumn<Ausschreibung> nameAusschreibung = new TextColumn<Ausschreibung>() {
+			public String getValue(Ausschreibung object) {
+				return object.getBezeichnung();
+			}
+		};
+		
+		TextColumn<Ausschreibung> projektleiter = new TextColumn<Ausschreibung>() {
+			public String getValue(Ausschreibung object) {
+				return object.getNameProjektleiter();
+			}
+		};
+		
+		DateCell datecell = new DateCell(); 
+		Column<Ausschreibung, Date> bewerbungsfrist = new Column<Ausschreibung, Date> (datecell){
+
+			@Override
+			public Date getValue(Ausschreibung object) {
+				return object.getBewerbungsfrist();
+			}	
+		};
+		
+		
+	}
 }

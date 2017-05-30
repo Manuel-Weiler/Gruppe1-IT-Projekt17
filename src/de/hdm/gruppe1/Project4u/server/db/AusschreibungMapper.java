@@ -384,6 +384,34 @@ public class AusschreibungMapper {
 			 e2.printStackTrace();
 		}
 	}
+	public ArrayList<Ausschreibung> findAllAusschreibungen(){
+		Connection con = DBConnection.connection();
+	    ArrayList<Ausschreibung> result = new ArrayList<Ausschreibung>();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung ORDER BY id;");
+
+	 
+	      while (rs.next()) {
+	        Ausschreibung au = new Ausschreibung();
+			au.setID(rs.getInt("id"));
+			au.setBezeichnung (rs.getString("bezeichnung"));
+			au.setNameProjektleiter (rs.getString("name_projektleiter"));
+			au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
+			au.setAusschreibungstext (rs.getString("ausschreibungstext"));
+			au.setErstellDatum(rs.getDate("erstelldatum"));
+			
+	        result.add(au);
+	      }
+	    }
+	    catch (SQLException e) {
+	      e.printStackTrace();
+	    }
+
+	    return result;
+	}
 	}
 
 	
