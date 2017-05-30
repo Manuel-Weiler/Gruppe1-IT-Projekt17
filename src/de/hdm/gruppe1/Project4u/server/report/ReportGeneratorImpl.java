@@ -85,18 +85,18 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		//1.Zeile:
 		imprint.addSubParagraph(new SimpleParagraph("Project4u"));
 		
-		//weitere Zeilen können ergänzt wrden
+		//weitere Zeilen kï¿½nnen ergï¿½nzt wrden
 		
 		//Das eigentliche Hinzufuegen des Impressums zum Report
 		r.setImprint(imprint);
 	}
 
 	/**
-	 * Methode um alle Ausschreibungen in einem Report ausgeben zu können
+	 * Methode um alle Ausschreibungen in einem Report ausgeben zu kï¿½nnen
 	 * @return der fertige Report
 	 */
 
-	public ReportByAlleAusschreibungen createAlleAusschreibungenReport() 
+	public ReportByAlleAusschreibungen createAlleAusschreibungenReport(ArrayList<Ausschreibung> allAusschreibungen) 
 			throws IllegalArgumentException {
 
 		if (this.getProject4uAdministration() == null)
@@ -128,12 +128,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		CompositeParagraph header = new CompositeParagraph();
 		header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Ausschreibungen der Projektplattform"));
 		
-		//Kopfdaten zum Report hinzufügen
+		//Kopfdaten zum Report hinzufï¿½gen
 		result.setHeaderData(header);
 
 		/**
 		 * TODO: Sobald der Login implementiert ist kann ein Nutzer identifiziert werden
-		 * und in einem Header nochmal über dem Report ausgegeben werden.
+		 * und in einem Header nochmal ï¿½ber dem Report ausgegeben werden.
 		 */
 		header.addSubParagraph(new SimpleParagraph("Nutzer-ID:"));
 
@@ -144,7 +144,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		 */
 
 		
-		//Kopfzeile für die Tabelle anlegen:
+		//Kopfzeile fï¿½r die Tabelle anlegen:
 		Row headline = new Row();
 		
 		//Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
@@ -161,12 +161,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		result.addRow(headline);
 		
 		//Reportinhalt:
-		ArrayList<Ausschreibung> allAusschreibungen = this.project4uAdministration.getAlleAusschreibungen();
+		//ArrayList<Ausschreibung> allAusschreibungen = this.project4uAdministration.getAlleAusschreibungen();
 		
 		for(Ausschreibung a : allAusschreibungen){
 			//neue, leere Zeile anlegen
 			Row ausschreibungRow = new Row();
-			//für jede Spalte dieser Zeile wird nun der Inhalt geschrieben
+			//fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBezeichnung())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getNameProjektleiter())));
@@ -176,7 +176,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
 			
-			//Zeile dem Report hinzufügen
+			//Zeile dem Report hinzufï¿½gen
 			result.addRow(ausschreibungRow);
 		}
 		
@@ -211,7 +211,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Ausschreibungen die Ihrerm Partnerprofil entsprechen"));
 		
-		//Kopfdaten zu Report hinzufügen
+		//Kopfdaten zu Report hinzufï¿½gen
 		result.setHeaderData(header);
 		
 		/**

@@ -395,7 +395,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public ArrayList<Ausschreibung> getAlleAusschreibungen() throws IllegalArgumentException {
 		return this.ausschreibungMapper.findAll();
 	}
-	
+	 
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Ende: Ausschreibung

@@ -10,6 +10,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.gruppe1.Project4u.shared.bo.*;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 
 @RemoteServiceRelativePath("projectadministration")
 public interface Project4uAdministration extends RemoteService{
@@ -41,5 +42,6 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Projekt createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o)
 			   throws IllegalArgumentException;
+	
 	
 }

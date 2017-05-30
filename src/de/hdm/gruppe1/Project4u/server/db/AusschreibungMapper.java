@@ -105,7 +105,7 @@ public class AusschreibungMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-	}
+	} 
 
 	
 	public Ausschreibung findByIdAusschreibung (int i) {
@@ -321,7 +321,7 @@ public class AusschreibungMapper {
 		    return result;
 		  }
 		
-		/**TODO: Diese Methode is voll für n arsch
+		/**TODO: Diese Methode is voll fï¿½r n arsch
 		 * @param profil
 		 * @return
 		 */

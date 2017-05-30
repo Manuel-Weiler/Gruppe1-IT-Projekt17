@@ -1,5 +1,6 @@
 package de.hdm.gruppe1.Project4u.test;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
@@ -31,42 +32,18 @@ public class Testklasse {
 		
 		//Date date = sdf.parse(strDate); 
 		
-		Ausschreibung a = new Ausschreibung (); 
-		
-		
-		a.setAusschreibungstext("Test Text");
-		a.setBewerbungsfrist(date);
-		a.setBezeichnung("Test bezeichnung");
 	
-		a.setNameProjektleiter("HS");
-		a.setPartnerprofilId(2);
-		a.setProjektId(3);
-		a.setErstellDatum(new Date());
-		
-		Partnerprofil pa = new Partnerprofil();
-		pa.setPartnerprofilId(0);
-		Projekt pr = new Projekt ();
-		pr.setProjektId(1);
-		
-		
-		PartnerprofilMapper p = PartnerprofilMapper.partnerprofilMapper();
-		ProjektMapper l = ProjektMapper.projektMapper();
 		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
-	//	p=p.findById(0);
+	
+		ArrayList<Ausschreibung> al = new ArrayList<Ausschreibung>();
+		al= am.findAll();
 		
-		am.findByPartnerprofil(pa);
 		
-		//am.insertAusschreibung(a, pa, pr);
-		/*
-		 * Vector<Eigenschaft> ev= new Vector<Eigenschaft>();
 		
-		 * ev=em.selectAllEigenschaftOfPartnerprofil(p);
-		 *
-		
-		for(Eigenschaft e: ev){
-			System.out.println(e.getName());
+		for(Ausschreibung e: al){
+			System.out.println(e.getBezeichnung());
 			
-		} */
+		} 
 		
 		
 		

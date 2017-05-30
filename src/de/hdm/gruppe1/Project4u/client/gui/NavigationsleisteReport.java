@@ -20,7 +20,7 @@ public class NavigationsleisteReport extends Composite{
 	
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	
-	//Menü für den Reportgenerator
+	//Menï¿½ fï¿½r den Reportgenerator
 	
 	VerticalPanel menuReportPanel = new VerticalPanel();
 	
@@ -57,14 +57,35 @@ public class NavigationsleisteReport extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event){
+				Project4uVerwaltung.testMethode(new AsyncCallback<String>() {
+					
+					@Override
+					public void onSuccess(String result) {
+						DialogBox fb = new DialogBox();
+						Label l = new Label(result);
+						fb.add(l);
+						fb.center();
+						fb.show();
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 				
-				Project4uVerwaltung.getAlleAusschreibungen(new AsyncCallback<ArrayList<Ausschreibung>>() {
+				/*Project4uVerwaltung.getAlleAusschreibungen(new AsyncCallback<ArrayList<Ausschreibung>>() {
 					
 					@Override
 					public void onSuccess(ArrayList<Ausschreibung> result){
 						
-						RootPanel.get("contentR").clear();
-						RootPanel.get("contentR").add(new AlleAusschreibungenReport(result));
+						DialogBox db = new DialogBox();
+						Label lab = new Label(result.toString());
+						db.add(lab);
+						db.show();
+						//RootPanel.get("contentR").clear();
+						//RootPanel.get("contentR").add(new AlleAusschreibungenReport(result));
 					}
 					
 					@Override
@@ -77,7 +98,7 @@ public class NavigationsleisteReport extends Composite{
 						dBox.setAutoHideEnabled(true);
 						dBox.show();
 					}
-				});
+				});*/
 			}
 		});
 		
