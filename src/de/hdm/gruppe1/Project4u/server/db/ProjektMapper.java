@@ -123,9 +123,7 @@ public class ProjektMapper {
 	  public Projekt insert(Projekt p, Projektmarktplatz pm, Organisationseinheit o){
 		  Connection con = DBConnection.connection();
 		  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		  Date date = new Date();
-		  p.setStartdatum(date);
-		  p.setEnddatum(date);
+		  
 		  
 		  try{
 			  Statement stmt = con.createStatement();

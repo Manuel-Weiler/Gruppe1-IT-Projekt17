@@ -12,7 +12,7 @@ public class Organisationseinheit extends BusinessObject{
 
 	private int organisationseinheitId = 0;
 	private int partnerprofilId;
-	private boolean loggedIn = false;
+	private boolean loggedIn;
 	private String loginUrl;
 	private String logoutUrl;
 	private String google_id;

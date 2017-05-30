@@ -316,12 +316,39 @@ public class OrganisationseinheitMapper {
 		    return result;
 		  }
 	 
-	 
-	 
-	 
-	 
-	 
-	 
+	 // GEORG
+
+	 public Organisationseinheit getOrganisationseinheitByGoogleId (String googleId) throws Exception {
+		 		 
+		    Connection con = DBConnection.connection();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt
+		    		  
+		          .executeQuery("SELECT id, google_id, name, typ FROM organisationseinheit "
+		              + "WHERE google_id='" + googleId +"'");
+
+		  
+		      if (rs.next()) {
+		        Organisationseinheit o = new Organisationseinheit();
+		        o.setOrganisationseinheitId(rs.getInt("id"));
+		        o.setName(rs.getString("name"));
+		        o.setGoogleId(rs.getString("google_id"));
+		        o.setTyp(rs.getString("typ"));
+		        
+
+		        return o;
+		      }
+		    }
+		    catch (SQLException e) {
+			      e.printStackTrace();
+			      return null;
+			    }
+
+			    return null;
+			  }
 	 
 }
 

@@ -123,6 +123,7 @@ public class ProjektmarktplatzWidget extends Composite {
 					deleteProjektmarktplatz.setPixelSize(270, 30);
 					changeProjektmarktplatz.setPixelSize(270, 30);
 					
+					
 					changeProjektmarktplatz.addClickHandler(new ClickHandler() {
 						
 						@Override
@@ -204,7 +205,7 @@ public class ProjektmarktplatzWidget extends Composite {
 								public void onSuccess(Vector<Projekt> result) {
 									diBox.hide();
 									RootPanel.get("content").clear();
-									RootPanel.get("content").add(new ProjektWidget(result));
+									RootPanel.get("content").add(new ProjektWidget(result, selectionModel.getSelectedObject()));
 									RootPanel.get("contentHeader").clear();
 									RootPanel.get("contentHeader")
 											.add(new Label("Alle Projekte des Projektmarktplatzes "
@@ -222,8 +223,7 @@ public class ProjektmarktplatzWidget extends Composite {
 						
 						@Override
 						public void onClick(ClickEvent event) {
-							// TODO: Löschen des Projektmarktplatzes nach vorangegangener Pr�fung, ob
-							//der Nutzer der Ersteller ist.
+							// TODO: Löschen des Projektmarktplatzes 
 							
 						}
 					});
@@ -259,7 +259,7 @@ public class ProjektmarktplatzWidget extends Composite {
 			createP.addClickHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
-					if (pName.getValue() != null){
+					if (!pName.getValue().isEmpty()){
 						Projektmarktplatz pPlatz = new Projektmarktplatz();
 						pPlatz.setName(pName.getValue());
 						
