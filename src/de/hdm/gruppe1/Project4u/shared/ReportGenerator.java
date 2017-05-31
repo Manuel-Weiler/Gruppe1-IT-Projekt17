@@ -17,6 +17,6 @@ public interface ReportGenerator extends RemoteService{
 	
 
 	ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Ausschreibung au);
-
-	ReportByAlleAusschreibungen createAlleAusschreibungenReport(ArrayList<Ausschreibung> allAusschreibungen) throws IllegalArgumentException;
+	
+	public abstract ReportByAlleAusschreibungen createAlleAusschreibungenReport() throws IllegalArgumentException;
 }

@@ -105,33 +105,51 @@ public class HTMLReportWriter {
 	 */
 	
 	public void process(ReportByAlleAusschreibungen a){
+		
 		this.resetReportText();
 		StringBuffer result = new StringBuffer();
 		
-		result.append("<H3>" + a.getTitle() + "</H3>");
+	    /*
+	     * Nun werden Schritt für Schritt die einzelnen Bestandteile des Reports
+	     * ausgelesen und in HTML-Form übersetzt.
+	     */
+	    result.append("<H1>" + a.getTitle() + "</H1>");
+	    result.append("<table><tr>");
 
-		Vector<Row> rows = a.getRows();
-		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
+	    if (a.getHeaderData() != null) {
+	      result.append("<td>" + paragraph2HTML(a.getHeaderData()) + "</td>");
+	    }
 
-		for (int i = 0; i < rows.size(); i++) {
-			Row row = rows.elementAt(i);
-			result.append("<tr>");
-			for (int k = 0; k < row.getNumColumns(); k++) {
-				if (i == 0) {
-					result.append("<td style=\"background:silver;font-weight:bold\">" + row.getColumnAt(k) + "</td>");
-				} else {
-					if (i > 1) {
-						result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">"
-								+ row.getColumnAt(k) + "</td>");
-					} else {
-						result.append("<td valign=\"top\">" + row.getColumnAt(k) + "</td>");
-					}
-				}
-			}
-			result.append("</tr>");
-		}
+	    result.append("<td>" + paragraph2HTML(a.getImprint()) + "</td>");
+	    result.append("</tr><tr><td></td><td>" + a.getCreated().toString()
+	        + "</td></tr></table>");
 
-		result.append("</table>");
+
+		
+//		result.append("<H3>" + a.getTitle() + "</H3>");
+//
+//		Vector<Row> rows = a.getRows();
+//		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
+//
+//		for (int i = 0; i < rows.size(); i++) {
+//			Row row = rows.elementAt(i);
+//			result.append("<tr>");
+//			for (int k = 0; k < row.getNumColumns(); k++) {
+//				if (i == 0) {
+//					result.append("<td style=\"background:silver;font-weight:bold\">" + row.getColumnAt(k) + "</td>");
+//				} else {
+//					if (i > 1) {
+//						result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">"
+//								+ row.getColumnAt(k) + "</td>");
+//					} else {
+//						result.append("<td valign=\"top\">" + row.getColumnAt(k) + "</td>");
+//					}
+//				}
+//			}
+//			result.append("</tr>");
+//		}
+//
+//		result.append("</table>");
 
 		this.reportText = result.toString();
 

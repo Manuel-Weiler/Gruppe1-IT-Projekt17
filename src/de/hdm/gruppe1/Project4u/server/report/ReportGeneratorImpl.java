@@ -96,7 +96,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 * @return der fertige Report
 	 */
 
-	public ReportByAlleAusschreibungen createAlleAusschreibungenReport(ArrayList<Ausschreibung> allAusschreibungen) 
+	public ReportByAlleAusschreibungen createAlleAusschreibungenReport() 
 			throws IllegalArgumentException {
 
 		if (this.getProject4uAdministration() == null)
@@ -161,9 +161,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		result.addRow(headline);
 		
 		//Reportinhalt:
-		//ArrayList<Ausschreibung> allAusschreibungen = this.project4uAdministration.getAlleAusschreibungen();
+		ArrayList<Ausschreibung> alleAusschreibungen = this.project4uAdministration.getAlleAusschreibungen();
 		
-		for(Ausschreibung a : allAusschreibungen){
+		for(Ausschreibung a : alleAusschreibungen){
 			//neue, leere Zeile anlegen
 			Row ausschreibungRow = new Row();
 			//f�r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
@@ -229,50 +229,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		return result;
 				
 	}
-	
 
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

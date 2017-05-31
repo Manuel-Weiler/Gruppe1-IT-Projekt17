@@ -13,7 +13,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
-import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
+
 
 public interface Project4uAdministrationAsync {
 

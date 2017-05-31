@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
+import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.client.gui.NavigationsleisteReport;
 import de.hdm.gruppe1.Project4u.shared.LoginService;
@@ -18,9 +19,10 @@ public class Project4uReport  implements EntryPoint {
 
 	//Project4uAdministrationAsync instanziieren, um deren Methoden zu verwenden
 	
-	Project4uAdministrationAsync project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
+	//Project4uAdministrationAsync project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
+	ReportGeneratorAsync ReportGenerator = ClientsideSettings.getReportGenerator();
 	
-	private static String editorHtmlName = "Project4u.html";
+	private static String editorHtmlName = "Project4uReport.html";
 	
 	//TODO: Variablen für den Login instanziieren
 	

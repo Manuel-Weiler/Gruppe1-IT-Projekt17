@@ -17,11 +17,10 @@ public interface ReportGeneratorAsync {
 	 */
 	public void init(AsyncCallback<Void> callback);
 
-	void createAlleAusschreibungenReport(ArrayList<Ausschreibung> allAusschreibungen,
-			AsyncCallback<ReportByAlleAusschreibungen> callback);
-
 	void createAusschreibungenForPartnerprofil(Ausschreibung au,
 			AsyncCallback<ReportByAusschreibungenForPartnerprofil> callback);
+
+	void createAlleAusschreibungenReport(AsyncCallback<ReportByAlleAusschreibungen> callback);
 
 	
 
