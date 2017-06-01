@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Vector;
 
 import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
@@ -25,9 +26,14 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasAlignment;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -97,10 +103,21 @@ public class ProjektWidget extends Composite{
 					projektChange(neu, projektmarktplatz);
 					
 				}
-			});
+			}); 
 		}
 		else{
 			vPanel.clear();
+			vPanel.add(addProjekt);
+			addProjekt.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					Projekt neu = new Projekt();
+					projektChange(neu, projektmarktplatz);
+
+				}
+			});
+			
 			CellTable<Projekt> projektTabelle = new CellTable<Projekt>(KEY_PROVIDER);
 			
 			//Die Spalte der Projekt-Tabelle wird erstellt und deren Inhalt definiert.
@@ -126,6 +143,13 @@ public class ProjektWidget extends Composite{
 				public Date getValue(Projekt object) {
 					return object.getEnddatum();
 				}	
+				public String getCellStyleNames (Context context, Projekt object){
+					if (object.getEnddatum().before(new Date())){
+						return "rot";
+					}
+					else {return null;}
+					
+				}
 			};
 			
 			TextColumn<Projekt> description = new TextColumn<Projekt>() {
@@ -245,6 +269,7 @@ public class ProjektWidget extends Composite{
 				if (beschr.getValue().length()>250){
 					Window.alert("Es sind maximal 250 Zeichen als Beschreibung erlaubt.");
 				}
+				
 			}
 		});
 		vp.add(beschr);
@@ -262,7 +287,14 @@ public class ProjektWidget extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				if((!nam.getValue().isEmpty())&&(!beschr.getValue().isEmpty())){
+				if((nam.getValue().isEmpty())||(beschr.getValue().isEmpty())){
+					Window.alert("Bitte alle Felder ausfüllen.");
+				}
+				else if (endate.getValue().before(stdate.getValue())) {
+					Window.alert("Das Enddatum muss nach dem Startdatum liegen.");
+				}
+				
+				else{
 				p.setName(nam.getValue());
 				p.setStartdatum(stdate.getValue());
 				p.setEnddatum(endate.getValue());
@@ -341,9 +373,7 @@ public class ProjektWidget extends Composite{
 					
 				}
 				
-				} else {
-					Window.alert("Bitte alle Felder ausfüllen");
-				}}
+				} }
 		});
 		vp.add(saveButton);
 		db.add(vp);
@@ -352,35 +382,47 @@ public class ProjektWidget extends Composite{
 		db.show();
 		
 	}
-	Vector<Ausschreibung> chosenAusschreibungen = new Vector<Ausschreibung>();
+	VerticalPanel hrP = new VerticalPanel();
+	HorizontalPanel hPanel = new HorizontalPanel();
 	protected void ausschreibungAnsehen(Projekt p){
+		hrP.clear();
+		hPanel.clear();
+				
+		SimplePanel te = new SimplePanel();			
+		HTML hr = new HTML("<hr style= 'border: 0; height: 3px; background: #333; margin-top: 50px; margin-bottom: 50px; background-image: linear-gradient(to right, #ccc, #333, #ccc);'>");
+		te.add(hr);		
+		te.setWidth(vPanel.getOffsetWidth()+"px");
+		hrP.add(te);
 		
-		if (vPanel.getWidgetCount()>1){
-			for(int i=2; i<=vPanel.getWidgetCount(); i++){
-			vPanel.remove(i);
-			}
-		}
 		
 		
-		HorizontalPanel hPanel = new HorizontalPanel();
-		HTML hr = new HTML("<hr style= 'border: 0; height: 3px; background: #333; background-image: linear-gradient(to right, #ccc, #333, #ccc);'>");
-		vPanel.add(hr);
+		
+		
 		
 		Project4uVerwaltung.findAusschreibungbyProjekt(p, new AsyncCallback<Vector<Ausschreibung>>() {
 			
 			@Override
 			public void onSuccess(Vector<Ausschreibung> result) {
-				chosenAusschreibungen=result;
+				if(!result.isEmpty()){
+				
+				ausschreibungsTabelle(result);
+				
+				}
+				else{
+					//TODO:
+					
+				}
 				
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				
 				
 			}
 		});
-		
+	}
+	protected void ausschreibungsTabelle(Vector<Ausschreibung> chosenAusschreibungen){
 		CellTable<Ausschreibung> ausschreibungTabelle = new CellTable<Ausschreibung>(KEY_PROVIDER_AUSSCHREIBUNG);
 		
 		TextColumn<Ausschreibung> nameAusschreibung = new TextColumn<Ausschreibung>() {
@@ -397,12 +439,18 @@ public class ProjektWidget extends Composite{
 		
 		DateCell datecell = new DateCell(); 
 		Column<Ausschreibung, Date> bewerbungsfrist = new Column<Ausschreibung, Date> (datecell){
-
+			
 			@Override
 			public Date getValue(Ausschreibung object) {
-				return object.getBewerbungsfrist();
-				
+				return object.getBewerbungsfrist();								
 			}	
+			public String getCellStyleNames (Context context, Ausschreibung object){
+				if (object.getBewerbungsfrist().before(new Date())){
+					return "rot";
+				}
+				else {return null;}
+				
+			}
 		};
 		
 		ButtonCell buttonCell = new ButtonCell();
@@ -432,9 +480,11 @@ public class ProjektWidget extends Composite{
 		//Füllen der Tabelle ab dem Index 0.
 		ausschreibungTabelle.setRowData(0, chosenAusschreibungen);
 		
-		//Anpassen des Widgets an die Breite des div-Elements "content"
+		
 		ausschreibungTabelle.setWidth("100%");
 		
 		hPanel.add(ausschreibungTabelle);
+		hrP.add(hPanel);
+		vPanel.add(hrP);
 	}
 }

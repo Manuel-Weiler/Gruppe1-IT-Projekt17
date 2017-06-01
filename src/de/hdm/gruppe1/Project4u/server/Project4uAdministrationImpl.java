@@ -58,6 +58,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
         this.projektmarktplatzMapper = ProjektmarktplatzMapper.projektmarktplatzMapper();
         this.projektMapper = ProjektMapper.projektMapper();
         this.bewertungMapper = BewertungMapper.bewertungMapper();
+        this.ausschreibungMapper=AusschreibungMapper.ausschreibungMapper();
 	}
 	
 	

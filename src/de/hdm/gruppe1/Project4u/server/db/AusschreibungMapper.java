@@ -320,7 +320,7 @@ public class AusschreibungMapper {
 		 
 		      while (rs.next()) {
 		        Ausschreibung au = new Ausschreibung();
-				au.setID(rs.getInt("id"));
+				au.setAusschreibungId(rs.getInt("id"));
 				au.setBezeichnung (rs.getString("bezeichnung"));
 				au.setNameProjektleiter (rs.getString("name_projektleiter"));
 				au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
