@@ -88,8 +88,8 @@ public class OrganisationseinheitMapper {
 				
 				stmt = con.createStatement();
 				
-				stmt.executeUpdate("INSERT INTO Organisationseinheit (id, google_id, name, typ) "
-			            + "VALUES (" + organisationseinheit.getOrganisationseinheitId() + ", '" + organisationseinheit.getGoogleId() + "','" + organisationseinheit.getName() + "', '" + organisationseinheit.getTyp() + "')");
+				stmt.executeUpdate("INSERT INTO Organisationseinheit (id, google_id, name, typ, partnerprofil_id) "
+			            + "VALUES (" + organisationseinheit.getOrganisationseinheitId() + ", '" + organisationseinheit.getGoogleId() + "','" + organisationseinheit.getName() + "', '" + organisationseinheit.getTyp() + "', " + organisationseinheit.getPartnerprofilId() + ")");
 			
 			
 			}
@@ -124,32 +124,9 @@ public class OrganisationseinheitMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 		      
-		      //TO DO: Applikationslogik oder in den Mappern?
-		     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-		      	//Zugehörige Bewerbungen löschen
-	      		Vector<Bewerbung> vb = new Vector<Bewerbung>();
-	      		vb = BewerbungMapper.bewerbungMapper().findByOrganisationseinheit(o);
-	      		for(Bewerbung b: vb){
-	      			BewerbungMapper.bewerbungMapper().delete(b);
-	      		}
-		      
-	      		//Zugehöriges Partnerprofil löschen
-		      	PartnerprofilMapper.partnerprofilMapper().deletePartnerprofil(PartnerprofilMapper.partnerprofilMapper().findByOrganisationseinheit(o));
-		      
-		      	//Zugehörige Projekte löschen		      
-		      	Vector<Projekt> vp = new Vector<Projekt>();
-		      		vp = ProjektMapper.projektMapper().findByOrganisationseinheit(o);
-		      		for(Projekt p: vp){
-		      			ProjektMapper.projektMapper().delete(p);
-		      		}
-				//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-				
-		      
 		      //Organisationseinheit löschen
 		      stmt.executeUpdate("DELETE FROM Organisationseinheit WHERE id=" + o.getOrganisationseinheitId());
-		      
-		      
-		      
+		      	      
 		    }
 		    catch (SQLException e) {
 		      e.printStackTrace();
@@ -350,8 +327,8 @@ public class OrganisationseinheitMapper {
 
 		      ResultSet rs = stmt
 		    		  
-		          .executeQuery("SELECT id, google_id, name, typ FROM Organisationseinheit "
-		              + "WHERE googleId=" + googleId +"'");
+		          .executeQuery("SELECT id, google_id, name, typ FROM organisationseinheit "
+		              + "WHERE google_id='" + googleId +"'");
 
 		  
 		      if (rs.next()) {

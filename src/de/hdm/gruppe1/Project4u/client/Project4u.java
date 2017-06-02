@@ -22,6 +22,7 @@ public class Project4u implements EntryPoint {
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	
 
+
 	static final int REFRESH_INTERVAL = 5000; // ms
 	  private VerticalPanel mainPanel = new VerticalPanel();
 	  private FlexTable stocksFlexTable = new FlexTable();
@@ -67,22 +68,22 @@ public class Project4u implements EntryPoint {
 			loginPanel.add(loginLabel);
 			loginPanel.add(signInLink);
 			RootPanel.get("content").add(loginPanel);
-			}
-	  
-	  
-		private void loadProject4u() {
-			// Set up sign out hyperlink.
-		    signOutLink.setHref(loginInfo.getLogoutUrl());
-			
-		    NavigationsleisteWidget nt = new NavigationsleisteWidget();
+	  }
+	
+
+		
+
+
+	private void loadProject4u() {
+			NavigationsleisteWidget nt = new NavigationsleisteWidget();
 			RootPanel.get("nav").add(nt);
 			nt.homeButtonclick();
+
+
 		
-			
-		
-		}
-		
-		
-	   	  
+	
+	
+}
+
 
 }

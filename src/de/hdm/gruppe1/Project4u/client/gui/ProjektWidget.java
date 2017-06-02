@@ -7,15 +7,22 @@ import java.util.Vector;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -33,12 +40,12 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 public class ProjektWidget extends Composite{
 	
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
-
+	Projektmarktplatz projektmarktplatz = new Projektmarktplatz();
 	
 	//TODO: Projekt anlegen-Maske implementieren & Clickhandler hinzuf�gen
 	Button addProjekt = new Button("Projekt anlegen");
 	
-	//TODO: Projekt löschen, bearbeiten, Ausschreibungen
+	//TODO: Projekt löschen,  Ausschreibungen
 
 
 	/*
@@ -51,9 +58,9 @@ public class ProjektWidget extends Composite{
 		}
 	};
 	
-	public ProjektWidget (Vector<Projekt> projekte){
+	public ProjektWidget (Vector<Projekt> projekte, Projektmarktplatz pMarktpl){
 		
-		
+		this.projektmarktplatz =pMarktpl;
 		
 		VerticalPanel vPanel = new VerticalPanel();
 		
@@ -64,6 +71,15 @@ public class ProjektWidget extends Composite{
 			vPanel.add(noProjekt);
 			vPanel.add(addProjekt);
 			initWidget(vPanel);
+			addProjekt.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					Projekt neu = new Projekt();
+					projektChange(neu, projektmarktplatz);
+					
+				}
+			});
 		}
 		else{
 			vPanel.clear();
@@ -116,6 +132,14 @@ public class ProjektWidget extends Composite{
 					Button seeProjekt = new Button("Projekt ansehen");
 					Button deleteProjekt = new Button("Projekt löschen");
 					Button changeProjekt = new Button("Projekt bearbeiten");
+					changeProjekt.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							projektChange(selectionModel.getSelectedObject(), projektmarktplatz);
+							diBox.hide();
+						}
+					});
 					vPanel.add(seeProjekt);
 					vPanel.add(deleteProjekt);
 					vPanel.add(changeProjekt);
@@ -124,6 +148,9 @@ public class ProjektWidget extends Composite{
 					deleteProjekt.setPixelSize(270, 30);
 					changeProjekt.setPixelSize(270, 30);
 					diBox.setAnimationEnabled(true);
+					diBox.setAutoHideEnabled(true);
+					diBox.center();
+					diBox.show();
 				}});
 			
 			/**
@@ -160,21 +187,35 @@ public class ProjektWidget extends Composite{
 		
 		Label sdate = new Label("Startdatum:");
 		vp.add(sdate);
-		final DateBox stdate = new DateBox();	
+		final DateBox stdate = new DateBox();
+		final DateTimeFormat dateFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
+		
+		stdate.setFormat(new DateBox.DefaultFormat(dateFormat));		
 		vp.add(stdate);
 		
 		
 		Label edate = new Label("Enddatum:");
 		vp.add(edate);
-		final DateBox endate = new DateBox();		
+		final DateBox endate = new DateBox();	
+		endate.setFormat(new DateBox.DefaultFormat(dateFormat));	
 		vp.add(endate);
 		
 		
 		Label beschreibung = new Label("Beschreibung:");
 		vp.add(beschreibung);
-		final TextBox beschr = new TextBox();		
-		beschr.setMaxLength(250);
-		beschr.setHeight("250px");
+		final TextArea beschr = new TextArea();		
+		beschr.setWidth("270px");
+		beschr.setHeight("150px");
+		beschr.addKeyPressHandler(new KeyPressHandler() {
+			
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (beschr.getValue().length()>250){
+					Window.alert("Es sind maximal 250 Zeichen als Beschreibung erlaubt.");
+				}
+			}
+		});
+		vp.add(beschr);
 		
 		//Nur wenn es sich um kein neu erzeugtes Projekt handelt, sollen die Werte übernommen werden.
 		if(p.getProjektId()!=0){
@@ -184,10 +225,12 @@ public class ProjektWidget extends Composite{
 		beschr.setValue(p.getBeschreibung());}
 		
 		Button saveButton = new Button("Speichern");
+		saveButton.setPixelSize(270, 30);
 		saveButton.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				if((!nam.getValue().isEmpty())&&(!beschr.getValue().isEmpty())){
 				p.setName(nam.getValue());
 				p.setStartdatum(stdate.getValue());
 				p.setEnddatum(endate.getValue());
@@ -209,7 +252,7 @@ public class ProjektWidget extends Composite{
 								public void onSuccess(Vector<Projekt> result) {
 									db.hide();
 									RootPanel.get("content").clear();
-									RootPanel.get("content").add(new ProjektWidget(result));
+									RootPanel.get("content").add(new ProjektWidget(result, m));
 									RootPanel.get("contentHeader").clear();
 									RootPanel.get("contentHeader")
 											.add(new Label("Alle Projekte des Projektmarktplatzes "
@@ -225,7 +268,9 @@ public class ProjektWidget extends Composite{
 						}
 					});
 				}
+				//Der else-fall tritt ein, wenn ein neues Projekt erstellt wird.
 				else{
+					
 					//TODO: Organisationseinheit or gegen ID des Projektleiters tauschen.
 					
 					Organisationseinheit or = new Organisationseinheit();
@@ -242,7 +287,7 @@ public class ProjektWidget extends Composite{
 								public void onSuccess(Vector<Projekt> result) {
 									db.hide();
 									RootPanel.get("content").clear();
-									RootPanel.get("content").add(new ProjektWidget(result));
+									RootPanel.get("content").add(new ProjektWidget(result, m));
 									RootPanel.get("contentHeader").clear();
 									RootPanel.get("contentHeader")
 											.add(new Label("Alle Projekte des Projektmarktplatzes "
@@ -254,18 +299,19 @@ public class ProjektWidget extends Composite{
 							});
 							
 							
-						}
-						
-						@Override
-						public void onFailure(Throwable caught) {
-						
-							
-						}
-					});
+							}
+
+							@Override
+							public void onFailure(Throwable caught) {
+
+							}
+						});
+					
 				}
 				
-				
-			}
+				} else {
+					Window.alert("Bitte alle Felder ausfüllen");
+				}}
 		});
 		vp.add(saveButton);
 		db.add(vp);
