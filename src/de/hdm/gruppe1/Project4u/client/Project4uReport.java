@@ -17,10 +17,10 @@ import de.hdm.gruppe1.Project4u.shared.LoginServiceAsync;
 
 public class Project4uReport  implements EntryPoint {
 
-	//Project4uAdministrationAsync instanziieren, um deren Methoden zu verwenden
-	
-	//Project4uAdministrationAsync project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
-	ReportGeneratorAsync ReportGenerator = ClientsideSettings.getReportGenerator();
+	//ReportGeneratorAsync instanziieren, um deren Methoden zu verwenden
+
+	ReportGeneratorAsync ReportGenerator = ClientsideSettings.getReportVerwaltung();
+	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	
 	private static String editorHtmlName = "Project4uReport.html";
 	

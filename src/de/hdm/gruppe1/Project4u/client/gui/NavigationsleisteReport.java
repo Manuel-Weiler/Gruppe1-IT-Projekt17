@@ -18,7 +18,7 @@ import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 
 public class NavigationsleisteReport extends Composite {
 
-	ReportGeneratorAsync ReportGenerator = ClientsideSettings.getReportGenerator();
+	ReportGeneratorAsync ReportGenerator = ClientsideSettings.getReportVerwaltung();
 
 	// Men� f�r den Reportgenerator
 

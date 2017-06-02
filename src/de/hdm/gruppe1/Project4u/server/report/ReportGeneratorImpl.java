@@ -14,9 +14,11 @@ import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
 import de.hdm.gruppe1.Project4u.shared.report.Row;
 import de.hdm.gruppe1.Project4u.shared.report.SimpleParagraph;
+import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.ReportGenerator;
+import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 
 /**
@@ -96,6 +98,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 * @return der fertige Report
 	 */
 
+	@Override
 	public ReportByAlleAusschreibungen createAlleAusschreibungenReport() 
 			throws IllegalArgumentException {
 
@@ -112,11 +115,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		 * Titel und Bezeichnung des Reports
 		 */
 
-		result.setTitle("Alle Ausschreibungen");
+		result.setTitle(" ");
 		
-		//Impressum hinzufuegen
 		this.addImprint(result);
-
 		/*
 		 * Erstelldatum des Reports hinzufuegen
 		 */
@@ -132,12 +133,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		result.setHeaderData(header);
 
 		/**
-		 * TODO: Sobald der Login implementiert ist kann ein Nutzer identifiziert werden
-		 * und in einem Header nochmal �ber dem Report ausgegeben werden.
-		 */
+//		 * TODO: Sobald der Login implementiert ist kann ein Nutzer identifiziert werden
+//		 * und in einem Header nochmal �ber dem Report ausgegeben werden.
+//		 */
 		header.addSubParagraph(new SimpleParagraph("Nutzer-ID:"));
-
-
+//
+//
 
 		/**
 		 * Report ausgeben

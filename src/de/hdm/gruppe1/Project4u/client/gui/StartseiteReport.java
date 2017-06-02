@@ -6,10 +6,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
+import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
 
 public class StartseiteReport extends Composite {
-	
-	Project4uAdministrationAsync project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
+
+	ReportGeneratorAsync ReportGenerator = ClientsideSettings.getReportVerwaltung();
 	
 	VerticalPanel startReportPanel = new VerticalPanel();
 	Label satz = new Label("Mit den Buttons auf der linken Seite finden Sie alle Reports!");
