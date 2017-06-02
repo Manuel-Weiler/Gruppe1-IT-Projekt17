@@ -9,11 +9,17 @@ public class Organisationseinheit extends BusinessObject{
 	}
 
 	private static final long serialVersionUID = 1L;
-
-	private int organisationseinheitId = 0;
-	private boolean loggedIn;
+	
+	private boolean loggedIn = false;
 	private String loginUrl;
 	private String logoutUrl;
+	private String emailAddress;
+	private String nickname;
+	public boolean isLoggedIn() {
+	return loggedIn;}
+
+	private int organisationseinheitId = 0;
+
 	private String google_id;
 	private String name;
 	//TODO: variable "typ" muss als ein Enum definiert werden.
@@ -83,6 +89,22 @@ public class Organisationseinheit extends BusinessObject{
 	
 	public void setTyp(String typ) {
 		this.typ = typ;
+	}
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	/*public String getVorname() {
