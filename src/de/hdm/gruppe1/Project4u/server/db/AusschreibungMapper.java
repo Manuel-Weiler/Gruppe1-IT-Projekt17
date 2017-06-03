@@ -384,6 +384,7 @@ public class AusschreibungMapper {
 			 e2.printStackTrace();
 		}
 	}
+
 	public ArrayList<Ausschreibung> findAllAusschreibungen(){
 		Connection con = DBConnection.connection();
 	    ArrayList<Ausschreibung> result = new ArrayList<Ausschreibung>();
@@ -412,6 +413,41 @@ public class AusschreibungMapper {
 
 	    return result;
 	}
+
+	
+	/*Notwendig um das zur Ausschreibung zugehörige Partnerprofil zu löschen
+	public Ausschreibung findByPartnerprofilID (int id) {
+		Connection con = DBConnection.connection();
+		Ausschreibung a = new Ausschreibung();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung WHERE partnerprofil_id=" + id);
+
+			if (rs.next()) {
+				a.setID(rs.getInt("id"));
+				a.setBezeichnung (rs.getString("bezeichnung"));
+				a.setNameProjektleiter (rs.getString("name_projektleiter"));
+				a.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
+				a.setAusschreibungstext (rs.getString("ausschreibungstext"));					
+				a.setErstellDatum(rs.getDate("erstelldatum"));
+			    
+				return a;
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		      return null;
+		    }
+
+		    return null;
+		  }*/
+	
+
 	}
+
+
 
 	

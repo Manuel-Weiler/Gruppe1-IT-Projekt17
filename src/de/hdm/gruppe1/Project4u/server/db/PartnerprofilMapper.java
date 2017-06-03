@@ -82,7 +82,7 @@ public class PartnerprofilMapper {
 		        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
 		        stmt.executeUpdate("INSERT INTO Partnerprofil (id, erstelldatum, �nderungsdatum, Organisationseinheit_id) "
 		            + "VALUES (" + p.getPartnerprofilId() + ",'" + sdf.format(p.getErstelldatum()) + "','"
-		            + sdf.format(p.getAenderungsdatum()) + "','"+p.getOrganisationseinheitId()+"')"); 
+		            + sdf.format(p.getAenderungsdatum()) + "')"); 
 		      }
 		    }
 		    catch (SQLException e) {
@@ -185,20 +185,7 @@ public class PartnerprofilMapper {
 	{
 		return a;
 	} */
-/////////////////////////
-	
-	/*
-	 * Diese Methode gibt die zugeh�rige Organisationseinheit zu einem Partnerprofil zur�ck.
-	 * Dabei wird sich des Mappers der Klasse OrganisationseinheitMapper bedient.
-	 */
-	public Organisationseinheit getOrganisationseinheitOfPartnerprofil (Partnerprofil p){
-		
-		return OrganisationseinheitMapper.organisationseinheitMapper().findByKey(p.getOrganisationseinheitId());
-	}
-	
-	
-	
-////////////////////////
+
 	
 	
 	/**
@@ -214,7 +201,7 @@ public class PartnerprofilMapper {
 	}
 	
 	
-	public Partnerprofil findByOrganisationseinheit (Organisationseinheit o) {
+	/*public Partnerprofil findByOrganisationseinheit (Organisationseinheit o) {
 		Connection con = DBConnection.connection();
 		Partnerprofil p = new Partnerprofil();
 
@@ -226,11 +213,11 @@ public class PartnerprofilMapper {
 
 			if (rs.next()) {
 
-				/*
+				
 				 * Dem R�ckgabeobjekt werden die Werte aus der Tabelle
 				 * zugewiesen und so das Tupel aus der Tabelle wieder in ein
 				 * Objekt transformiert.
-				 */
+				 
 				p.setID(rs.getInt("id"));
 				p.setErstelldatum(rs.getDate("erstelldatum"));
 				p.setAenderungsdatum(rs.getDate("�nderungsdatum"));
@@ -244,7 +231,8 @@ public class PartnerprofilMapper {
 		    }
 
 		    return null;
-		  }
+		  }*/
+	
 	
 	public void deletePartnerprofilOfOrganisationseinheit(Organisationseinheit o) {
 		Connection con = DBConnection.connection();
