@@ -19,6 +19,7 @@ import de.hdm.gruppe1.Project4u.server.db.OrganisationseinheitMapper;
 import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
 import de.hdm.gruppe1.Project4u.server.db.ProjektMapper;
 import de.hdm.gruppe1.Project4u.server.db.ProjektmarktplatzMapper;
+import de.hdm.gruppe1.Project4u.shared.LoginInfo;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
@@ -72,8 +73,18 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	
 	//Login-Status
-		public Organisationseinheit checkStatus(Organisationseinheit loginInfo){
-			return this.organisationseinheitMapper.checkStatus(loginInfo);
+		public boolean checkStatus(LoginInfo loginInfo){
+			boolean status= false;
+			Vector<Organisationseinheit> orgas = new Vector<Organisationseinheit>();
+			orgas = organisationseinheitMapper.findAll();
+			for(Organisationseinheit o: orgas){
+				if (o.getGoogleId().equalsIgnoreCase(loginInfo.getEmailAddress())){
+					status=true;
+					return status;
+				}
+				
+			}
+			return status;
 		}
 
 	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ, Partnerprofil partnerprofil)

@@ -18,7 +18,7 @@ public class Organisationseinheit extends BusinessObject{
 
 	private String google_id;
 	private String name;
-	//TODO: variable "typ" muss als ein Enum definiert werden.
+	//TODO: variable "typ" muss als ein Enum definiert werden. Nicht vergessen: MAPPER anpassen
 	private String typ;
 	private boolean status = false;
 	

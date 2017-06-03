@@ -24,7 +24,7 @@ public interface Project4uAdministrationAsync {
 	 */
 	void init(AsyncCallback<Void> callback);
 	
-	void checkStatus(Organisationseinheit loginInfo, AsyncCallback<Organisationseinheit> callback);
+	
 
 	
 	void findAllProjektmarktplatz(AsyncCallback<Vector<Projektmarktplatz>> callback);
@@ -47,5 +47,7 @@ public interface Project4uAdministrationAsync {
 	void createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o, AsyncCallback<Projekt> callback);
 
 	void findAusschreibungbyProjekt(Projekt projekt, AsyncCallback<Vector<Ausschreibung>> callback);
+
+	void checkStatus(LoginInfo loginInfo, AsyncCallback<Boolean> callback);
 
 }

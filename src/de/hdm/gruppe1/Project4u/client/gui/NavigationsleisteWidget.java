@@ -23,7 +23,8 @@ public class NavigationsleisteWidget extends Composite{
 	/**
 	 * Menüleiste wird als Widget erstellt.
 	 */
-
+	private int test=0; 
+	
 	VerticalPanel menuPanel = new VerticalPanel();
 
 	Button profilButton = new Button("Nutzerprofil");
@@ -107,11 +108,45 @@ public class NavigationsleisteWidget extends Composite{
 			}
 		});
 		
+		profilButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				DialogBox dBox = new DialogBox();
+				
+				Label label = new Label("profil");
+				dBox.add(label);
+				dBox.center();
+				dBox.setAutoHideEnabled(true);
+				dBox.show();
+				
+			}
+		});
 		
 		
 		initWidget(menuPanel);
 	}
 	public void homeButtonclick(){
 		homeButton.click();
+	}
+	
+	public void setButtonsEnabled(){
+		pMarktplatz.setEnabled(true);
+		eBewerbungen.setEnabled(true);
+		aBewerbungen.setEnabled(true);
+		
+	}
+	
+	public void setButtonsUnenabled(){	
+		pMarktplatz.setEnabled(false);
+		eBewerbungen.setEnabled(false);
+		aBewerbungen.setEnabled(false);
+		profilButton.click();
+	}
+	public int getTest() {
+		return test;
+	}
+	public void setTest(int test) {
+		this.test = test;
 	}
 }
