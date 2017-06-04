@@ -22,8 +22,6 @@ public class Project4uReport  implements EntryPoint {
 	ReportGeneratorAsync ReportGenerator = ClientsideSettings.getReportVerwaltung();
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	
-	private static String editorHtmlName = "Project4uReport.html";
-	
 	//TODO: Variablen für den Login instanziieren
 	
 	private Organisationseinheit loginInfo = null;

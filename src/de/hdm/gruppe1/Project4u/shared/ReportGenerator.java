@@ -18,5 +18,7 @@ public interface ReportGenerator extends RemoteService{
 
 	ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Ausschreibung au);
 	
+	String testMethode();
+	
 	
 }

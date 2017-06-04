@@ -1,5 +1,7 @@
 package de.hdm.gruppe1.Project4u.client.gui;
 
+import java.util.Vector;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -13,12 +15,13 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
+import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 import de.hdm.gruppe1.Project4u.shared.report.HTMLReportWriter;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 
 public class NavigationsleisteReport extends Composite {
 
-	ReportGeneratorAsync ReportGenerator = ClientsideSettings.getReportVerwaltung();
+	ReportGeneratorAsync ReportVerwaltung = ClientsideSettings.getReportVerwaltung();
 
 	// Men� f�r den Reportgenerator
 
@@ -26,11 +29,13 @@ public class NavigationsleisteReport extends Composite {
 
 	Button homeButton = new Button("Startseite");
 	Button alleAusschreibungenButton = new Button("Alle Ausschreibungen");
+	Button testButton = new Button("Test");
 
 	public NavigationsleisteReport() {
 
 		menuReportPanel.add(homeButton);
 		menuReportPanel.add(alleAusschreibungenButton);
+		menuReportPanel.add(testButton);
 
 		// Buttonabstand
 		menuReportPanel.setSpacing(20);
@@ -53,48 +58,125 @@ public class NavigationsleisteReport extends Composite {
 			}
 		});
 
+		// Testmethode
+		testButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+
+				ReportVerwaltung.testMethode(new AsyncCallback<String>() {
+
+					@Override
+					public void onSuccess(String result) {
+						DialogBox dBox = new DialogBox();
+
+						Label label = new Label(result);
+						dBox.add(label);
+						dBox.center();
+						dBox.setAutoHideEnabled(true);
+						dBox.show();
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						DialogBox dBox = new DialogBox();
+
+						Label label = new Label(caught.getMessage());
+						dBox.add(label);
+						dBox.center();
+						dBox.setAutoHideEnabled(true);
+						dBox.show();
+					}
+				});
+			}
+		});
+
 		alleAusschreibungenButton.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
 
-				ReportGenerator.createAlleAusschreibungenReport(new createAlleAusschreibungenReportCallback());
+				ReportVerwaltung.createAlleAusschreibungenReport(new AsyncCallback<ReportByAlleAusschreibungen>() {
 
+					@Override
+					public void onSuccess(ReportByAlleAusschreibungen result1) {
+					
+						HTMLReportWriter writer = new HTMLReportWriter();
+						 writer.process(result1);
+						 RootPanel.get("contentR").clear();
+						 RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+						
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						DialogBox dBox = new DialogBox();
+
+						Label label = new Label(caught.getMessage());
+						dBox.add(label);
+						dBox.center();
+						dBox.setAutoHideEnabled(true);
+						dBox.show();
+
+					}
+				});
 			}
-
 		});
+
 		initWidget(menuReportPanel);
 	}
-	
+
 	public void homeButtonClick() {
 		homeButton.click();
 	}
-	
 }
 
-class createAlleAusschreibungenReportCallback implements AsyncCallback<ReportByAlleAusschreibungen> {
+// Anhand Bank-Projekt:
 
-	@Override
-	public void onFailure(Throwable caught) {
-
-		DialogBox dBox = new DialogBox();
-
-		Label label = new Label(caught.getMessage());
-		dBox.add(label);
-		dBox.center();
-		dBox.setAutoHideEnabled(true);
-		dBox.show();
-	}
-
-	@Override
-	public void onSuccess(ReportByAlleAusschreibungen report) {
-		if (report != null) {
-			HTMLReportWriter writer = new HTMLReportWriter();
-			writer.process(report);
-			RootPanel.get("contentR").clear();
-			RootPanel.get("contentR").add(new HTML(writer.getReportText()));
-		}
-
-	}
-
-}
+// alleAusschreibungenButton.addClickHandler(new ClickHandler() {
+//
+// @Override
+// public void onClick(ClickEvent event) {
+//
+// ReportGenerator.createAlleAusschreibungenReport(new
+// createAlleAusschreibungenReportCallback());
+//
+// }
+//
+// });
+// initWidget(menuReportPanel);
+// }
+//
+// public void homeButtonClick() {
+// homeButton.click();
+// }
+//
+// }
+//
+// class createAlleAusschreibungenReportCallback implements
+// AsyncCallback<ReportByAlleAusschreibungen> {
+//
+// @Override
+// public void onFailure(Throwable caught) {
+//
+// DialogBox dBox = new DialogBox();
+//
+// Label label = new Label(caught.getMessage());
+// dBox.add(label);
+// dBox.center();
+// dBox.setAutoHideEnabled(true);
+// dBox.show();
+// }
+//
+// @Override
+// public void onSuccess(ReportByAlleAusschreibungen report) {
+// if (report != null) {
+// HTMLReportWriter writer = new HTMLReportWriter();
+// writer.process(report);
+// RootPanel.get("contentR").clear();
+// RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+// }
+//
+// }
+//
+// }

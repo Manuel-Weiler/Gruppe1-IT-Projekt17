@@ -390,12 +390,16 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 //	public Vector<Ausschreibung> findbyProjekt (String name)throws IllegalArgumentException{
 //		return this.ausschreibungMapper.findByProjekt(name);
 //	}
+
+	
+
 	
 @Override
 	public ArrayList<Ausschreibung> getAlleAusschreibungen() throws IllegalArgumentException {
 		return this.ausschreibungMapper.findAll();
 	}
 	 
+	
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Ende: Ausschreibung
