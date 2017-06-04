@@ -25,7 +25,7 @@ public class Project4u implements EntryPoint {
 
 
 	static final int REFRESH_INTERVAL = 5000; // ms
-	NavigationsleisteWidget nt = new NavigationsleisteWidget();
+	public static final NavigationsleisteWidget nt = new NavigationsleisteWidget();
 	  private VerticalPanel mainPanel = new VerticalPanel();
 	  private FlexTable stocksFlexTable = new FlexTable();
 	  private HorizontalPanel addPanel = new HorizontalPanel();
@@ -44,6 +44,7 @@ public class Project4u implements EntryPoint {
 		  }
 		  public void onSuccess(LoginInfo result) {
 		  loginInfo = result;
+		  ClientsideSettings.setAktuellerUser(result);
 		  if(loginInfo.isLoggedIn()) {
 		  loadProject4u();
 		  newUserCheck(result);
@@ -83,8 +84,9 @@ public class Project4u implements EntryPoint {
 		Project4uVerwaltung.checkStatus(log, new AsyncCallback<Boolean>() {
 			public void onSuccess(Boolean result) {
 				if(!result){
-					Window.alert("Sie haben noch kein Profil, bitte legen Sie eines an");
 					nt.setButtonsUnenabled();
+					Window.alert("Sie haben noch kein Profil, bitte legen Sie eines an");
+					
 				}				
 			}				
 			public void onFailure(Throwable caught) {								

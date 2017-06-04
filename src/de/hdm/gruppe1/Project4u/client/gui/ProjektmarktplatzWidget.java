@@ -184,6 +184,7 @@ public class ProjektmarktplatzWidget extends Composite {
 							vPanel.add(update);
 							Box.add(vPanel);
 							Box.center();
+							Box.setAnimationEnabled(true);
 							Box.setAutoHideEnabled(true);
 							Box.show();
 							
@@ -229,7 +230,7 @@ public class ProjektmarktplatzWidget extends Composite {
 							
 						}
 					});
-					
+					diBox.setAnimationEnabled(true);
 					diBox.setAutoHideEnabled(true);
 					diBox.center();
 					diBox.show();
