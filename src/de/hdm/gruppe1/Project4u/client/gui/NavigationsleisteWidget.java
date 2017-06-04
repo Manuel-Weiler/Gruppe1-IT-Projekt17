@@ -97,7 +97,7 @@ public class NavigationsleisteWidget extends Composite{
 		orgaLoeschen.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				
-				Project4uVerwaltung.getOrganisationseinheitById(3, new AsyncCallback<Organisationseinheit>() {
+				Project4uVerwaltung.getOrganisationseinheitById(1, new AsyncCallback<Organisationseinheit>() {
 					
 					@Override
 					public void onSuccess(Organisationseinheit result) {

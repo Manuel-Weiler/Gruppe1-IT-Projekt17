@@ -79,12 +79,9 @@ public class ProjektMapper {
 		   // Leeres SQL-Statement (JDBC) anlegen
 		   Statement stmt = con.createStatement();
 		   
-
 		   // Statement ausf�llen und als Query an die DB schicken
-		   ResultSet rs = stmt.executeQuery("SELECT * "  + "FROM Projekt WHERE id='" + id + "'");
+		   ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE id= " + id);
 
-	
-		   
 		   /*
 	        * Da id Prim�rschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
 	        * werden. Pr�fe, ob ein Ergebnis vorliegt.
@@ -277,8 +274,8 @@ public class ProjektMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE organisationseinheit_id='" + o.getOrganisationseinheitId() + "'"
-		      									+ " ORDER BY organisationseinheit_id");
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE organisationseinheit_id= " + o.getOrganisationseinheitId() + 
+		    		  " ORDER BY organisationseinheit_id");
 		   
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
