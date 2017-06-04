@@ -18,7 +18,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 public interface Project4uAdministrationAsync {
 
-	void createOrganisationseinheit(String google_id, String name, String typ, Partnerprofil partnerprofil, AsyncCallback<Organisationseinheit> callback);
+	
 
 	/**
 	 * @param callback
@@ -56,5 +56,10 @@ public interface Project4uAdministrationAsync {
 	void createPartnerprofil(AsyncCallback<Partnerprofil> callback);
 
 	void insertEigenschaft(Eigenschaft e, Partnerprofil p, AsyncCallback<Eigenschaft> callback);
+
+
+
+
+	void createOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Organisationseinheit> callback);
 
 }

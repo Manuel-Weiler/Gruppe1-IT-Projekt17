@@ -35,6 +35,8 @@ public class PartnerprofilWidget extends Composite{
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	
 	FlexTable flexTable = new FlexTable();
+	Label email = new Label("EMail:");
+	TextBox mail = new TextBox();
 	Label orgaName = new Label("Profilname:");
 	TextBox orgaNam = new TextBox();
 	Label typ = new Label("Kontentyp:");
@@ -88,8 +90,7 @@ public class PartnerprofilWidget extends Composite{
 		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.add(add);
 		
-		Label email = new Label("EMail:");
-		TextBox mail = new TextBox();
+		
 		mail.setValue(ClientsideSettings.getAktuellerUser().getEmailAddress());
 		mail.setEnabled(false);
 		
@@ -109,8 +110,13 @@ public class PartnerprofilWidget extends Composite{
 		flexTable.setWidget(5, 1, abschlussBox);
 		flexTable.setWidget(6, 0, programSprache);
 		flexTable.setWidget(6, 1, programSpracheBox);
-		
+		//TODO 
 		vPanel.add(flexTable);
+		vPanel.add(speichern);
+		
+		
+		
+		
 		add.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -137,7 +143,7 @@ public class PartnerprofilWidget extends Composite{
 					
 					@Override
 					public void onClick(ClickEvent event) {
-						if (name.getValue()==null || wert.getValue()==null){
+						if (name.getValue().isEmpty() || wert.getValue().isEmpty()){
 							Window.alert("Bitte beide Felder ausfüllen");
 						}
 						else{
@@ -166,6 +172,90 @@ public class PartnerprofilWidget extends Composite{
 					}
 				});
 				
+			}
+		});
+		
+		
+		speichern.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(mail.getValue().isEmpty()||orgaNam.getValue().isEmpty()){
+					Window.alert("Bitte die Felder EMail und Name ausfüllen");
+				}
+				else{
+				Organisationseinheit neuOrga = new Organisationseinheit();
+				neuOrga.setGoogleId(mail.getValue());
+				neuOrga.setName(orgaNam.getValue());
+				neuOrga.setTyp(typbox.getSelectedValue());
+				neuOrga.setPartnerprofilId(neuesProfil.getPartnerprofilId());
+				Project4uVerwaltung.createOrganisationseinheit(neuOrga, new AsyncCallback<Organisationseinheit>() {
+					
+					@Override
+					public void onSuccess(Organisationseinheit result) {								
+						
+						if (!berufsbezeichnungBox.getValue().isEmpty()){
+						Eigenschaft eins = new Eigenschaft();
+						eins.setName("Berufsbezeichnung");
+						eins.setWert(berufsbezeichnungBox.getValue());
+						Project4uVerwaltung.insertEigenschaft(eins, neuesProfil, new AsyncCallback<Eigenschaft>() {
+							public void onSuccess(Eigenschaft result) {	}
+							public void onFailure(Throwable caught) {
+								Window.alert(caught.getMessage());}
+						});
+						}
+						
+						
+						if (!berufserfahrungBox.getValue().isEmpty()){
+							Eigenschaft zwei = new Eigenschaft();
+							zwei.setName("Berufserfahrung");
+							zwei.setWert(berufserfahrungBox.getValue());
+							Project4uVerwaltung.insertEigenschaft(zwei, neuesProfil, new AsyncCallback<Eigenschaft>() {
+								public void onSuccess(Eigenschaft result) {	}
+								public void onFailure(Throwable caught) {
+									Window.alert(caught.getMessage());}
+							});
+							}
+						
+						if (!abschlussBox.getValue().isEmpty()){
+							Eigenschaft drei = new Eigenschaft();
+							drei.setName("Abschluss");
+							drei.setWert(abschlussBox.getValue());
+							Project4uVerwaltung.insertEigenschaft(drei, neuesProfil, new AsyncCallback<Eigenschaft>() {
+								public void onSuccess(Eigenschaft result) {	}
+								public void onFailure(Throwable caught) {
+									Window.alert(caught.getMessage());}
+							});
+							}
+						
+						
+						if (!programSpracheBox.getValue().isEmpty()){
+							Eigenschaft vier = new Eigenschaft();
+							vier.setName("Programmiersprache");
+							vier.setWert(programSpracheBox.getValue());
+							Project4uVerwaltung.insertEigenschaft(vier, neuesProfil, new AsyncCallback<Eigenschaft>() {
+								public void onSuccess(Eigenschaft result) {	}
+								public void onFailure(Throwable caught) {
+									Window.alert(caught.getMessage());}
+							});
+							}
+						
+						
+						
+						
+						
+						
+						
+					}
+					public void onFailure(Throwable caught) {
+						Window.alert(caught.getMessage());						
+					}
+				});
+				}
+				
+			
+				
+			
 			}
 		});
 		

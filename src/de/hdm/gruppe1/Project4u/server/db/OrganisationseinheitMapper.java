@@ -80,7 +80,7 @@ public class OrganisationseinheitMapper {
 		try{
 			Statement stmt = con.createStatement();
 			
-			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Organisationseinheit ");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM organisationseinheit;");
 			
 			
 			if(rs.next()){
@@ -88,8 +88,8 @@ public class OrganisationseinheitMapper {
 				
 				stmt = con.createStatement();
 				
-				stmt.executeUpdate("INSERT INTO Organisationseinheit (id, google_id, name, typ, partnerprofil_id) "
-			            + "VALUES (" + organisationseinheit.getOrganisationseinheitId() + ", '" + organisationseinheit.getGoogleId() + "','" + organisationseinheit.getName() + "', '" + organisationseinheit.getTyp() + "', " + organisationseinheit.getPartnerprofilId() + ")");
+				stmt.executeUpdate("INSERT INTO organisationseinheit (id, google_id, name, typ, partnerprofil_id) "
+			            + "VALUES ('" + organisationseinheit.getOrganisationseinheitId() + "', '" + organisationseinheit.getGoogleId() + "','" + organisationseinheit.getName() + "', '" + organisationseinheit.getTyp() + "', '" + organisationseinheit.getPartnerprofilId() + "');");
 			
 			
 			}

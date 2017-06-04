@@ -80,7 +80,7 @@ public class PartnerprofilMapper {
 		        
 
 		        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-		        stmt.executeUpdate("INSERT INTO Partnerprofil (id, erstelldatum, �nderungsdatum, Organisationseinheit_id) "
+		        stmt.executeUpdate("INSERT INTO partnerprofil (id, erstelldatum, änderungsdatum) "
 		            + "VALUES (" + p.getPartnerprofilId() + ",'" + sdf.format(p.getErstelldatum()) + "','"
 		            + sdf.format(p.getAenderungsdatum()) + "')"); 
 		      }

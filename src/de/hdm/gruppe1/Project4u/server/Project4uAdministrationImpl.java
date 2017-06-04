@@ -34,7 +34,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 @SuppressWarnings("serial")
 public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration, Serializable{
 
-	
+	 
 	private BewerbungMapper bewerbungMapper = null;
 	private BewertungMapper bewertungMapper = null;
 	private BeteiligungMapper beteiligungMapper = null;
@@ -87,19 +87,14 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 			return status;
 		}
 
-	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ, Partnerprofil partnerprofil)
+		
+	public Organisationseinheit createOrganisationseinheit(Organisationseinheit orga)
 			throws IllegalArgumentException {
-
-		Organisationseinheit organisationseinheit = new Organisationseinheit();
-		organisationseinheit.setGoogleId(google_id);
-		organisationseinheit.setName(name);
-		organisationseinheit.setTyp(typ);
-		organisationseinheit.setPartnerprofilId(partnerprofil.getPartnerprofilId());
-
-		return this.organisationseinheitMapper.insert(organisationseinheit);
-
+		return this.organisationseinheitMapper.insert(orga);
 	}
 
+	
+	
 	public void deleteOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
 		
 		//Zugehöriges Partnerprofil löschen

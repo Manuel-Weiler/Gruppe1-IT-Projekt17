@@ -16,7 +16,6 @@ public interface Project4uAdministration extends RemoteService{
 
 	public void init() throws IllegalArgumentException;
 	
-	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ, Partnerprofil partnerprofil);
 	
 	public boolean checkStatus(LoginInfo loginInfo) throws IllegalArgumentException;
 	
@@ -49,5 +48,9 @@ public interface Project4uAdministration extends RemoteService{
 	public Partnerprofil createPartnerprofil() throws IllegalArgumentException;
 	
 	public Eigenschaft insertEigenschaft(Eigenschaft e, Partnerprofil p)throws IllegalArgumentException;
+	
+	public Organisationseinheit createOrganisationseinheit(Organisationseinheit orga) throws IllegalArgumentException;
+	
+	
 	
 }
