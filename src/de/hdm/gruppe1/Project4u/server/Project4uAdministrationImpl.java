@@ -89,12 +89,15 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	public void deleteOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
 		
-		//Zugehöriges Partnerprofil löschen
-  		Partnerprofil partnerprofil = partnerprofilMapper.findById(organisationseinheit.getPartnerprofilId());
+		//Organisationseinheit löschen
+      	this.organisationseinheitMapper.delete(organisationseinheit);
+		
+	  	//Zugehöriges Partnerprofil löschen
+  		Partnerprofil partnerprofil = partnerprofilMapper.findById(3);
   		if(partnerprofil != null) {
   			this.deletePartnerprofil(partnerprofil);
   		}
-      
+      /*
       	//Zugehörige Projekte löschen		      
       	Vector<Projekt> vp = new Vector<Projekt>();     	
       	if(vp != null) {
@@ -111,9 +114,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
   			for(Bewerbung b: vb){
   				this.deleteBewerbung(b);
   			}
-  		}
-      	//Organisationseinheit löschen
-      	this.organisationseinheitMapper.delete(organisationseinheit);
+  		}*/
+      	
       	}
 	
 
@@ -176,15 +178,15 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	public void deletePartnerprofil(Partnerprofil p) throws IllegalArgumentException {
 		
-		//Zugehörige Eigenschaften löschen
+		/*//Zugehörige Eigenschaften löschen
 		Vector<Eigenschaft> ve = new Vector<Eigenschaft>();
+		ve = eigenschaftMapper.findByPartnerprofil(p);
       	
       	if(ve != null) {
-      		ve = eigenschaftMapper.findByPartnerprofil(p);
       		for(Eigenschaft eigenschaft: ve){
       			this.deleteEigenschaft(eigenschaft);
       		}
-      	}
+      	}*/
     		//Partnerprofil löschen
     		this.partnerprofilMapper.deletePartnerprofil(p);
       	}

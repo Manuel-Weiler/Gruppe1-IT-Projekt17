@@ -97,17 +97,18 @@ public class NavigationsleisteWidget extends Composite{
 		orgaLoeschen.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				
-				Project4uVerwaltung.getOrganisationseinheitById(1, new AsyncCallback<Organisationseinheit>() {
+				Project4uVerwaltung.getOrganisationseinheitById(3, new AsyncCallback<Organisationseinheit>() {
 					
 					@Override
 					public void onSuccess(Organisationseinheit result) {
-						System.out.println("Hat geklappt");
+						Label erfolgreich1 = new Label("Erfolgreich1");
+						RootPanel.get("content").add(erfolgreich1);
 						
 						Project4uVerwaltung.deleteOrganisationseinheit(result, new AsyncCallback<Void>() {
 							
 							@Override
 							public void onSuccess(Void result) {
-								Label orgaLoeschen = new Label("Erfolgreich gelöscht");
+								Label orgaLoeschen = new Label("Erfolgreich2");
 								RootPanel.get("content").clear();
 								RootPanel.get("content").add(orgaLoeschen);
 								
