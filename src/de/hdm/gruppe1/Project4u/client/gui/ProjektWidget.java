@@ -1,10 +1,15 @@
 package de.hdm.gruppe1.Project4u.client.gui;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
+import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.cell.client.DateCell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
@@ -20,8 +25,15 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasAlignment;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -33,6 +45,7 @@ import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
+import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
@@ -44,7 +57,7 @@ public class ProjektWidget extends Composite{
 	
 	//TODO: Projekt anlegen-Maske implementieren & Clickhandler hinzuf�gen
 	Button addProjekt = new Button("Projekt anlegen");
-	
+	VerticalPanel vPanel = new VerticalPanel();
 	//TODO: Projekt löschen,  Ausschreibungen
 
 
@@ -58,11 +71,22 @@ public class ProjektWidget extends Composite{
 		}
 	};
 	
+	public static final ProvidesKey<Ausschreibung> KEY_PROVIDER_AUSSCHREIBUNG = new ProvidesKey<Ausschreibung>() {
+		public Object getKey(Ausschreibung item) {
+			return item == null ? null : item.getAusschreibungId();
+		}
+	};
+	
+	
+	
+	
+	
+	
 	public ProjektWidget (Vector<Projekt> projekte, Projektmarktplatz pMarktpl){
 		
 		this.projektmarktplatz =pMarktpl;
 		
-		VerticalPanel vPanel = new VerticalPanel();
+		
 		
 		//Pr�fung, ob schon Projekte zum Projektmarktplatz existieren
 		if (projekte.isEmpty()){
@@ -79,10 +103,21 @@ public class ProjektWidget extends Composite{
 					projektChange(neu, projektmarktplatz);
 					
 				}
-			});
+			}); 
 		}
 		else{
 			vPanel.clear();
+			vPanel.add(addProjekt);
+			addProjekt.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					Projekt neu = new Projekt();
+					projektChange(neu, projektmarktplatz);
+
+				}
+			});
+			
 			CellTable<Projekt> projektTabelle = new CellTable<Projekt>(KEY_PROVIDER);
 			
 			//Die Spalte der Projekt-Tabelle wird erstellt und deren Inhalt definiert.
@@ -108,6 +143,13 @@ public class ProjektWidget extends Composite{
 				public Date getValue(Projekt object) {
 					return object.getEnddatum();
 				}	
+				public String getCellStyleNames (Context context, Projekt object){
+					if (object.getEnddatum().before(new Date())){
+						return "rot";
+					}
+					else {return null;}
+					
+				}
 			};
 			
 			TextColumn<Projekt> description = new TextColumn<Projekt>() {
@@ -115,6 +157,9 @@ public class ProjektWidget extends Composite{
 					return object.getBeschreibung();
 				}
 			};
+			
+			
+			
 			
 			/*
 			 * Das SelectionModel wird zur Tabelle der Projektmarktpl�tze hinzugef�gt
@@ -129,7 +174,16 @@ public class ProjektWidget extends Composite{
 				public void onSelectionChange(SelectionChangeEvent event) {
 					final DialogBox diBox = new DialogBox();
 					VerticalPanel vPanel = new VerticalPanel();
-					Button seeProjekt = new Button("Projekt ansehen");
+					Button seeProjekt = new Button("Ausschreibungen zum Projekt ansehen");
+					seeProjekt.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							diBox.hide();
+							ausschreibungAnsehen(selectionModel.getSelectedObject()); 
+							
+						}
+					});
 					Button deleteProjekt = new Button("Projekt löschen");
 					Button changeProjekt = new Button("Projekt bearbeiten");
 					changeProjekt.addClickHandler(new ClickHandler() {
@@ -163,11 +217,13 @@ public class ProjektWidget extends Composite{
 			projektTabelle.addColumn(enddatum, "Enddatum");
 			projektTabelle.addColumn(description, "Beschreibung");
 			
+			
 			//F�llen der Tabelle ab dem Index 0.
 			projektTabelle.setRowData(0,  projekte);
 			
 			//Anpassen des Widgets an die Breite des div-Elements "content"
 			projektTabelle.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
+			
 			
 			vPanel.add(projektTabelle);
 			initWidget(vPanel);
@@ -213,6 +269,7 @@ public class ProjektWidget extends Composite{
 				if (beschr.getValue().length()>250){
 					Window.alert("Es sind maximal 250 Zeichen als Beschreibung erlaubt.");
 				}
+				
 			}
 		});
 		vp.add(beschr);
@@ -230,7 +287,14 @@ public class ProjektWidget extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				if((!nam.getValue().isEmpty())&&(!beschr.getValue().isEmpty())){
+				if((nam.getValue().isEmpty())||(beschr.getValue().isEmpty())){
+					Window.alert("Bitte alle Felder ausfüllen.");
+				}
+				else if (endate.getValue().before(stdate.getValue())) {
+					Window.alert("Das Enddatum muss nach dem Startdatum liegen.");
+				}
+				
+				else{
 				p.setName(nam.getValue());
 				p.setStartdatum(stdate.getValue());
 				p.setEnddatum(endate.getValue());
@@ -277,7 +341,7 @@ public class ProjektWidget extends Composite{
 					or.setOrganisationseinheitId(2);
 					Project4uVerwaltung.createProjekt(p, m, or, new AsyncCallback<Projekt>() {
 						
-						@Override
+						
 						public void onSuccess(Projekt result) {
 							
 							//Nach dem Speichern des Projektes wird das ProjektWidget erstellt und im contend-div angezeigt.
@@ -293,7 +357,7 @@ public class ProjektWidget extends Composite{
 											.add(new Label("Alle Projekte des Projektmarktplatzes "
 													+ m.getName()));
 								}
-								@Override
+								
 								public void onFailure(Throwable caught) {												
 								}
 							});
@@ -301,7 +365,7 @@ public class ProjektWidget extends Composite{
 							
 							}
 
-							@Override
+							
 							public void onFailure(Throwable caught) {
 
 							}
@@ -309,9 +373,7 @@ public class ProjektWidget extends Composite{
 					
 				}
 				
-				} else {
-					Window.alert("Bitte alle Felder ausfüllen");
-				}}
+				} }
 		});
 		vp.add(saveButton);
 		db.add(vp);
@@ -320,6 +382,109 @@ public class ProjektWidget extends Composite{
 		db.show();
 		
 	}
-	
-	
+	VerticalPanel hrP = new VerticalPanel();
+	HorizontalPanel hPanel = new HorizontalPanel();
+	protected void ausschreibungAnsehen(Projekt p){
+		hrP.clear();
+		hPanel.clear();
+				
+		SimplePanel te = new SimplePanel();			
+		HTML hr = new HTML("<hr style= 'border: 0; height: 3px; background: #333; margin-top: 50px; margin-bottom: 50px; background-image: linear-gradient(to right, #ccc, #333, #ccc);'>");
+		te.add(hr);		
+		te.setWidth(vPanel.getOffsetWidth()+"px");
+		hrP.add(te);
+		
+		
+		
+		
+		
+		
+		Project4uVerwaltung.findAusschreibungbyProjekt(p, new AsyncCallback<Vector<Ausschreibung>>() {
+			
+			@Override
+			public void onSuccess(Vector<Ausschreibung> result) {
+				if(!result.isEmpty()){
+				
+				ausschreibungsTabelle(result);
+				
+				}
+				else{
+					//TODO:
+					
+				}
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				
+				
+			}
+		});
+	}
+	protected void ausschreibungsTabelle(Vector<Ausschreibung> chosenAusschreibungen){
+		CellTable<Ausschreibung> ausschreibungTabelle = new CellTable<Ausschreibung>(KEY_PROVIDER_AUSSCHREIBUNG);
+		
+		TextColumn<Ausschreibung> nameAusschreibung = new TextColumn<Ausschreibung>() {
+			public String getValue(Ausschreibung object) {
+				return object.getBezeichnung();
+			}
+		};
+		
+		TextColumn<Ausschreibung> projektleiter = new TextColumn<Ausschreibung>() {
+			public String getValue(Ausschreibung object) {
+				return object.getNameProjektleiter();
+			}
+		};
+		
+		DateCell datecell = new DateCell(); 
+		Column<Ausschreibung, Date> bewerbungsfrist = new Column<Ausschreibung, Date> (datecell){
+			
+			@Override
+			public Date getValue(Ausschreibung object) {
+				return object.getBewerbungsfrist();								
+			}	
+			public String getCellStyleNames (Context context, Ausschreibung object){
+				if (object.getBewerbungsfrist().before(new Date())){
+					return "rot";
+				}
+				else {return null;}
+				
+			}
+		};
+		
+		ButtonCell buttonCell = new ButtonCell();
+		Column<Ausschreibung, String> buttonColumn = new Column<Ausschreibung, String>(buttonCell) {
+		  @Override
+		  public String getValue(Ausschreibung au) {
+		    // The value to display in the button.
+		    return "Details";
+		  }
+		};
+		
+
+		//You can then set a FieldUpdater on the Column to be notified of clicks.
+		
+		buttonColumn.setFieldUpdater(new FieldUpdater <Ausschreibung, String>() {
+		  public void update(int index, Ausschreibung object, String value) {
+		    // Value is the button value.  Object is the row object.
+		    Window.alert("You clicked: " + object.getAusschreibungstext());
+		  }
+		});
+		
+		ausschreibungTabelle.addColumn(nameAusschreibung, "Bezeichnung");
+		ausschreibungTabelle.addColumn(projektleiter, "Projektleiter");
+		ausschreibungTabelle.addColumn(bewerbungsfrist, "Bewerbungsfrist");
+		ausschreibungTabelle.addColumn(buttonColumn, "");
+		
+		//Füllen der Tabelle ab dem Index 0.
+		ausschreibungTabelle.setRowData(0, chosenAusschreibungen);
+		
+		
+		ausschreibungTabelle.setWidth("100%");
+		
+		hPanel.add(ausschreibungTabelle);
+		hrP.add(hPanel);
+		vPanel.add(hrP);
+	}
 }

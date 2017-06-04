@@ -33,6 +33,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 @SuppressWarnings("serial")
 public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration, Serializable{
 
+	
 	private BewerbungMapper bewerbungMapper = null;
 	private BewertungMapper bewertungMapper = null;
 	private BeteiligungMapper beteiligungMapper = null;
@@ -58,6 +59,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
         this.projektmarktplatzMapper = ProjektmarktplatzMapper.projektmarktplatzMapper();
         this.projektMapper = ProjektMapper.projektMapper();
         this.bewertungMapper = BewertungMapper.bewertungMapper();
+        this.ausschreibungMapper=AusschreibungMapper.ausschreibungMapper();
 	}
 	
 	
@@ -384,15 +386,15 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 //	public Vector<Ausschreibung> findbyPerson (String name)throws IllegalArgumentException{
 //		return this.ausschreibungMapper.findByPerson(name);
 //	}
-//	
-//	public Vector<Ausschreibung> findbyProjekt (String name)throws IllegalArgumentException{
-//		return this.ausschreibungMapper.findByProjekt(name);
-//	}
 	
-	@Override
+	public Vector<Ausschreibung> findAusschreibungbyProjekt (Projekt projekt)throws IllegalArgumentException{
+		return this.ausschreibungMapper.findByProjekt(projekt);
+	}
+	
+	
 	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {
-		// TODO Methode als Mapper nicht implementiert.
-		return null;
+		
+		return this.ausschreibungMapper.findAllAusschreibungen();
 	}
 	
 	/*

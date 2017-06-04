@@ -1,4 +1,4 @@
-package de.hdm.gruppe1.Project4u.shared.bo;
+package de.hdm.gruppe1.Project4u.shared;
 
 import java.io.Serializable;
 

@@ -42,4 +42,5 @@ public interface Project4uAdministration extends RemoteService{
 	public Projekt createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o)
 			   throws IllegalArgumentException;
 	
+	public Vector<Ausschreibung> findAusschreibungbyProjekt (Projekt projekt)throws IllegalArgumentException;
 }
