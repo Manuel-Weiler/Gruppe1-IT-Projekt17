@@ -3,6 +3,7 @@ package de.hdm.gruppe1.Project4u.client.gui;
 import java.util.Vector;
 
 import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -120,66 +121,7 @@ public class PartnerprofilWidget extends Composite{
 		
 		
 		
-		add.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				
-				final DialogBox db = new DialogBox();
-				Label nam = new Label ("Bezeichnung:");
-				Label wer = new Label ("Wert:");
-				Button ok = new Button("OK");
-				final TextBox name = new TextBox();
-				final TextBox wert = new TextBox();
-				FlexTable ft = new FlexTable();
-				ft.setWidget(0, 0, nam);
-				ft.setWidget(0, 1, wer);
-				ft.setWidget(1, 0, name);
-				ft.setWidget(1, 1, wert);
-				ft.setWidget(2, 2, ok);
-				db.add(ft);
-				
-				db.center();
-				db.setAnimationEnabled(true);
-				db.setAutoHideEnabled(true);
-				db.show();
-				
-				ok.addClickHandler(new ClickHandler() {
-					
-					@Override
-					public void onClick(ClickEvent event) {
-						if (name.getValue().isEmpty() || wert.getValue().isEmpty()){
-							Window.alert("Bitte beide Felder ausfüllen");
-						}
-						else{
-						db.hide();
-						Eigenschaft eig = new Eigenschaft();
-						eig.setName(name.getValue());
-						eig.setWert(wert.getValue());
-						Project4uVerwaltung.insertEigenschaft(eig, neuesProfil, new AsyncCallback<Eigenschaft>() {
-							
-							@Override
-							public void onSuccess(Eigenschaft result) {
-								Label name = new Label(result.getName());
-								Label wert = new Label(result.getWert());
-								
-								flexTable.setWidget(flexTable.getRowCount(), 0, name);
-								flexTable.setWidget(flexTable.getRowCount()-1, 1, wert);
-								
-							}
-							
-							
-							public void onFailure(Throwable caught) {
-								Window.alert(caught.getMessage());		
-							}
-						});
-						
-						}
-					}
-				});
-				
-			}
-		});
+		add.addClickHandler(new addEigenschaftClickhandler());
 		
 		
 		speichern.addClickHandler(new ClickHandler() {
@@ -295,23 +237,41 @@ public class PartnerprofilWidget extends Composite{
 		RootPanel.get("contentHeader").clear();
 		Label Profil = new Label("Ihr Nutzerprofil");
 		RootPanel.get("contentHeader").add(Profil);
-		HTML p = new HTML("<p class='heading'>Eigenschaften</p>");
+		Button bearbeiten = new Button("Nutzername bearbeiten");
 		final VerticalPanel vp = new VerticalPanel();
-		vp.add(p);
-		
 		
 		mail.setValue(o.getGoogleId());
 		mail.setEnabled(false);
 		orgaNam.setValue(o.getName());
+		orgaNam.setEnabled(false);
+		mail.setTitle("Die E-Mail-Adresse kann nicht geändert werden.");
+		typbox.setTitle("Der Kontentyp kann nicht geändert werden. Legen Sie ggf. zusäzliche Konten an.");
 		
-		flexTable.setWidget(0, 0, email);
-		flexTable.setWidget(0, 1, mail);
-		flexTable.setWidget(1, 0, orgaName);
-		flexTable.setWidget(1, 1, orgaNam);
+		flexTable.setWidget(0, 0, orgaName);
+		flexTable.setWidget(0, 1, orgaNam);
+		flexTable.setWidget(1, 0, email);
+		flexTable.setWidget(1, 1, mail);		
 		flexTable.setWidget(2, 0, typ);
 		typbox.addItem("Person");
 		typbox.setVisibleItemCount(1);
+		typbox.setEnabled(false);
 		flexTable.setWidget(2, 1, typbox);
+		flexTable.setWidget(0, 3, bearbeiten);
+		
+		vp.add(flexTable);
+		
+		HTML p = new HTML("<p class='heading'>Eigenschaften:</p>");		
+		vp.add(p);
+		
+		Project4uVerwaltung.getPartnerprofilOfOrganisationseinheit(o, new AsyncCallback<Partnerprofil>() {
+			public void onSuccess(Partnerprofil result) {
+				neuesProfil= result;
+				
+			}
+			public void onFailure(Throwable caught) {
+			}
+		});
+		
 		
 		
 		
@@ -319,8 +279,68 @@ public class PartnerprofilWidget extends Composite{
 		
 			@Override
 			public void onSuccess(Vector<Eigenschaft> result) {
-				vp.add(createCellTable(result));	
 				
+				vp.add(createCellTable(result));
+				add.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+
+						final DialogBox db = new DialogBox();
+						Label nam = new Label ("Bezeichnung:");
+						Label wer = new Label ("Wert:");
+						Button ok = new Button("OK");
+						final TextBox name = new TextBox();
+						final TextBox wert = new TextBox();
+						FlexTable ft = new FlexTable();
+						ft.setWidget(0, 0, nam);
+						ft.setWidget(0, 1, wer);
+						ft.setWidget(1, 0, name);
+						ft.setWidget(1, 1, wert);
+						ft.setWidget(2, 2, ok);
+						db.add(ft);
+						
+						db.center();
+						db.setAnimationEnabled(true);
+						db.setAutoHideEnabled(true);
+						db.show();
+						
+						ok.addClickHandler(new ClickHandler() {
+							
+							@Override
+							public void onClick(ClickEvent event) {
+								if (name.getValue().isEmpty() || wert.getValue().isEmpty()){
+									Window.alert("Bitte beide Felder ausfüllen");
+								}
+								else{
+								db.hide();
+								Eigenschaft eig = new Eigenschaft();
+								eig.setName(name.getValue());
+								eig.setWert(wert.getValue());
+								Project4uVerwaltung.insertEigenschaft(eig, neuesProfil, new AsyncCallback<Eigenschaft>() {
+									
+									@Override
+									public void onSuccess(Eigenschaft result) {
+										//richtig richtig schlechter code 
+										Project4u.nt.profilButton.click();
+										
+									}
+									
+									
+									public void onFailure(Throwable caught) {
+										Window.alert(caught.getMessage());		
+									}
+								});
+								
+								}
+							}
+						});
+						
+					}
+						
+					
+				});
+				vp.add(add);
 			}			
 			public void onFailure(Throwable caught) {				
 			}
@@ -341,13 +361,13 @@ public class PartnerprofilWidget extends Composite{
 
 		// Die Spalte der Eigenschaften-Tabelle wird erstellt und deren Inhalt
 		// definiert.
-		TextColumn<Eigenschaft> nameColumn = new TextColumn<Eigenschaft>() {
+		Column<Eigenschaft, String> nameColumn = new Column<Eigenschaft, String>( new EditTextCell()) {
 			public String getValue(Eigenschaft object) {
 				return object.getName();
 			}
 		};
 
-		TextColumn<Eigenschaft> valueColumn = new TextColumn<Eigenschaft>() {
+		Column<Eigenschaft, String> valueColumn = new Column<Eigenschaft, String>(new EditTextCell()) {
 			public String getValue(Eigenschaft object) {
 				return object.getWert();
 
@@ -383,6 +403,10 @@ public class PartnerprofilWidget extends Composite{
 
 			@Override
 			public void update(int index, Eigenschaft object, String value) {
+				if(value.isEmpty()){
+					MessageBox.alertWidget("Leeres Feld!", "Das Feld darf nicht leer sein");
+				}
+				else{
 				object.setWert(value);
 				Project4uVerwaltung.updateEigenschaft(object, new AsyncCallback<Eigenschaft>() {
 
@@ -393,7 +417,7 @@ public class PartnerprofilWidget extends Composite{
 					public void onFailure(Throwable caught) {
 						Window.alert(caught.getMessage());
 					}
-				});
+				});}
 
 			}
 		});
@@ -402,6 +426,10 @@ public class PartnerprofilWidget extends Composite{
 
 			@Override
 			public void update(int index, Eigenschaft object, String value) {
+				if(value.isEmpty()){
+					MessageBox.alertWidget("Leeres Feld!", "Das Feld darf nicht leer sein");
+				}
+				else{
 				object.setName(value);
 				;
 				Project4uVerwaltung.updateEigenschaft(object, new AsyncCallback<Eigenschaft>() {
@@ -413,7 +441,7 @@ public class PartnerprofilWidget extends Composite{
 					public void onFailure(Throwable caught) {
 						Window.alert(caught.getMessage());
 					}
-				});
+				});}
 
 			}
 		});
@@ -423,6 +451,73 @@ public class PartnerprofilWidget extends Composite{
 		return profilTabelle;
 	}
 	
+	
+	
+	
+	
+	
+	private class addEigenschaftClickhandler implements ClickHandler{
+			
+		public void onClick(ClickEvent event) {
+				final DialogBox db = new DialogBox();
+				Label nam = new Label ("Bezeichnung:");
+				Label wer = new Label ("Wert:");
+				Button ok = new Button("OK");
+				final TextBox name = new TextBox();
+				final TextBox wert = new TextBox();
+				FlexTable ft = new FlexTable();
+				ft.setWidget(0, 0, nam);
+				ft.setWidget(0, 1, wer);
+				ft.setWidget(1, 0, name);
+				ft.setWidget(1, 1, wert);
+				ft.setWidget(2, 2, ok);
+				db.add(ft);
+				
+				db.center();
+				db.setAnimationEnabled(true);
+				db.setAutoHideEnabled(true);
+				db.show();
+				
+				ok.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						if (name.getValue().isEmpty() || wert.getValue().isEmpty()){
+							Window.alert("Bitte beide Felder ausfüllen");
+						}
+						else{
+						db.hide();
+						Eigenschaft eig = new Eigenschaft();
+						eig.setName(name.getValue());
+						eig.setWert(wert.getValue());
+						Project4uVerwaltung.insertEigenschaft(eig, neuesProfil, new AsyncCallback<Eigenschaft>() {
+							
+							@Override
+							public void onSuccess(Eigenschaft result) {
+								Label name = new Label(result.getName());
+								Label wert = new Label(result.getWert());
+								
+								flexTable.setWidget(flexTable.getRowCount(), 0, name);
+								flexTable.setWidget(flexTable.getRowCount()-1, 1, wert);
+								
+								
+							}
+							
+							
+							public void onFailure(Throwable caught) {
+								Window.alert(caught.getMessage());		
+							}
+						});
+						
+						}
+					}
+				});
+				
+			}}
+		;
+		
+		
+		
 	
 	
 	

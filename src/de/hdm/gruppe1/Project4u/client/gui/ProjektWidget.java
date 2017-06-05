@@ -386,8 +386,11 @@ public class ProjektWidget extends Composite{
 		te.setWidth(vPanel.getOffsetWidth()+"px");
 		hrP.add(te);
 		
+		HTML heading = new HTML("<p class='heading'>Ausschreibungen zu '"+p.getName()+"':</p>");
+		hrP.add(heading);
 		
 		
+		//TODO: Ausschreibung anlegen
 		
 		
 		
@@ -401,7 +404,9 @@ public class ProjektWidget extends Composite{
 				
 				}
 				else{
-					//TODO:
+					HTML noAusschreibungen = new HTML("<p class='heading'>-- keine Ausschreibungen zu diesem Projekt --</p>");
+					noAusschreibungen.setHeight("30px");
+					hrP.add(noAusschreibungen);
 					
 				}
 				

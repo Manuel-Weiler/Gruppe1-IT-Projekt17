@@ -22,9 +22,11 @@ h1 {
 	text-decoration: line-through;
 }
 .heading{
+	font-size: 1em;
 	font: 'Gotham';
   	font-weight: lighter !important;
   	font-variant: small-caps;
+  	letter-spacing: 5px;
 	
 }
 
