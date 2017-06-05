@@ -58,6 +58,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
         this.projektmarktplatzMapper = ProjektmarktplatzMapper.projektmarktplatzMapper();
         this.projektMapper = ProjektMapper.projektMapper();
         this.bewertungMapper = BewertungMapper.bewertungMapper();
+        this.bewerbungMapper = BewerbungMapper.bewerbungMapper();
+        this.ausschreibungMapper = AusschreibungMapper.ausschreibungMapper();
 	}
 	
 	
@@ -88,9 +90,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	public void deleteOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
-		
-		
-      
+		     
       	//Zugehörige Projekte löschen		      
       	Vector<Projekt> vp = new Vector<Projekt>();
   		vp = projektMapper.findByOrganisationseinheit(organisationseinheit);
@@ -99,6 +99,15 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
       			this.delete(projekt);
       		}
       	}
+      	
+      	//Zugehörige Bewerbungen löschen
+  		/*Vector<Bewerbung> vb = new Vector<Bewerbung>();	
+  		vb = bewerbungMapper.findByOrganisationseinheit(organisationseinheit);
+  		if (vb != null) {
+  			for(Bewerbung b: vb){
+  				this.deleteBewerbung(b);
+  			}
+  		}*/
       	
       	//Zugehörige Projektmarktplätze löschen
       	Vector<Projektmarktplatz> pm = new Vector<Projektmarktplatz>();
@@ -109,14 +118,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
       		}
       	}
 		
-		//Zugehörige Bewerbungen löschen
-  		/*Vector<Bewerbung> vb = new Vector<Bewerbung>();	
-  		vb = this.bewerbungMapper.findByOrganisationseinheit(organisationseinheit);
-  		if (vb != null) {
-  			for(Bewerbung b: vb){
-  				this.deleteBewerbung(b);
-  			}
-  		}*/
+		
       	
         //Organisationseinheit löschen
       	this.organisationseinheitMapper.delete(organisationseinheit);
@@ -306,17 +308,21 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		projektMapper.update(p);
 	}
 
-	public void delete(Projekt p) throws IllegalArgumentException {
+	public void delete(Projekt projekt) throws IllegalArgumentException {
+		System.out.println("deleteProjekt");
 		
 		//Zugehörige Ausschreibungen löschen
-		/*Vector<Ausschreibung> va = new Vector<Ausschreibung>();
-		va = ausschreibungMapper.findByProjekt(p);      	
+		Vector<Ausschreibung> va = new Vector<Ausschreibung>();
+		va = ausschreibungMapper.findByProjekt(projekt); 
+		
+		System.out.println("findByProjekt: " + va );
+		
 		if(va != null) {
 		    for(Ausschreibung ausschreibung: va){
 		    	this.deleteAusschreibung(ausschreibung);
 		    }
-		}*/
-		this.projektMapper.delete(p);
+		}
+		this.projektMapper.delete(projekt);
 	}	
 	
 	public Vector<Projekt> findByName(String name) throws IllegalArgumentException {
@@ -362,24 +368,24 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 	
 	public void deleteAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {
-		
-		//zugehörige Bewerbungen löschen
-		Vector<Bewerbung> bv = new Vector<Bewerbung>();
+		System.out.println("deleteAusschreibung");
+		//TODO zugehörige Bewerbungen löschen
+		/*Vector<Bewerbung> bv = new Vector<Bewerbung>();
 		bv = bewerbungMapper.findByAusschreibung(ausschreibung);
 		if(bv != null) {
 			for(Bewerbung bewerbung: bv) {
 				this.deleteBewerbung(bewerbung);
 			}
-		}
+		}*/
 		
 		//zugehöriges Partnerprofil löschen
-		Partnerprofil partnerprofil = partnerprofilMapper.findById(ausschreibung.getPartnerprofilId());
+		/*Partnerprofil partnerprofil = partnerprofilMapper.findById(ausschreibung.getPartnerprofilId());
   		if(partnerprofil != null) {
   			this.deletePartnerprofil(partnerprofil);
-  		}
+  		}*/
 		
 		
-		ausschreibungMapper.deleteAusschreibung(ausschreibung);
+		this.ausschreibungMapper.delete(ausschreibung);
 	}
 	
 	public Ausschreibung findByIdAusschreibung (int id) throws IllegalArgumentException {
@@ -438,7 +444,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public void deleteBewerbung(Bewerbung bewerbung) {
 		
 		//Zugehörige Bewertungen löschen
-		Bewertung bewertung = this.bewertungMapper.findByBewerbung(bewerbung);
+		Bewertung bewertung = bewertungMapper.findByBewerbung(bewerbung);
   		if (bewertung != null) {
   			this.deleteBewertung(bewertung);
   			}
