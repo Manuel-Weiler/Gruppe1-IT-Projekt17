@@ -392,11 +392,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 //	}
 
 	
-
-	
-@Override
 	public ArrayList<Ausschreibung> getAlleAusschreibungen() throws IllegalArgumentException {
-		return this.ausschreibungMapper.findAll();
+		return this.ausschreibungMapper.findAllAusschreibungen();
 	}
 	 
 	

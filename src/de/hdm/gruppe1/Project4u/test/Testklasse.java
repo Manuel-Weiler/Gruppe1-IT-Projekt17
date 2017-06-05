@@ -36,7 +36,7 @@ public class Testklasse {
 		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
 	
 		ArrayList<Ausschreibung> al = new ArrayList<Ausschreibung>();
-		al= am.findAll();
+		al= am.findAllAusschreibungen();
 		
 		
 		

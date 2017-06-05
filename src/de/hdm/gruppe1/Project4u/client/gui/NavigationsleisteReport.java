@@ -61,12 +61,12 @@ public class NavigationsleisteReport extends Composite {
 		// Testmethode
 		testButton.addClickHandler(new ClickHandler() {
 
-			@Override
+			
 			public void onClick(ClickEvent event) {
 
 				ReportVerwaltung.testMethode(new AsyncCallback<String>() {
 
-					@Override
+					
 					public void onSuccess(String result) {
 						DialogBox dBox = new DialogBox();
 
@@ -77,7 +77,7 @@ public class NavigationsleisteReport extends Composite {
 						dBox.show();
 					}
 
-					@Override
+					
 					public void onFailure(Throwable caught) {
 						DialogBox dBox = new DialogBox();
 
@@ -93,22 +93,23 @@ public class NavigationsleisteReport extends Composite {
 
 		alleAusschreibungenButton.addClickHandler(new ClickHandler() {
 
-			@Override
+			
 			public void onClick(ClickEvent event) {
 
 				ReportVerwaltung.createAlleAusschreibungenReport(new AsyncCallback<ReportByAlleAusschreibungen>() {
 
-					@Override
+					
 					public void onSuccess(ReportByAlleAusschreibungen result1) {
 					
+						if(result1 != null){
 						HTMLReportWriter writer = new HTMLReportWriter();
-						 writer.process(result1);
-						 RootPanel.get("contentR").clear();
-						 RootPanel.get("contentR").add(new HTML(writer.getReportText()));
-						
+						writer.process(result1);
+						RootPanel.get("contentR").clear();
+						RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+						}
 					}
 
-					@Override
+					
 					public void onFailure(Throwable caught) {
 						DialogBox dBox = new DialogBox();
 

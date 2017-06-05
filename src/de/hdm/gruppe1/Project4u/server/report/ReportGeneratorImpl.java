@@ -113,7 +113,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		/**
 		 * Titel und Bezeichnung des Reports
 		 */
-		report.setTitle(" BLA ");
+		report.setTitle(" ");
 		
 //this.addImprint(result);
 		
@@ -148,45 +148,45 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		Row headline = new Row();
 		
 		//Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
-		headline.addColumn(new Column("Ausschreibungs-ID"));
+		
+		//headline.addColumn(new Column("Ausschreibungs-ID"));
 		headline.addColumn(new Column("Bezeichnung"));
-		headline.addColumn(new Column("Projektleiter"));
-		headline.addColumn(new Column("Bewerbungsfrist"));
-		headline.addColumn(new Column("Ausschreibungstext"));
-		headline.addColumn(new Column("Erstelldatum:"));
-		headline.addColumn(new Column("Projekt-ID"));
-		headline.addColumn(new Column("Partnerprofil-ID"));
+		//headline.addColumn(new Column("Projektleiter"));
+		//headline.addColumn(new Column("Bewerbungsfrist"));
+		//headline.addColumn(new Column("Ausschreibungstext"));
+		//headline.addColumn(new Column("Erstelldatum:"));
+		//headline.addColumn(new Column("Projekt-ID"));
+		//headline.addColumn(new Column("Partnerprofil-ID"));
 		
 		//Kopfzeile wird dem Report hinzugefuegt
 		report.addRow(headline);
 		
-//		//Reportinhalt:
-//		ArrayList<Ausschreibung> alleAusschreibungen = this.project4uAdministration.getAlleAusschreibungen();
-//		
-//		for(Ausschreibung a : alleAusschreibungen){
-//			//neue, leere Zeile anlegen
-//			Row ausschreibungRow = new Row();
-//			//fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
-//			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
-//			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBezeichnung())));
-//			ausschreibungRow.addColumn(new Column(String.valueOf(a.getNameProjektleiter())));
-//			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
-//			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungstext())));
-//			ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
-//			ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
-//			ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
-//			
-//			//Zeile dem Report hinzufï¿½gen
-//			report.addRow(ausschreibungRow);
-//			return report;
-//		}
+		//Reportinhalt:
+		ArrayList<Ausschreibung> alleAusschreibungen = this.project4uAdministration.getAlleAusschreibungen();
+		
+		for(Ausschreibung a : alleAusschreibungen){
+			//neue, leere Zeile anlegen
+			Row ausschreibungRow = new Row();
+			//fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
+			//ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
+			ausschreibungRow.addColumn(new Column(a.getBezeichnung()));
+			//ausschreibungRow.addColumn(new Column(a.getNameProjektleiter()));
+			//ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
+			//ausschreibungRow.addColumn(new Column(a.getAusschreibungstext()));
+			//ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
+			//ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
+			//ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
+			
+			//Zeile dem Report hinzufï¿½gen
+			report.addRow(ausschreibungRow);
+			//return report;
+		}
 		
 		//Report ausgeben
 		return report;
 
 	}
 	
-	@Override
 	public ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Ausschreibung au)
 			throws IllegalArgumentException{
 		
@@ -231,9 +231,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				
 	}
 	
-	//TODO: Testmethode
+	//TODO: Testmethode entfernen
 	public String testMethode(){
-		String test = "Dies ist ein Test-String";
+		String test = "Dies ist ein Test für den RPC-Call";
 		return test;
 	}
 

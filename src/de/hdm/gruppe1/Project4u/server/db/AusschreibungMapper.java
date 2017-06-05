@@ -237,7 +237,7 @@ public class AusschreibungMapper {
 	
 	
 	//Auslesen aller Ausschreibungen
-	public ArrayList<Ausschreibung> findAll(){
+	public ArrayList<Ausschreibung> findAllAusschreibungen(){
 		Connection con = DBConnection.connection();
 		
 		ArrayList<Ausschreibung> result = new ArrayList<Ausschreibung>();
