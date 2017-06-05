@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
+import de.hdm.gruppe1.Project4u.client.Project4u;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
@@ -113,9 +114,20 @@ public class NavigationsleisteWidget extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 				DialogBox dBox = new DialogBox();
-				
+				VerticalPanel v = new VerticalPanel();
+				Button allbuttons = new Button("test");
+				allbuttons.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						Project4u.nt.setButtonsEnabled();
+						
+					}
+				});
 				Label label = new Label("profil");
-				dBox.add(label);
+				v.add(label);
+				v.add(allbuttons);
+				dBox.add(v);
 				dBox.center();
 				dBox.setAutoHideEnabled(true);
 				dBox.show();
@@ -134,14 +146,18 @@ public class NavigationsleisteWidget extends Composite{
 		pMarktplatz.setEnabled(true);
 		eBewerbungen.setEnabled(true);
 		aBewerbungen.setEnabled(true);
-		
+		profilButton.setEnabled(true);
 	}
 	
 	public void setButtonsUnenabled(){	
 		pMarktplatz.setEnabled(false);
 		eBewerbungen.setEnabled(false);
 		aBewerbungen.setEnabled(false);
-		profilButton.click();
+		profilButton.setEnabled(false);
+		
+		
+		
+		
 	}
 	public int getTest() {
 		return test;

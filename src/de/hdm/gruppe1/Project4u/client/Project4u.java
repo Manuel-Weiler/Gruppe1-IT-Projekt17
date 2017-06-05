@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import de.hdm.gruppe1.Project4u.client.gui.MessageBox;
 import de.hdm.gruppe1.Project4u.client.gui.NavigationsleisteWidget;
 import de.hdm.gruppe1.Project4u.shared.LoginInfo;
 import de.hdm.gruppe1.Project4u.shared.LoginService;
@@ -85,7 +86,8 @@ public class Project4u implements EntryPoint {
 			public void onSuccess(Boolean result) {
 				if(!result){
 					nt.setButtonsUnenabled();
-					Window.alert("Sie haben noch kein Profil, bitte legen Sie eines an");
+					
+					MessageBox.alertWidget("Nutzerkonto", "Sie haben noch kein Profil, bitte legen Sie eines an");
 					
 				}				
 			}				

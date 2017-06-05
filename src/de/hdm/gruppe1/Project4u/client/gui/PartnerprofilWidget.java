@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
+import de.hdm.gruppe1.Project4u.client.Project4u;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
@@ -110,7 +111,7 @@ public class PartnerprofilWidget extends Composite{
 		flexTable.setWidget(5, 1, abschlussBox);
 		flexTable.setWidget(6, 0, programSprache);
 		flexTable.setWidget(6, 1, programSpracheBox);
-		//TODO 
+		
 		vPanel.add(flexTable);
 		vPanel.add(speichern);
 		
@@ -240,6 +241,7 @@ public class PartnerprofilWidget extends Composite{
 							});
 							}
 						
+						Project4u.nt.setButtonsEnabled();
 						
 						
 						
@@ -259,6 +261,7 @@ public class PartnerprofilWidget extends Composite{
 			}
 		});
 		
+		initWidget(vPanel);
 		
 	}
 	
@@ -268,6 +271,10 @@ public class PartnerprofilWidget extends Composite{
 	}
 	
 	public PartnerprofilWidget(Organisationseinheit o){
+		RootPanel.get("content-header").clear();
+		Label Profil = new Label("Ihr Nutzerprofil");
+		RootPanel.get("content-header").add(Profil);
+		
 		
 		
 	}

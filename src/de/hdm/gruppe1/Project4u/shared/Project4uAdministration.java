@@ -51,6 +51,10 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Organisationseinheit createOrganisationseinheit(Organisationseinheit orga) throws IllegalArgumentException;
 	
+	public Vector<Eigenschaft> getEigenschaftenOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException;
+	
+	public Partnerprofil getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException;
+	
 	
 	
 }

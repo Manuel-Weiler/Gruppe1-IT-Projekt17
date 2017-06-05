@@ -115,7 +115,7 @@ public class PartnerprofilMapper {
 			Statement stmt = con.createStatement();
 
 			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
-			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Partnerprofil WHERE id='" + i + "'");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM partnerprofil WHERE id='" + i + "'");
 
 			if (rs.next()) {
 
@@ -124,9 +124,9 @@ public class PartnerprofilMapper {
 				 * zugewiesen und so das Tupel aus der Tabelle wieder in ein
 				 * Objekt transformiert.
 				 */
-				p.setID(rs.getInt("id"));
+				p.setPartnerprofilId(rs.getInt("id"));
 				p.setErstelldatum(rs.getDate("erstelldatum"));
-				p.setAenderungsdatum(rs.getDate("�nderungsdatum"));
+				p.setAenderungsdatum(rs.getDate("änderungsdatum"));
 			    
 				return p;
 		      }

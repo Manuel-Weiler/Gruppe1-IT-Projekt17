@@ -62,4 +62,14 @@ public interface Project4uAdministrationAsync {
 
 	void createOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Organisationseinheit> callback);
 
+
+
+
+	void getEigenschaftenOfOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Vector<Eigenschaft>> callback);
+
+
+
+
+	void getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Partnerprofil> callback);
+
 }

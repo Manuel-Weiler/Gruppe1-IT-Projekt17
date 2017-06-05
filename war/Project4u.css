@@ -46,12 +46,18 @@ h1 {
 
 
 #header {
-    background-color:#b30000;
+    background-color:black;
     color:white;
+    font: 'Gotham';
+    font-weight: lighter !important;
+    font-variant: small-caps;
+    letter-spacing: 15px;
+    text-shadow: 0 0 5px rgba(255,255,255,0.5);
     text-align:center;
     padding:2px;
     height:120px;
     width:auto;
+    webkit-font-smoothing: antialiased;
 }
 #nav {
     line-height:30px;

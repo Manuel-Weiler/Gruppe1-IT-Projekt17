@@ -145,6 +145,19 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		this.organisationseinheitMapper.update(organisationseinheit);
 	}
 	
+	public Partnerprofil getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException{
+		return this.partnerprofilMapper.findById(orga.getPartnerprofilId());
+	}
+	
+	
+	
+	public Vector<Eigenschaft> getEigenschaftenOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException{
+		Partnerprofil partnerprofil = new Partnerprofil();
+		partnerprofil = getPartnerprofilOfOrganisationseinheit(orga);
+		
+		return getEigenschaftenOfPartnerprofil(partnerprofil);
+	}
+	
       		
 	/*
 	 * #########################################################################
