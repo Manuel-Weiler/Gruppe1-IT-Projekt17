@@ -99,6 +99,15 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
       			this.delete(projekt);
       		}
       	}
+      	
+      	//Zugehörige Projektmarktplätze löschen
+      	Vector<Projektmarktplatz> pm = new Vector<Projektmarktplatz>();
+  		pm = projektmarktplatzMapper.findByOrganisationseinheit(organisationseinheit);
+      	if(pm != null) {
+      		for(Projektmarktplatz projektmarktplatz: pm){
+      			this.delete(projektmarktplatz);
+      		}
+      	}
 		
 		//Zugehörige Bewerbungen löschen
   		/*Vector<Bewerbung> vb = new Vector<Bewerbung>();	
