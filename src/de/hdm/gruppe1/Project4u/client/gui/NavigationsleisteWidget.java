@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.client.Project4u;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 public class NavigationsleisteWidget extends Composite{
@@ -68,7 +69,7 @@ public class NavigationsleisteWidget extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				Label startseiteLabel = new Label("Willkommen auf Project4u, der Projektmarktplatz für Projekte");
+				Label startseiteLabel = new Label("Willkommen auf Project4u, dem Projektmarktplatz-Marktplatz");
 
 				RootPanel.get("contentHeader").clear();
 				RootPanel.get("contentHeader").add(startseiteLabel);
@@ -113,25 +114,17 @@ public class NavigationsleisteWidget extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				DialogBox dBox = new DialogBox();
-				VerticalPanel v = new VerticalPanel();
-				Button allbuttons = new Button("test");
-				allbuttons.addClickHandler(new ClickHandler() {
-					
-					@Override
-					public void onClick(ClickEvent event) {
-						Project4u.nt.setButtonsEnabled();
+				Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
+						new AsyncCallback<Organisationseinheit>() {
+					public void onSuccess(Organisationseinheit result) {
+						RootPanel.get("content").clear();
+						RootPanel.get("content").add(new PartnerprofilWidget(result));
 						
 					}
+					public void onFailure(Throwable caught) {
+						Window.alert(caught.getMessage());	
+					}
 				});
-				Label label = new Label("profil");
-				v.add(label);
-				v.add(allbuttons);
-				dBox.add(v);
-				dBox.center();
-				dBox.setAutoHideEnabled(true);
-				dBox.show();
-				
 			}
 		});
 		
@@ -147,6 +140,7 @@ public class NavigationsleisteWidget extends Composite{
 		eBewerbungen.setEnabled(true);
 		aBewerbungen.setEnabled(true);
 		profilButton.setEnabled(true);
+		homeButton.setEnabled(true);
 	}
 	
 	public void setButtonsUnenabled(){	
@@ -154,7 +148,7 @@ public class NavigationsleisteWidget extends Composite{
 		eBewerbungen.setEnabled(false);
 		aBewerbungen.setEnabled(false);
 		profilButton.setEnabled(false);
-		
+		homeButton.setEnabled(false);
 		
 		
 	}

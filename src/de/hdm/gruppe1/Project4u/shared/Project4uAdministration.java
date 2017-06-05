@@ -55,6 +55,7 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Partnerprofil getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException;
 	
+	public Organisationseinheit getOrganisationseinheitByUser(LoginInfo login)throws IllegalArgumentException;
 	
 	
 }

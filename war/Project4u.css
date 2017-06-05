@@ -21,7 +21,12 @@ h1 {
 	/*background-color:#b30000;*/
 	text-decoration: line-through;
 }
-
+.heading{
+	font: 'Gotham';
+  	font-weight: lighter !important;
+  	font-variant: small-caps;
+	
+}
 
 
 .sendButton {

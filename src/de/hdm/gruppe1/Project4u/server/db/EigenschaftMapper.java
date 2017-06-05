@@ -69,8 +69,8 @@ public class EigenschaftMapper {
 				stmt = con.createStatement();
 
 				// Jetzt erst erfolgt die tatsächliche Einfügeoperation
-				stmt.executeUpdate("INSERT INTO eigenschaft (id, name, wert, partnerprofil_id) " + "VALUES ("
-						+ e.getEigenschaftId() + ",'" + e.getName() + "','" + e.getWert() + "','"
+				stmt.executeUpdate("INSERT INTO eigenschaft (id, name, wert, partnerprofil_id) " + 
+				"VALUES ('"+ e.getEigenschaftId() +"','" + e.getName() + "','" + e.getWert() + "','"
 						+ p.getPartnerprofilId() + "');");
 			}
 		} catch (SQLException s) {
@@ -85,7 +85,7 @@ public class EigenschaftMapper {
 		
 		
 		/*
-		 * R�ckgabe, des evtl. korrigierten Partnerprofil-Objekts. P.S: Diese
+		 * R�ckgabe, des evtl. korrigierten Eigenschafts-Objekts. P.S: Diese
 		 * R�ckgabe ist nicht zwingend notwendig, da die Verweise auf das
 		 * bisherige Objekt auch auf das ge�nderte Objekt verweisen w�rden.
 		 */

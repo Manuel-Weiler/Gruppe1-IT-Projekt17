@@ -247,7 +247,7 @@ public class OrganisationseinheitMapper {
 		      Statement stmt = con.createStatement();
 
 		      ResultSet rs = stmt.executeQuery("SELECT * "
-		          + "FROM Organisationseinheit " + "WHERE typ LIKE '" + typ
+		          + "FROM organisationseinheit WHERE typ='" + typ
 		          + "' ORDER BY name");
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt

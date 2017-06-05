@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -36,7 +37,7 @@ public class PartnerprofilWidget extends Composite{
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	
 	FlexTable flexTable = new FlexTable();
-	Label email = new Label("EMail:");
+	Label email = new Label("E-Mail:");
 	TextBox mail = new TextBox();
 	Label orgaName = new Label("Profilname:");
 	TextBox orgaNam = new TextBox();
@@ -57,6 +58,7 @@ public class PartnerprofilWidget extends Composite{
 	Button speichern = new Button("Speichern");
 	
 	Partnerprofil neuesProfil = new Partnerprofil();
+	Organisationseinheit neueOrga = new Organisationseinheit();
 	VerticalPanel vPanel = new VerticalPanel();
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch einzelne Objekte der
@@ -74,7 +76,7 @@ public class PartnerprofilWidget extends Composite{
 		Label neuProfil = new Label("Neues Profil anlegen");
 		RootPanel.get("contentHeader").add(neuProfil);
 		
-		//
+		
 		
 		Project4uVerwaltung.createPartnerprofil(new AsyncCallback<Partnerprofil>() {
 			
@@ -124,22 +126,18 @@ public class PartnerprofilWidget extends Composite{
 			public void onClick(ClickEvent event) {
 				
 				final DialogBox db = new DialogBox();
-				VerticalPanel vp = new VerticalPanel();
-				HorizontalPanel hp = new HorizontalPanel();
-				HorizontalPanel hp2 = new HorizontalPanel();
 				Label nam = new Label ("Bezeichnung:");
 				Label wer = new Label ("Wert:");
-				hp2.add(nam);
-				hp2.add(wer);
 				Button ok = new Button("OK");
 				final TextBox name = new TextBox();
 				final TextBox wert = new TextBox();
-				hp.add(hp2);
-				hp.add(name);
-				hp.add(wert);
-				vp.add(hp);
-				vp.add(ok);
-				db.add(vp);
+				FlexTable ft = new FlexTable();
+				ft.setWidget(0, 0, nam);
+				ft.setWidget(0, 1, wer);
+				ft.setWidget(1, 0, name);
+				ft.setWidget(1, 1, wert);
+				ft.setWidget(2, 2, ok);
+				db.add(ft);
 				
 				db.center();
 				db.setAnimationEnabled(true);
@@ -202,56 +200,69 @@ public class PartnerprofilWidget extends Composite{
 					
 					@Override
 					public void onSuccess(Organisationseinheit result) {								
-						
+						neueOrga = result;
 						if (!berufsbezeichnungBox.getValue().isEmpty()){
 						Eigenschaft eins = new Eigenschaft();
 						eins.setName("Berufsbezeichnung");
 						eins.setWert(berufsbezeichnungBox.getValue());
 						Project4uVerwaltung.insertEigenschaft(eins, neuesProfil, new AsyncCallback<Eigenschaft>() {
-							public void onSuccess(Eigenschaft result) {	}
+							public void onSuccess(Eigenschaft result) {
+								
+								
+								if (!berufserfahrungBox.getValue().isEmpty()){
+									Eigenschaft zwei = new Eigenschaft();
+									zwei.setName("Berufserfahrung");
+									zwei.setWert(berufserfahrungBox.getValue());
+									Project4uVerwaltung.insertEigenschaft(zwei, neuesProfil, new AsyncCallback<Eigenschaft>() {
+										public void onSuccess(Eigenschaft result) {
+											
+											
+											if (!abschlussBox.getValue().isEmpty()){
+												Eigenschaft drei = new Eigenschaft();
+												drei.setName("Abschluss");
+												drei.setWert(abschlussBox.getValue());
+												Project4uVerwaltung.insertEigenschaft(drei, neuesProfil, new AsyncCallback<Eigenschaft>() {
+													public void onSuccess(Eigenschaft result) {
+														
+														
+														if (!programSpracheBox.getValue().isEmpty()){
+															Eigenschaft vier = new Eigenschaft();
+															vier.setName("Programmiersprache");
+															vier.setWert(programSpracheBox.getValue());
+															Project4uVerwaltung.insertEigenschaft(vier, neuesProfil, new AsyncCallback<Eigenschaft>() {
+																public void onSuccess(Eigenschaft result) {	
+																	
+																	Project4u.nt.setButtonsEnabled();
+																	RootPanel.get("content").clear();
+																	RootPanel.get("content").add(new PartnerprofilWidget(neueOrga));
+																	
+																}
+																public void onFailure(Throwable caught) {
+																	Window.alert(caught.getMessage());}
+															});
+															}
+														
+														
+														
+													}
+													public void onFailure(Throwable caught) {
+														Window.alert(caught.getMessage());}
+												});
+												}	
+										}
+										public void onFailure(Throwable caught) {
+											Window.alert(caught.getMessage());}
+									});
+									}															
+							}
 							public void onFailure(Throwable caught) {
 								Window.alert(caught.getMessage());}
 						});
 						}
 						
 						
-						if (!berufserfahrungBox.getValue().isEmpty()){
-							Eigenschaft zwei = new Eigenschaft();
-							zwei.setName("Berufserfahrung");
-							zwei.setWert(berufserfahrungBox.getValue());
-							Project4uVerwaltung.insertEigenschaft(zwei, neuesProfil, new AsyncCallback<Eigenschaft>() {
-								public void onSuccess(Eigenschaft result) {	}
-								public void onFailure(Throwable caught) {
-									Window.alert(caught.getMessage());}
-							});
-							}
+				
 						
-						if (!abschlussBox.getValue().isEmpty()){
-							Eigenschaft drei = new Eigenschaft();
-							drei.setName("Abschluss");
-							drei.setWert(abschlussBox.getValue());
-							Project4uVerwaltung.insertEigenschaft(drei, neuesProfil, new AsyncCallback<Eigenschaft>() {
-								public void onSuccess(Eigenschaft result) {	}
-								public void onFailure(Throwable caught) {
-									Window.alert(caught.getMessage());}
-							});
-							}
-						
-						
-						if (!programSpracheBox.getValue().isEmpty()){
-							Eigenschaft vier = new Eigenschaft();
-							vier.setName("Programmiersprache");
-							vier.setWert(programSpracheBox.getValue());
-							Project4uVerwaltung.insertEigenschaft(vier, neuesProfil, new AsyncCallback<Eigenschaft>() {
-								public void onSuccess(Eigenschaft result) {	}
-								public void onFailure(Throwable caught) {
-									Window.alert(caught.getMessage());}
-							});
-							}
-						
-						Project4u.nt.setButtonsEnabled();
-						RootPanel.get("content").clear();
-						RootPanel.get("content").add(new PartnerprofilWidget(result));
 						
 						
 						
@@ -284,15 +295,32 @@ public class PartnerprofilWidget extends Composite{
 		RootPanel.get("contentHeader").clear();
 		Label Profil = new Label("Ihr Nutzerprofil");
 		RootPanel.get("contentHeader").add(Profil);
-		
+		HTML p = new HTML("<p class='heading'>Eigenschaften</p>");
 		final VerticalPanel vp = new VerticalPanel();
+		vp.add(p);
+		
+		
+		mail.setValue(o.getGoogleId());
+		mail.setEnabled(false);
+		orgaNam.setValue(o.getName());
+		
+		flexTable.setWidget(0, 0, email);
+		flexTable.setWidget(0, 1, mail);
+		flexTable.setWidget(1, 0, orgaName);
+		flexTable.setWidget(1, 1, orgaNam);
+		flexTable.setWidget(2, 0, typ);
+		typbox.addItem("Person");
+		typbox.setVisibleItemCount(1);
+		flexTable.setWidget(2, 1, typbox);
+		
 		
 		
 		Project4uVerwaltung.getEigenschaftenOfOrganisationseinheit(o, new AsyncCallback<Vector<Eigenschaft>>() {
-			
+		
 			@Override
 			public void onSuccess(Vector<Eigenschaft> result) {
-				vp.add(createCellTable(result));		
+				vp.add(createCellTable(result));	
+				
 			}			
 			public void onFailure(Throwable caught) {				
 			}
@@ -303,7 +331,7 @@ public class PartnerprofilWidget extends Composite{
 		
 		
 		
-		
+		initWidget(vp);
 	}
 	
 	

@@ -140,6 +140,19 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Vector<Organisationseinheit> getOrganisationseinheitByTyp(String typ) {
 		return this.organisationseinheitMapper.findByTyp(typ);
 	}
+	
+	public Organisationseinheit getOrganisationseinheitByUser(LoginInfo login)throws IllegalArgumentException{
+		
+		for(Organisationseinheit o: organisationseinheitMapper.findByTyp("Person")){
+			if (o.getGoogleId().equalsIgnoreCase(login.getEmailAddress())){
+				
+				return o;
+			}
+			
+		}
+		return null;
+		
+	};
 
 	public void updateOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
 		this.organisationseinheitMapper.update(organisationseinheit);

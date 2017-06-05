@@ -72,4 +72,9 @@ public interface Project4uAdministrationAsync {
 
 	void getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Partnerprofil> callback);
 
+
+
+
+	void getOrganisationseinheitByUser(LoginInfo login, AsyncCallback<Organisationseinheit> callback);
+
 }
