@@ -24,7 +24,7 @@ public class NavigationsleisteWidget extends Composite{
 	/**
 	 * Menüleiste wird als Widget erstellt.
 	 */
-	private int test=0; 
+	
 	
 	VerticalPanel menuPanel = new VerticalPanel();
 
@@ -157,12 +157,6 @@ public class NavigationsleisteWidget extends Composite{
 		
 		
 		
-		
 	}
-	public int getTest() {
-		return test;
-	}
-	public void setTest(int test) {
-		this.test = test;
-	}
+	
 }

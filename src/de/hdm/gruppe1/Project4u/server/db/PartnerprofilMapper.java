@@ -4,10 +4,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
-import com.ibm.icu.text.SimpleDateFormat;
+
 
 import de.hdm.gruppe1.Project4u.shared.bo.*;
 
@@ -66,7 +67,7 @@ public class PartnerprofilMapper {
 
 		      //Abfrage der gr��ten bisher vergebnen <code>id</code>
 		      ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
-		          + "FROM Partnerprofil ");
+		          + "FROM partnerprofil ");
 
 		      if (rs.next()) {
 		        /*
@@ -80,7 +81,7 @@ public class PartnerprofilMapper {
 		        
 
 		        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-		        stmt.executeUpdate("INSERT INTO partnerprofil (id, erstelldatum, änderungsdatum) "
+		        stmt.executeUpdate("INSERT INTO partnerprofil (id, erstelldatum, aenderungsdatum) "
 		            + "VALUES (" + p.getPartnerprofilId() + ",'" + sdf.format(p.getErstelldatum()) + "','"
 		            + sdf.format(p.getAenderungsdatum()) + "')"); 
 		      }
@@ -126,7 +127,7 @@ public class PartnerprofilMapper {
 				 */
 				p.setPartnerprofilId(rs.getInt("id"));
 				p.setErstelldatum(rs.getDate("erstelldatum"));
-				p.setAenderungsdatum(rs.getDate("änderungsdatum"));
+				p.setAenderungsdatum(rs.getDate("aenderungsdatum"));
 			    
 				return p;
 		      }
@@ -152,7 +153,7 @@ public class PartnerprofilMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE Partnerprofil " + "SET �nderungsdatum='" + sdf.format(d) + "' WHERE id='"
+			stmt.executeUpdate("UPDATE partnerprofil SET aenderungsdatum='" + sdf.format(d) + "' WHERE id='"
 					+ p.getPartnerprofilId() + "'");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -168,7 +169,7 @@ public class PartnerprofilMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE id=" + p.getPartnerprofilId());
+			stmt.executeUpdate("DELETE FROM partnerprofil WHERE id=" + p.getPartnerprofilId());
 			
 			//Wenn das Partnerprofil-Objekt aus der DB gel�scht wird, werden auch alle in Beziehung
 			//stehenden Eigenschaften gel�scht.
@@ -239,7 +240,7 @@ public class PartnerprofilMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
+			stmt.executeUpdate("DELETE FROM partnerprofil WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
 			
 		} catch (Exception e2) {
 			 e2.printStackTrace();
@@ -251,7 +252,7 @@ public class PartnerprofilMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE ausschreibung_id= " + a.getAusschreibungId());
+			stmt.executeUpdate("DELETE FROM partnerprofil WHERE ausschreibung_id= " + a.getAusschreibungId());
 			
 		} catch (Exception e2) {
 			 e2.printStackTrace();

@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.gui.MessageBox;
 import de.hdm.gruppe1.Project4u.client.gui.NavigationsleisteWidget;
+import de.hdm.gruppe1.Project4u.client.gui.PartnerprofilWidget;
 import de.hdm.gruppe1.Project4u.shared.LoginInfo;
 import de.hdm.gruppe1.Project4u.shared.LoginService;
 import de.hdm.gruppe1.Project4u.shared.LoginServiceAsync;
@@ -72,7 +73,7 @@ public class Project4u implements EntryPoint {
 
 
 	private void loadProject4u() {
-			nt.setTest(5);
+			
 			RootPanel.get("nav").add(nt);
 			nt.homeButtonclick();
 }
@@ -88,7 +89,8 @@ public class Project4u implements EntryPoint {
 					nt.setButtonsUnenabled();
 					
 					MessageBox.alertWidget("Nutzerkonto", "Sie haben noch kein Profil, bitte legen Sie eines an");
-					
+					RootPanel.get("content").clear();
+					RootPanel.get("content").add(new PartnerprofilWidget());
 				}				
 			}				
 			public void onFailure(Throwable caught) {								

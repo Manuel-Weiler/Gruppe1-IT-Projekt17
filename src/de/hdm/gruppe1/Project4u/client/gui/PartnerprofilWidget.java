@@ -57,7 +57,7 @@ public class PartnerprofilWidget extends Composite{
 	Button speichern = new Button("Speichern");
 	
 	Partnerprofil neuesProfil = new Partnerprofil();
-	
+	VerticalPanel vPanel = new VerticalPanel();
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch einzelne Objekte der
 	 * in der Liste weiter verarbeitet werden k�nnen. 
@@ -70,9 +70,9 @@ public class PartnerprofilWidget extends Composite{
 	
 	public PartnerprofilWidget(){
 		
-		RootPanel.get("content-header").clear();
+		RootPanel.get("contentHeader").clear();
 		Label neuProfil = new Label("Neues Profil anlegen");
-		RootPanel.get("content-header").add(neuProfil);
+		RootPanel.get("contentHeader").add(neuProfil);
 		
 		//
 		
@@ -88,7 +88,7 @@ public class PartnerprofilWidget extends Composite{
 			}
 		});
 		
-		VerticalPanel vPanel = new VerticalPanel();
+		
 		vPanel.add(add);
 		
 		
@@ -114,7 +114,7 @@ public class PartnerprofilWidget extends Composite{
 		
 		vPanel.add(flexTable);
 		vPanel.add(speichern);
-		
+		initWidget(vPanel);
 		
 		
 		
@@ -123,12 +123,18 @@ public class PartnerprofilWidget extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				DialogBox db = new DialogBox();
+				final DialogBox db = new DialogBox();
 				VerticalPanel vp = new VerticalPanel();
 				HorizontalPanel hp = new HorizontalPanel();
+				HorizontalPanel hp2 = new HorizontalPanel();
+				Label nam = new Label ("Bezeichnung:");
+				Label wer = new Label ("Wert:");
+				hp2.add(nam);
+				hp2.add(wer);
 				Button ok = new Button("OK");
 				final TextBox name = new TextBox();
 				final TextBox wert = new TextBox();
+				hp.add(hp2);
 				hp.add(name);
 				hp.add(wert);
 				vp.add(hp);
@@ -148,6 +154,7 @@ public class PartnerprofilWidget extends Composite{
 							Window.alert("Bitte beide Felder ausfüllen");
 						}
 						else{
+						db.hide();
 						Eigenschaft eig = new Eigenschaft();
 						eig.setName(name.getValue());
 						eig.setWert(wert.getValue());
@@ -159,7 +166,7 @@ public class PartnerprofilWidget extends Composite{
 								Label wert = new Label(result.getWert());
 								
 								flexTable.setWidget(flexTable.getRowCount(), 0, name);
-								flexTable.setWidget(flexTable.getRowCount(), 1, wert);
+								flexTable.setWidget(flexTable.getRowCount()-1, 1, wert);
 								
 							}
 							
@@ -185,6 +192,7 @@ public class PartnerprofilWidget extends Composite{
 					Window.alert("Bitte die Felder EMail und Name ausfüllen");
 				}
 				else{
+				speichern.setEnabled(false);	
 				Organisationseinheit neuOrga = new Organisationseinheit();
 				neuOrga.setGoogleId(mail.getValue());
 				neuOrga.setName(orgaNam.getValue());
@@ -242,6 +250,8 @@ public class PartnerprofilWidget extends Composite{
 							}
 						
 						Project4u.nt.setButtonsEnabled();
+						RootPanel.get("content").clear();
+						RootPanel.get("content").add(new PartnerprofilWidget(result));
 						
 						
 						
@@ -261,7 +271,7 @@ public class PartnerprofilWidget extends Composite{
 			}
 		});
 		
-		initWidget(vPanel);
+		
 		
 	}
 	
@@ -271,9 +281,26 @@ public class PartnerprofilWidget extends Composite{
 	}
 	
 	public PartnerprofilWidget(Organisationseinheit o){
-		RootPanel.get("content-header").clear();
+		RootPanel.get("contentHeader").clear();
 		Label Profil = new Label("Ihr Nutzerprofil");
-		RootPanel.get("content-header").add(Profil);
+		RootPanel.get("contentHeader").add(Profil);
+		
+		final VerticalPanel vp = new VerticalPanel();
+		
+		
+		Project4uVerwaltung.getEigenschaftenOfOrganisationseinheit(o, new AsyncCallback<Vector<Eigenschaft>>() {
+			
+			@Override
+			public void onSuccess(Vector<Eigenschaft> result) {
+				vp.add(createCellTable(result));		
+			}			
+			public void onFailure(Throwable caught) {				
+			}
+		});
+		
+		
+		
+		
 		
 		
 		

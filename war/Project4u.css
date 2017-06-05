@@ -9,6 +9,9 @@ body {
 h1 {
   font-size: 2em;
   color: #777777;
+  font: 'Gotham';
+  font-weight: lighter !important;
+  font-variant: small-caps;
   margin: 40.0px 0.0px 0.0px;
   text-align: center;
 }
@@ -24,12 +27,15 @@ h1 {
 .sendButton {
   display: block;
   font-size: 16.0pt;
+  
 }
 
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {
-  width: 400.0px;
+ 
+  
 }
+
 
 .dialogVPanel {
   margin: 5.0px;
@@ -51,7 +57,7 @@ h1 {
     font: 'Gotham';
     font-weight: lighter !important;
     font-variant: small-caps;
-    letter-spacing: 15px;
+    letter-spacing: 18px;
     text-shadow: 0 0 5px rgba(255,255,255,0.5);
     text-align:center;
     padding:2px;
@@ -67,6 +73,12 @@ h1 {
     float:left;
     padding:5px;	      
 }
+#contentHeader{
+	font: 'Gotham';
+    font-weight: lighter !important;
+    font-variant: small-caps;
+    letter-spacing: 8px;
+}
 #content {
     width:77%;
     height:500px;
@@ -74,8 +86,13 @@ h1 {
     padding-left:10px;	
 }
 #footer {
-    background-color:#b30000;
+    background-color:black;
     color:white;
+    font: 'Gotham';
+    font-weight: lighter !important;
+    font-variant: small-caps;
+    letter-spacing: 10px;
+    text-shadow: 0 0 5px rgba(255,255,255,0.5);
     clear:both;
     text-align:center;
    padding:5px;	 	 
