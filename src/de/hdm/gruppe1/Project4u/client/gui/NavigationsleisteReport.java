@@ -100,7 +100,7 @@ public class NavigationsleisteReport extends Composite {
 
 					
 					public void onSuccess(ReportByAlleAusschreibungen result1) {
-					
+										
 						if(result1 != null){
 						HTMLReportWriter writer = new HTMLReportWriter();
 						writer.process(result1);

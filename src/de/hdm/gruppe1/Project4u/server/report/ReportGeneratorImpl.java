@@ -17,6 +17,7 @@ import de.hdm.gruppe1.Project4u.shared.report.Row;
 import de.hdm.gruppe1.Project4u.shared.report.SimpleParagraph;
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl;
+import de.hdm.gruppe1.Project4u.server.db.AusschreibungMapper;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.ReportGenerator;
 import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
@@ -149,37 +150,45 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		//Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
 		
-		//headline.addColumn(new Column("Ausschreibungs-ID"));
+		headline.addColumn(new Column("Ausschreibungs-ID"));
 		headline.addColumn(new Column("Bezeichnung"));
-		//headline.addColumn(new Column("Projektleiter"));
-		//headline.addColumn(new Column("Bewerbungsfrist"));
-		//headline.addColumn(new Column("Ausschreibungstext"));
-		//headline.addColumn(new Column("Erstelldatum:"));
-		//headline.addColumn(new Column("Projekt-ID"));
-		//headline.addColumn(new Column("Partnerprofil-ID"));
+		headline.addColumn(new Column("Projektleiter"));
+		headline.addColumn(new Column("Bewerbungsfrist"));
+		headline.addColumn(new Column("Ausschreibungstext"));
+		headline.addColumn(new Column("Erstelldatum:"));
+		headline.addColumn(new Column("Projekt-ID"));
+		headline.addColumn(new Column("Partnerprofil-ID"));
 		
 		//Kopfzeile wird dem Report hinzugefuegt
 		report.addRow(headline);
 		
 		//Reportinhalt:
-		ArrayList<Ausschreibung> alleAusschreibungen = this.project4uAdministration.getAlleAusschreibungen();
 		
-		for(Ausschreibung a : alleAusschreibungen){
+		//Diese Methode funktioniert nicht wie sie soll!
+		//-->ArrayList<Ausschreibung> alleAusschreibungen = this.project4uAdministration.getAlleAusschreibungen();
+		
+		//TODO: Diese Implementierung zu Adminimpl. auslagern.
+		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
+		ArrayList<Ausschreibung> au = new ArrayList<Ausschreibung>();
+		au = am.findAllAusschreibungen();
+		
+		
+		
+		for(Ausschreibung a : au){
 			//neue, leere Zeile anlegen
 			Row ausschreibungRow = new Row();
 			//f�r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
-			//ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
 			ausschreibungRow.addColumn(new Column(a.getBezeichnung()));
-			//ausschreibungRow.addColumn(new Column(a.getNameProjektleiter()));
-			//ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
-			//ausschreibungRow.addColumn(new Column(a.getAusschreibungstext()));
-			//ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
-			//ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
-			//ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
+			ausschreibungRow.addColumn(new Column(a.getNameProjektleiter()));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
+			ausschreibungRow.addColumn(new Column(a.getAusschreibungstext()));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
 			
 			//Zeile dem Report hinzuf�gen
 			report.addRow(ausschreibungRow);
-			//return report;
 		}
 		
 		//Report ausgeben
