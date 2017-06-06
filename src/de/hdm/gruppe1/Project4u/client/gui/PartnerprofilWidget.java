@@ -235,6 +235,8 @@ public class PartnerprofilWidget extends Composite{
 	}
 	
 	public PartnerprofilWidget(Organisationseinheit o){
+		//TODO: löschen Organisationeinheit implementieren
+		Button deleteOrga = new Button("Nutzerprofil löschen");
 		RootPanel.get("contentHeader").clear();
 		Label Profil = new Label("Ihr Nutzerprofil");
 		RootPanel.get("contentHeader").add(Profil);
@@ -352,7 +354,22 @@ public class PartnerprofilWidget extends Composite{
 					
 				});
 				vp.add(add);
-				
+				SimplePanel te = new SimplePanel();			
+				HTML hr = new HTML("<hr style= 'border: 0; height: 3px; background: #333; margin-top: 50px; margin-bottom: 15px; background-image: linear-gradient(to right, #ccc, #333, #ccc);'>");
+				te.add(hr);		
+				te.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
+				vp.add(te);
+				Project4uVerwaltung.getAllOrganisationseinheitenOfTypTeamUnternehmen(new AsyncCallback<Vector<Organisationseinheit>>() {
+					
+					@Override
+					public void onSuccess(Vector<Organisationseinheit> result) {
+						vp.add(new OrganisationseinheitWidget(result));
+						
+					}
+					public void onFailure(Throwable caught) {
+						Window.alert(caught.getMessage());
+					}
+				});
 				
 			}			
 			public void onFailure(Throwable caught) {				
@@ -361,10 +378,6 @@ public class PartnerprofilWidget extends Composite{
 		
 		
 		
-		SimplePanel te = new SimplePanel();			
-		HTML hr = new HTML("<hr style= 'border: 0; height: 3px; background: #333; margin-top: 50px; margin-bottom: 50px; background-image: linear-gradient(to right, #ccc, #333, #ccc);'>");
-		te.add(hr);		
-		te.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
 		
 		initWidget(vp);
 	}

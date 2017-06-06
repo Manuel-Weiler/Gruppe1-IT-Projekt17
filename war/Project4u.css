@@ -29,6 +29,12 @@ h1 {
   	letter-spacing: 5px;
 	
 }
+.h2heading{
+	font: 'Gotham';
+    font-weight: lighter !important;
+    font-variant: small-caps;
+    letter-spacing: 8px;
+}
 
 
 .sendButton {
@@ -88,7 +94,7 @@ h1 {
 }
 #content {
     width:77%;
-    height:500px;
+    min-height:500px;
     float:left;
     padding-left:10px;	
 }

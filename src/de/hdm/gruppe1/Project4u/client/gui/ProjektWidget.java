@@ -7,6 +7,7 @@ import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
@@ -14,6 +15,8 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -29,6 +32,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
@@ -374,20 +378,20 @@ public class ProjektWidget extends Composite{
 		db.show();
 		
 	}
-	VerticalPanel hrP = new VerticalPanel();
+	VerticalPanel verP = new VerticalPanel();
 	HorizontalPanel hPanel = new HorizontalPanel();
 	protected void ausschreibungAnsehen(Projekt p){
-		hrP.clear();
+		verP.clear();
 		hPanel.clear();
 				
 		SimplePanel te = new SimplePanel();			
 		HTML hr = new HTML("<hr style= 'border: 0; height: 3px; background: #333; margin-top: 50px; margin-bottom: 50px; background-image: linear-gradient(to right, #ccc, #333, #ccc);'>");
 		te.add(hr);		
 		te.setWidth(vPanel.getOffsetWidth()+"px");
-		hrP.add(te);
+		verP.add(te);
 		
 		HTML heading = new HTML("<p class='heading'>Ausschreibungen zu '"+p.getName()+"':</p>");
-		hrP.add(heading);
+		verP.add(heading);
 		
 		
 		//TODO: Ausschreibung anlegen
@@ -406,7 +410,7 @@ public class ProjektWidget extends Composite{
 				else{
 					HTML noAusschreibungen = new HTML("<p class='heading'>-- keine Ausschreibungen zu diesem Projekt --</p>");
 					noAusschreibungen.setHeight("30px");
-					hrP.add(noAusschreibungen);
+					verP.add(noAusschreibungen);
 					
 				}
 				
@@ -420,7 +424,7 @@ public class ProjektWidget extends Composite{
 		});
 	}
 	protected void ausschreibungsTabelle(Vector<Ausschreibung> chosenAusschreibungen){
-		CellTable<Ausschreibung> ausschreibungTabelle = new CellTable<Ausschreibung>(KEY_PROVIDER_AUSSCHREIBUNG);
+		CellTable<Ausschreibung> ausschreibungTabelle = new CellTable<Ausschreibung>( KEY_PROVIDER_AUSSCHREIBUNG);
 		
 		TextColumn<Ausschreibung> nameAusschreibung = new TextColumn<Ausschreibung>() {
 			public String getValue(Ausschreibung object) {
@@ -474,14 +478,32 @@ public class ProjektWidget extends Composite{
 		ausschreibungTabelle.addColumn(bewerbungsfrist, "Bewerbungsfrist");
 		ausschreibungTabelle.addColumn(buttonColumn, "");
 		
-		//Füllen der Tabelle ab dem Index 0.
+		
+		ausschreibungTabelle.setRowCount(chosenAusschreibungen.size());
+		
+		// Füllen der Tabelle ab dem Index 0.
 		ausschreibungTabelle.setRowData(0, chosenAusschreibungen);
+			
 		
-		
+		/*
+		 * Der DataListProvider ermöglicht zusammen mit dem SimplePager die Anzeige der 
+		 * Daten über mehere Seiten hinweg
+		 */
+		ListDataProvider<Ausschreibung> dataProvider = new ListDataProvider<Ausschreibung>();
+	    dataProvider.addDataDisplay(ausschreibungTabelle);
+	    dataProvider.setList(chosenAusschreibungen);
+	
+		SimplePager pager = new SimplePager(TextLocation.CENTER, false, 0, false);
+	    pager.setDisplay(ausschreibungTabelle);
+	    pager.setPageSize(10);
+	    
 		ausschreibungTabelle.setWidth("100%");
 		
 		hPanel.add(ausschreibungTabelle);
-		hrP.add(hPanel);
-		vPanel.add(hrP);
+		 
+		verP.add(hPanel);
+		verP.add(pager);
+		vPanel.add(verP);
+		
 	}
 }
