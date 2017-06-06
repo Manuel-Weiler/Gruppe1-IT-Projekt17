@@ -21,7 +21,7 @@ public class Testklasse {
 		
 
 		//SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		
+	/*	
 		Calendar cal = Calendar.getInstance();
 		cal.set(2017, 7, 10);
 		
@@ -50,23 +50,24 @@ public class Testklasse {
 		
 		
 		PartnerprofilMapper p = PartnerprofilMapper.partnerprofilMapper();
-		ProjektMapper l = ProjektMapper.projektMapper();
+		ProjektMapper l = ProjektMapper.projektMapper(); */
 		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
 	//	p=p.findById(0);
 		
-		am.findByPartnerprofil(pa);
+		//am.findByPartnerprofil(pa);
 		
 		//am.insertAusschreibung(a, pa, pr);
-		/*
-		 * Vector<Eigenschaft> ev= new Vector<Eigenschaft>();
 		
-		 * ev=em.selectAllEigenschaftOfPartnerprofil(p);
-		 *
+		  Vector<Ausschreibung> ev= new Vector<Ausschreibung>();
+		 Projekt pp = new Projekt();
+		 pp.setProjektId(1);
+		 ev=am.findByProjekt(pp);
+		 
 		
-		for(Eigenschaft e: ev){
-			System.out.println(e.getName());
+		for(Ausschreibung e: ev){
+			System.out.println(e.getBezeichnung());
 			
-		} */
+		} 
 		
 		
 		

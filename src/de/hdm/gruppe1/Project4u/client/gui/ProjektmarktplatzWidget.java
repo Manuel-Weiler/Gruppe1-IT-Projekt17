@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -201,11 +202,12 @@ public class ProjektmarktplatzWidget extends Composite {
 
 							Project4uVerwaltung.findByProjektmarktplatz(selectionModel.getSelectedObject(),
 									new AsyncCallback<Vector<Projekt>>() {
-								
+								 
 								public void onSuccess(Vector<Projekt> result) {
 									diBox.hide();
 									RootPanel.get("content").clear();
 									RootPanel.get("content").add(new ProjektWidget(result, selectionModel.getSelectedObject()));
+									
 									RootPanel.get("contentHeader").clear();
 									RootPanel.get("contentHeader")
 											.add(new Label("Alle Projekte des Projektmarktplatzes "

@@ -262,7 +262,7 @@ public class AusschreibungMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM ausschreibung");
 			
 			while(rs.next()){
 				Ausschreibung au = new Ausschreibung();
@@ -317,8 +317,7 @@ public class AusschreibungMapper {
 
 		      ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung WHERE projekt_id= " + projekt.getProjektId() + 
 		    		  " ORDER BY id");
-
-		 
+	 
 		      while (rs.next()) {
 		        Ausschreibung au = new Ausschreibung();
 				au.setAusschreibungId(rs.getInt("id"));
@@ -385,6 +384,36 @@ public class AusschreibungMapper {
 			 e2.printStackTrace();
 		}
 	}
+
+	public ArrayList<Ausschreibung> findAllAusschreibungen(){
+		Connection con = DBConnection.connection();
+	    ArrayList<Ausschreibung> result = new ArrayList<Ausschreibung>();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung ORDER BY id;");
+
+	 
+	      while (rs.next()) {
+	        Ausschreibung au = new Ausschreibung();
+			au.setID(rs.getInt("id"));
+			au.setBezeichnung (rs.getString("bezeichnung"));
+			au.setNameProjektleiter (rs.getString("name_projektleiter"));
+			au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
+			au.setAusschreibungstext (rs.getString("ausschreibungstext"));
+			au.setErstellDatum(rs.getDate("erstelldatum"));
+			
+	        result.add(au);
+	      }
+	    }
+	    catch (SQLException e) {
+	      e.printStackTrace();
+	    }
+
+	    return result;
+	}
+
 	
 	/*Notwendig um das zur Ausschreibung zugehörige Partnerprofil zu löschen
 	public Ausschreibung findByPartnerprofilID (int id) {
@@ -402,7 +431,8 @@ public class AusschreibungMapper {
 				a.setBezeichnung (rs.getString("bezeichnung"));
 				a.setNameProjektleiter (rs.getString("name_projektleiter"));
 				a.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
-				a.setAusschreibungstext (rs.getString("ausschreibungstext"));					a.setErstellDatum(rs.getDate("erstelldatum"));
+				a.setAusschreibungstext (rs.getString("ausschreibungstext"));					
+				a.setErstellDatum(rs.getDate("erstelldatum"));
 			    
 				return a;
 		      }
@@ -415,6 +445,7 @@ public class AusschreibungMapper {
 		    return null;
 		  }*/
 	
+
 	}
 
 
