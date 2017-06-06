@@ -50,7 +50,7 @@ public class ProjektWidget extends Composite{
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	Projektmarktplatz projektmarktplatz = new Projektmarktplatz();
 	
-	//TODO: Projekt anlegen-Maske implementieren & Clickhandler hinzuf�gen
+	
 	Button addProjekt = new Button("Projekt anlegen");
 	VerticalPanel vPanel = new VerticalPanel();
 	//TODO: Projekt löschen,  Ausschreibungen
@@ -378,8 +378,10 @@ public class ProjektWidget extends Composite{
 		db.show();
 		
 	}
+	
 	VerticalPanel verP = new VerticalPanel();
 	HorizontalPanel hPanel = new HorizontalPanel();
+	
 	protected void ausschreibungAnsehen(Projekt p){
 		verP.clear();
 		hPanel.clear();
@@ -390,39 +392,41 @@ public class ProjektWidget extends Composite{
 		te.setWidth(vPanel.getOffsetWidth()+"px");
 		verP.add(te);
 		
-		HTML heading = new HTML("<p class='heading'>Ausschreibungen zu '"+p.getName()+"':</p>");
+		HTML heading = new HTML("<p class='heading'>Ausschreibungen zum Projekt '"+p.getName()+"':</p>");
 		verP.add(heading);
 		
 		
 		//TODO: Ausschreibung anlegen
 		
 		
-		
 		Project4uVerwaltung.findAusschreibungbyProjekt(p, new AsyncCallback<Vector<Ausschreibung>>() {
-			
+
 			@Override
 			public void onSuccess(Vector<Ausschreibung> result) {
-				if(!result.isEmpty()){
-				
-				ausschreibungsTabelle(result);
-				
-				}
-				else{
-					HTML noAusschreibungen = new HTML("<p class='heading'>-- keine Ausschreibungen zu diesem Projekt --</p>");
+				if (result.isEmpty()) {
+					
+					HTML noAusschreibungen = new HTML(
+							"<p class='heading'>-- keine Ausschreibungen zu diesem Projekt --</p>");
 					noAusschreibungen.setHeight("30px");
 					verP.add(noAusschreibungen);
+					vPanel.add(verP);
 					
+				} else {
+					ausschreibungsTabelle(result);
+
 				}
-				
+
 			}
-			
+
 			@Override
 			public void onFailure(Throwable caught) {
-				
-				
+				Window.alert(caught.getMessage());
+
 			}
 		});
 	}
+	
+	
 	protected void ausschreibungsTabelle(Vector<Ausschreibung> chosenAusschreibungen){
 		CellTable<Ausschreibung> ausschreibungTabelle = new CellTable<Ausschreibung>( KEY_PROVIDER_AUSSCHREIBUNG);
 		

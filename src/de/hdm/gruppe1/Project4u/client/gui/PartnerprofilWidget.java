@@ -237,6 +237,7 @@ public class PartnerprofilWidget extends Composite{
 	public PartnerprofilWidget(Organisationseinheit o){
 		//TODO: löschen Organisationeinheit implementieren
 		Button deleteOrga = new Button("Nutzerprofil löschen");
+		
 		RootPanel.get("contentHeader").clear();
 		Label Profil = new Label("Ihr Nutzerprofil");
 		RootPanel.get("contentHeader").add(Profil);
@@ -249,7 +250,8 @@ public class PartnerprofilWidget extends Composite{
 		orgaNam.setEnabled(false);
 		mail.setTitle("Die E-Mail-Adresse kann nicht geändert werden.");
 		typbox.setTitle("Der Kontentyp kann nicht geändert werden. Legen Sie ggf. zusäzliche Konten an.");
-		
+		int i = (RootPanel.get("content").getOffsetWidth())-550;
+		HTML test = new HTML("<p style='margin-left: "+i+"px'><p>");
 		flexTable.setWidget(0, 0, orgaName);
 		flexTable.setWidget(0, 1, orgaNam);
 		flexTable.setWidget(1, 0, email);
@@ -260,6 +262,8 @@ public class PartnerprofilWidget extends Composite{
 		typbox.setEnabled(false);
 		flexTable.setWidget(2, 1, typbox);
 		flexTable.setWidget(0, 3, bearbeiten);
+		flexTable.setWidget(0, 5, deleteOrga);
+		flexTable.setWidget(0, 4, test);
 		
 		vp.add(flexTable);
 		
