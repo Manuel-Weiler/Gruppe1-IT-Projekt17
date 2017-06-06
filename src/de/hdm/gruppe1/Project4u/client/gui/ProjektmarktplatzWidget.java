@@ -199,7 +199,7 @@ public class ProjektmarktplatzWidget extends Composite {
 												
 						public void onClick(ClickEvent event) {
 
-							Project4uVerwaltung.findAllProjekteOfProjektmarktplatz(selectionModel.getSelectedObject(),
+							Project4uVerwaltung.findByProjektmarktplatz(selectionModel.getSelectedObject(),
 									new AsyncCallback<Vector<Projekt>>() {
 								
 								public void onSuccess(Vector<Projekt> result) {

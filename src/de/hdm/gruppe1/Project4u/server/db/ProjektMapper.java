@@ -302,34 +302,16 @@ public class ProjektMapper {
 		    return result;
 	 }
 	  
-	  public void deleteProjektOfOrganisationseinheit(Organisationseinheit o) {
-			Connection con = DBConnection.connection();
-			
-			try {
-				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM Projekt WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
-				
-			} catch (Exception e2) {
-				 e2.printStackTrace();
-			}
-		}
-	  
-	  /**
-	   * Diese Methode gibt alle Projekte wieder, die zu einem Projektmarktplatz pp gehören
-	 * @param pp
-	 * @return
-	 * @author Tobias
-	 */
-	public Vector<Projekt> findAllProjekteOfProjektmarktplatz(Projektmarktplatz pp){
-		  Connection con = DBConnection.connection();
+	  public Vector<Projekt> findByProjektmarktplatz(Projektmarktplatz pm) {
+		    Connection con = DBConnection.connection();
 		    // Ergebnisvektor vorbereiten
 		    Vector<Projekt> result = new Vector<Projekt>();
 
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM projekt WHERE projektmarktplatz_id='" + pp.getProjektmarktplatzId() + "'"
-		      									+" ORDER BY id");
+		      ResultSet rs = stmt.executeQuery(	"SELECT * FROM Projekt WHERE projektmarktplatz_id= " + pm.getProjektmarktplatzId()   
+		      									+  " ORDER BY organisationseinheit_id");
 		   
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
@@ -354,6 +336,18 @@ public class ProjektMapper {
 
 		    // Ergebnisvektor zurückgeben
 		    return result;
-	  }
+	 }
+	  
+	  public void deleteProjektOfOrganisationseinheit(Organisationseinheit o) {
+			Connection con = DBConnection.connection();
+			
+			try {
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate("DELETE FROM Projekt WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
+				
+			} catch (Exception e2) {
+				 e2.printStackTrace();
+			}
+		}
 
 }

@@ -115,7 +115,7 @@ public class PartnerprofilMapper {
 			Statement stmt = con.createStatement();
 
 			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
-			ResultSet rs = stmt.executeQuery("SELECT id, erstelldatum, aenderungsdatum FROM Partnerprofil WHERE id=" + i);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Partnerprofil WHERE id=" + i);
 
 			if (rs.next()) {
 

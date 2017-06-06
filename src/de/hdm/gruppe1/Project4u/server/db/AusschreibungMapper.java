@@ -331,7 +331,6 @@ public class AusschreibungMapper {
 				au.setPartnerprofilId(rs.getInt("partnerprofil_id"));
 
 		        result.addElement(au);
-		        System.out.println("findByProjekt Methode Ende");
 		      }
 		    }
 		    catch (SQLException e) {
