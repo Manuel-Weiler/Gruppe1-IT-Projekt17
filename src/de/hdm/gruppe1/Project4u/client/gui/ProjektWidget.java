@@ -153,8 +153,8 @@ public class ProjektWidget extends Composite{
 			
 			
 			/*
-			 * Das SelectionModel wird zur Tabelle der Projektmarktpl�tze hinzugef�gt
-			 * und gew�hrleistet, �hnlich einem ClickHandler, dass beim Klicken auf
+			 * Das SelectionModel wird zur Tabelle der Projekte hinzugef�gt
+			 * und gewährleistet, ähnlich einem ClickHandler, dass beim Klicken auf
 			 * eine Tabellenzeile das jeweilige Objekt zur�ckgegeben wird.
 			 */
 			final SingleSelectionModel<Projekt> selectionModel = new SingleSelectionModel<Projekt>(KEY_PROVIDER);	

@@ -77,4 +77,9 @@ public interface Project4uAdministrationAsync {
 
 	void getOrganisationseinheitByUser(LoginInfo login, AsyncCallback<Organisationseinheit> callback);
 
+
+
+
+	void getAllOrganisationseinheitenOfTypTeamUnternehmen(AsyncCallback<Vector<Organisationseinheit>> callback);
+
 }

@@ -171,6 +171,19 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return getEigenschaftenOfPartnerprofil(partnerprofil);
 	}
 	
+	public Vector<Organisationseinheit> getAllOrganisationseinheitenOfTypTeamUnternehmen()throws IllegalArgumentException{
+		Vector<Organisationseinheit> result = new Vector<Organisationseinheit>();
+		Vector<Organisationseinheit> orgas = new Vector<Organisationseinheit>();
+		orgas = organisationseinheitMapper.findAll();
+		
+		for (Organisationseinheit o : orgas){
+			if(o.getTyp().equalsIgnoreCase("Team")||o.getTyp().equalsIgnoreCase("Unternehmen")){
+				result.add(o);
+			}
+		}
+		return result;
+	}
+	
       		
 	/*
 	 * #########################################################################

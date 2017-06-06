@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ProvidesKey;
@@ -321,8 +322,18 @@ public class PartnerprofilWidget extends Composite{
 									
 									@Override
 									public void onSuccess(Eigenschaft result) {
-										//richtig richtig schlechter code 
-										Project4u.nt.profilButton.click();
+										
+										Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
+												new AsyncCallback<Organisationseinheit>() {
+											public void onSuccess(Organisationseinheit result) {
+												RootPanel.get("content").clear();
+												RootPanel.get("content").add(new PartnerprofilWidget(result));
+												
+											}
+											public void onFailure(Throwable caught) {
+												Window.alert(caught.getMessage());	
+											}
+										});
 										
 									}
 									
@@ -341,6 +352,8 @@ public class PartnerprofilWidget extends Composite{
 					
 				});
 				vp.add(add);
+				
+				
 			}			
 			public void onFailure(Throwable caught) {				
 			}
@@ -348,8 +361,10 @@ public class PartnerprofilWidget extends Composite{
 		
 		
 		
-		
-		
+		SimplePanel te = new SimplePanel();			
+		HTML hr = new HTML("<hr style= 'border: 0; height: 3px; background: #333; margin-top: 50px; margin-bottom: 50px; background-image: linear-gradient(to right, #ccc, #333, #ccc);'>");
+		te.add(hr);		
+		te.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
 		
 		initWidget(vp);
 	}

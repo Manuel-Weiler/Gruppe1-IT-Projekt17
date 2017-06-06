@@ -57,5 +57,7 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Organisationseinheit getOrganisationseinheitByUser(LoginInfo login)throws IllegalArgumentException;
 	
+	public Vector<Organisationseinheit> getAllOrganisationseinheitenOfTypTeamUnternehmen()throws IllegalArgumentException;
+	
 	
 }
