@@ -84,6 +84,12 @@ public class OrganisationseinheitWidget extends Composite{
 			}
 		};
 		
+		TextColumn<Organisationseinheit> status = new TextColumn<Organisationseinheit>() {
+			public String getValue(Organisationseinheit object) {
+				return object.getTyp();
+			}
+		};
+		
 		ButtonCell buttonCell = new ButtonCell();
 		Column<Organisationseinheit, String> buttonColumn = new Column<Organisationseinheit, String>(buttonCell) {
 		  @Override
@@ -180,11 +186,13 @@ public class OrganisationseinheitWidget extends Composite{
 	public void orgaProfil(Organisationseinheit o){
 		DialogBox db = new DialogBox();
 		final VerticalPanel vp = new VerticalPanel();
-		Label Profil = new Label("Profil: "+o.getName());
+		HTML Profil = new HTML("<p class='heading'>Profil: "+o.getName()+"</p>");
 		FlexTable flexTable = new FlexTable();
 		final FlexTable flexTableEigenschaften = new FlexTable();
 		final Button speichern = new Button("Speichern");
+		speichern.setWidth("100px");
 		final Button bearbeiten = new Button("Bearbeiten");
+		bearbeiten.setWidth("100px");
 		
 		Label email = new Label("E-Mail:");
 		final TextBox mail = new TextBox();
@@ -198,9 +206,14 @@ public class OrganisationseinheitWidget extends Composite{
 		mail.setValue(o.getGoogleId());	
 		orgaNam.setValue(o.getName());
 		typbox.addItem(o.getTyp());
+		if(o.getTyp().equalsIgnoreCase("Team")){
+			typbox.addItem("Unternehmen");
+		}
+		else{
+			typbox.addItem("Team");
+		}
 		typbox.setVisibleItemCount(1);
 		mail.setTitle("Die E-Mail-Adresse kann nicht geändert werden.");
-		typbox.setTitle("Der Kontentyp kann nicht geändert werden. Legen Sie ggf. zusäzliche Konten an.");
 		
 		flexTable.setWidget(0, 0, orgaName);
 		flexTable.setWidget(0, 1, orgaNam);
@@ -257,7 +270,7 @@ public class OrganisationseinheitWidget extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				mail.setEnabled(true);
+				
 				orgaNam.setEnabled(true);
 				typbox.setEnabled(true);
 				speichern.setVisible(true);

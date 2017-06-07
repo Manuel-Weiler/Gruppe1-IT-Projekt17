@@ -171,6 +171,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return getEigenschaftenOfPartnerprofil(partnerprofil);
 	}
 	
+	
 	public Vector<Organisationseinheit> getAllOrganisationseinheitenOfTypTeamUnternehmen()throws IllegalArgumentException{
 		Vector<Organisationseinheit> result = new Vector<Organisationseinheit>();
 		Vector<Organisationseinheit> orgas = new Vector<Organisationseinheit>();
@@ -184,6 +185,32 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return result;
 	}
 	
+	/**
+	 * Die Methode speichert die Zugehörigkeit einer Organisationseinheit vom Typ Person zu einer oder mehreren
+	 * Organisationseinheiten vom Typ Unternehmen oder Team.
+	 * @param person
+	 * @param TeamUnternehmen
+	 * @throws IllegalArgumentException
+	 */
+	public void insertLinkedTeamUnternehmenOfOrganisationseinheit(Organisationseinheit person,
+			Organisationseinheit teamunternehmen) throws IllegalArgumentException {
+		organisationseinheitMapper.insertLinkedTeamUnternehmenOfOrganisationseinheit(person, teamunternehmen);
+	}
+	
+	
+	/**
+	 * Die Methode gibt alle Organisationseinheiten vom Typ Team und Unternehmen zurück, zu denen der 
+	 * Benutzer die Zugehörigkeit seines "Accounts" vom Typ Person definiert hat.
+	 * @param login
+	 * @return
+	 */
+	public Vector<Organisationseinheit> getLinkedTeamAndUnternehmenOfOrganisationseinheit(LoginInfo login){
+		Organisationseinheit o = new Organisationseinheit();
+		o = getOrganisationseinheitByUser(login);
+		
+		return organisationseinheitMapper.getLinkedTeamAndUnternehmenOfOrganisationseinheit(o);
+		
+	}
       		
 	/*
 	 * #########################################################################

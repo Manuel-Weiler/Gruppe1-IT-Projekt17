@@ -144,10 +144,8 @@ public class OrganisationseinheitMapper {
 		      Statement stmt = con.createStatement();
 
 		      // Statement ausfüllen und als Query an die DB schicken
-		      ResultSet rs = stmt
-		    		  
-		          .executeQuery("SELECT id, google_id, name, typ FROM Organisationseinheit "
-		              + "WHERE id=" + id + " ORDER BY name");
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM organisationseinheit "
+		              + "WHERE id='" + id + "';");
 
 		      /*
 		       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -181,7 +179,7 @@ public class OrganisationseinheitMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM Organisationseinheit " + "ORDER BY name");
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM organisationseinheit " + "ORDER BY name");
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
 		      // erstellt.
@@ -214,8 +212,8 @@ public class OrganisationseinheitMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT id, google_id, name, typ "
-		          + "FROM Organisationseinheit " + "WHERE name LIKE '" + name
+		      ResultSet rs = stmt.executeQuery("SELECT * "
+		          + "FROM organisationseinheit " + "WHERE name LIKE '" + name
 		          + "' ORDER BY name");
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
@@ -226,7 +224,8 @@ public class OrganisationseinheitMapper {
 		        o.setGoogleId(rs.getString("google_id"));
 		        o.setName(rs.getString("name"));
 		        o.setTyp(rs.getString("typ"));
-
+		        o.setPartnerprofilId(rs.getInt("partnerprofil_id"));
+		        
 		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
 		        result.addElement(o);
 		      }
@@ -305,6 +304,53 @@ public class OrganisationseinheitMapper {
 
 			    return null;
 			  }
+	 
+	 
+	 
+	public Vector<Organisationseinheit> getLinkedTeamAndUnternehmenOfOrganisationseinheit(Organisationseinheit orga) {
+		Connection con = DBConnection.connection();
+		Vector<Organisationseinheit> result = new Vector<Organisationseinheit>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet rs = stmt.executeQuery("SELECT organisationseinheit_id "
+					+ "FROM organisationseinheit_has_organisationseinheit WHERE person_id='"
+					+ orga.getOrganisationseinheitId() + "';");
+
+			// Für jeden Eintrag im Suchergebnis wird nun ein
+			// Organisationseinheit-Objekt
+			// erstellt.
+			while (rs.next()) {
+				Organisationseinheit o = new Organisationseinheit();
+				o = findByKey(rs.getInt("organisationseinheit_id"));
+
+				// Hinzufügen des neuen Objekts zum Ergebnisvektor
+				result.addElement(o);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		    // Ergebnisvektor zurückgeben
+		    return result;
+		  }
+	
+	
+	public void insertLinkedTeamUnternehmenOfOrganisationseinheit(Organisationseinheit person, Organisationseinheit teamunternehmen) {
+		Connection con = DBConnection.connection();
+		try{
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("INSERT INTO organisationseinheit_has_organisationseinheit (person_id, organisationseinheit_id) "
+		            + "VALUES ('" + person.getOrganisationseinheitId() + "', '" + teamunternehmen.getOrganisationseinheitId()+"');");
+					
+		} catch (SQLException e2){
+			e2.printStackTrace();
+		}
+	}
+	
+	
 	 
 }
 
