@@ -80,7 +80,7 @@ public class OrganisationseinheitMapper {
 		try{
 			Statement stmt = con.createStatement();
 			
-			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Organisationseinheit ");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM Organisationseinheit ");
 			
 			
 			if(rs.next()){
@@ -88,8 +88,8 @@ public class OrganisationseinheitMapper {
 				
 				stmt = con.createStatement();
 				
-				stmt.executeUpdate("INSERT INTO Organisationseinheit (id, google_id, name, typ) "
-			            + "VALUES (" + organisationseinheit.getOrganisationseinheitId() + ", '" + organisationseinheit.getGoogleId() + "','" + organisationseinheit.getName() + "', '" + organisationseinheit.getTyp() + "')");
+				stmt.executeUpdate("INSERT INTO Organisationseinheit (id, google_id, name, typ, partnerprofil_id) "
+			            + "VALUES (" + organisationseinheit.getOrganisationseinheitId() + ", '" + organisationseinheit.getGoogleId() + "','" + organisationseinheit.getName() + "', '" + organisationseinheit.getTyp() + "', " + organisationseinheit.getPartnerprofilId() + ")");
 			
 			
 			}
@@ -124,32 +124,9 @@ public class OrganisationseinheitMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 		      
-		      //TO DO: Applikationslogik oder in den Mappern?
-		     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-		      	//Zugehörige Bewerbungen löschen
-	      		Vector<Bewerbung> vb = new Vector<Bewerbung>();
-	      		vb = BewerbungMapper.bewerbungMapper().findByOrganisationseinheit(o);
-	      		for(Bewerbung b: vb){
-	      			BewerbungMapper.bewerbungMapper().delete(b);
-	      		}
-		      
-	      		//Zugehöriges Partnerprofil löschen
-		      	PartnerprofilMapper.partnerprofilMapper().deletePartnerprofil(PartnerprofilMapper.partnerprofilMapper().findByOrganisationseinheit(o));
-		      
-		      	//Zugehörige Projekte löschen		      
-		      	Vector<Projekt> vp = new Vector<Projekt>();
-		      		vp = ProjektMapper.projektMapper().findByOrganisationseinheit(o);
-		      		for(Projekt p: vp){
-		      			ProjektMapper.projektMapper().delete(p);
-		      		}
-				//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-				
-		      
 		      //Organisationseinheit löschen
 		      stmt.executeUpdate("DELETE FROM Organisationseinheit WHERE id=" + o.getOrganisationseinheitId());
-		      
-		      
-		      
+		      	      
 		    }
 		    catch (SQLException e) {
 		      e.printStackTrace();
@@ -214,8 +191,7 @@ public class OrganisationseinheitMapper {
 		      // Statement ausfüllen und als Query an die DB schicken
 		      ResultSet rs = stmt
 		    		  
-		          .executeQuery("SELECT id, google_id, name, typ FROM Organisationseinheit "
-		              + "WHERE id=" + id + " ORDER BY name");
+		          .executeQuery("SELECT id, name, google_id, typ, partnerprofil_id FROM Organisationseinheit WHERE id= " + id + " ORDER BY name");
 
 		      /*
 		       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -228,6 +204,7 @@ public class OrganisationseinheitMapper {
 		        o.setName(rs.getString("name"));
 		        o.setGoogleId(rs.getString("google_id"));
 		        o.setTyp(rs.getString("typ"));
+		        o.setPartnerprofilId(rs.getInt("partnerprofil_id"));
 		        
 
 		        return o;

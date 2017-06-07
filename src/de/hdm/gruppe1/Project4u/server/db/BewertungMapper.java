@@ -123,7 +123,9 @@ public class BewertungMapper {
 			Statement stmt = con.createStatement();
 
 			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
+
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Bewertung WHERE Bewerbung_id=" + b.getBewerbungId());
+
 
 			if (rs.next()) {
 

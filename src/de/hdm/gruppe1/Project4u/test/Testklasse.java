@@ -22,7 +22,7 @@ public class Testklasse {
 		
 
 		//SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		
+	/*	
 		Calendar cal = Calendar.getInstance();
 		cal.set(2017, 7, 10);
 		
@@ -33,14 +33,41 @@ public class Testklasse {
 		//Date date = sdf.parse(strDate); 
 		
 	
+<<<<<<< HEAD
+=======
+		a.setNameProjektleiter("HS");
+		a.setPartnerprofilId(2);
+		a.setProjektId(3);
+		a.setErstellDatum(new Date());
+		
+		Partnerprofil pa = new Partnerprofil();
+		pa.setPartnerprofilId(0);
+		Projekt pr = new Projekt ();
+		pr.setProjektId(1);
+		
+		
+		PartnerprofilMapper p = PartnerprofilMapper.partnerprofilMapper();
+		ProjektMapper l = ProjektMapper.projektMapper(); */
+
 		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
 	
 		ArrayList<Ausschreibung> al = new ArrayList<Ausschreibung>();
 		al= am.findAllAusschreibungen();
 		
-		
-		
+		//am.findByPartnerprofil(pa);
+
+		//am.insertAusschreibung(a, pa, pr);
+
 		for(Ausschreibung e: al){
+
+//		 Vector<Ausschreibung> ev= new Vector<Ausschreibung>();
+//		 Projekt pp = new Projekt();
+//		 pp.setProjektId(1);
+//		 ev=am.findByProjekt(pp);
+//		 
+//		
+//		for(Ausschreibung e: ev){
+
 			System.out.println(e.getBezeichnung());
 			
 		} 

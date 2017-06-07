@@ -136,7 +136,9 @@ public class BewerbungMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
+
 			stmt.executeUpdate("DELETE FROM Bewerbung " + "WHERE id=" + bewerbung.getBewerbungId());
+
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}

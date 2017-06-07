@@ -116,7 +116,7 @@ public class EigenschaftMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Eigenschaft WHERE id='" + e.getEigenschaftId() + "'");
+			stmt.executeUpdate("DELETE FROM Eigenschaft WHERE id= " + e.getEigenschaftId());
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}

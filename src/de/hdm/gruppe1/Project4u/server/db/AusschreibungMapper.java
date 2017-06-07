@@ -227,8 +227,7 @@ public class AusschreibungMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM ausschreibung WHERE id='"
-					+ ausschreibung.getAusschreibungId() + "'");
+			stmt.executeUpdate("DELETE FROM Ausschreibung WHERE id= " + ausschreibung.getAusschreibungId());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -244,7 +243,7 @@ public class AusschreibungMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM ausschreibung");
 			
 			while(rs.next()){
 				Ausschreibung au = new Ausschreibung();
@@ -293,23 +292,26 @@ public class AusschreibungMapper {
 		return au;
 	}
 		public Vector<Ausschreibung> findByProjekt (Projekt projekt) {
+			System.out.println("findByProjekt Methode start");
 		    Connection con = DBConnection.connection();
 		    Vector<Ausschreibung> result = new Vector<Ausschreibung>();
 
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT * WHERE projekt_id='"+projekt.getProjektId()+"';");
-
-		 
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung WHERE projekt_id= " + projekt.getProjektId() + 
+		    		  " ORDER BY id");
+	 
 		      while (rs.next()) {
 		        Ausschreibung au = new Ausschreibung();
-				au.setID(rs.getInt("id"));
+				au.setAusschreibungId(rs.getInt("id"));
 				au.setBezeichnung (rs.getString("bezeichnung"));
 				au.setNameProjektleiter (rs.getString("name_projektleiter"));
 				au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
 				au.setAusschreibungstext (rs.getString("ausschreibungstext"));
 				au.setErstellDatum(rs.getDate("erstelldatum"));
+				au.setProjektId(rs.getInt("projekt_id"));
+				au.setPartnerprofilId(rs.getInt("partnerprofil_id"));
 
 		        result.addElement(au);
 		      }
@@ -321,6 +323,7 @@ public class AusschreibungMapper {
 		    return result;
 		  }
 		
+
 		/**TODO: Diese Methode is voll f�r n arsch
 		 * @param profil
 		 * @return
@@ -333,12 +336,12 @@ public class AusschreibungMapper {
 		      Statement stmt = con.createStatement();
 
 		      ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung " + 
-		      "WHERE partnerprofil_id ='"+profil.getPartnerprofilId()+"';");
+		      "WHERE partnerprofil_id = " + profil.getPartnerprofilId());
 
 		 
 		      while (rs.next()) {
 		        Ausschreibung au = new Ausschreibung();
-				au.setID(rs.getInt("id"));
+				au.setAusschreibungId(rs.getInt("id"));
 				au.setBezeichnung (rs.getString("bezeichnung"));
 				au.setNameProjektleiter (rs.getString("name_projektleiter"));
 				au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
@@ -366,6 +369,72 @@ public class AusschreibungMapper {
 			 e2.printStackTrace();
 		}
 	}
+	
+//TODO: redundante Methode?
+	
+//	public ArrayList<Ausschreibung> findAllAusschreibungen(){
+//		Connection con = DBConnection.connection();
+//	    ArrayList<Ausschreibung> result = new ArrayList<Ausschreibung>();
+//
+//	    try {
+//	      Statement stmt = con.createStatement();
+//
+//	      ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung ORDER BY id;");
+//
+//	 
+//	      while (rs.next()) {
+//	        Ausschreibung au = new Ausschreibung();
+//			au.setID(rs.getInt("id"));
+//			au.setBezeichnung (rs.getString("bezeichnung"));
+//			au.setNameProjektleiter (rs.getString("name_projektleiter"));
+//			au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
+//			au.setAusschreibungstext (rs.getString("ausschreibungstext"));
+//			au.setErstellDatum(rs.getDate("erstelldatum"));
+//			
+//	        result.add(au);
+//	      }
+//	    }
+//	    catch (SQLException e) {
+//	      e.printStackTrace();
+//	    }
+//
+//	    return result;
+//	}
+
+	
+	/*Notwendig um das zur Ausschreibung zugehörige Partnerprofil zu löschen
+	public Ausschreibung findByPartnerprofilID (int id) {
+		Connection con = DBConnection.connection();
+		Ausschreibung a = new Ausschreibung();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung WHERE partnerprofil_id=" + id);
+
+			if (rs.next()) {
+				a.setID(rs.getInt("id"));
+				a.setBezeichnung (rs.getString("bezeichnung"));
+				a.setNameProjektleiter (rs.getString("name_projektleiter"));
+				a.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
+				a.setAusschreibungstext (rs.getString("ausschreibungstext"));					
+				a.setErstellDatum(rs.getDate("erstelldatum"));
+			    
+				return a;
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		      return null;
+		    }
+
+		    return null;
+		  }*/
+	
+
 	}
+
+
 
 	

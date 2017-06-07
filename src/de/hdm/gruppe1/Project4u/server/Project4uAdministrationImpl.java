@@ -33,6 +33,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 @SuppressWarnings("serial")
 public class Project4uAdministrationImpl extends RemoteServiceServlet implements Project4uAdministration, Serializable{
 
+	
 	private BewerbungMapper bewerbungMapper = null;
 	private BewertungMapper bewertungMapper = null;
 	private BeteiligungMapper beteiligungMapper = null;
@@ -44,7 +45,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	private EigenschaftMapper eigenschaftMapper = null;
 
 	
-	public Project4uAdministrationImpl() throws IllegalArgumentException{
+	public Project4uAdministrationImpl() throws IllegalArgumentException {
 		
 	}
 	
@@ -58,7 +59,77 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
         this.projektmarktplatzMapper = ProjektmarktplatzMapper.projektmarktplatzMapper();
         this.projektMapper = ProjektMapper.projektMapper();
         this.bewertungMapper = BewertungMapper.bewertungMapper();
+        this.bewerbungMapper = BewerbungMapper.bewerbungMapper();
+        this.ausschreibungMapper = AusschreibungMapper.ausschreibungMapper();
 	}
+	
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Partnerprofil
+	 * #########################################################################
+	 * 
+	 */
+
+	/**
+	 * Mit dieser Methode wird dem zu speichernden Partnerprofil die richtige
+	 * <code>id</code> vergeben und das Partnerprofil in der Datenbank abgelegt.
+	 * 
+	 * @param p
+	 *            das Partnerprofil-Objekt, dass in der Datenbank abgelegt wird.
+	 * @param o
+	 *            das Organisationseinheit-Objekt, dem das Partnerprofil
+	 *            zugeordnet ist.
+	 * @return das m�glicherweise durch die Methode ge�nderte
+	 *         Partnerprofil-Objekt.
+	 */
+
+	public Partnerprofil createPartnerprofil() throws IllegalArgumentException {		
+		Partnerprofil p = new Partnerprofil();
+		return this.partnerprofilMapper.insertPartnerprofil(p);
+	}
+
+	public Partnerprofil updatePartnerprofil(Partnerprofil p) throws IllegalArgumentException {
+		return this.partnerprofilMapper.updatePartnerprofil(p);
+	}
+
+	public void deletePartnerprofil(Partnerprofil p) throws IllegalArgumentException {
+		System.out.println("deletePartnerprofil"); 
+		
+		//Zugehörige Eigenschaften löschen
+		Vector<Eigenschaft> ve = new Vector<Eigenschaft>();
+		ve = eigenschaftMapper.findByPartnerprofil(p);	
+      	if(ve != null) {
+      		for(Eigenschaft eigenschaft: ve){
+      			this.deleteEigenschaft(eigenschaft);
+      		}
+      	}
+    		//Partnerprofil löschen
+    		this.partnerprofilMapper.deletePartnerprofil(p);
+      	}
+	
+	public Partnerprofil findById(int i) throws IllegalArgumentException {
+		return this.partnerprofilMapper.findById(i);
+	}
+		
+
+	/*
+	 * TODO: public Ausschreibung getAusschreibungOf(Partnerprofil p) public
+	 * Vector <Eigenschaft> getEigenschaftenOf (Partnerprofil p)
+	 */
+
+	public Vector <Eigenschaft> getEigenschaftenOfPartnerprofil (Partnerprofil p)throws IllegalArgumentException{
+		return this.partnerprofilMapper.getEigenschaftenOfPartnerprofil(p);
+	}
+
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Ende: Partnerprofil
+	 * #########################################################################
+	 * 
+	 */
+
 	
 	/*
 	 * #########################################################################
@@ -72,46 +143,67 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 			return this.organisationseinheitMapper.checkStatus(loginInfo);
 		}
 
-	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ)
+	public Organisationseinheit createOrganisationseinheit(String google_id, String name, String typ, Partnerprofil partnerprofil)
 			throws IllegalArgumentException {
 
 		Organisationseinheit organisationseinheit = new Organisationseinheit();
 		organisationseinheit.setGoogleId(google_id);
 		organisationseinheit.setName(name);
 		organisationseinheit.setTyp(typ);
+		organisationseinheit.setPartnerprofilId(partnerprofil.getPartnerprofilId());
 
 		return this.organisationseinheitMapper.insert(organisationseinheit);
 
 	}
 
 	public void deleteOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
-		
-		//Zugehöriges Partnerprofil löschen
-  		Partnerprofil partnerprofil = partnerprofilMapper.findByOrganisationseinheit(organisationseinheit);
-  		
-  		if(partnerprofil != null) {
-  			this.deletePartnerprofil(partnerprofil);
-  		}
-      
-      	//Zugehörige Projekte löschen		      
-      	Vector<Projekt> vp = new Vector<Projekt>();     	
+		 System.out.println("deleteOrga");    
+      	
+		//Zugehörige Beteiligungen löschen
+		Vector<Beteiligung> vbe = new Vector<Beteiligung>();	
+	  	vbe = beteiligungMapper.findByOrganisationseinheit(organisationseinheit);
+	  	if (vbe != null) {
+	  		for(Beteiligung b: vbe){
+	  			this.deleteBeteiligung(b);
+	  		}
+	  	}
+		 
+		 
+		//Zugehörige Bewerbungen löschen
+	  	Vector<Bewerbung> vb = new Vector<Bewerbung>();	
+	  	vb = bewerbungMapper.findByOrganisationseinheit(organisationseinheit);
+	  	if (vb != null) {
+	  		for(Bewerbung b: vb){
+	  			this.deleteBewerbung(b);
+	  		}
+	  	}
+		 
+		//Zugehörige Projekte löschen		      
+      	Vector<Projekt> vp = new Vector<Projekt>();
+  		vp = projektMapper.findByOrganisationseinheit(organisationseinheit);
       	if(vp != null) {
-      		vp = projektMapper.findByOrganisationseinheit(organisationseinheit);
       		for(Projekt projekt: vp){
       			this.delete(projekt);
       		}
-      	}
-		
-		//Zugehörige Bewerbungen löschen
-  		Vector<Bewerbung> vb = new Vector<Bewerbung>();	
-  		if (vb != null) {
-  			vb = this.bewerbungMapper.findByOrganisationseinheit(organisationseinheit);
-  			for(Bewerbung b: vb){
-  				this.deleteBewerbung(b);
-  			}
-  		}
-      	//Organisationseinheit löschen
+      	}	
+      	
+      	//Zugehörige Projektmarktplätze löschen
+      	Vector<Projektmarktplatz> pm = new Vector<Projektmarktplatz>();
+  		pm = projektmarktplatzMapper.findByOrganisationseinheit(organisationseinheit);
+      	if(pm != null) {
+      		for(Projektmarktplatz projektmarktplatz: pm){
+      			this.delete(projektmarktplatz);
+      		}
+      	}	
+      	
+        //Organisationseinheit löschen
       	this.organisationseinheitMapper.delete(organisationseinheit);
+		
+	  	//Zugehöriges Partnerprofil löschen
+  		Partnerprofil partnerprofil = partnerprofilMapper.findById(organisationseinheit.getPartnerprofilId());
+  			if(partnerprofil != null) {
+  				this.deletePartnerprofil(partnerprofil);
+  			}      	
       	}
 	
 
@@ -145,76 +237,6 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	
 	/*
 	 * #########################################################################
-	 * ABSCHNITT, Beginn: Partnerprofil
-	 * #########################################################################
-	 * 
-	 */
-
-	/**
-	 * Mit dieser Methode wird dem zu speichernden Partnerprofil die richtige
-	 * <code>id</code> vergeben und das Partnerprofil in der Datenbank abgelegt.
-	 * 
-	 * @param p
-	 *            das Partnerprofil-Objekt, dass in der Datenbank abgelegt wird.
-	 * @param o
-	 *            das Organisationseinheit-Objekt, dem das Partnerprofil
-	 *            zugeordnet ist.
-	 * @return das m�glicherweise durch die Methode ge�nderte
-	 *         Partnerprofil-Objekt.
-	 */
-
-	public Partnerprofil createPartnerprofil(Organisationseinheit o) throws IllegalArgumentException {		
-		Partnerprofil p = new Partnerprofil();
-		p.setOrganisationseinheitId(o.getOrganisationseinheitId());	
-		return this.partnerprofilMapper.insertPartnerprofil(p);
-	}
-
-	public Partnerprofil updatePartnerprofil(Partnerprofil p) throws IllegalArgumentException {
-		return this.partnerprofilMapper.updatePartnerprofil(p);
-	}
-
-	public void deletePartnerprofil(Partnerprofil p) throws IllegalArgumentException {
-		
-		//Zugehörige Eigenschaften löschen
-		Vector<Eigenschaft> ve = new Vector<Eigenschaft>();
-      	
-      	if(ve != null) {
-      		ve = eigenschaftMapper.findByPartnerprofil(p);
-      		for(Eigenschaft eigenschaft: ve){
-      			this.deleteEigenschaft(eigenschaft);
-      		}
-      	}
-    		//Partnerprofil löschen
-    		this.partnerprofilMapper.deletePartnerprofil(p);
-      	}
-	
-	public Partnerprofil findById(int i) throws IllegalArgumentException {
-		return this.partnerprofilMapper.findById(i);
-	}
-		
-
-	/*
-	 * TODO: public Ausschreibung getAusschreibungOf(Partnerprofil p) public
-	 * Vector <Eigenschaft> getEigenschaftenOf (Partnerprofil p)
-	 */
-
-	public Vector <Eigenschaft> getEigenschaftenOfPartnerprofil (Partnerprofil p)throws IllegalArgumentException{
-		return this.partnerprofilMapper.getEigenschaftenOfPartnerprofil(p);
-	}
-	
-	public Organisationseinheit getOrganisationseinheitOfPartnerprofil (Partnerprofil p)throws IllegalArgumentException{
-		return this.partnerprofilMapper.getOrganisationseinheitOfPartnerprofil(p);
-	}
-	
-	/*
-	 * #########################################################################
-	 * ABSCHNITT, Ende: Partnerprofil
-	 * #########################################################################
-	 * 
-	 */
-	
-	/*
-	 * #########################################################################
 	 * ABSCHNITT, Beginn: Eigenschaft
 	 * #########################################################################
 	 * 
@@ -236,6 +258,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 	
 	public void deleteEigenschaft(Eigenschaft e) throws IllegalArgumentException{
+		System.out.println("deleteEigenschaft"); 
 		eigenschaftMapper.deleteEigenschaft(e);
 	}
 
@@ -254,6 +277,54 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * #########################################################################
 	 * 
 	 */
+	
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Beginn: Projektmarktplatz
+	 * #########################################################################
+	 * 
+	 */
+	
+	public Projektmarktplatz createProjektmarktplatz(Projektmarktplatz p)
+			throws IllegalArgumentException {
+
+		return this.projektmarktplatzMapper.insert(p);
+
+	}
+	
+	public Projektmarktplatz findProjektmarktplatzById(int id) throws IllegalArgumentException {
+		return this.projektmarktplatzMapper.findById(id);
+	}
+
+	public Vector<Projektmarktplatz> findAllProjektmarktplatz() throws IllegalArgumentException {
+		return this.projektmarktplatzMapper.findAll();
+	}
+
+	public void update(Projektmarktplatz p) throws IllegalArgumentException {
+		projektmarktplatzMapper.update(p);
+	}
+
+	public void delete(Projektmarktplatz p) throws IllegalArgumentException {
+		System.out.println("deletProjektmarktplatz"); 
+		projektmarktplatzMapper.delete(p);
+		
+		//Zugehörige Projekte löschen
+				Vector<Projekt> pv = new Vector<Projekt>();
+				pv = projektMapper.findByProjektmarktplatz(p);
+				if(pv != null) {
+					for(Projekt projekt: pv) {
+						this.delete(projekt);
+					}
+				}
+	}	
+
+	/*
+	 * #########################################################################
+	 * ABSCHNITT, Ende: Projektmarktplatz
+	 * #########################################################################
+	 * 
+	 */
+	
 	
 	/*
 	 * #########################################################################
@@ -296,33 +367,33 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		projektMapper.update(p);
 	}
 
-	public void delete(Projekt p) throws IllegalArgumentException {
+	public void delete(Projekt projekt) throws IllegalArgumentException {
+		System.out.println("deleteProjekt");
 		
 		//Zugehörige Ausschreibungen löschen
 		Vector<Ausschreibung> va = new Vector<Ausschreibung>();
-		va = ausschreibungMapper.findByProjekt(p);      	
+		va = this.ausschreibungMapper.findByProjekt(projekt); 
 		if(va != null) {
 		    for(Ausschreibung ausschreibung: va){
 		    	this.deleteAusschreibung(ausschreibung);
 		    }
 		}
-		this.projektMapper.delete(p);
+		//Zugehörige Beteiligungen löschen
+		Vector<Beteiligung> vb = new Vector<Beteiligung>();
+		vb = this.beteiligungMapper.findByProjekt(projekt); 
+		if(va != null) {
+		    for(Beteiligung beteiligung: vb){
+		    	this.deleteBeteiligung(beteiligung);
+		    }
+		}
+		this.projektMapper.delete(projekt);
 	}	
 	
 	public Vector<Projekt> findByName(String name) throws IllegalArgumentException {
 		return this.projektMapper.findByName(name);
 	}
-	
-	/**
-	 * Diese Methode gibt alle Projekte wieder, die zu einem Projektmarktplatz pp gehören
-	 * @param pp
-	 * @return
-	 * @throws IllegalArgumentException
-	 * @author Tobias
-	 */
-	public Vector<Projekt> findAllProjekteOfProjektmarktplatz(Projektmarktplatz pp) throws IllegalArgumentException{
-		return this.projektMapper.findAllProjekteOfProjektmarktplatz(pp);
-		
+	public Vector<Projekt> findByProjektmarktplatz(Projektmarktplatz projektmarktplatz) throws IllegalArgumentException {
+		return this.projektMapper.findByProjektmarktplatz(projektmarktplatz);
 	}
 	
 	/*
@@ -352,8 +423,9 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 	
 	public void deleteAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {
+		System.out.println("deleteAusschreibung");
 		
-		//zugehörige Bewerbungen löschen
+		//TODO zugehörige Bewerbungen löschen
 		Vector<Bewerbung> bv = new Vector<Bewerbung>();
 		bv = bewerbungMapper.findByAusschreibung(ausschreibung);
 		if(bv != null) {
@@ -362,14 +434,13 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 			}
 		}
 		
-		//TODO: zugehöriges Partnerprofil löschen
-		//Partnerprofil partnerprofil = ausschreibungMapper.findB
-  		//if(partnerprofil != null) {
-  		//	this.deletePartnerprofil(partnerprofil);
-  		//}
+		this.ausschreibungMapper.delete(ausschreibung);
 		
-		
-		ausschreibungMapper.deleteAusschreibung(ausschreibung);
+		//zugehöriges Partnerprofil löschen
+				Partnerprofil partnerprofil = partnerprofilMapper.findById(ausschreibung.getPartnerprofilId());
+		  		if(partnerprofil != null) {
+		  			this.deletePartnerprofil(partnerprofil);
+		  		}
 	}
 	
 	public Ausschreibung findByIdAusschreibung (int id) throws IllegalArgumentException {
@@ -391,13 +462,14 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 //		return this.ausschreibungMapper.findByProjekt(name);
 //	}
 
+	public Vector<Ausschreibung> findAusschreibungbyProjekt (Projekt projekt)throws IllegalArgumentException{
+		return this.ausschreibungMapper.findByProjekt(projekt);
+	}
 	
 	public ArrayList<Ausschreibung> getAlleAusschreibungen() throws IllegalArgumentException {
+
 		return this.ausschreibungMapper.findAllAusschreibungen();
 	}
-	 
-	
-	
 	
 	/*
 	 * #########################################################################
@@ -428,12 +500,14 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 	
 	public void deleteBewerbung(Bewerbung bewerbung) {
+		System.out.println("deleteBewerbung"); 
 		
-		//Zugehörige Bewertungen löschen
-		Bewertung bewertung = this.bewertungMapper.findByBewerbung(bewerbung);
+		//Zuerst wird die zugehörige Bewertung gelöscht, sofern diese vorhanden ist.
+		Bewertung bewertung = bewertungMapper.findByBewerbung(bewerbung);
   		if (bewertung != null) {
   			this.deleteBewertung(bewertung);
   			}
+  		//Die Bewerbung löschen
   		this.bewerbungMapper.delete(bewerbung);
   		}
 		
@@ -466,14 +540,13 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 	
 	public void deleteBewertung(Bewertung bewertung) {
-		
-		//Zugehörige Beteiligung löschen
+		System.out.println("deleteBewertung"); 
+		//Zuerst wird die zugehörige Beteiligung gelöscht, sofern diese vorhanden ist.
 		Beteiligung beteiligung = beteiligungMapper.findByBewertung(bewertung);
   		if (beteiligung != null) {
-  			
-  			//Zugehörige Beteiligung löschen
-  			this.delete(beteiligung);
+  			this.deleteBeteiligung(beteiligung);
   			}
+  		//Die Bewertung löschen
 		this.bewertungMapper.delete(bewertung);
   		}
 	
@@ -502,14 +575,15 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		beteiligung.setOrganisationseinheitId(organisationseinheit.getOrganisationseinheitId());
 		beteiligung.setBewertungId(bewertung.getBewertungId());
 		beteiligung.setProjektId(projekt.getProjektId());
-		
+	
 		return this.beteiligungMapper.insertBeteiligung(beteiligung);
 	}
 	
-	
-	public void delete(Beteiligung b) throws IllegalArgumentException {
-		beteiligungMapper.deleteBeteiligung(b);
+	public void deleteBeteiligung(Beteiligung b) throws IllegalArgumentException {
+		System.out.println("deleteBeteiligung"); 
+		this.beteiligungMapper.delete(b);
 	}
+	
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Ende: Beteiligung
@@ -517,49 +591,15 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 		
-	/*
-	 * #########################################################################
-	 * ABSCHNITT, Beginn: Projektmarktplatz
-	 * #########################################################################
-	 * 
-	 */
-	
-	public Projektmarktplatz createProjektmarktplatz(Projektmarktplatz p)
-			throws IllegalArgumentException {
-
-		return this.projektmarktplatzMapper.insert(p);
-
-	}
-	
-	public Projektmarktplatz findProjektmarktplatzById(int id) throws IllegalArgumentException {
-		return this.projektmarktplatzMapper.findById(id);
-	}
-
-	public Vector<Projektmarktplatz> findAllProjektmarktplatz() throws IllegalArgumentException {
-		return this.projektmarktplatzMapper.findAll();
-	}
-
-	public void update(Projektmarktplatz p) throws IllegalArgumentException {
-		projektmarktplatzMapper.update(p);
-	}
-
-	public void delete(Projektmarktplatz p) throws IllegalArgumentException {
-		projektmarktplatzMapper.delete(p);
-	}	
-
-	/*
-	 * #########################################################################
-	 * ABSCHNITT, Ende: Projektmarktplatz
-	 * #########################################################################
-	 * 
-	 */
 	
 
 	
 	//TODO: Testmethode
 	public String testMethode (){
-		String test = "Dies ist ein Test-String";
-		return test;
+		Organisationseinheit orgaEinheit = new Organisationseinheit();
+		orgaEinheit = this.organisationseinheitMapper.findByKey(2);
+		//String test = "Dies ist ein Test-String";
+		return orgaEinheit.getName();
 	}
 	
 	public Vector<Projektmarktplatz> testMethode2(){

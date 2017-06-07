@@ -10,10 +10,12 @@ public class Organisationseinheit extends BusinessObject{
 
 	private static final long serialVersionUID = 1L;
 
+
+	
+	private int partnerprofilId;
+
 	private int organisationseinheitId = 0;
-	private boolean loggedIn;
-	private String loginUrl;
-	private String logoutUrl;
+
 	private String google_id;
 	private String name;
 	//TODO: variable "typ" muss als ein Enum definiert werden.
@@ -21,29 +23,7 @@ public class Organisationseinheit extends BusinessObject{
 	private boolean status = false;
 	
 
-	public boolean getLoggedIn() {
-		return loggedIn;
-	}
 
-	public void setLoggedIn(boolean loggedIn) {
-		this.loggedIn = loggedIn;
-	}
-
-	public String getLoginUrl() {
-		return loginUrl;
-	}
-
-	public void setLoginUrl(String loginUrl) {
-		this.loginUrl = loginUrl;
-	}
-
-	public String getLogoutUrl() {
-		return logoutUrl;
-	}
-
-	public void setLogoutUrl(String logoutUrl) {
-		this.logoutUrl = logoutUrl;
-	}
 
 	public String getGoogleId() {
 		return google_id;
@@ -69,6 +49,14 @@ public class Organisationseinheit extends BusinessObject{
 		this.organisationseinheitId = organisationseinheitId;
 	}
 	
+	public int getPartnerprofilId() {
+		return partnerprofilId;
+	}
+	
+	public void setPartnerprofilId(int partnerprofilId) {
+		this.partnerprofilId = partnerprofilId;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -85,20 +73,7 @@ public class Organisationseinheit extends BusinessObject{
 		this.typ = typ;
 	}
 
-	/*public String getVorname() {
-		return vorname;
-	}
+	
 
-	public void setVorname(String vorname) {
-		this.vorname = vorname;
-	}
-
-	public String getNachname() {
-		return nachname;
-	}
-
-	public void setNachname(String nachname) {
-		this.nachname = nachname;
-	}*/
 
 }
