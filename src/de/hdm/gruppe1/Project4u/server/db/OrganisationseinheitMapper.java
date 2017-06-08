@@ -80,7 +80,9 @@ public class OrganisationseinheitMapper {
 		try{
 			Statement stmt = con.createStatement();
 			
+
 			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM organisationseinheit;");
+
 			
 			
 			if(rs.next()){
@@ -144,8 +146,10 @@ public class OrganisationseinheitMapper {
 		      Statement stmt = con.createStatement();
 
 		      // Statement ausfüllen und als Query an die DB schicken
+
 		      ResultSet rs = stmt.executeQuery("SELECT * FROM organisationseinheit "
 		              + "WHERE id='" + id + "';");
+
 
 		      /*
 		       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -159,6 +163,7 @@ public class OrganisationseinheitMapper {
 		        o.setGoogleId(rs.getString("google_id"));
 		        o.setTyp(rs.getString("typ"));
 		        o.setPartnerprofilId(rs.getInt("partnerprofil_id"));
+
 
 		        return o;
 		      }

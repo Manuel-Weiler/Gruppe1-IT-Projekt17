@@ -3,6 +3,8 @@ package de.hdm.gruppe1.Project4u.server.db;
 import java.sql.*;
 import java.util.Vector;
 
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 /**
@@ -59,7 +61,7 @@ public class ProjektmarktplatzMapper {
 	
 	/**
 	 ** @param id
-	 ** @return Liefert ein Projektmarktplatz entsprechend der übergebenen id zurueck.
+	 ** @return Liefert ein Projektmarktplatz entsprechend der ï¿½bergebenen id zurueck.
 	 **/
 
       public Projektmarktplatz findById(int id){
@@ -70,18 +72,19 @@ public class ProjektmarktplatzMapper {
 		   // Leeres SQL-Statement (JDBC) anlegen
 		   Statement stmt = con.createStatement();
 		   
-		   // Statement ausfüllen und als Query an die DB schicken
+		   // Statement ausfï¿½llen und als Query an die DB schicken
 		   ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz " + "WHERE id='" + id +"'");
 		   
 		   /*
-	        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
-	        * werden. Prüfe, ob ein Ergebnis vorliegt.
+	        * Da id Primï¿½rschlï¿½ssel ist, kann max. nur ein Tupel zurï¿½ckgegeben
+	        * werden. Prï¿½fe, ob ein Ergebnis vorliegt.
 	        */
 		    if (rs.next()) {
 		      // Ergebnis-Tupel in Objekt umwandeln
 		      
 		      p.setProjektmarktplatzId(rs.getInt("id"));
 		      p.setName(rs.getString("name"));
+		      p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 		      
 		      }
 		    }
@@ -114,8 +117,8 @@ public class ProjektmarktplatzMapper {
 	              p.setProjektmarktplatzId(rs.getInt("maxid") + 1);
 	            }
 			  
-			  stmt.executeUpdate("INSERT INTO Projektmarktplatz (id, name) " 
-			           + "VALUES ('" + p.getProjektmarktplatzId() + "','" + p.getName()+"')");
+			  stmt.executeUpdate("INSERT INTO Projektmarktplatz (id, name, organisationseinheit_id) " 
+			           + "VALUES (" + p.getProjektmarktplatzId() + ", " + p.getName()+", " + p.getOrganisationseinheitId() + ")");
 			                    
 			          }
 		      catch (SQLException e) {
@@ -154,7 +157,7 @@ public class ProjektmarktplatzMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM Projektmarktplatz WHERE id='" + p.getProjektmarktplatzId()+ "'"); 
+	      stmt.executeUpdate("DELETE FROM Projektmarktplatz WHERE id=" + p.getProjektmarktplatzId()); 
 
 	    }
 	    catch (SQLException e2) {
@@ -182,6 +185,7 @@ public class ProjektmarktplatzMapper {
 		        Projektmarktplatz p = new Projektmarktplatz();
 		        p.setProjektmarktplatzId(rs.getInt("id"));
 		        p.setName(rs.getString("name"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 		        
 
 		        // HinzufÃ¼gen des neuen Objekts zum Ergebnisvektor
@@ -196,6 +200,39 @@ public class ProjektmarktplatzMapper {
 		    return result;
 	
 	  }
+	  
+	  public Vector<Projektmarktplatz> findByOrganisationseinheit(Organisationseinheit o) {
+		    Connection con = DBConnection.connection();
+		    // Ergebnisvektor vorbereiten
+		    Vector<Projektmarktplatz> result = new Vector<Projektmarktplatz>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz WHERE organisationseinheit_id= " + o.getOrganisationseinheitId() + 
+		    		  " ORDER BY organisationseinheit_id");
+		   
+
+		      // FÃ¼r jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projektmarktplatz pm = new Projektmarktplatz();
+		        pm.setProjektmarktplatzId(rs.getInt("id"));
+			    pm.setName(rs.getString("name"));
+			    pm.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+		
+
+		        // HinzufÃ¼gen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(pm);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurÃ¼ckgeben
+		    return result;
+	 }
 	  
 	 
 }

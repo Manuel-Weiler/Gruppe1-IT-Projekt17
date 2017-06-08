@@ -17,9 +17,15 @@ public interface Project4uAdministration extends RemoteService{
 	public void init() throws IllegalArgumentException;
 	
 	
-	public boolean checkStatus(LoginInfo loginInfo) throws IllegalArgumentException;
-	
 
+	public boolean checkStatus(LoginInfo loginInfo) throws IllegalArgumentException;
+
+	public void deleteOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException;
+	
+	public Organisationseinheit getOrganisationseinheitById(int id) throws IllegalArgumentException;
+	
+		
+	
 	public Vector<Projektmarktplatz> findAllProjektmarktplatz() throws IllegalArgumentException;
 
 	//TODO: Testmethode l�schen
@@ -34,12 +40,11 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public void update(Projektmarktplatz p) throws IllegalArgumentException;
 
-	public Vector<Projekt> findAllProjekteOfProjektmarktplatz(Projektmarktplatz pp) throws IllegalArgumentException;
-	
 	public void update(Projekt p) throws IllegalArgumentException;
 	
 	public Projekt createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o)
 			   throws IllegalArgumentException;
+
 	
 	public Vector<Ausschreibung> findAusschreibungbyProjekt (Projekt projekt)throws IllegalArgumentException;
 	
@@ -65,4 +70,10 @@ public interface Project4uAdministration extends RemoteService{
 	public Vector<Organisationseinheit> getLinkedTeamAndUnternehmenOfOrganisationseinheit(LoginInfo login)
 			throws IllegalArgumentException;
 	
+
+	
+	public Vector<Projekt> findByProjektmarktplatz (Projektmarktplatz projektmarktplatz) throws IllegalArgumentException;
+	
+
+
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
@@ -66,13 +67,12 @@ public class BeteiligungMapper {
 		}
 		
 	
-	public void deleteBeteiligung(Beteiligung b) {
+	public void delete(Beteiligung b) {
 		Connection con = DBConnection.connection();
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Beteiligung WHERE id='" 
-			+ b.getBeteiligungId() + "'");
+			stmt.executeUpdate("DELETE FROM Beteiligung WHERE id= " + b.getBeteiligungId());
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -104,13 +104,13 @@ public class BeteiligungMapper {
 
 	public Beteiligung findByBewertung(Bewertung bewertung) {
 		Connection con = DBConnection.connection();
-		Beteiligung b = new Beteiligung();
+		
 
 		try {
 			Statement stmt = con.createStatement();
 
 			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Beteiligung WHERE bewertung_id=" + b.getBewertungId());
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Beteiligung WHERE bewertung_id=" + bewertung.getBewerbungID());
 
 			if (rs.next()) {
 
@@ -119,7 +119,8 @@ public class BeteiligungMapper {
 				 * zugewiesen und so das Tupel aus der Tabelle wieder in ein
 				 * Objekt transformiert.
 				 */
-				b.setID(rs.getInt("id"));
+				Beteiligung b = new Beteiligung();
+				b.setBeteiligungId(rs.getInt("id"));
 				b.setStartdatum(rs.getDate("startdatum"));
 				b.setEnddatum(rs.getDate("enddatum"));
 				b.setPersonentage(rs.getInt("personentage"));
@@ -137,5 +138,68 @@ public class BeteiligungMapper {
 
 		    return null;
 		  }
+	
+	public Vector<Beteiligung> findByProjekt (Projekt projekt) {
+	    Connection con = DBConnection.connection();
+	    Vector<Beteiligung> result = new Vector<Beteiligung>();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      ResultSet rs = stmt.executeQuery("SELECT * FROM Beteiligung WHERE projekt_id= " + projekt.getProjektId() + 
+	    		  " ORDER BY id");
+
+	 
+	      while (rs.next()) {
+	    	  Beteiligung b = new Beteiligung();
+	    	  b.setBeteiligungId(rs.getInt("id"));
+	    	  b.setStartdatum(rs.getDate("startdatum"));
+	    	  b.setEnddatum(rs.getDate("enddatum"));
+	    	  b.setPersonentage(rs.getInt("personentage"));
+	    	  b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+	    	  b.setProjektId(rs.getInt("projekt_id"));
+	    	  b.setBewertungId(rs.getInt("bewertung_id"));
+
+	        result.addElement(b);
+	      }
+	    }
+	    catch (SQLException e) {
+	      e.printStackTrace();
+	    }
+
+	    return result;
+	  }
+	
+	
+	public Vector<Beteiligung> findByOrganisationseinheit (Organisationseinheit organisationseinheit) {
+	    Connection con = DBConnection.connection();
+	    Vector<Beteiligung> result = new Vector<Beteiligung>();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      ResultSet rs = stmt.executeQuery("SELECT * FROM Beteiligung WHERE organisationseinheit_id= " + organisationseinheit.getOrganisationseinheitId() + 
+	    		  " ORDER BY id");
+
+	 
+	      while (rs.next()) {
+	    	  Beteiligung b = new Beteiligung();
+	    	  b.setBeteiligungId(rs.getInt("id"));
+	    	  b.setStartdatum(rs.getDate("startdatum"));
+	    	  b.setEnddatum(rs.getDate("enddatum"));
+	    	  b.setPersonentage(rs.getInt("personentage"));
+	    	  b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+	    	  b.setProjektId(rs.getInt("projekt_id"));
+	    	  b.setBewertungId(rs.getInt("bewertung_id"));
+
+	        result.addElement(b);
+	      }
+	    }
+	    catch (SQLException e) {
+	      e.printStackTrace();
+	    }
+
+	    return result;
+	  }
 
 }

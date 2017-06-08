@@ -306,7 +306,7 @@ public class ProjektWidget extends Composite{
 					Project4uVerwaltung.update(p, new AsyncCallback<Void>() {
 						public void onSuccess(Void result) {
 							
-							Project4uVerwaltung.findAllProjekteOfProjektmarktplatz(m,
+							Project4uVerwaltung.findByProjektmarktplatz(m,
 									new AsyncCallback<Vector<Projekt>>() {
 								
 								public void onSuccess(Vector<Projekt> result) {
@@ -341,7 +341,7 @@ public class ProjektWidget extends Composite{
 						public void onSuccess(Projekt result) {
 							
 							//Nach dem Speichern des Projektes wird das ProjektWidget erstellt und im contend-div angezeigt.
-							Project4uVerwaltung.findAllProjekteOfProjektmarktplatz(m,
+							Project4uVerwaltung.findByProjektmarktplatz(m,
 									new AsyncCallback<Vector<Projekt>>() {
 								
 								public void onSuccess(Vector<Projekt> result) {
