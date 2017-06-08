@@ -1,12 +1,9 @@
 package de.hdm.gruppe1.Project4u.client;
 
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -20,119 +17,48 @@ import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 public class Project4u implements EntryPoint {
 
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
-	
 
-
+	private static String editorHtmlName = "Project4u.html";
 
 	static final int REFRESH_INTERVAL = 5000; // ms
-	  private VerticalPanel mainPanel = new VerticalPanel();
-	  private FlexTable stocksFlexTable = new FlexTable();
-	  private HorizontalPanel addPanel = new HorizontalPanel();
-	  private Label lastUpdatedLabel = new Label();
-	    private LoginInfo loginInfo = null;
-	    private VerticalPanel loginPanel = new VerticalPanel();
-	    private Label loginLabel = new Label("Please sign in to your Google Account to access the StockWatcher application.");
-	    private Anchor signInLink = new Anchor("Sign In");
-	    private Anchor signOutLink = new Anchor("Sign Out");
 
-	  public void onModuleLoad() {
+	private LoginInfo loginInfo = null;
+	private VerticalPanel loginPanel = new VerticalPanel();
+	private Label loginLabel = new Label("Please sign in to your Google Account to access the application.");
+	private Anchor signInLink = new Anchor("Sign In");
+	private Anchor signOutLink = new Anchor("Sign Out");
+
+	public void onModuleLoad() {
 		// Check login status using login service.
-		  LoginServiceAsync loginService = GWT.create(LoginService.class);
-		  loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
-		  public void onFailure(Throwable error) {
-		  }
-		  public void onSuccess(LoginInfo result) {
-		  loginInfo = result;
-		  if(loginInfo.isLoggedIn()) {
-		  loadProject4u();
-		  } else {
-		  loadLogin();
-		  }
-		  }
-		  });
-		  }
-
-	      public void onSuccess(LoginInfo result) {
-	        loginInfo = result;
-	        if(loginInfo.isLoggedIn()) {
-	          loadProject4u();
-	        } else {
-	          loadLogin();
-	        }
-	      }
-
-
-	  
-	  private void loadLogin() {
-			// Assemble login panel.
-			signInLink.setHref(loginInfo.getLoginUrl());
-			loginPanel.add(loginLabel);
-			loginPanel.add(signInLink);
-			RootPanel.get("content").add(loginPanel);
-	  }
-
-	/*	LoginServiceAsync loginService = GWT.create(LoginService.class);
-
-		loginService.login(GWT.getHostPageBaseURL() + "Project4u.html", new AsyncCallback<Organisationseinheit>() {
-			// f�ngt m�gliche Fehler ab
+		LoginServiceAsync loginService = GWT.create(LoginService.class);
+		loginService.login(GWT.getHostPageBaseURL() + editorHtmlName, new AsyncCallback<LoginInfo>() {
 			public void onFailure(Throwable error) {
-				//Window.alert(error.getMessage());
 			}
 
-			// Falls keine Fehler auftreten:
-			public void onSuccess(Organisationseinheit result) {
+			public void onSuccess(LoginInfo result) {
 				loginInfo = result;
-				if (loginInfo.getLoggedIn()) {
-					
-					Project4uVerwaltung.checkStatus(loginInfo, new AsyncCallback<Organisationseinheit>() {
-						
-						@Override
-						public void onSuccess(Organisationseinheit result) {
-							ClientsideSettings.setAktuellerUser(nutzer);
-							boolean status = result.getStatus();
-							if(status == true){
-							loadProject4u();}
-							else{
-								Window.alert("Diese Email ist nicht in der Datenbank vorhanden" 
-										+ "Erstelle ein neues Konto oder verwende eine andere Adresse");
-							
-						}
-						}
-						@Override
-						public void onFailure(Throwable caught) {
-							Window.alert("Datenbank nicht da!");
-							
-						}
-					});
-
+				if (loginInfo.isLoggedIn()) {
+					loadProject4u();
 				} else {
 					loadLogin();
 				}
-		}});
+			}
+		});
 	}
-	
+
 	private void loadLogin() {
-		signinLink.setHref(loginInfo.getLoginUrl());
+		// Assemble login panel.
+		signInLink.setHref(loginInfo.getLoginUrl());
 		loginPanel.add(loginLabel);
-		loginPanel.add(signinLink);
-
+		loginPanel.add(signInLink);
 		RootPanel.get("content").add(loginPanel);
-		
-		//RootPanel.get("Nutzer").setVisible(false);
-
 	}
-*/
-
 
 	private void loadProject4u() {
-			NavigationsleisteWidget nt = new NavigationsleisteWidget();
-			RootPanel.get("nav").add(nt);
-			nt.homeButtonclick();
+		NavigationsleisteWidget nt = new NavigationsleisteWidget();
+		RootPanel.get("nav").add(nt);
+		nt.homeButtonclick();
 
-
-}
-
-
+	}
 
 }
-
