@@ -267,7 +267,7 @@ public class ProjektmarktplatzWidget extends Composite {
 						pPlatz.setName(pName.getValue());
 						
 						//Dem neu erzeugten Projektmarktplatz wird der Name zugewiesen und er wird in der DB abgelegt
-						Project4uVerwaltung.createProjektmarktplatz(pPlatz, new AsyncCallback<Projektmarktplatz>() {
+						Project4uVerwaltung.createProjektmarktplatz(pPlatz,ClientsideSettings.getAktuellerUser() ,new AsyncCallback<Projektmarktplatz>() {
 							
 							@Override
 							public void onSuccess(Projektmarktplatz result) {
