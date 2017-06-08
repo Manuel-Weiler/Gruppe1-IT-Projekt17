@@ -3,6 +3,7 @@ package de.hdm.gruppe1.Project4u.client;
 import com.google.gwt.core.client.GWT;
 
 import de.hdm.gruppe1.Project4u.shared.CommonSettings;
+import de.hdm.gruppe1.Project4u.shared.LoginInfo;
 import de.hdm.gruppe1.Project4u.shared.LoginService;
 import de.hdm.gruppe1.Project4u.shared.LoginServiceAsync;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
@@ -19,7 +20,7 @@ public class ClientsideSettings extends CommonSettings{
 	private static Project4uAdministrationAsync project4uVerwaltung = null;
 	private static ReportGeneratorAsync reportVerwaltung = null;
 	private static LoginServiceAsync loginService = null;
-	private static Organisationseinheit aktuellerUser = null;
+	private static LoginInfo aktuellerUser = null;
 
 	public static LoginServiceAsync getLoginService(){
 		if(loginService == null){
@@ -32,14 +33,14 @@ public class ClientsideSettings extends CommonSettings{
 	 * gibt den aktuelle eingeloggten User zurueck
 	 * @return aktuellerUser
 	 */
-	public static Organisationseinheit getAktuellerUser() {
+	public static LoginInfo getAktuellerUser() {
 		return aktuellerUser;
 	}
 
 	/**
 	 * setzt den aktuell eingeloggten User als Userd
 	 */
-	public static void setAktuellerUser(Organisationseinheit nutzer) {
+	public static void setAktuellerUser(LoginInfo nutzer) {
 		ClientsideSettings.aktuellerUser = nutzer;
 	}
 

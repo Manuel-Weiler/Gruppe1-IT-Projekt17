@@ -180,6 +180,7 @@ public class ProjektmarktplatzWidget extends Composite {
 							vPanel.add(update);
 							Box.add(vPanel);
 							Box.center();
+							Box.setAnimationEnabled(true);
 							Box.setAutoHideEnabled(true);
 							Box.show();
 
@@ -227,6 +228,8 @@ public class ProjektmarktplatzWidget extends Composite {
 						}
 					});
 
+					diBox.setAnimationEnabled(true);
+
 					diBox.setAutoHideEnabled(true);
 					diBox.center();
 					diBox.show();
@@ -260,10 +263,10 @@ public class ProjektmarktplatzWidget extends Composite {
 					if (!pName.getValue().isEmpty()) {
 						Projektmarktplatz pPlatz = new Projektmarktplatz();
 						pPlatz.setName(pName.getValue());
-
-						// Dem neu erzeugten Projektmarktplatz wird der Name
-						// zugewiesen und er wird in der DB abgelegt
-						Project4uVerwaltung.createProjektmarktplatz(pPlatz, new AsyncCallback<Projektmarktplatz>() {
+						
+						//Dem neu erzeugten Projektmarktplatz wird der Name zugewiesen und er wird in der DB abgelegt
+						Project4uVerwaltung.createProjektmarktplatz(pPlatz,ClientsideSettings.getAktuellerUser() ,new AsyncCallback<Projektmarktplatz>() {
+							
 
 							@Override
 							public void onSuccess(Projektmarktplatz result) {

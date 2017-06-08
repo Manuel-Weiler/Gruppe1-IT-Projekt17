@@ -10,6 +10,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
+import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
@@ -18,7 +19,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 public interface Project4uAdministrationAsync {
 
-	void createOrganisationseinheit(String google_id, String name, String typ, Partnerprofil partnerprofil, AsyncCallback<Organisationseinheit> callback);
+	
 
 	/**
 	 * @param callback
@@ -33,7 +34,7 @@ public interface Project4uAdministrationAsync {
 	
 	void init(AsyncCallback<Void> callback);
 	
-	void checkStatus(Organisationseinheit loginInfo, AsyncCallback<Organisationseinheit> callback);
+	
 
 	
 	void findAllProjektmarktplatz(AsyncCallback<Vector<Projektmarktplatz>> callback);
@@ -44,7 +45,7 @@ public interface Project4uAdministrationAsync {
 
 	void testMethode2(AsyncCallback<Vector<Projektmarktplatz>> callback);
 
-	void createProjektmarktplatz(Projektmarktplatz p, AsyncCallback<Projektmarktplatz> callback);
+	void createProjektmarktplatz(Projektmarktplatz p, LoginInfo login, AsyncCallback<Projektmarktplatz> callback);
 
 	void update(Projektmarktplatz p, AsyncCallback<Void> callback);
 
@@ -57,5 +58,50 @@ public interface Project4uAdministrationAsync {
 	void findByProjektmarktplatz(Projektmarktplatz projektmarktplatz, AsyncCallback<Vector<Projekt>> callback);
 
 	void findAusschreibungbyProjekt(Projekt projekt, AsyncCallback<Vector<Ausschreibung>> callback);
+
+	void checkStatus(LoginInfo loginInfo, AsyncCallback<Boolean> callback);
+
+	void updateEigenschaft(Eigenschaft e, AsyncCallback<Eigenschaft> callback);
+
+	void createPartnerprofil(AsyncCallback<Partnerprofil> callback);
+
+	void insertEigenschaft(Eigenschaft e, Partnerprofil p, AsyncCallback<Eigenschaft> callback);
+
+
+
+
+	void createOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Organisationseinheit> callback);
+
+
+
+
+	void getEigenschaftenOfOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Vector<Eigenschaft>> callback);
+
+
+
+
+	void getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Partnerprofil> callback);
+
+
+
+
+	void getOrganisationseinheitByUser(LoginInfo login, AsyncCallback<Organisationseinheit> callback);
+
+
+
+
+	void getAllOrganisationseinheitenOfTypTeamUnternehmen(AsyncCallback<Vector<Organisationseinheit>> callback);
+
+
+
+
+	void insertLinkedTeamUnternehmenOfOrganisationseinheit(LoginInfo login, Organisationseinheit teamunternehmen,
+			AsyncCallback<Void> callback);
+
+
+
+
+	void getLinkedTeamAndUnternehmenOfOrganisationseinheit(LoginInfo login,
+			AsyncCallback<Vector<Organisationseinheit>> callback);
 
 }
