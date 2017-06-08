@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -49,6 +50,7 @@ public class OrganisationseinheitWidget extends Composite{
 	Button addProjekt = new Button("Organisationseinheit hinzufügen");
 	VerticalPanel vPanel = new VerticalPanel();
 	HTML heading = new HTML("<h2 class='h2heading'>Teams und Unternehmen:</h2>");
+	Vector<Organisationseinheit> linked = new Vector<Organisationseinheit>();
 	
 	 
 	public OrganisationseinheitWidget(Vector<Organisationseinheit> orgas){
@@ -68,6 +70,7 @@ public class OrganisationseinheitWidget extends Composite{
 			
 		vPanel.clear();
 		vPanel.add(heading);
+		getLinkedOrgas();
 		
 		CellTable<Organisationseinheit> orgaTabelle = new CellTable<Organisationseinheit>(KEY_PROVIDER);
 		
@@ -85,14 +88,25 @@ public class OrganisationseinheitWidget extends Composite{
 		};
 		
 		TextColumn<Organisationseinheit> status = new TextColumn<Organisationseinheit>() {
+			//TODO:fehlersuche
 			public String getValue(Organisationseinheit object) {
-				return object.getTyp();
+				Vector<Organisationseinheit> temp = new Vector<Organisationseinheit>();
+				temp = getLinkedOrgas();
+					if(object != null){
+						 return  "Zugehörigkeit definiert";
+					}
+					else{
+						return  "Keine Zugehörigkeit definiert";
+					}
+				
+				
 			}
 		};
 		
 		ButtonCell buttonCell = new ButtonCell();
 		Column<Organisationseinheit, String> buttonColumn = new Column<Organisationseinheit, String>(buttonCell) {
 		  @Override
+		  
 		  public String getValue(Organisationseinheit au) {
 		    // The value to display in the button.
 		    return "Zugehörigkeit zur Organisationseinheit definieren";
@@ -105,20 +119,27 @@ public class OrganisationseinheitWidget extends Composite{
 		buttonColumn.setFieldUpdater(new FieldUpdater <Organisationseinheit, String>() {
 		  public void update(int index, Organisationseinheit object, String value) {
 		    // Value is the button value.  Object is the row object.
-			  //TODO: löschen implementieren
-		    Window.alert("You clicked: " + object.getName());
+			  setZugehoerigkeit(object);
 		  }
 		});
+		
+		ButtonCell detailsCell = new ButtonCell();
+		Column<Organisationseinheit, String> detailsColumn = new Column<Organisationseinheit, String>(detailsCell) {
+		  @Override
 		  
+		  public String getValue(Organisationseinheit au) {
+		    // The value to display in the button.
+		    return "Details";
+		  }
+		};
 		
+
+
 		
-		final SingleSelectionModel<Organisationseinheit> selectionModel = new SingleSelectionModel<Organisationseinheit>(KEY_PROVIDER);	
-		orgaTabelle.setSelectionModel(selectionModel);
-		selectionModel.addSelectionChangeHandler(new Handler() {
-			
-			@Override
-			public void onSelectionChange(SelectionChangeEvent event) {
-				final DialogBox diBox = new DialogBox();
+		detailsColumn.setFieldUpdater(new FieldUpdater <Organisationseinheit, String>() {
+		  public void update(int index, final Organisationseinheit object, String value) {
+		    // Value is the button value.  Object is the row object.
+			  final DialogBox diBox = new DialogBox();
 				VerticalPanel vPanel = new VerticalPanel();
 				Button seeOrga = new Button("Profil zur Organisationseinheit ansehen");
 				seeOrga.addClickHandler(new ClickHandler() {
@@ -126,7 +147,7 @@ public class OrganisationseinheitWidget extends Composite{
 					@Override
 					public void onClick(ClickEvent event) {
 						diBox.hide();
-						orgaProfil(selectionModel.getSelectedObject()); 
+						orgaProfil(object); 
 						
 					}
 				});
@@ -142,14 +163,20 @@ public class OrganisationseinheitWidget extends Composite{
 				diBox.setAutoHideEnabled(true);
 				diBox.center();
 				diBox.show();
-			}});
-			
+		  }
+		});
+		  
+		
+		
+		
 		
 		
 		
 		orgaTabelle.addColumn(nameColumn, "Name");
 		orgaTabelle.addColumn(typeColumn, "Typ");
+		orgaTabelle.addColumn(status, "Status");
 		orgaTabelle.addColumn(buttonColumn);
+		orgaTabelle.addColumn(detailsColumn);
 		
 		orgaTabelle.setRowCount(orgas.size());
 		
@@ -183,7 +210,7 @@ public class OrganisationseinheitWidget extends Composite{
 	
 	}
 	
-	public void orgaProfil(Organisationseinheit o){
+	private void orgaProfil(Organisationseinheit o){
 		DialogBox db = new DialogBox();
 		final VerticalPanel vp = new VerticalPanel();
 		HTML Profil = new HTML("<p class='heading'>Profil: "+o.getName()+"</p>");
@@ -285,4 +312,43 @@ public class OrganisationseinheitWidget extends Composite{
 		
 		
 	}
+	
+	 
+	private Vector<Organisationseinheit> getLinkedOrgas (){
+		
+		Project4uVerwaltung.getLinkedTeamAndUnternehmenOfOrganisationseinheit(ClientsideSettings.getAktuellerUser(), new AsyncCallback<Vector<Organisationseinheit>>() {
+			
+			@Override
+			public void onSuccess(Vector<Organisationseinheit> result) {
+				
+				linked=result;
+				
+			}
+			public void onFailure(Throwable caught) {	
+			}
+			
+		});
+		return linked;
+	}
+	
+	private void setZugehoerigkeit(Organisationseinheit orga) {
+
+		Project4uVerwaltung.insertLinkedTeamUnternehmenOfOrganisationseinheit(ClientsideSettings.getAktuellerUser(),
+				orga, new AsyncCallback<Void>() {
+
+					@Override
+					public void onSuccess(Void result) {
+						// TODO Refresh Tabelle
+
+						
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert(caught.getMessage());
+					}
+				});
+	}
+	
+	
 }

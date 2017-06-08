@@ -82,4 +82,16 @@ public interface Project4uAdministrationAsync {
 
 	void getAllOrganisationseinheitenOfTypTeamUnternehmen(AsyncCallback<Vector<Organisationseinheit>> callback);
 
+
+
+
+	void insertLinkedTeamUnternehmenOfOrganisationseinheit(LoginInfo login, Organisationseinheit teamunternehmen,
+			AsyncCallback<Void> callback);
+
+
+
+
+	void getLinkedTeamAndUnternehmenOfOrganisationseinheit(LoginInfo login,
+			AsyncCallback<Vector<Organisationseinheit>> callback);
+
 }

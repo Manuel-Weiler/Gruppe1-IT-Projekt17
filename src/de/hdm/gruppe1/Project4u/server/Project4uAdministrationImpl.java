@@ -192,24 +192,29 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * @param TeamUnternehmen
 	 * @throws IllegalArgumentException
 	 */
-	public void insertLinkedTeamUnternehmenOfOrganisationseinheit(Organisationseinheit person,
+	public void insertLinkedTeamUnternehmenOfOrganisationseinheit(LoginInfo login,
 			Organisationseinheit teamunternehmen) throws IllegalArgumentException {
-		organisationseinheitMapper.insertLinkedTeamUnternehmenOfOrganisationseinheit(person, teamunternehmen);
+		Organisationseinheit o = new Organisationseinheit();
+		o = getOrganisationseinheitByUser(login);
+		organisationseinheitMapper.insertLinkedTeamUnternehmenOfOrganisationseinheit(o, teamunternehmen);
 	}
 	
 	
 	/**
-	 * Die Methode gibt alle Organisationseinheiten vom Typ Team und Unternehmen zurück, zu denen der 
-	 * Benutzer die Zugehörigkeit seines "Accounts" vom Typ Person definiert hat.
+	 * Die Methode gibt alle Organisationseinheiten vom Typ Team und Unternehmen
+	 * zurück, zu denen der Benutzer die Zugehörigkeit seines "Accounts" vom Typ
+	 * Person definiert hat.
+	 * 
 	 * @param login
 	 * @return
 	 */
-	public Vector<Organisationseinheit> getLinkedTeamAndUnternehmenOfOrganisationseinheit(LoginInfo login){
+	public Vector<Organisationseinheit> getLinkedTeamAndUnternehmenOfOrganisationseinheit(LoginInfo login)
+			throws IllegalArgumentException {
 		Organisationseinheit o = new Organisationseinheit();
 		o = getOrganisationseinheitByUser(login);
-		
+
 		return organisationseinheitMapper.getLinkedTeamAndUnternehmenOfOrganisationseinheit(o);
-		
+
 	}
       		
 	/*
