@@ -363,7 +363,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	
 	public Projektmarktplatz createProjektmarktplatz(Projektmarktplatz p, LoginInfo login)
 			throws IllegalArgumentException {
-		Organisationseinheit o = getOrganisationseinheitByUser(login);
+		Organisationseinheit o = new Organisationseinheit();
+		o = getOrganisationseinheitByUser(login);
 		p.setOrganisationseinheitId(o.getOrganisationseinheitId());
 		return this.projektmarktplatzMapper.insert(p);
 
@@ -410,9 +411,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
-	public Projekt createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o)
+	public Projekt createProjekt(Projekt p, Projektmarktplatz pm, LoginInfo login)
 			throws IllegalArgumentException {
-		
+		Organisationseinheit o = new Organisationseinheit();
+		o = getOrganisationseinheitByUser(login);
 		return this.projektMapper.insert(p, pm, o);
 	}
 	

@@ -3,10 +3,12 @@ package de.hdm.gruppe1.Project4u.client.gui;
 import java.util.Vector;
 
 import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
@@ -67,11 +69,25 @@ public class OrganisationseinheitWidget extends Composite{
 			initWidget(vPanel);
 		}
 		else{
+		
 			
 		vPanel.clear();
 		vPanel.add(heading);
-		getLinkedOrgas();
+		getLinkedOrgas(orgas);
+		//Window.alert(linked.firstElement().getName());
 		
+	    initWidget(vPanel);
+	    
+	    
+	}
+	
+	
+	
+	
+	
+	}
+	
+	private void drawTable(Vector<Organisationseinheit> orgas){
 		CellTable<Organisationseinheit> orgaTabelle = new CellTable<Organisationseinheit>(KEY_PROVIDER);
 		
 		//Die Spalte der Organisationseinheiten-Tabelle wird erstellt und deren Inhalt definiert.
@@ -88,29 +104,46 @@ public class OrganisationseinheitWidget extends Composite{
 		};
 		
 		TextColumn<Organisationseinheit> status = new TextColumn<Organisationseinheit>() {
-			//TODO:fehlersuche
+			//TODO: styling
 			public String getValue(Organisationseinheit object) {
-				Vector<Organisationseinheit> temp = new Vector<Organisationseinheit>();
-				temp = getLinkedOrgas();
-					if(object != null){
-						 return  "Zugehörigkeit definiert";
+				String test = "Keine Zugehörigkeit definiert";
+				for (Organisationseinheit org : linked){
+					if(org.getOrganisationseinheitId()==object.getOrganisationseinheitId()){
+						 test=  "Zugehörigkeit definiert";
 					}
-					else{
-						return  "Keine Zugehörigkeit definiert";
+					else{  
 					}
-				
-				
+			
+				}
+				return test;
 			}
 		};
 		
 		ButtonCell buttonCell = new ButtonCell();
+	
 		Column<Organisationseinheit, String> buttonColumn = new Column<Organisationseinheit, String>(buttonCell) {
 		  @Override
 		  
+		 
+		  
 		  public String getValue(Organisationseinheit au) {
 		    // The value to display in the button.
-		    return "Zugehörigkeit zur Organisationseinheit definieren";
+			  String buttonvalue = "";
+				for (Organisationseinheit org : linked){
+					if(org.getOrganisationseinheitId()==au.getOrganisationseinheitId()){
+						buttonvalue=  "Zugehörigkeit zur Organisationseinheit beenden";
+					}
+					else{  
+						buttonvalue=  "Zugehörigkeit zur Organisationseinheit definieren";
+					}
+			
+				}
+				return buttonvalue;
+		 
 		  }
+		  
+		
+		  
 		};
 		
 
@@ -119,7 +152,19 @@ public class OrganisationseinheitWidget extends Composite{
 		buttonColumn.setFieldUpdater(new FieldUpdater <Organisationseinheit, String>() {
 		  public void update(int index, Organisationseinheit object, String value) {
 		    // Value is the button value.  Object is the row object.
-			  setZugehoerigkeit(object);
+			  for (Organisationseinheit org : linked){
+					if(org.getOrganisationseinheitId()==object.getOrganisationseinheitId()){
+						//TODO: Löschen Zugehörigkeit
+						Window.alert("gelöscht");
+					}
+					else{  
+						 setZugehoerigkeit(object);
+					}
+			
+				}
+			  
+			 
+			  
 		  }
 		});
 		
@@ -200,14 +245,6 @@ public class OrganisationseinheitWidget extends Composite{
 	    
 	    
 	    vPanel.add(orgaTabelle);
-	    initWidget(vPanel);
-	    
-	    
-	}
-	
-	
-	
-	
 	}
 	
 	private void orgaProfil(Organisationseinheit o){
@@ -314,21 +351,27 @@ public class OrganisationseinheitWidget extends Composite{
 	}
 	
 	 
-	private Vector<Organisationseinheit> getLinkedOrgas (){
+	private void getLinkedOrgas (final Vector<Organisationseinheit> orgs){
 		
 		Project4uVerwaltung.getLinkedTeamAndUnternehmenOfOrganisationseinheit(ClientsideSettings.getAktuellerUser(), new AsyncCallback<Vector<Organisationseinheit>>() {
 			
 			@Override
 			public void onSuccess(Vector<Organisationseinheit> result) {
 				
-				linked=result;
+				setLinkedOrgas(result);
 				
+				drawTable(orgs);
 			}
 			public void onFailure(Throwable caught) {	
 			}
 			
 		});
-		return linked;
+		
+	}
+	
+	private void setLinkedOrgas(Vector<Organisationseinheit> orgas){
+		this.linked = orgas;
+		
 	}
 	
 	private void setZugehoerigkeit(Organisationseinheit orga) {

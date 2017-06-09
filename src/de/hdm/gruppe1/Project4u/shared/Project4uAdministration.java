@@ -42,7 +42,7 @@ public interface Project4uAdministration extends RemoteService{
 
 	public void update(Projekt p) throws IllegalArgumentException;
 	
-	public Projekt createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o)
+	public Projekt createProjekt(Projekt p, Projektmarktplatz pm, LoginInfo login)
 			   throws IllegalArgumentException;
 
 	

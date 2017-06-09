@@ -39,6 +39,7 @@ import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
+import de.hdm.gruppe1.Project4u.shared.LoginInfo;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
@@ -49,11 +50,13 @@ public class ProjektWidget extends Composite{
 	
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	Projektmarktplatz projektmarktplatz = new Projektmarktplatz();
-	
+	Organisationseinheit org = new Organisationseinheit();
 	
 	Button addProjekt = new Button("Projekt anlegen");
 	VerticalPanel vPanel = new VerticalPanel();
 	//TODO: Projekt löschen,  Ausschreibungen
+	
+	//TODO: Bewerbung
 
 
 	/*
@@ -78,7 +81,7 @@ public class ProjektWidget extends Composite{
 	
 	
 	public ProjektWidget (Vector<Projekt> projekte, Projektmarktplatz pMarktpl){
-		
+		getOrganisationseinheitOfUser(ClientsideSettings.getAktuellerUser());
 		this.projektmarktplatz =pMarktpl;
 		
 		
@@ -227,14 +230,24 @@ public class ProjektWidget extends Composite{
 		
 }
 	protected void projektChange( final Projekt p, final Projektmarktplatz m){
+		
 		final DialogBox db = new DialogBox();
 		VerticalPanel vp = new VerticalPanel();
-		//TODO: Projektleiter implementieren
 		
-		Label name = new Label("Name:");
+		
+		Label name = new Label("Projektname:");
 		vp.add(name);
 		final TextBox nam = new TextBox();
 		vp.add(nam);
+		
+		
+		Label projektleiter = new Label("Projektleiter:");
+		vp.add(projektleiter);
+		final TextBox pLeiter = new TextBox();	
+		pLeiter.setValue(org.getName()+" - "+ClientsideSettings.getAktuellerUser().getEmailAddress());
+		pLeiter.setEnabled(false);
+		pLeiter.setTitle("Wenn Sie nicht der Projektleiter sind, loggen sic");
+		vp.add(pLeiter);
 		
 		
 		Label sdate = new Label("Startdatum:");
@@ -331,11 +344,8 @@ public class ProjektWidget extends Composite{
 				//Der else-fall tritt ein, wenn ein neues Projekt erstellt wird.
 				else{
 					
-					//TODO: Organisationseinheit or gegen ID des Projektleiters tauschen.
 					
-					Organisationseinheit or = new Organisationseinheit();
-					or.setOrganisationseinheitId(2);
-					Project4uVerwaltung.createProjekt(p, m, or, new AsyncCallback<Projekt>() {
+					Project4uVerwaltung.createProjekt(p, m, ClientsideSettings.getAktuellerUser(), new AsyncCallback<Projekt>() {
 						
 						
 						public void onSuccess(Projekt result) {
@@ -424,6 +434,26 @@ public class ProjektWidget extends Composite{
 
 			}
 		});
+	}
+	
+	
+	
+	private void getOrganisationseinheitOfUser(LoginInfo login){
+		
+		Project4uVerwaltung.getOrganisationseinheitByUser(login, new AsyncCallback<Organisationseinheit>() {
+			
+			public void onSuccess(Organisationseinheit result) {
+				setOrg(result);
+				
+			}
+			public void onFailure(Throwable caught) {
+			}
+		});
+		
+	}
+	
+	private void setOrg(Organisationseinheit o){
+		this.org=o;
 	}
 	
 	
