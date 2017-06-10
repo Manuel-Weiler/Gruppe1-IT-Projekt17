@@ -19,18 +19,17 @@ public interface ReportGenerator extends RemoteService{
 	
 	ReportByAlleAusschreibungen createAlleAusschreibungenReport() throws IllegalArgumentException;
 
-	ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Partnerprofil pa);
+	ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Organisationseinheit orga);
 	
 	public Vector<Eigenschaft> getEigenschaftenOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException;
 	
 	public Partnerprofil getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException;
 	
-	public Vector<Eigenschaft> getEigenschaftOfPartnerprofil(Partnerprofil p)throws IllegalArgumentException;
+	//public Vector<Eigenschaft> getEigenschaftOfPartnerprofil(Partnerprofil p)throws IllegalArgumentException;
 	
 	public Organisationseinheit getOrganisationseinheitByUser(LoginInfo login)throws IllegalArgumentException;
 	
 	String testMethode();
-	
 	
 	
 }

@@ -21,47 +21,6 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 public class Testklasse {
 	public static void main(String[] args) {
-		
-		
-		
-		private OrganisationseinheitMapper organisationseinheitMapper = null;
-		private EigenschaftMapper eigenschaftMapper = null;
-		private PartnerprofilMapper partnerprofilMapper = null;
-
-		
-		//Vector wird mit EigenschaftsObjekten des Partnerprofils befüllt
-		public Vector <Eigenschaft> getEigenschaftenOfPartnerprofil (Partnerprofil p)throws IllegalArgumentException{
-			return this.partnerprofilMapper.getEigenschaftenOfPartnerprofil(p);
-		}
-		
-		//Ermittelt den aktuellen Nutzer
-		public Organisationseinheit getOrganisationseinheitByUser(LoginInfo login) throws IllegalArgumentException {
-
-			for (Organisationseinheit o : organisationseinheitMapper.findByTyp("Person")) {
-				if (o.getGoogleId().equalsIgnoreCase(login.getEmailAddress())) {
-
-					return o;
-				}
-
-			}
-			return null;
-
-		};
-
-		//Ermittlung des Partnerprofil der Organisationseinheit
-		public Partnerprofil getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga)
-				throws IllegalArgumentException {
-			return this.partnerprofilMapper.findById(orga.getPartnerprofilId());
-		}
-
-		//Ermittelt Eigenschaften einer Organisationseinheit 
-		public Vector<Eigenschaft> getEigenschaftenOfOrganisationseinheit(Organisationseinheit orga)
-				throws IllegalArgumentException {
-			Partnerprofil partnerprofil = new Partnerprofil();
-			partnerprofil = getPartnerprofilOfOrganisationseinheit(orga);
-
-			return getEigenschaftenOfPartnerprofil(partnerprofil);
-		}
 
 
 		//SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");

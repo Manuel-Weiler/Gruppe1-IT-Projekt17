@@ -15,9 +15,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 import de.hdm.gruppe1.Project4u.shared.report.HTMLReportWriter;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
 
 public class NavigationsleisteReport extends Composite {
 
@@ -29,12 +31,14 @@ public class NavigationsleisteReport extends Composite {
 
 	Button homeButton = new Button("Startseite");
 	Button alleAusschreibungenButton = new Button("Alle Ausschreibungen");
+	Button ausschreibungenForPartnerprofilButton = new Button("Ausschreibungen die zu dir passen");
 	Button testButton = new Button("Test");
 
 	public NavigationsleisteReport() {
 
 		menuReportPanel.add(homeButton);
 		menuReportPanel.add(alleAusschreibungenButton);
+		menuReportPanel.add(ausschreibungenForPartnerprofilButton);
 		menuReportPanel.add(testButton);
 
 		// Buttonabstand
@@ -124,6 +128,37 @@ public class NavigationsleisteReport extends Composite {
 			}
 		});
 
+		ausschreibungenForPartnerprofilButton.addClickHandler(new ClickHandler(){
+			
+			public void onClick(ClickEvent event){
+				Organisationseinheit orga = new Organisationseinheit();
+				
+				ReportVerwaltung.createAusschreibungenForPartnerprofil(orga, new AsyncCallback<ReportByAusschreibungenForPartnerprofil>(){
+					public void onSuccess(ReportByAusschreibungenForPartnerprofil result2){
+						
+						if(result2 != null){
+						HTMLReportWriter writer = new HTMLReportWriter();
+						writer.process(result2);
+						RootPanel.get("contentR").clear();
+						RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+						}
+					}
+					
+					public void onFailure(Throwable caught) {
+						DialogBox dBox = new DialogBox();
+
+						Label label = new Label(caught.getMessage());
+						dBox.add(label);
+						dBox.center();
+						dBox.setAutoHideEnabled(true);
+						dBox.show();
+
+					}
+
+				});
+			}
+		});
+		
 		initWidget(menuReportPanel);
 	}
 
@@ -132,52 +167,3 @@ public class NavigationsleisteReport extends Composite {
 	}
 }
 
-// Anhand Bank-Projekt:
-
-// alleAusschreibungenButton.addClickHandler(new ClickHandler() {
-//
-// @Override
-// public void onClick(ClickEvent event) {
-//
-// ReportGenerator.createAlleAusschreibungenReport(new
-// createAlleAusschreibungenReportCallback());
-//
-// }
-//
-// });
-// initWidget(menuReportPanel);
-// }
-//
-// public void homeButtonClick() {
-// homeButton.click();
-// }
-//
-// }
-//
-// class createAlleAusschreibungenReportCallback implements
-// AsyncCallback<ReportByAlleAusschreibungen> {
-//
-// @Override
-// public void onFailure(Throwable caught) {
-//
-// DialogBox dBox = new DialogBox();
-//
-// Label label = new Label(caught.getMessage());
-// dBox.add(label);
-// dBox.center();
-// dBox.setAutoHideEnabled(true);
-// dBox.show();
-// }
-//
-// @Override
-// public void onSuccess(ReportByAlleAusschreibungen report) {
-// if (report != null) {
-// HTMLReportWriter writer = new HTMLReportWriter();
-// writer.process(report);
-// RootPanel.get("contentR").clear();
-// RootPanel.get("contentR").add(new HTML(writer.getReportText()));
-// }
-//
-// }
-//
-// }

@@ -48,18 +48,17 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 	private Project4uAdministration project4uAdministration = null;
 
-	
+	private ReportGenerator reportGenerator = null;
 
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
 
-	
-	//Vector wird mit EigenschaftsObjekten des Partnerprofils befüllt
-	public Vector <Eigenschaft> getEigenschaftenOfPartnerprofil (Partnerprofil p)throws IllegalArgumentException{
+	// Vector wird mit EigenschaftsObjekten des Partnerprofils befüllt
+	public Vector<Eigenschaft> getEigenschaftenOfPartnerprofil(Partnerprofil p) throws IllegalArgumentException {
 		return this.partnerprofilMapper.getEigenschaftenOfPartnerprofil(p);
 	}
-	
-	//Ermittelt den aktuellen Nutzer
+
+	// Ermittelt den aktuellen Nutzer
 	public Organisationseinheit getOrganisationseinheitByUser(LoginInfo login) throws IllegalArgumentException {
 
 		for (Organisationseinheit o : organisationseinheitMapper.findByTyp("Person")) {
@@ -72,13 +71,13 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 	};
 
-	//Ermittlung des Partnerprofil der Organisationseinheit
+	// Ermittlung des Partnerprofil der Organisationseinheit
 	public Partnerprofil getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga)
 			throws IllegalArgumentException {
 		return this.partnerprofilMapper.findById(orga.getPartnerprofilId());
 	}
 
-	//Ermittelt Eigenschaften einer Organisationseinheit 
+	// Ermittelt Eigenschaften einer Organisationseinheit
 	public Vector<Eigenschaft> getEigenschaftenOfOrganisationseinheit(Organisationseinheit orga)
 			throws IllegalArgumentException {
 		Partnerprofil partnerprofil = new Partnerprofil();
@@ -87,7 +86,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		return getEigenschaftenOfPartnerprofil(partnerprofil);
 	}
 
-	
 	/**
 	 * No-Argument-Konstruktor.
 	 * 
@@ -240,165 +238,171 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 
 	public ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Organisationseinheit orga)
-			throws IllegalArgumentException{
-		
+			throws IllegalArgumentException {
+
 		if (this.getProject4uAdministration() == null)
 			return null;
-		
-		//Leeren Report anlegen
+
+		// Leeren Report anlegen
 		ReportByAusschreibungenForPartnerprofil result = new ReportByAusschreibungenForPartnerprofil();
-		
-		
-		//Titel und Bezeichung des Reports
+
+		// Titel und Bezeichung des Reports
 		result.setTitle("Meine Ausschreibungen");
-		
-		//Impressum hinzufuegen
+
+		// Impressum hinzufuegen
 		result.setCreated(new Date());
-		
-		//Kopfdaten des Reports
+
+		// Kopfdaten des Reports
 		CompositeParagraph header = new CompositeParagraph();
-		
-		header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Ausschreibungen die Ihrerm Partnerprofil entsprechen"));
-		
-		//Kopfdaten zu Report hinzufï¿½gen
+
+		header.addSubParagraph(
+				new SimpleParagraph("Hier sehen Sie alle Ausschreibungen die Ihrerm Partnerprofil entsprechen"));
+
+		// Kopfdaten zu Report hinzufï¿½gen
 		result.setHeaderData(header);
 
+		// Kopfzeile fï¿½r die Tabelle anlegen:
+		Row headline = new Row();
+
+		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
+
+		headline.addColumn(new Column("Ausschreibungs-ID"));
+		headline.addColumn(new Column("Bezeichnung"));
+		headline.addColumn(new Column("Projektleiter"));
+		headline.addColumn(new Column("Bewerbungsfrist"));
+		headline.addColumn(new Column("Ausschreibungstext"));
+		headline.addColumn(new Column("Erstelldatum:"));
+		headline.addColumn(new Column("Projekt-ID"));
+		headline.addColumn(new Column("Partnerprofil-ID"));
+
+		// Kopfzeile wird dem Report hinzugefuegt
+		result.addRow(headline);
+
+		// Reportinhalt:
+
+		// Partnerprofile vergleichen anhand der Eigenschaftsobjekten
+		// Ließt die Eigenschaften von einem Partnerprofil aus
+
+		Partnerprofil pa = new Partnerprofil();
+		EigenschaftMapper em = EigenschaftMapper.eigenschaftMapper();
+		Vector<Eigenschaft> vektorEigenschaft = new Vector<Eigenschaft>();
+		vektorEigenschaft = em.findByPartnerprofil(pa);
+
 		
-		//Kopfzeile fï¿½r die Tabelle anlegen:
-				Row headline = new Row();
-				
-				//Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
-				
-				headline.addColumn(new Column("Ausschreibungs-ID"));
-				headline.addColumn(new Column("Bezeichnung"));
-				headline.addColumn(new Column("Projektleiter"));
-				headline.addColumn(new Column("Bewerbungsfrist"));
-				headline.addColumn(new Column("Ausschreibungstext"));
-				headline.addColumn(new Column("Erstelldatum:"));
-				headline.addColumn(new Column("Projekt-ID"));
-				headline.addColumn(new Column("Partnerprofil-ID"));
-				
-				//Kopfzeile wird dem Report hinzugefuegt
-				report.addRow(headline);
-				
-				//Reportinhalt:
-				
-			
-				//Partnerprofile vergleichen anhand der Eigenschaftsobjekten
-				//Ließt die Eigenschaften von einem Partnerprofil aus
-				
-				Partnerprofil pa = new Partnerprofil();
-				EigenschaftMapper em = EigenschaftMapper.eigenschaftMapper();
-				Vector<Eigenschaft> ve = new Vector<Eigenschaft>();
-				ve = em.findByPartnerprofil(pa);
-			
-				
-				
+		// Aktuellen Nutzer holen
+		orga = this.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser());
+		// Vektor mit Eigenschaften befüllen
+		Vector<Eigenschaft> vektorEigeneEigenschaften = this.reportGenerator
+				.getEigenschaftenOfOrganisationseinheit(orga);
 
+		
+		// Hier wird eine ArrayList mit allen Partnerprofilen ausgegeben.
+		PartnerprofilMapper pm = PartnerprofilMapper.partnerprofilMapper();
+		ArrayList<Partnerprofil> allePartnerprofile = new ArrayList<Partnerprofil>();
+		allePartnerprofile = pm.findAllPartnerprofile();
+
+		// Alle Ausschreibungen aufrufen
+		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
+		ArrayList<Ausschreibung> alleAusschreibungen = new ArrayList<Ausschreibung>();
+		alleAusschreibungen = am.findAllAusschreibungen();
+
+//		// Zunächst muss sichergestellt werden dass wir nur die Partnerprofile
+//		// von Ausschreibungen erhalten.
+//		// Diese Ausschreibungen werden in eine ArrayList geschrieben.
+//
+//		ArrayList<Ausschreibung> ala = new ArrayList<Ausschreibung>();
+//
+//		for (Partnerprofil par : allePartnerprofile) {
+//			for (Ausschreibung aus : alleAusschreibungen) {
+//				if (par.getID() == aus.getPartnerprofilId()) {
+//					ala.add(aus);
+//				}
+//			}
+//		}
+
+		// Eigenschaften zu den einzelnen Partnerprofilen auslesen.
+
+		Vector<Vector<Eigenschaft>> vektormitEigenschaftsVektoren = new Vector<>();
+		
+		for (Ausschreibung auss : alleAusschreibungen) {
+			pa = pm.findById(auss.getPartnerprofilId());
+			vektorEigenschaft = em.findByPartnerprofil(pa);
+			vektormitEigenschaftsVektoren.add(vektorEigenschaft);
+		}
+
+		
+						//Vector<Vector<Eigenschaft>> passendeVektoren = new Vector<>();
+		
+		//Vektor mit Ausschreibungen anlegen bei welchen die gesuchten Eigenschaften mit den eigenen Eigenschaften übereinstimmen.
+		Vector<Ausschreibung> au = new Vector<>();
+		
+		for(Vector<Eigenschaft> VE : vektormitEigenschaftsVektoren){
+			//eigene Eigenschaft mit anderen Eigenschaften vergleichen
+
+			for(int i= 0; i < vektormitEigenschaftsVektoren.size(); i++){
 				
-				
-				//Eigenschaften des aktuellen Nutzers auslesen und in einen Vektor packen
-
-				//Organisationseinheit orga = new Organisationseinheit();
-				ReportVerwaltung.getEigenschaftenOfOrganisationseinheit(orga, new AsyncCallback<Vector<Eigenschaft>>(){
-
-					@Override
-					public void onFailure(Throwable caught) {
-						Window.alert(caught.getMessage());
-						
-					}
-
-					@Override
-					public void onSuccess(Vector<Eigenschaft> result) {
-						ReportVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
-								new AsyncCallback<Organisationseinheit>() {
-							
-							public void onSuccess(Organisationseinheit result) {
-								//TODO: Den Vektor zurückgeben mit den Eigenschaften des aktuellen User
-								
-							}
-							
-							public void onFailure(Throwable caught) {
-								Window.alert(caught.getMessage());
-								
-							}
+				if(VE.elementAt(i).getName().equals(vektorEigeneEigenschaften.elementAt(i).getName())){
 					
-				});
-				
-						
-						
-						
-				//Hier wird eine ArrayList mit allen Partnerprofilen ausgegeben.
-				PartnerprofilMapper pm = PartnerprofilMapper.partnerprofilMapper();
-				ArrayList<Partnerprofil> alp = new ArrayList<Partnerprofil>();
-				alp = pm.findAllPartnerprofile();
-				
-				//Alle Ausschreibungen:
-				AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
-				ArrayList<Ausschreibung> au = new ArrayList<Ausschreibung>();
-				au = am.findAllAusschreibungen();
-				
-				//Zunächst muss sichergestellt werden dass wir nur die Partnerprofile von Ausschreibungen erhalten.
-				//Diese Ausschreibungen werden in eine ArrayList geschrieben.
-				
-				ArrayList<Ausschreibung> ala =  new ArrayList<Ausschreibung>();
-				
-				for(Partnerprofil par : alp){
-					for(Ausschreibung aus : au){
-						if(par.getID() == aus.getPartnerprofilId()){
-							ala.add(aus);
-						}
-					}
+				} 
+				if(VE.elementAt(i).getWert().equals(vektorEigeneEigenschaften.elementAt(i).getWert())){
+					
+				}
+				//Wir müssen sicher gehen dass wir nicht unser eigenes Partnerprofil bekommen.
+				if(VE.elementAt(i).getPartnerprofilId() != vektorEigeneEigenschaften.elementAt(i).getPartnerprofilId()){
+					
 				}
 				
-				//Eigenschaften zu den einzelnen Partnerprofilen auslesen.
-				//und Eigenschaften vergleichen
+				au = am.findByPartnerprofil(pm.findById(VE.elementAt(i).getPartnerprofilId()));
 				
-				for(Ausschreibung auss : ala){
-					pa = pm.findById(auss.getPartnerprofilId());
-					ve = em.findByPartnerprofil(pa);
-					
-					if(ve.equals(aktuellerNutzerEigenschaften)){
-						
-					}
-					}
+				
+			}
+		
+			
+//			for(int i = 0; i < VE.size(); i++){
+//				for(int k = 0; k < vektorEigeneEigenschaften.size(); k++){
+//					if(VE.elementAt(i).getName().equals(vektorEigeneEigenschaften.elementAt(k).getName())){
+//						
+//					}
+//					if(VE.elementAt(i).getWert().equals(vektorEigeneEigenschaften.elementAt(k).getWert())){
+//						
+//					}
+//				}
+//					
+//				}
+			
+			//wenn gleich dann brauchen wir die PartnerprofilID mit welcher die Ausschreibung ermittelt werden kann.
+			
+		}
+		
+		//Von den Vektor passendeVektoren muss nun wieder auf Ausschreibungen gekommen werden, damit diese ausgegeben werden können.	
+		
+		for (Ausschreibung a : au) {
+			// neue, leere Zeile anlegen
+			Row ausschreibungRow = new Row();
+			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
+			ausschreibungRow.addColumn(new Column(a.getBezeichnung()));
+			ausschreibungRow.addColumn(new Column(a.getNameProjektleiter()));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
+			ausschreibungRow.addColumn(new Column(a.getAusschreibungstext()));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
 
-				
-				
-				//Ausschreibungen auslesen
-				
-				
-				// Ausschreibungen einem Array hinzufügen
-				
-				
-				
-				for(Ausschreibung a : au){
-					//neue, leere Zeile anlegen
-					Row ausschreibungRow = new Row();
-					//fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
-					ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
-					ausschreibungRow.addColumn(new Column(a.getBezeichnung()));
-					ausschreibungRow.addColumn(new Column(a.getNameProjektleiter()));
-					ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
-					ausschreibungRow.addColumn(new Column(a.getAusschreibungstext()));
-					ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
-					ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
-					ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
-					
-					//Zeile dem Report hinzufï¿½gen
-					report.addRow(ausschreibungRow);
-				}
-				
-				//Report ausgeben
-				return report;
-				
+			// Zeile dem Report hinzufï¿½gen
+			result.addRow(ausschreibungRow);
+		}
+
+		// Report ausgeben
+		return result;
+
 	}
-
 
 	// TODO: Testmethode entfernen
 	public String testMethode() {
 		String test = "Dies ist ein Test für den RPC-Call";
 		return test;
 	}
+
 
 }

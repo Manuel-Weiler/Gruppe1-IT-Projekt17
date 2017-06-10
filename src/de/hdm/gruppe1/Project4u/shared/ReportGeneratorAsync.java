@@ -22,7 +22,7 @@ public interface ReportGeneratorAsync {
 
 	void createAlleAusschreibungenReport(AsyncCallback<ReportByAlleAusschreibungen> callback);
 
-	void createAusschreibungenForPartnerprofil(Partnerprofil pa,
+	void createAusschreibungenForPartnerprofil(Organisationseinheit orga,
 			AsyncCallback<ReportByAusschreibungenForPartnerprofil> callback);
 
 	void testMethode(AsyncCallback<String> callback);
@@ -31,8 +31,10 @@ public interface ReportGeneratorAsync {
 
 	void getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Partnerprofil> callback);
 
-	void getEigenschaftOfPartnerprofil(Partnerprofil p, AsyncCallback<Vector<Eigenschaft>> callback);
+	//void getEigenschaftOfPartnerprofil(Partnerprofil p, AsyncCallback<Vector<Eigenschaft>> callback);
 
 	void getOrganisationseinheitByUser(LoginInfo login, AsyncCallback<Organisationseinheit> callback);
+
+	
 
 }
