@@ -12,6 +12,7 @@ import de.hdm.gruppe1.Project4u.server.db.EigenschaftMapper;
 import de.hdm.gruppe1.Project4u.server.db.OrganisationseinheitMapper;
 import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
 import de.hdm.gruppe1.Project4u.server.db.ProjektMapper;
+import de.hdm.gruppe1.Project4u.shared.LoginInfo;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
@@ -22,6 +23,46 @@ public class Testklasse {
 	public static void main(String[] args) {
 		
 		
+		
+		private OrganisationseinheitMapper organisationseinheitMapper = null;
+		private EigenschaftMapper eigenschaftMapper = null;
+		private PartnerprofilMapper partnerprofilMapper = null;
+
+		
+		//Vector wird mit EigenschaftsObjekten des Partnerprofils befüllt
+		public Vector <Eigenschaft> getEigenschaftenOfPartnerprofil (Partnerprofil p)throws IllegalArgumentException{
+			return this.partnerprofilMapper.getEigenschaftenOfPartnerprofil(p);
+		}
+		
+		//Ermittelt den aktuellen Nutzer
+		public Organisationseinheit getOrganisationseinheitByUser(LoginInfo login) throws IllegalArgumentException {
+
+			for (Organisationseinheit o : organisationseinheitMapper.findByTyp("Person")) {
+				if (o.getGoogleId().equalsIgnoreCase(login.getEmailAddress())) {
+
+					return o;
+				}
+
+			}
+			return null;
+
+		};
+
+		//Ermittlung des Partnerprofil der Organisationseinheit
+		public Partnerprofil getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga)
+				throws IllegalArgumentException {
+			return this.partnerprofilMapper.findById(orga.getPartnerprofilId());
+		}
+
+		//Ermittelt Eigenschaften einer Organisationseinheit 
+		public Vector<Eigenschaft> getEigenschaftenOfOrganisationseinheit(Organisationseinheit orga)
+				throws IllegalArgumentException {
+			Partnerprofil partnerprofil = new Partnerprofil();
+			partnerprofil = getPartnerprofilOfOrganisationseinheit(orga);
+
+			return getEigenschaftenOfPartnerprofil(partnerprofil);
+		}
+
 
 		//SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	/*	
@@ -59,20 +100,56 @@ public class Testklasse {
 
 		//am.insertAusschreibung(a, pa, pr);
 
-		OrganisationseinheitMapper om = OrganisationseinheitMapper.organisationseinheitMapper();
-		  Vector<Organisationseinheit> ev= new Vector<Organisationseinheit>();
-		
-		 ev=om.findAll();
-		 
-		
-		for(Organisationseinheit e: ev){
-			System.out.println(e.getName());
+//		OrganisationseinheitMapper om = OrganisationseinheitMapper.organisationseinheitMapper();
+//		  Vector<Organisationseinheit> ev= new Vector<Organisationseinheit>();
+//		
+//		 ev=om.findAll();
+//		 
+//		
+//		for(Organisationseinheit e: ev){
+//			System.out.println(e.getName());
+//
+//		PartnerprofilMapper pm = PartnerprofilMapper.partnerprofilMapper();
+//		ArrayList<Partnerprofil> bb = new ArrayList<Partnerprofil>();
+//		
+//		bb = pm.findAllPartnerprofile();
+//		
+//		for (Partnerprofil pa: bb){
+//			System.out.println(pa.getID());}
 
-			
-		} 
+
+		
+
 		
 		
+		//Hier wird eine ArrayList mit allen Partnerprofilen ausgegeben.
+		PartnerprofilMapper pm = PartnerprofilMapper.partnerprofilMapper();
+		ArrayList<Partnerprofil> alp = new ArrayList<Partnerprofil>();
+		alp = pm.findAllPartnerprofile();
 		
+		//Alle Ausschreibungen:
+		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
+		ArrayList<Ausschreibung> au = new ArrayList<Ausschreibung>();
+		au = am.findAllAusschreibungen();
+		
+		//Zunächst muss sichergestellt werden dass wir nur die Partnerprofile von Ausschreibungen erhalten.
+		//Diese Ausschreibungen werden in eine ArrayList geschrieben.
+		
+		ArrayList<Ausschreibung> ala =  new ArrayList<Ausschreibung>();
+		
+		for(Partnerprofil par : alp){
+			for(Ausschreibung aus : au){
+				if(par.getID() == aus.getPartnerprofilId()){
+					ala.add(aus);
+
+				
+				}
+			}
+		}
+		
+		for(Ausschreibung auss : ala){
+			System.out.println(auss.getPartnerprofilId());
+		}
 		
 		
 		
