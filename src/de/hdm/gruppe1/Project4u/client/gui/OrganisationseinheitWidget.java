@@ -1,11 +1,13 @@
 package de.hdm.gruppe1.Project4u.client.gui;
 
+import java.util.Date;
 import java.util.Vector;
 
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
+import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -113,9 +115,15 @@ public class OrganisationseinheitWidget extends Composite{
 					}
 					else{  
 					}
-			
 				}
 				return test;
+			}
+			
+			public String getCellStyleNames (Context context, Organisationseinheit object){
+				if (islinked(object)){
+					return "linked";
+				}
+				else {return "not-linked";}
 			}
 		};
 		
@@ -128,16 +136,17 @@ public class OrganisationseinheitWidget extends Composite{
 		  
 		  public String getValue(Organisationseinheit au) {
 		    // The value to display in the button.
-			  String buttonvalue = "";
-				for (Organisationseinheit org : linked){
-					if(org.getOrganisationseinheitId()==au.getOrganisationseinheitId()){
+			  String buttonvalue;
+				
+					if(islinked(au)){
 						buttonvalue=  "Zugehörigkeit zur Organisationseinheit beenden";
 					}
 					else{  
-						buttonvalue=  "Zugehörigkeit zur Organisationseinheit definieren";
+						buttonvalue= "Zugehörigkeit zur Organisationseinheit definieren";
+						
 					}
 			
-				}
+				
 				return buttonvalue;
 		 
 		  }
@@ -152,8 +161,9 @@ public class OrganisationseinheitWidget extends Composite{
 		buttonColumn.setFieldUpdater(new FieldUpdater <Organisationseinheit, String>() {
 		  public void update(int index, Organisationseinheit object, String value) {
 		    // Value is the button value.  Object is the row object.
-			  for (Organisationseinheit org : linked){
-					if(org.getOrganisationseinheitId()==object.getOrganisationseinheitId()){
+			  
+			  
+					if(islinked(object)){
 						//TODO: Löschen Zugehörigkeit
 						Window.alert("gelöscht");
 					}
@@ -161,7 +171,7 @@ public class OrganisationseinheitWidget extends Composite{
 						 setZugehoerigkeit(object);
 					}
 			
-				}
+				
 			  
 			 
 			  
@@ -239,12 +249,25 @@ public class OrganisationseinheitWidget extends Composite{
 	
 		SimplePager pager = new SimplePager(TextLocation.CENTER, false, 0, false);
 	    pager.setDisplay(orgaTabelle);
-	    pager.setPageSize(10);
+	    pager.setPageSize(6);
 	    
 	    orgaTabelle.setWidth("100%");
 	    
 	    
 	    vPanel.add(orgaTabelle);
+	}
+	
+	private boolean islinked(Organisationseinheit obj){
+		boolean result = false;
+		for (Organisationseinheit org : linked){
+			if(org.getOrganisationseinheitId()==obj.getOrganisationseinheitId()){
+				 result=  true;
+			}
+			else{  
+			}
+	
+		}
+		return result;
 	}
 	
 	private void orgaProfil(Organisationseinheit o){
@@ -381,8 +404,20 @@ public class OrganisationseinheitWidget extends Composite{
 
 					@Override
 					public void onSuccess(Void result) {
-						// TODO Refresh Tabelle
-
+						vPanel.clear();
+						
+						Project4uVerwaltung.getAllOrganisationseinheitenOfTypTeamUnternehmen(new AsyncCallback<Vector<Organisationseinheit>>() {
+							
+							@Override
+							public void onSuccess(Vector<Organisationseinheit> result) {
+								vPanel.clear();
+								vPanel.add(new OrganisationseinheitWidget(result));
+								
+							}
+							public void onFailure(Throwable caught) {
+								Window.alert(caught.getMessage());
+							}
+						});
 						
 					}
 
