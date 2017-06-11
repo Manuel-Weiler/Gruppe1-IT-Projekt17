@@ -54,6 +54,8 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Eigenschaft insertEigenschaft(Eigenschaft e, Partnerprofil p)throws IllegalArgumentException;
 	
+	public void deleteEigenschaft(Eigenschaft e) throws IllegalArgumentException;
+	
 	public Organisationseinheit createOrganisationseinheit(Organisationseinheit orga) throws IllegalArgumentException;
 	
 	public Vector<Eigenschaft> getEigenschaftenOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException;
@@ -75,5 +77,7 @@ public interface Project4uAdministration extends RemoteService{
 	public Vector<Projekt> findByProjektmarktplatz (Projektmarktplatz projektmarktplatz) throws IllegalArgumentException;
 	
 
+	public void deleteLinkedTeamUnternehmenOfOrganisationseinheit(LoginInfo login,
+			Organisationseinheit team) throws IllegalArgumentException;
 
 }

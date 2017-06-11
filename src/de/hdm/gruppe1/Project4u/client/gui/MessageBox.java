@@ -25,7 +25,8 @@ public class MessageBox {
 
 			}
 		});
-        // few empty labels to make widget larger
+        
+        
         final Label emptyLabel = new Label("");
         emptyLabel.setSize("auto","25px");
         panel.add(emptyLabel);

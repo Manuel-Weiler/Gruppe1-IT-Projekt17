@@ -1,21 +1,17 @@
 package de.hdm.gruppe1.Project4u.client.gui;
 
-import java.util.Date;
 import java.util.Vector;
 
 import com.google.gwt.cell.client.ButtonCell;
-import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.Cell.Context;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -25,21 +21,16 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SelectionChangeEvent.Handler;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
-import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
-import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 public class OrganisationseinheitWidget extends Composite{
 
@@ -89,6 +80,15 @@ public class OrganisationseinheitWidget extends Composite{
 	
 	}
 	
+	
+	
+	/**
+	 * Die Methode erzeugt eine CellTable mit allen Organisationseinheiten vom
+	 * Typ "Team" und "Unternehmen" und fügt diese zum VerticalPanel des
+	 * OrganisationseinheitWidgets hinzu.
+	 * 
+	 * @param orgas
+	 */
 	private void drawTable(Vector<Organisationseinheit> orgas){
 		CellTable<Organisationseinheit> orgaTabelle = new CellTable<Organisationseinheit>(KEY_PROVIDER);
 		
@@ -106,7 +106,7 @@ public class OrganisationseinheitWidget extends Composite{
 		};
 		
 		TextColumn<Organisationseinheit> status = new TextColumn<Organisationseinheit>() {
-			//TODO: styling
+			
 			public String getValue(Organisationseinheit object) {
 				String test = "Keine Zugehörigkeit definiert";
 				for (Organisationseinheit org : linked){
@@ -164,8 +164,7 @@ public class OrganisationseinheitWidget extends Composite{
 			  
 			  
 					if(islinked(object)){
-						//TODO: Löschen Zugehörigkeit
-						Window.alert("gelöscht");
+						deleteZugehoerigkeit(object);
 					}
 					else{  
 						 setZugehoerigkeit(object);
@@ -206,8 +205,18 @@ public class OrganisationseinheitWidget extends Composite{
 						
 					}
 				});
-				//TODO: löschen Orga implementieren
+				
 				Button deleteOrga = new Button("Organisationseinheit löschen");
+				deleteOrga.addClickHandler(new ClickHandler() {
+
+					@Override
+					public void onClick(ClickEvent event) {
+						diBox.hide();
+						deleteTeamUnternehmen(object);
+
+					}
+				});
+				
 				
 				vPanel.add(seeOrga);
 				vPanel.add(deleteOrga);				
@@ -257,6 +266,29 @@ public class OrganisationseinheitWidget extends Composite{
 	    vPanel.add(orgaTabelle);
 	}
 	
+	
+	
+	/**
+	 * Die Methode löscht eine Organisationseinheit vom Typ "Team"/"Unternehmen"
+	 * @param orga
+	 */
+	private void deleteTeamUnternehmen(Organisationseinheit orga){
+		if(!ClientsideSettings.getAktuellerUser().getEmailAddress().equalsIgnoreCase(orga.getGoogleId())){
+			MessageBox.alertWidget("Löschen "+orga.getName(), "Sie sind nicht der Ersteller der Organisationseinheit, wenden Sie sich an: "+orga.getGoogleId());
+		}
+		else{
+			//TODO: delete Organisationseinheit
+		}
+	}
+	
+	
+	/**
+	 * Die Methode überprüft, ob ein Element der Liste der Teams und Unternehmen auch in der Liste der 
+	 * Organisationseinheiten ist, die mit dem Profil des Nutzers verlinkt sind
+	 * @param obj
+	 * @return
+	 * @author Tobias
+	 */
 	private boolean islinked(Organisationseinheit obj){
 		boolean result = false;
 		for (Organisationseinheit org : linked){
@@ -270,6 +302,12 @@ public class OrganisationseinheitWidget extends Composite{
 		return result;
 	}
 	
+	/**
+	 * Die Methode stellt das Partnerprofil einer Organisationseinheit mit allen
+	 * anhängigen Eigenschaftsobjekten in einer Dialogbox dar.
+	 * @param o
+	 * @author Tobias
+	 */
 	private void orgaProfil(Organisationseinheit o){
 		DialogBox db = new DialogBox();
 		final VerticalPanel vp = new VerticalPanel();
@@ -349,7 +387,25 @@ public class OrganisationseinheitWidget extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO update Orga implementieren
-				
+				Vector<Eigenschaft> neueEigenschaften = new Vector<Eigenschaft>();
+				for(int i=0; i<flexTableEigenschaften.getRowCount()-1; i++){
+					Eigenschaft e = new Eigenschaft();
+					Widget w = flexTableEigenschaften.getWidget(i, 0);
+					 if (w instanceof TextBox) {
+						 if(!((TextBox) w).getValue().isEmpty()){
+							e.setName(((TextBox) w).getValue());
+						 };
+					 }
+					 
+					 Widget v = flexTableEigenschaften.getWidget(i, 1);
+					 if (v instanceof TextBox) {
+						 if(!((TextBox) v).getValue().isEmpty()){
+								e.setWert(((TextBox) v).getValue());
+							 };
+					 }
+					 neueEigenschaften.add(e);
+				}
+				Window.alert(neueEigenschaften.firstElement().getName());
 			}
 		});
 		
@@ -373,7 +429,14 @@ public class OrganisationseinheitWidget extends Composite{
 		
 	}
 	
+	
 	 
+	/**
+	 * Die Methode gibt einen Vector mit allen Organisationseinheiten vom Typ "Team" und "Unternehmen" zurück,
+	 * zu denen der Nutzer mit seinem Organisationseinheiten-Objekt eine Zugehörigkeit definiert hat.
+	 * @param orgs
+	 * @author Tobias
+	 */
 	private void getLinkedOrgas (final Vector<Organisationseinheit> orgs){
 		
 		Project4uVerwaltung.getLinkedTeamAndUnternehmenOfOrganisationseinheit(ClientsideSettings.getAktuellerUser(), new AsyncCallback<Vector<Organisationseinheit>>() {
@@ -397,6 +460,14 @@ public class OrganisationseinheitWidget extends Composite{
 		
 	}
 	
+	
+	/**
+	 * Die Methode setzt eine Zugehörigkeit zwischen der Organisationseinheit
+	 * des Nutzers vom Typ "Person" und der Organisationseinheit die der Methode
+	 * als Parameter mitgegeben wird.
+	 * 
+	 * @param orga
+	 */
 	private void setZugehoerigkeit(Organisationseinheit orga) {
 
 		Project4uVerwaltung.insertLinkedTeamUnternehmenOfOrganisationseinheit(ClientsideSettings.getAktuellerUser(),
@@ -404,7 +475,45 @@ public class OrganisationseinheitWidget extends Composite{
 
 					@Override
 					public void onSuccess(Void result) {
-						vPanel.clear();
+						
+						
+						Project4uVerwaltung.getAllOrganisationseinheitenOfTypTeamUnternehmen(new AsyncCallback<Vector<Organisationseinheit>>() {
+							
+							@Override
+							public void onSuccess(Vector<Organisationseinheit> result) {
+								vPanel.clear();
+								vPanel.add(new OrganisationseinheitWidget(result));
+								
+							}
+							public void onFailure(Throwable caught) {
+								Window.alert(caught.getMessage());
+							}
+						});
+						
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert(caught.getMessage());
+					}
+				});
+	}
+	
+	
+	/**
+	 * Die Methode löscht eine bestehende Zugehörigkeit zwischen der Organisationseinheit
+	 * des Nutzers vom Typ "Person" und der Organisationseinheit die der Methode
+	 * als Parameter mitgegeben wird.
+	 * @param orga
+	 */
+	private void deleteZugehoerigkeit(Organisationseinheit orga) {
+
+		Project4uVerwaltung.deleteLinkedTeamUnternehmenOfOrganisationseinheit(ClientsideSettings.getAktuellerUser(),
+				orga, new AsyncCallback<Void>() {
+
+					@Override
+					public void onSuccess(Void result) {
+						
 						
 						Project4uVerwaltung.getAllOrganisationseinheitenOfTypTeamUnternehmen(new AsyncCallback<Vector<Organisationseinheit>>() {
 							

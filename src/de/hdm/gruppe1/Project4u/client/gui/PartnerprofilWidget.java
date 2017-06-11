@@ -62,6 +62,8 @@ public class PartnerprofilWidget extends Composite{
 	Partnerprofil neuesProfil = new Partnerprofil();
 	Organisationseinheit neueOrga = new Organisationseinheit();
 	VerticalPanel vPanel = new VerticalPanel();
+	VerticalPanel eigenschaftenPanel = new VerticalPanel();
+	
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch einzelne Objekte der
 	 * in der Liste weiter verarbeitet werden k�nnen. 
@@ -286,8 +288,8 @@ public class PartnerprofilWidget extends Composite{
 		
 			@Override
 			public void onSuccess(Vector<Eigenschaft> result) {
-				
-				vp.add(createCellTable(result));
+				eigenschaftenPanel.add(createCellTable(result));
+				vp.add(eigenschaftenPanel);
 				add.addClickHandler(new ClickHandler() {
 					
 					@Override
@@ -421,8 +423,30 @@ public class PartnerprofilWidget extends Composite{
 		buttonColumn.setFieldUpdater(new FieldUpdater <Eigenschaft, String>() {
 		  public void update(int index, Eigenschaft object, String value) {
 		    // Value is the button value.  Object is the row object.
-			  //TODO: löschen implementieren
-		    Window.alert("You clicked: " + object.getName());
+			  
+			  Project4uVerwaltung.deleteEigenschaft(object, new AsyncCallback<Void>() {
+				
+				@Override
+				public void onSuccess(Void result) {
+					
+					Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
+							new AsyncCallback<Organisationseinheit>() {
+						public void onSuccess(Organisationseinheit result) {
+							RootPanel.get("content").clear();
+							RootPanel.get("content").add(new PartnerprofilWidget(result));
+							
+						}
+						public void onFailure(Throwable caught) {
+							Window.alert(caught.getMessage());	
+						}
+					});
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					
+				}
+			});		    
 		  }
 		});
 

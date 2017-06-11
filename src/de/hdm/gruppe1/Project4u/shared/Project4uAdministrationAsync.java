@@ -102,4 +102,9 @@ public interface Project4uAdministrationAsync {
 	void getLinkedTeamAndUnternehmenOfOrganisationseinheit(LoginInfo login,
 			AsyncCallback<Vector<Organisationseinheit>> callback);
 
+	void deleteLinkedTeamUnternehmenOfOrganisationseinheit(LoginInfo login, Organisationseinheit team,
+			AsyncCallback<Void> callback);
+
+	void deleteEigenschaft(Eigenschaft e, AsyncCallback<Void> callback);
+
 }

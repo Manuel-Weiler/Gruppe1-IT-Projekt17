@@ -303,6 +303,17 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return organisationseinheitMapper.getLinkedTeamAndUnternehmenOfOrganisationseinheit(o);
 
 	}
+	
+	public void deleteLinkedTeamUnternehmenOfOrganisationseinheit(LoginInfo login,
+			Organisationseinheit team) throws IllegalArgumentException {
+		Organisationseinheit o = new Organisationseinheit();
+		o = getOrganisationseinheitByUser(login);
+		
+		organisationseinheitMapper.deleteLinkedTeamUnternehmenOfOrganisationseinheit(o, team);
+		
+	};
+	
+	
       		
 	/*
 	 * #########################################################################

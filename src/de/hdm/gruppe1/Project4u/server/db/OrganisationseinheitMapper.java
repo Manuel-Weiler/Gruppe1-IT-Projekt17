@@ -355,6 +355,25 @@ public class OrganisationseinheitMapper {
 		}
 	}
 	
+	public void deleteLinkedTeamUnternehmenOfOrganisationseinheit(Organisationseinheit person,
+			Organisationseinheit team) {
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			// Organisationseinheit löschen
+			stmt.executeUpdate(
+					"DELETE FROM organisationseinheit_has_organisationseinheit WHERE organisationseinheit_id='"
+							+ team.getOrganisationseinheitId() + "' AND person_id='"
+							+ person.getOrganisationseinheitId() + "';");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	
 	 
 }
