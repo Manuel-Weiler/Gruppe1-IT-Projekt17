@@ -57,7 +57,7 @@ public class EigenschaftMapper {
 			Statement stmt = con.createStatement();
 
 			// Abfrage der gr��ten bisher vergebnen <code>id</code>
-			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Eigenschaft ");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM eigenschaft ;");
 
 			if (rs.next()) {
 				/*
@@ -69,9 +69,9 @@ public class EigenschaftMapper {
 				stmt = con.createStatement();
 
 				// Jetzt erst erfolgt die tatsächliche Einfügeoperation
-				stmt.executeUpdate("INSERT INTO Eigenschaft (id, name, wert, partnerprofil_id) " + "VALUES ("
-						+ e.getEigenschaftId() + ",'" + e.getName() + "','" + e.getWert() + "','"
-						+ p.getPartnerprofilId() + "')");
+				stmt.executeUpdate("INSERT INTO eigenschaft (id, name, wert, partnerprofil_id) " + 
+				"VALUES ('"+ e.getEigenschaftId() +"','" + e.getName() + "','" + e.getWert() + "','"
+						+ p.getPartnerprofilId() + "');");
 			}
 		} catch (SQLException s) {
 			s.printStackTrace();
@@ -85,7 +85,7 @@ public class EigenschaftMapper {
 		
 		
 		/*
-		 * R�ckgabe, des evtl. korrigierten Partnerprofil-Objekts. P.S: Diese
+		 * R�ckgabe, des evtl. korrigierten Eigenschafts-Objekts. P.S: Diese
 		 * R�ckgabe ist nicht zwingend notwendig, da die Verweise auf das
 		 * bisherige Objekt auch auf das ge�nderte Objekt verweisen w�rden.
 		 */
@@ -97,7 +97,7 @@ public class EigenschaftMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("UPDATE Eigenschaft SET name='" + e.getName() + "' wert='" + e.getWert() + "' WHERE id='"
+			stmt.executeUpdate("UPDATE eigenschaft SET name='" + e.getName() + "', wert='" + e.getWert() + "' WHERE id='"
 					+ e.getEigenschaftId() + "'");
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -116,7 +116,9 @@ public class EigenschaftMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Eigenschaft WHERE id='" + e.getEigenschaftId() + "'");
+
+			stmt.executeUpdate("DELETE FROM eigenschaft WHERE id='" + e.getEigenschaftId() + "'");
+
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -152,7 +154,7 @@ public class EigenschaftMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Eigenschaft WHERE partnerprofil_id='"
+			ResultSet rs = stmt.executeQuery("SELECT * FROM eigenschaft WHERE partnerprofil_id='"
 					+ p.getPartnerprofilId() + "'");
 			
 			while (rs.next()){
@@ -176,7 +178,7 @@ public class EigenschaftMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Eigenschaft WHERE organisationseinheit_id= " + p.getPartnerprofilId());
+			stmt.executeUpdate("DELETE FROM eigenschaft WHERE partnerprofil_id= " + p.getPartnerprofilId());
 			
 		} catch (Exception e2) {
 			 e2.printStackTrace();

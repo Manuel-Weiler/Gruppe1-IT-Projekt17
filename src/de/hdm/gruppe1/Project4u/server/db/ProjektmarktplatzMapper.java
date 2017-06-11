@@ -3,6 +3,8 @@ package de.hdm.gruppe1.Project4u.server.db;
 import java.sql.*;
 import java.util.Vector;
 
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 /**
@@ -61,67 +63,74 @@ public class ProjektmarktplatzMapper {
 
 	/**
 	 ** @param id
+<<<<<<< HEAD
 	 ** @return Liefert ein Projektmarktplatz entsprechend der übergebenen id
 	 *         zurueck.
+=======
+	 ** @return Liefert ein Projektmarktplatz entsprechend der ï¿½bergebenen id zurueck.
+>>>>>>> refs/heads/master
 	 **/
 
-	public Projektmarktplatz findById(int id) {
-		// DB-Verbindung holen
-		Connection con = DBConnection.connection();
-		Projektmarktplatz p = new Projektmarktplatz();
-		try {
-			// Leeres SQL-Statement (JDBC) anlegen
-			Statement stmt = con.createStatement();
-
-			// Statement ausfüllen und als Query an die DB schicken
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz " + "WHERE id='" + id + "'");
-
-			/*
-			 * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
-			 * werden. Prüfe, ob ein Ergebnis vorliegt.
-			 */
-			if (rs.next()) {
-				// Ergebnis-Tupel in Objekt umwandeln
-
-				p.setProjektmarktplatzId(rs.getInt("id"));
-				p.setName(rs.getString("name"));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-
-		}
-
-		return p;
-	}
-
-	/**
-	 * Diese Methode bezieht ihre Informationen aus der
-	 * Project4uAdministrationImpl und erstellt mit diesen einen neuen
-	 * Projektmarktplatz in der Datenbank.
-	 * 
-	 * @param projektmarktplatz
-	 * @return projektmarktplatz
-	 */
-
-	public Projektmarktplatz insert(Projektmarktplatz p) {
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM Projektmarktplatz");
-
-			if (rs.next()) {
-				p.setProjektmarktplatzId(rs.getInt("maxid") + 1);
-			}
-
-			stmt.executeUpdate("INSERT INTO Projektmarktplatz (id, name) " + "VALUES ('" + p.getProjektmarktplatzId()
-					+ "','" + p.getName() + "')");
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+      public Projektmarktplatz findById(int id){
+		 // DB-Verbindung holen
+		 Connection con = DBConnection.connection();
+		 Projektmarktplatz p = new Projektmarktplatz();
+		 try {
+		   // Leeres SQL-Statement (JDBC) anlegen
+		   Statement stmt = con.createStatement();
+		   
+		   // Statement ausfï¿½llen und als Query an die DB schicken
+		   ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz " + "WHERE id='" + id +"'");
+		   
+		   /*
+	        * Da id Primï¿½rschlï¿½ssel ist, kann max. nur ein Tupel zurï¿½ckgegeben
+	        * werden. Prï¿½fe, ob ein Ergebnis vorliegt.
+	        */
+		    if (rs.next()) {
+		      // Ergebnis-Tupel in Objekt umwandeln
+		      
+		      p.setProjektmarktplatzId(rs.getInt("id"));
+		      p.setName(rs.getString("name"));
+		      p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+		      
+		      }
+		    }
+           catch (SQLException e) {
+        	 e.printStackTrace();
+        	 
+           }
+		 
+		 	return p;
+		   }
+	  
+	  /**
+		 * Diese Methode bezieht ihre Informationen aus der
+		 * Project4uAdministrationImpl und erstellt mit diesen einen neuen
+		 * Projektmarktplatz in der Datenbank.
+		 * 
+		 * @param projektmarktplatz
+		 * @return projektmarktplatz
+		 */
+	  
+	  public Projektmarktplatz insert(Projektmarktplatz p){
+		  Connection con = DBConnection.connection();
+		  
+		  try{
+			  Statement stmt = con.createStatement();
+			  
+			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM Projektmarktplatz");
+			  
+			  if (rs.next()) {
+	              p.setProjektmarktplatzId(rs.getInt("maxid") + 1);
+	            }
+			  
+			  stmt.executeUpdate("INSERT INTO Projektmarktplatz (id, name, organisationseinheit_id) " 
+			           + "VALUES (" + p.getProjektmarktplatzId() + ", " + p.getName()+", " + p.getOrganisationseinheitId() + ")");
+			                    
+			          }
+		      catch (SQLException e) {
+		    	 e.printStackTrace();
+		    	 }
 
 		return p;
 
@@ -174,17 +183,16 @@ public class ProjektmarktplatzMapper {
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz");
 
-			// FÃ¼r jeden Eintrag im Suchergebnis wird nun ein
-			// Projektmarktplatz-Objekt
-			// erstellt.
-			while (rs.next()) {
-				Projektmarktplatz p = new Projektmarktplatz();
-				p.setProjektmarktplatzId(rs.getInt("id"));
-				p.setName(rs.getString("name"));
+		      // FÃ¼r jeden Eintrag im Suchergebnis wird nun ein Projektmarktplatz-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projektmarktplatz p = new Projektmarktplatz();
+		        p.setProjektmarktplatzId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 
-				// HinzufÃ¼gen des neuen Objekts zum Ergebnisvektor
-				result.addElement(p);
-			}
+		        
+		      }
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -193,5 +201,40 @@ public class ProjektmarktplatzMapper {
 		return result;
 
 	}
+
+	  
+	  public Vector<Projektmarktplatz> findByOrganisationseinheit(Organisationseinheit o) {
+		    Connection con = DBConnection.connection();
+		    // Ergebnisvektor vorbereiten
+		    Vector<Projektmarktplatz> result = new Vector<Projektmarktplatz>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projektmarktplatz WHERE organisationseinheit_id= " + o.getOrganisationseinheitId() + 
+		    		  " ORDER BY organisationseinheit_id");
+		   
+
+		      // FÃ¼r jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projektmarktplatz pm = new Projektmarktplatz();
+		        pm.setProjektmarktplatzId(rs.getInt("id"));
+			    pm.setName(rs.getString("name"));
+			    pm.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+		
+
+		        // HinzufÃ¼gen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(pm);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurÃ¼ckgeben
+		    return result;
+	 }
+	  
 
 }

@@ -17,10 +17,10 @@ import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 
 public class NutzerForm extends VerticalPanel {
-/*
+
 	Project4uAdministrationAsync project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 
-	private TextBox vornameTextBox = new TextBox();
+	/*private TextBox vornameTextBox = new TextBox();
 	private TextBox nachnameTextBox = new TextBox();
 
 	private Label idValueLabel = new Label();
@@ -89,9 +89,9 @@ class CreateNutzerCallback implements AsyncCallback<Organisationseinheit>{
 			Window.alert("Anlegen erfolgreich!");
 			RootPanel.get("Nutzer").clear();
 			Window.Location.reload();
-			//Startseite loadStartseite = new Startseite();
-			//loadStartseite.loadStartseite();
+			StartseiteWidget loadStartseite = new StartseiteWidget();
+			loadStartseite.loadStartseite();
 		}
-	}
-	*/
+	}*/
+	
 }

@@ -90,12 +90,9 @@ public class ProjektMapper {
 		   // Leeres SQL-Statement (JDBC) anlegen
 		   Statement stmt = con.createStatement();
 		   
-
 		   // Statement ausf�llen und als Query an die DB schicken
-		   ResultSet rs = stmt.executeQuery("SELECT * "  + "FROM Projekt WHERE id='" + id + "'");
+		   ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE id= " + id);
 
-	
-		   
 		   /*
 	        * Da id Prim�rschl�ssel ist, kann max. nur ein Tupel zur�ckgegeben
 	        * werden. Pr�fe, ob ein Ergebnis vorliegt.
@@ -178,187 +175,193 @@ public class ProjektMapper {
 					+ sdf.format(p.getStartdatum()) + "\", " + "enddatum=\"" + sdf.format(p.getEnddatum()) + "\", "
 					+ "beschreibung=\"" + p.getBeschreibung() + "\" " + "WHERE id=" + p.getProjektId());
 
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-		}
 
-		// Um Analogie zu insert(Projekt p) zu wahren, geben wir p zurück
-		return p;
-	}
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 
-	/**
-	 * Löschen der Daten eines <code>Projekt</code>-Objekts aus der Datenbank.
-	 * 
-	 * @param p
-	 *            das aus der DB zu löschende "Objekt"
-	 */
-	public void delete(Projekt p) {
-		Connection con = DBConnection.connection();
+	    // Um Analogie zu insert(Projekt p) zu wahren, geben wir p zurück
+	    return p;  
+	  }
+	  
+	  /**
+	   * Löschen der Daten eines <code>Projekt</code>-Objekts aus der Datenbank.
+	   * 
+	   * @param p das aus der DB zu löschende "Objekt"
+	   */
+	  public void delete(Projekt p) {
+	    Connection con = DBConnection.connection();
 
-		try {
-			Statement stmt = con.createStatement();
+	    try {
+	      Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM Projekt WHERE id=" + p.getProjektId());
+	      stmt.executeUpdate("DELETE FROM Projekt WHERE id=" + p.getProjektId());
 
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-		}
-	}
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
+	  }
+	  
+	  public Vector<Projekt> findAll() {
+		    Connection con = DBConnection.connection();
+		    // Ergebnisvektor vorbereiten
+		    Vector<Projekt> result = new Vector<Projekt>();
 
-	public Vector<Projekt> findAll() {
-		Connection con = DBConnection.connection();
-		// Ergebnisvektor vorbereiten
-		Vector<Projekt> result = new Vector<Projekt>();
+		    try {
+		      Statement stmt = con.createStatement();
 
-		try {
-			Statement stmt = con.createStatement();
+		      ResultSet rs = stmt.executeQuery("SELECT id, name, startdatum, enddatum, beschreibung,"
+		      		                         + "projektmarktplatz_id, organisationseinheit_id" 
+		    		                         + "FROM Projekt" + "ORDER BY id"+ "'");
+		   
 
-			ResultSet rs = stmt.executeQuery("SELECT id, name, startdatum, enddatum, beschreibung,"
-					+ "projektmarktplatz_id, organisationseinheit_id" + "FROM Projekt" + "ORDER BY id" + "'");
+		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projekt p = new Projekt();
+		        p.setProjektId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setStartdatum(rs.getDate("startdatum"));
+		        p.setEnddatum(rs.getDate("enddatum"));
+		        p.setBeschreibung(rs.getString("beschreibung"));
+		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 
-			// Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
-			// erstellt.
-			while (rs.next()) {
-				Projekt p = new Projekt();
-				p.setProjektId(rs.getInt("id"));
-				p.setName(rs.getString("name"));
-				p.setStartdatum(rs.getDate("startdatum"));
-				p.setEnddatum(rs.getDate("enddatum"));
-				p.setBeschreibung(rs.getString("beschreibung"));
-				p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
-				p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 
-				// Hinzufügen des neuen Objekts zum Ergebnisvektor
-				result.addElement(p);
+
+		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurückgeben
+		    return result;
+	 }
+	  
+	  public Vector<Projekt> findByName(String name) {
+		    Connection con = DBConnection.connection();
+		    Vector<Projekt> result = new Vector<Projekt>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT id, name, startdatum, enddatum, beschreibung"
+		      	  + "projektmarktplatz_id, organisationseinheit_id " + "FROM Projekt "
+		          + "WHERE name LIKE '" + name + "' ORDER BY name");
+
+		      // Für jeden Eintrag im Suchergebnis wird nun ein Customer-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projekt p = new Projekt();
+		        p.setProjektId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setStartdatum(rs.getDate("startdatum"));
+		        p.setEnddatum(rs.getDate("enddatum"));
+		        p.setBeschreibung(rs.getString("beschreibung"));
+		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+
+
+		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurückgeben
+		    return result;
+		  }
+	  
+	  public Vector<Projekt> findByOrganisationseinheit(Organisationseinheit o) {
+		    Connection con = DBConnection.connection();
+		    // Ergebnisvektor vorbereiten
+		    Vector<Projekt> result = new Vector<Projekt>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE organisationseinheit_id= " + o.getOrganisationseinheitId() + 
+		    		  " ORDER BY organisationseinheit_id");
+		   
+
+		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projekt p = new Projekt();
+		        p.setProjektId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setStartdatum(rs.getDate("startdatum"));
+		        p.setEnddatum(rs.getDate("enddatum"));
+		        p.setBeschreibung(rs.getString("beschreibung"));
+		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurückgeben
+		    return result;
+	 }
+	  
+	  public Vector<Projekt> findByProjektmarktplatz(Projektmarktplatz pm) {
+		    Connection con = DBConnection.connection();
+		    // Ergebnisvektor vorbereiten
+		    Vector<Projekt> result = new Vector<Projekt>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery(	"SELECT * FROM Projekt WHERE projektmarktplatz_id= " + pm.getProjektmarktplatzId()   
+		      									+  " ORDER BY organisationseinheit_id");
+		   
+
+		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projekt p = new Projekt();
+		        p.setProjektId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setStartdatum(rs.getDate("startdatum"));
+		        p.setEnddatum(rs.getDate("enddatum"));
+		        p.setBeschreibung(rs.getString("beschreibung"));
+		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurückgeben
+		    return result;
+	 }
+	  
+	  public void deleteProjektOfOrganisationseinheit(Organisationseinheit o) {
+			Connection con = DBConnection.connection();
+			
+			try {
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate("DELETE FROM Projekt WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
+				
+			} catch (Exception e2) {
+				 e2.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+
 		}
-
-		// Ergebnisvektor zurückgeben
-		return result;
-	}
-
-	public Vector<Projekt> findByName(String name) {
-		Connection con = DBConnection.connection();
-		Vector<Projekt> result = new Vector<Projekt>();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			ResultSet rs = stmt.executeQuery("SELECT id, name, startdatum, enddatum, beschreibung"
-					+ "projektmarktplatz_id, organisationseinheit_id " + "FROM Projekt " + "WHERE name LIKE '" + name
-					+ "' ORDER BY name");
-
-			// Für jeden Eintrag im Suchergebnis wird nun ein Customer-Objekt
-			// erstellt.
-			while (rs.next()) {
-				Projekt p = new Projekt();
-				p.setProjektId(rs.getInt("id"));
-				p.setName(rs.getString("name"));
-				p.setStartdatum(rs.getDate("startdatum"));
-				p.setEnddatum(rs.getDate("enddatum"));
-				p.setBeschreibung(rs.getString("beschreibung"));
-				p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
-				p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
-
-				// Hinzufügen des neuen Objekts zum Ergebnisvektor
-				result.addElement(p);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		// Ergebnisvektor zurückgeben
-		return result;
-	}
-
-	public Vector<Projekt> findByOrganisationseinheit(Organisationseinheit o) {
-		Connection con = DBConnection.connection();
-		// Ergebnisvektor vorbereiten
-		Vector<Projekt> result = new Vector<Projekt>();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt WHERE organisationseinheit_id='"
-					+ o.getOrganisationseinheitId() + "'" + " ORDER BY organisationseinheit_id");
-
-			// Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
-			// erstellt.
-			while (rs.next()) {
-				Projekt p = new Projekt();
-				p.setProjektId(rs.getInt("id"));
-				p.setName(rs.getString("name"));
-				p.setStartdatum(rs.getDate("startdatum"));
-				p.setEnddatum(rs.getDate("enddatum"));
-				p.setBeschreibung(rs.getString("beschreibung"));
-				p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
-				p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
-
-				// Hinzufügen des neuen Objekts zum Ergebnisvektor
-				result.addElement(p);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		// Ergebnisvektor zurückgeben
-		return result;
-	}
-
-	public void deleteProjektOfOrganisationseinheit(Organisationseinheit o) {
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Projekt WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
-
-		} catch (Exception e2) {
-			e2.printStackTrace();
-		}
-	}
-
-	/**
-	 * Diese Methode gibt alle Projekte wieder, die zu einem Projektmarktplatz
-	 * pp gehören
-	 * 
-	 * @param pp
-	 * @return
-	 * @author Tobias
-	 */
-	public Vector<Projekt> findAllProjekteOfProjektmarktplatz(Projektmarktplatz pp) {
-		Connection con = DBConnection.connection();
-		// Ergebnisvektor vorbereiten
-		Vector<Projekt> result = new Vector<Projekt>();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			ResultSet rs = stmt.executeQuery("SELECT * FROM projekt WHERE projektmarktplatz_id='"
-					+ pp.getProjektmarktplatzId() + "'" + " ORDER BY id");
-
-			// Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
-			// erstellt.
-			while (rs.next()) {
-				Projekt p = new Projekt();
-				p.setProjektId(rs.getInt("id"));
-				p.setName(rs.getString("name"));
-				p.setStartdatum(rs.getDate("startdatum"));
-				p.setEnddatum(rs.getDate("enddatum"));
-				p.setBeschreibung(rs.getString("beschreibung"));
-				p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
-				p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
-
-				// Hinzufügen des neuen Objekts zum Ergebnisvektor
-				result.addElement(p);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		// Ergebnisvektor zurückgeben
-		return result;
-	}
-
 }

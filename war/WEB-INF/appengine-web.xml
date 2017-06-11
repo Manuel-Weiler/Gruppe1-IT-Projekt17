@@ -7,8 +7,8 @@
     Allows App Engine to send multiple requests to one instance in parallel:
   -->
   <threadsafe>true</threadsafe>
-
-  <!-- Configure serving/caching of GWT files -->
+  
+   <!-- Configure serving/caching of GWT files -->
   <static-files>
     <include path="**" />
 
