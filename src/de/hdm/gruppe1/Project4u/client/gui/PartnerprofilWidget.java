@@ -243,6 +243,7 @@ public class PartnerprofilWidget extends Composite{
 		RootPanel.get("contentHeader").clear();
 		Label Profil = new Label("Ihr Nutzerprofil");
 		RootPanel.get("contentHeader").add(Profil);
+		//TODO: bearbeiten Nutzername 
 		Button bearbeiten = new Button("Nutzername bearbeiten");
 		final VerticalPanel vp = new VerticalPanel();
 		

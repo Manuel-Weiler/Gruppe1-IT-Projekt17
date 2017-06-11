@@ -340,6 +340,14 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return this.eigenschaftMapper.insertEigenschaft(e, p);
 	}
 	
+	public void insertEigenschaften(Vector<Eigenschaft> eigenschaften, Organisationseinheit orga)throws IllegalArgumentException{
+		Partnerprofil partnerprofil = new Partnerprofil();
+		partnerprofil = getPartnerprofilOfOrganisationseinheit(orga);
+		for(Eigenschaft e : eigenschaften){
+			insertEigenschaft(e, partnerprofil);
+		}
+	}
+	
 	public Eigenschaft updateEigenschaft(Eigenschaft e) throws IllegalArgumentException{
 		return this.eigenschaftMapper.updateEigenschaft(e);
 	}
@@ -349,6 +357,11 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		eigenschaftMapper.deleteEigenschaft(e);
 	}
 
+	public void deleteAllEigenschaftenOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException{
+		Partnerprofil partnerprofil = new Partnerprofil();
+		partnerprofil = getPartnerprofilOfOrganisationseinheit(orga);
+		deleteAllEigenschaftOfPartnerprofil(partnerprofil);
+	}
 	
 	public void deleteAllEigenschaftOfPartnerprofil(Partnerprofil p)throws IllegalArgumentException{
 		eigenschaftMapper.deleteAllEigenschaftOfPartnerprofil(p);

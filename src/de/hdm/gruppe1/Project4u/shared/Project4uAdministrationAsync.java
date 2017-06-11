@@ -107,4 +107,9 @@ public interface Project4uAdministrationAsync {
 
 	void deleteEigenschaft(Eigenschaft e, AsyncCallback<Void> callback);
 
+	void deleteAllEigenschaftenOfOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Void> callback);
+
+	void insertEigenschaften(Vector<Eigenschaft> eigenschaften, Organisationseinheit orga,
+			AsyncCallback<Void> callback);
+
 }

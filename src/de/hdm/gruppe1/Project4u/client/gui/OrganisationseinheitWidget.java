@@ -41,8 +41,8 @@ public class OrganisationseinheitWidget extends Composite{
 			return item == null ? null : item.getOrganisationseinheitId();
 		}
 	};
-	
-	Button addProjekt = new Button("Organisationseinheit hinzufügen");
+	//TODO: Clickhandler hinzufügen
+	Button addOrga = new Button("Organisationseinheit hinzufügen");
 	VerticalPanel vPanel = new VerticalPanel();
 	HTML heading = new HTML("<h2 class='h2heading'>Teams und Unternehmen:</h2>");
 	Vector<Organisationseinheit> linked = new Vector<Organisationseinheit>();
@@ -58,7 +58,7 @@ public class OrganisationseinheitWidget extends Composite{
 			HTML noOrgas = new HTML("<p class='heading'>Es existieren noch keine Unternehmen und Teams, lege welche an!</p>");
 			noOrgas.setHeight("40px");
 			vPanel.add(noOrgas);
-			vPanel.add(addProjekt);
+			vPanel.add(addOrga);
 			initWidget(vPanel);
 		}
 		else{
@@ -308,8 +308,9 @@ public class OrganisationseinheitWidget extends Composite{
 	 * @param o
 	 * @author Tobias
 	 */
-	private void orgaProfil(Organisationseinheit o){
-		DialogBox db = new DialogBox();
+	private void orgaProfil(final Organisationseinheit o){
+		//TODO: Orga hinzufügen
+		final DialogBox db = new DialogBox();
 		final VerticalPanel vp = new VerticalPanel();
 		HTML Profil = new HTML("<p class='heading'>Profil: "+o.getName()+"</p>");
 		FlexTable flexTable = new FlexTable();
@@ -318,7 +319,7 @@ public class OrganisationseinheitWidget extends Composite{
 		speichern.setWidth("100px");
 		final Button bearbeiten = new Button("Bearbeiten");
 		bearbeiten.setWidth("100px");
-		
+		 
 		Label email = new Label("E-Mail:");
 		final TextBox mail = new TextBox();
 		Label orgaName = new Label("Profilname:");
@@ -358,9 +359,11 @@ public class OrganisationseinheitWidget extends Composite{
 				for(Eigenschaft e : result){
 					TextBox tb = new TextBox();
 					tb.setValue(e.getName());
+					tb.setEnabled(false);
 					flexTableEigenschaften.setWidget(flexTableEigenschaften.getRowCount(), 0,  tb);
 					TextBox tbox = new TextBox();
 					tbox.setValue(e.getWert());
+					tbox.setEnabled(false);
 					flexTableEigenschaften.setWidget(flexTableEigenschaften.getRowCount()-1, 1,  tbox);
 					
 				}
@@ -386,9 +389,10 @@ public class OrganisationseinheitWidget extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO update Orga implementieren
+				
+				// TODO update Orga implementieren, Eigenschaft hinzufügen, 
 				Vector<Eigenschaft> neueEigenschaften = new Vector<Eigenschaft>();
-				for(int i=0; i<flexTableEigenschaften.getRowCount()-1; i++){
+				for(int i=0; i<flexTableEigenschaften.getRowCount(); i++){
 					Eigenschaft e = new Eigenschaft();
 					Widget w = flexTableEigenschaften.getWidget(i, 0);
 					 if (w instanceof TextBox) {
@@ -405,7 +409,28 @@ public class OrganisationseinheitWidget extends Composite{
 					 }
 					 neueEigenschaften.add(e);
 				}
-				Window.alert(neueEigenschaften.firstElement().getName());
+				final Vector<Eigenschaft> eigens = neueEigenschaften;
+				Project4uVerwaltung.deleteAllEigenschaftenOfOrganisationseinheit(o, new AsyncCallback<Void>() {
+					
+					@Override
+					public void onSuccess(Void result) {
+						
+						Project4uVerwaltung.insertEigenschaften(eigens, o, new AsyncCallback<Void>() {
+							
+							public void onSuccess(Void result) {
+								// TODO Auto-generated method stub
+								
+							}
+							public void onFailure(Throwable caught) {
+								Window.alert(caught.getMessage());
+							}
+						});
+					}
+					public void onFailure(Throwable caught) {
+						Window.alert(caught.getMessage());
+					}
+				});
+				db.hide();
 			}
 		});
 		
@@ -413,6 +438,19 @@ public class OrganisationseinheitWidget extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				
+				for(int i=0; i<flexTableEigenschaften.getRowCount(); i++){
+					Widget w = flexTableEigenschaften.getWidget(i, 0);
+					 if (w instanceof TextBox) {
+						((TextBox) w).setEnabled(true);
+					 }
+					 
+					 Widget v = flexTableEigenschaften.getWidget(i, 1);
+					 if (v instanceof TextBox) {
+						 ((TextBox) v).setEnabled(true);
+					 }
+					 
+				}
 				
 				orgaNam.setEnabled(true);
 				typbox.setEnabled(true);
