@@ -25,7 +25,7 @@ public interface ReportGenerator extends RemoteService{
 	
 	public Partnerprofil getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException;
 	
-	//public Vector<Eigenschaft> getEigenschaftOfPartnerprofil(Partnerprofil p)throws IllegalArgumentException;
+//	public Vector<Eigenschaft> getEigenschaftOfPartnerprofil(Partnerprofil p)throws IllegalArgumentException;
 	
 	public Organisationseinheit getOrganisationseinheitByUser(LoginInfo login)throws IllegalArgumentException;
 	

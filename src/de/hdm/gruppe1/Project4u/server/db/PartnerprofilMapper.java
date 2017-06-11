@@ -26,7 +26,7 @@ public class PartnerprofilMapper {
 	 * Der private Konstruktor verhindert, dass eine Instanz der Klasse
 	 * PartnerprofilMapper �ber <code>new</code> erzeugt werden kann.
 	 */
-	private PartnerprofilMapper() {
+	public PartnerprofilMapper() {
 	}
 
 	/**

@@ -44,12 +44,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	/**
 	 * Reportgenerator braucht Zugriff auf Project4uAdministration
 	 */
-	ReportGeneratorAsync ReportVerwaltung = ClientsideSettings.getReportVerwaltung();
-
-	private Project4uAdministration project4uAdministration = null;
+	//ReportGeneratorAsync ReportVerwaltung = ClientsideSettings.getReportVerwaltung();
 
 	private ReportGenerator reportGenerator = null;
-
+	private Project4uAdministration project4uAdministration = null;
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
 
@@ -250,16 +248,15 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		result.setTitle("Meine Ausschreibungen");
 
 		// Impressum hinzufuegen
-		result.setCreated(new Date());
+		//result.setCreated(new Date());
 
 		// Kopfdaten des Reports
-		CompositeParagraph header = new CompositeParagraph();
+		//CompositeParagraph header = new CompositeParagraph();
 
-		header.addSubParagraph(
-				new SimpleParagraph("Hier sehen Sie alle Ausschreibungen die Ihrerm Partnerprofil entsprechen"));
+		//header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Ausschreibungen die Ihrerm Partnerprofil entsprechen"));
 
 		// Kopfdaten zu Report hinzufï¿½gen
-		result.setHeaderData(header);
+		//result.setHeaderData(header);
 
 		// Kopfzeile fï¿½r die Tabelle anlegen:
 		Row headline = new Row();
@@ -287,19 +284,15 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		EigenschaftMapper em = EigenschaftMapper.eigenschaftMapper();
 		Vector<Eigenschaft> vektorEigenschaft = new Vector<Eigenschaft>();
 		vektorEigenschaft = em.findByPartnerprofil(pa);
-
 		
 		// Aktuellen Nutzer holen
 		orga = this.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser());
 		// Vektor mit Eigenschaften befüllen
 		Vector<Eigenschaft> vektorEigeneEigenschaften = this.reportGenerator
 				.getEigenschaftenOfOrganisationseinheit(orga);
-
 		
 		// Hier wird eine ArrayList mit allen Partnerprofilen ausgegeben.
 		PartnerprofilMapper pm = PartnerprofilMapper.partnerprofilMapper();
-		ArrayList<Partnerprofil> allePartnerprofile = new ArrayList<Partnerprofil>();
-		allePartnerprofile = pm.findAllPartnerprofile();
 
 		// Alle Ausschreibungen aufrufen
 		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
@@ -330,9 +323,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			vektormitEigenschaftsVektoren.add(vektorEigenschaft);
 		}
 
-		
-						//Vector<Vector<Eigenschaft>> passendeVektoren = new Vector<>();
-		
 		//Vektor mit Ausschreibungen anlegen bei welchen die gesuchten Eigenschaften mit den eigenen Eigenschaften übereinstimmen.
 		Vector<Ausschreibung> au = new Vector<>();
 		
@@ -352,26 +342,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					
 				}
 				
-				au = am.findByPartnerprofil(pm.findById(VE.elementAt(i).getPartnerprofilId()));
-				
-				
+				au = am.findByPartnerprofil(pm.findById(VE.elementAt(i).getPartnerprofilId()));	
 			}
-		
-			
-//			for(int i = 0; i < VE.size(); i++){
-//				for(int k = 0; k < vektorEigeneEigenschaften.size(); k++){
-//					if(VE.elementAt(i).getName().equals(vektorEigeneEigenschaften.elementAt(k).getName())){
-//						
-//					}
-//					if(VE.elementAt(i).getWert().equals(vektorEigeneEigenschaften.elementAt(k).getWert())){
-//						
-//					}
-//				}
-//					
-//				}
-			
-			//wenn gleich dann brauchen wir die PartnerprofilID mit welcher die Ausschreibung ermittelt werden kann.
-			
 		}
 		
 		//Von den Vektor passendeVektoren muss nun wieder auf Ausschreibungen gekommen werden, damit diese ausgegeben werden können.	
@@ -403,6 +375,5 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		String test = "Dies ist ein Test für den RPC-Call";
 		return test;
 	}
-
 
 }

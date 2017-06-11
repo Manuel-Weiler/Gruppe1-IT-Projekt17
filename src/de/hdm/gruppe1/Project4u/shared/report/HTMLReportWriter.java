@@ -136,15 +136,15 @@ public class HTMLReportWriter extends ReportWriter {
 		this.reportText = result.toString();
 	}
 		
-		
-	public void process(ReportByAusschreibungenForPartnerprofil a){
+
+	public void process(ReportByAusschreibungenForPartnerprofil b){
 		
 		this.resetReportText();
 		StringBuffer result = new StringBuffer();
 
-		result.append("<H3>" + a.getTitle() + "</H3>");
+		result.append("<H3>" + b.getTitle() + "</H3>");
 		
-		Vector<Row> rows = a.getRows();
+		Vector<Row> rows = b.getRows();
 		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
 		
 		for(int i = 0; i< rows.size(); i++){
