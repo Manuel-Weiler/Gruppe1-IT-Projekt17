@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -31,6 +32,7 @@ import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 
 public class OrganisationseinheitWidget extends Composite{
 
@@ -54,7 +56,7 @@ public class OrganisationseinheitWidget extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				orgaProfil(new Organisationseinheit());
+				newOrgaProfil();
 				
 			}
 		});
@@ -74,7 +76,7 @@ public class OrganisationseinheitWidget extends Composite{
 		vPanel.clear();
 		vPanel.add(heading);
 		getLinkedOrgas(orgas);
-		vPanel.add(addOrga);
+		
 		
 		
 		
@@ -212,6 +214,8 @@ public class OrganisationseinheitWidget extends Composite{
 						diBox.hide();
 						orgaProfil(object); 
 						
+						
+						
 					}
 				});
 				
@@ -273,6 +277,7 @@ public class OrganisationseinheitWidget extends Composite{
 	    
 	    
 	    vPanel.add(orgaTabelle);
+	    vPanel.add(addOrga);
 	}
 	
 	
@@ -318,16 +323,17 @@ public class OrganisationseinheitWidget extends Composite{
 	 * @author Tobias
 	 */
 	private void orgaProfil(final Organisationseinheit o){
-		//TODO: Orga hinzufügen
+		
 		final DialogBox db = new DialogBox();
 		final VerticalPanel vp = new VerticalPanel();
 		HTML Profil = new HTML("<p class='heading'>Profil: "+o.getName()+"</p>");
 		FlexTable flexTable = new FlexTable();
 		final FlexTable flexTableEigenschaften = new FlexTable();
 		final Button speichern = new Button("Speichern");
-		speichern.setWidth("100px");
+		speichern.setWidth("100px"); 
 		final Button bearbeiten = new Button("Bearbeiten");
 		bearbeiten.setWidth("100px");
+		final Button addEigenschaft = new Button("Eigenschaft hinzufügen");
 		
 		Label email = new Label("E-Mail:");
 		final TextBox mail = new TextBox();
@@ -377,6 +383,7 @@ public class OrganisationseinheitWidget extends Composite{
 					
 				}
 				vp.add(flexTableEigenschaften);
+				vp.add(addEigenschaft);
 				vp.add(bearbeiten);
 				vp.add(speichern);
 				
@@ -391,8 +398,68 @@ public class OrganisationseinheitWidget extends Composite{
 		orgaNam.setEnabled(false);
 		typbox.setEnabled(false);		
 		speichern.setVisible(false);
+		addEigenschaft.setVisible(false);
 		
 	
+		addEigenschaft.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+
+				final DialogBox db = new DialogBox();
+				Label nam = new Label ("Bezeichnung:");
+				Label wer = new Label ("Wert:");
+				Button cancel = new Button("Abbrechen");
+				Button ok = new Button("OK");
+				final TextBox name = new TextBox();
+				final TextBox wert = new TextBox();
+				FlexTable ft = new FlexTable();
+				ft.setWidget(0, 0, nam);
+				ft.setWidget(0, 1, wer);
+				ft.setWidget(1, 0, name);
+				ft.setWidget(1, 1, wert);
+				ft.setWidget(2, 1, ok);
+				ft.setWidget(2, 0, cancel);
+				db.add(ft);
+				
+				db.center();
+				db.setAnimationEnabled(true);
+				db.setAutoHideEnabled(true);
+				db.show();
+				
+				cancel.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						db.hide();
+						
+					}
+				});
+				
+				ok.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						if (name.getValue().isEmpty() || wert.getValue().isEmpty()){
+							Window.alert("Bitte beide Felder ausfüllen");
+						}
+						else{
+						db.hide();
+						
+						flexTableEigenschaften.setWidget(flexTableEigenschaften.getRowCount(), 0, name);
+						flexTableEigenschaften.setWidget(flexTableEigenschaften.getRowCount()-1, 1, wert);
+						
+						
+						}
+					}
+				});
+				
+			;
+				
+			}
+		});
+		
+		
 		
 		speichern.addClickHandler(new ClickHandler() {
 			
@@ -420,7 +487,9 @@ public class OrganisationseinheitWidget extends Composite{
 								e.setWert(((TextBox) v).getValue());
 							 };
 					 }
-					 neueEigenschaften.add(e);
+					 if(e.getName()!=null && e.getWert()!=null){
+						 neueEigenschaften.add(e);
+						 }
 				}
 							
 				final Vector<Eigenschaft> eigens = neueEigenschaften;
@@ -495,6 +564,8 @@ public class OrganisationseinheitWidget extends Composite{
 				orgaNam.setEnabled(true);
 				typbox.setEnabled(true);
 				speichern.setVisible(true);
+				addEigenschaft.setVisible(true);
+				
 			}
 		});
 		
@@ -505,6 +576,252 @@ public class OrganisationseinheitWidget extends Composite{
 		db.show();
 		
 	}
+	
+	
+	
+	
+	
+	
+	private void newOrgaProfil() {
+		Project4uVerwaltung.createPartnerprofil(new AsyncCallback<Partnerprofil>() {
+
+			@Override
+			public void onSuccess(Partnerprofil result) {
+				final Partnerprofil neuesProfil = result;
+				final Organisationseinheit o = new Organisationseinheit();
+				
+				final DialogBox db = new DialogBox();
+				final VerticalPanel vp = new VerticalPanel();
+				HorizontalPanel hp = new HorizontalPanel();
+				HTML Profil = new HTML("<p class='heading'>neues Profil: </p>");
+				FlexTable flexTable = new FlexTable();
+				final FlexTable flexTableEigenschaften = new FlexTable();
+				final Button speichern = new Button("Speichern");
+				speichern.setWidth("100px");
+				final Button abbrechen = new Button("Abbrechen");
+				abbrechen.setWidth("100px");
+				final Button addEigenschaft = new Button("Eigenschaft hinzufügen");
+				
+				
+				Label email = new Label("E-Mail:");
+				final TextBox mail = new TextBox();
+				Label orgaName = new Label("Profilname:");
+				final TextBox orgaNam = new TextBox();
+				Label typ = new Label("Kontentyp:");
+				final ListBox typbox = new ListBox();
+				
+				vp.add(Profil);
+
+				mail.setValue(ClientsideSettings.getAktuellerUser().getEmailAddress());
+				typbox.addItem("Unternehmen");
+				typbox.addItem("Team");
+				typbox.setVisibleItemCount(1);
+
+				flexTable.setWidget(0, 0, orgaName);
+				flexTable.setWidget(0, 1, orgaNam);
+				flexTable.setWidget(1, 0, email);
+				flexTable.setWidget(1, 1, mail);		
+				flexTable.setWidget(2, 0, typ);			
+				flexTable.setWidget(2, 1, typbox);
+				
+				
+				vp.add(flexTable);
+				vp.add(flexTableEigenschaften);
+				vp.add(addEigenschaft);
+				hp.add(abbrechen);
+				hp.add(speichern);
+				vp.add(hp);
+				
+				mail.setEnabled(false);
+				o.setPartnerprofilId(result.getPartnerprofilId());
+				
+				abbrechen.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						Project4uVerwaltung.deletePartnerprofil(neuesProfil, new AsyncCallback<Void>() {
+							public void onSuccess(Void result) {
+								db.hide();
+							}
+							public void onFailure(Throwable caught) {
+							}
+						});
+					}
+				});
+			
+				
+				speichern.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						
+						
+						if(orgaNam.getValue().isEmpty()){
+						Window.alert("Der Profilname muss aufgefüllt sein");
+						}
+						else{
+						o.setName(orgaNam.getValue());
+						o.setTyp(typbox.getSelectedValue());
+						o.setGoogleId(mail.getValue());
+						
+						
+						
+						Vector<Eigenschaft> neueEigenschaften = new Vector<Eigenschaft>();
+						for(int i=0; i<flexTableEigenschaften.getRowCount(); i++){
+							Eigenschaft e = new Eigenschaft();
+							Widget w = flexTableEigenschaften.getWidget(i, 0);
+							 if (w instanceof TextBox) {
+								 if(!((TextBox) w).getValue().isEmpty()){
+									e.setName(((TextBox) w).getValue());
+								 };
+							 }
+							 
+							 Widget v = flexTableEigenschaften.getWidget(i, 1);
+							 if (v instanceof TextBox) {
+								 if(!((TextBox) v).getValue().isEmpty()){
+										e.setWert(((TextBox) v).getValue());
+									 };
+							 }
+							 if(e.getName()!=null && e.getWert()!=null){
+							 neueEigenschaften.add(e);
+							 }
+						}
+									
+						final Vector<Eigenschaft> eigens = neueEigenschaften;
+						
+						
+						Project4uVerwaltung.createOrganisationseinheit(o, new AsyncCallback<Organisationseinheit>() {
+							
+							@Override
+							public void onSuccess(Organisationseinheit result) {
+								
+								Project4uVerwaltung.insertEigenschaften(eigens, o, new AsyncCallback<Void>() {
+								public void onSuccess(Void result) {
+									
+									Project4uVerwaltung.getAllOrganisationseinheitenOfTypTeamUnternehmen(new AsyncCallback<Vector<Organisationseinheit>>() {
+										
+										
+										public void onSuccess(Vector<Organisationseinheit> result) {
+											vPanel.clear();
+											vPanel.add(new OrganisationseinheitWidget(result));
+											
+										}
+										public void onFailure(Throwable caught) {
+											Window.alert(caught.getMessage());
+										}
+									});
+								}
+								public void onFailure(Throwable caught) {
+									Window.alert(caught.getMessage());
+								}
+							});
+							}
+							
+							@Override
+							public void onFailure(Throwable caught) {
+							}
+						});				
+										
+										
+								
+						
+						
+						db.hide();
+						}
+					}
+				});
+				
+				
+				
+			
+				
+				addEigenschaft.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+
+						final DialogBox db = new DialogBox();
+						Label nam = new Label ("Bezeichnung:");
+						Label wer = new Label ("Wert:");
+						Button cancel = new Button("Abbrechen");
+						Button ok = new Button("OK");
+						final TextBox name = new TextBox();
+						final TextBox wert = new TextBox();
+						FlexTable ft = new FlexTable();
+						ft.setWidget(0, 0, nam);
+						ft.setWidget(0, 1, wer);
+						ft.setWidget(1, 0, name);
+						ft.setWidget(1, 1, wert);
+						ft.setWidget(2, 1, ok);
+						ft.setWidget(2, 0, cancel);
+						db.add(ft);
+						
+						db.center();
+						db.setAnimationEnabled(true);
+						db.setAutoHideEnabled(true);
+						db.show();
+						
+						cancel.addClickHandler(new ClickHandler() {
+							
+							@Override
+							public void onClick(ClickEvent event) {
+								db.hide();
+								
+							}
+						});
+						
+						ok.addClickHandler(new ClickHandler() {
+							
+							@Override
+							public void onClick(ClickEvent event) {
+								if (name.getValue().isEmpty() || wert.getValue().isEmpty()){
+									Window.alert("Bitte beide Felder ausfüllen");
+								}
+								else{
+								db.hide();
+								
+								flexTableEigenschaften.setWidget(flexTableEigenschaften.getRowCount(), 0, name);
+								flexTableEigenschaften.setWidget(flexTableEigenschaften.getRowCount()-1, 1, wert);
+								
+								
+								}
+							}
+						});
+						
+					;
+						
+					}
+				});
+				
+			
+					
+				
+				
+				
+				db.add(vp);
+				db.setAnimationEnabled(true);
+				db.setAutoHideEnabled(false);
+				db.center();
+				db.show();
+				
+				
+				
+				
+				
+			}
+
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.getMessage());
+			}
+		});
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

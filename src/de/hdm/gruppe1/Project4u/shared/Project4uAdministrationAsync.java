@@ -114,4 +114,6 @@ public interface Project4uAdministrationAsync {
 
 	void updateOrganisationseinheit(Organisationseinheit organisationseinheit, AsyncCallback<Void> callback);
 
+	void deletePartnerprofil(Partnerprofil p, AsyncCallback<Void> callback);
+
 }

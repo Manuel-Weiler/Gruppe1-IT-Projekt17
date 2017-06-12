@@ -254,7 +254,7 @@ public class PartnerprofilWidget extends Composite{
 		orgaNam.setValue(o.getName());
 		orgaNam.setEnabled(false);
 		mail.setTitle("Die E-Mail-Adresse kann nicht geändert werden.");
-		typbox.setTitle("Der Kontentyp kann nicht geändert werden. Legen Sie ggf. zusäzliche Konten an.");
+		typbox.setTitle("Der Kontentyp kann nicht geändert werden. Legen Sie ggf. zusäzliche Organisationseinheiten an.");
 		int i = (RootPanel.get("content").getOffsetWidth())-550;
 		HTML test = new HTML("<p style='margin-left: "+i+"px'><p>");
 		flexTable.setWidget(0, 0, orgaName);
@@ -589,8 +589,7 @@ public class PartnerprofilWidget extends Composite{
 					}
 				});
 				
-			}}
-		;
+			}};
 		
 		
 		

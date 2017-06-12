@@ -52,6 +52,8 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Partnerprofil createPartnerprofil() throws IllegalArgumentException;
 	
+	public void deletePartnerprofil(Partnerprofil p) throws IllegalArgumentException;
+	
 	public Eigenschaft insertEigenschaft(Eigenschaft e, Partnerprofil p)throws IllegalArgumentException;
 	
 	public void insertEigenschaften(Vector<Eigenschaft> eigenschaften, Organisationseinheit orga)throws IllegalArgumentException;
