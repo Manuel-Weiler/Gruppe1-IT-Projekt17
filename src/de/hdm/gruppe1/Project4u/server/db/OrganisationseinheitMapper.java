@@ -107,7 +107,7 @@ public class OrganisationseinheitMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("UPDATE Organisationseinheit " + "SET google_id=\""
+	      stmt.executeUpdate("UPDATE Organisationseinheit SET google_id=\""
 	          + o.getGoogleId() + "\", " + "name=\"" + o.getName() + "\", " + "typ=\"" + o.getTyp() + "\" "
 	          + "WHERE id=" + o.getOrganisationseinheitId());
 
@@ -119,7 +119,8 @@ public class OrganisationseinheitMapper {
 	    // Um Analogie zu insert(Customer c) zu wahren, geben wir c zurück
 	    return o;
 	  }
-	//uuuu
+
+
 	 public void delete(Organisationseinheit o) {
 		    Connection con = DBConnection.connection();
 

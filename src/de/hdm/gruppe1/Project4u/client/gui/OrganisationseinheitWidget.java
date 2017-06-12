@@ -50,7 +50,14 @@ public class OrganisationseinheitWidget extends Composite{
 	 
 	public OrganisationseinheitWidget(Vector<Organisationseinheit> orgas){
 		
-		
+		addOrga.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				orgaProfil(new Organisationseinheit());
+				
+			}
+		});
 		
 		if (orgas.isEmpty()){
 			vPanel.clear();
@@ -67,7 +74,9 @@ public class OrganisationseinheitWidget extends Composite{
 		vPanel.clear();
 		vPanel.add(heading);
 		getLinkedOrgas(orgas);
-		//Window.alert(linked.firstElement().getName());
+		vPanel.add(addOrga);
+		
+		
 		
 	    initWidget(vPanel);
 	    
@@ -319,7 +328,7 @@ public class OrganisationseinheitWidget extends Composite{
 		speichern.setWidth("100px");
 		final Button bearbeiten = new Button("Bearbeiten");
 		bearbeiten.setWidth("100px");
-		 
+		
 		Label email = new Label("E-Mail:");
 		final TextBox mail = new TextBox();
 		Label orgaName = new Label("Profilname:");
@@ -389,8 +398,12 @@ public class OrganisationseinheitWidget extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				if(!orgaNam.getValue().isEmpty()){
+				o.setName(orgaNam.getValue());}
+				o.setTyp(typbox.getSelectedValue());
 				
-				// TODO update Orga implementieren, Eigenschaft hinzufügen, 
+				
+				
 				Vector<Eigenschaft> neueEigenschaften = new Vector<Eigenschaft>();
 				for(int i=0; i<flexTableEigenschaften.getRowCount(); i++){
 					Eigenschaft e = new Eigenschaft();
@@ -409,34 +422,63 @@ public class OrganisationseinheitWidget extends Composite{
 					 }
 					 neueEigenschaften.add(e);
 				}
+							
 				final Vector<Eigenschaft> eigens = neueEigenschaften;
-				Project4uVerwaltung.deleteAllEigenschaftenOfOrganisationseinheit(o, new AsyncCallback<Void>() {
+				
+				Project4uVerwaltung.updateOrganisationseinheit(o, new AsyncCallback<Void>() {
 					
 					@Override
 					public void onSuccess(Void result) {
-						
-						Project4uVerwaltung.insertEigenschaften(eigens, o, new AsyncCallback<Void>() {
+						Project4uVerwaltung.deleteAllEigenschaftenOfOrganisationseinheit(o, new AsyncCallback<Void>() {
 							
+							@Override
 							public void onSuccess(Void result) {
-								// TODO Auto-generated method stub
 								
+								
+								Project4uVerwaltung.insertEigenschaften(eigens, o, new AsyncCallback<Void>() {
+									public void onSuccess(Void result) {
+										
+										Project4uVerwaltung.getAllOrganisationseinheitenOfTypTeamUnternehmen(new AsyncCallback<Vector<Organisationseinheit>>() {
+											
+											
+											public void onSuccess(Vector<Organisationseinheit> result) {
+												vPanel.clear();
+												vPanel.add(new OrganisationseinheitWidget(result));
+												
+											}
+											public void onFailure(Throwable caught) {
+												Window.alert(caught.getMessage());
+											}
+										});
+									}
+									public void onFailure(Throwable caught) {
+										Window.alert(caught.getMessage());
+									}
+								});
 							}
 							public void onFailure(Throwable caught) {
 								Window.alert(caught.getMessage());
 							}
 						});
+						
 					}
+					
+					@Override
 					public void onFailure(Throwable caught) {
 						Window.alert(caught.getMessage());
+						
 					}
 				});
+				
+				
 				db.hide();
 			}
 		});
 		
+		
+		
+		
 		bearbeiten.addClickHandler(new ClickHandler() {
-			
-			@Override
 			public void onClick(ClickEvent event) {
 				
 				for(int i=0; i<flexTableEigenschaften.getRowCount(); i++){
@@ -449,9 +491,7 @@ public class OrganisationseinheitWidget extends Composite{
 					 if (v instanceof TextBox) {
 						 ((TextBox) v).setEnabled(true);
 					 }
-					 
 				}
-				
 				orgaNam.setEnabled(true);
 				typbox.setEnabled(true);
 				speichern.setVisible(true);
@@ -464,8 +504,10 @@ public class OrganisationseinheitWidget extends Composite{
 		db.center();
 		db.show();
 		
-		
 	}
+	
+	
+	
 	
 	
 	 

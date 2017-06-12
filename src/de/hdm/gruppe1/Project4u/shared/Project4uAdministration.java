@@ -60,6 +60,8 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Organisationseinheit createOrganisationseinheit(Organisationseinheit orga) throws IllegalArgumentException;
 	
+	public void updateOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException;
+	
 	public Vector<Eigenschaft> getEigenschaftenOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException;
 	
 	public void deleteAllEigenschaftenOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException;

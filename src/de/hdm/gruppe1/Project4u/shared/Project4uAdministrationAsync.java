@@ -112,4 +112,6 @@ public interface Project4uAdministrationAsync {
 	void insertEigenschaften(Vector<Eigenschaft> eigenschaften, Organisationseinheit orga,
 			AsyncCallback<Void> callback);
 
+	void updateOrganisationseinheit(Organisationseinheit organisationseinheit, AsyncCallback<Void> callback);
+
 }

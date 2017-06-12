@@ -63,6 +63,7 @@ public class PartnerprofilWidget extends Composite{
 	Organisationseinheit neueOrga = new Organisationseinheit();
 	VerticalPanel vPanel = new VerticalPanel();
 	VerticalPanel eigenschaftenPanel = new VerticalPanel();
+	VerticalPanel teamUnternehmen = new VerticalPanel();
 	
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch einzelne Objekte der
@@ -236,6 +237,7 @@ public class PartnerprofilWidget extends Composite{
 		
 	}
 	
+	VerticalPanel vp = new VerticalPanel();
 	public PartnerprofilWidget(Organisationseinheit o){
 		//TODO: löschen Organisationeinheit implementieren
 		Button deleteOrga = new Button("Nutzerprofil löschen");
@@ -245,7 +247,7 @@ public class PartnerprofilWidget extends Composite{
 		RootPanel.get("contentHeader").add(Profil);
 		//TODO: bearbeiten Nutzername 
 		Button bearbeiten = new Button("Nutzername bearbeiten");
-		final VerticalPanel vp = new VerticalPanel();
+		
 		
 		mail.setValue(o.getGoogleId());
 		mail.setEnabled(false);
@@ -370,7 +372,8 @@ public class PartnerprofilWidget extends Composite{
 					
 					@Override
 					public void onSuccess(Vector<Organisationseinheit> result) {
-						vp.add(new OrganisationseinheitWidget(result));
+						teamUnternehmen.add(new OrganisationseinheitWidget(result));
+						vp.add(teamUnternehmen);
 						
 					}
 					public void onFailure(Throwable caught) {
@@ -387,6 +390,22 @@ public class PartnerprofilWidget extends Composite{
 		
 		
 		initWidget(vp);
+	}
+	
+	public  void initTeamUnternehmenTable(){
+		teamUnternehmen.clear();
+		Project4uVerwaltung.getAllOrganisationseinheitenOfTypTeamUnternehmen(new AsyncCallback<Vector<Organisationseinheit>>() {
+			
+			@Override
+			public void onSuccess(Vector<Organisationseinheit> result) {
+				teamUnternehmen.add(new OrganisationseinheitWidget(result));
+				vp.add(teamUnternehmen);
+				
+			}
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.getMessage());
+			}
+		});
 	}
 	
 	
