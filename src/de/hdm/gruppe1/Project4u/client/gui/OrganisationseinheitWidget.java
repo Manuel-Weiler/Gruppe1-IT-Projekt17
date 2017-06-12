@@ -43,7 +43,7 @@ public class OrganisationseinheitWidget extends Composite{
 			return item == null ? null : item.getOrganisationseinheitId();
 		}
 	};
-	//TODO: Clickhandler hinzufügen
+	
 	Button addOrga = new Button("Organisationseinheit hinzufügen");
 	VerticalPanel vPanel = new VerticalPanel();
 	HTML heading = new HTML("<h2 class='h2heading'>Teams und Unternehmen:</h2>");

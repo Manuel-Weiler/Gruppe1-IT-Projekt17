@@ -88,7 +88,7 @@ public class NavigationsleisteWidget extends Composite{
 				
 				@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
+						
 						
 					}
 				});

@@ -239,7 +239,7 @@ public class PartnerprofilWidget extends Composite{
 	
 	VerticalPanel vp = new VerticalPanel();
 	public PartnerprofilWidget(Organisationseinheit o){
-		//TODO: löschen Organisationeinheit implementieren
+		
 		Button deleteOrga = new Button("Nutzerprofil löschen");
 		
 		RootPanel.get("contentHeader").clear();
@@ -274,6 +274,15 @@ public class PartnerprofilWidget extends Composite{
 		
 		HTML p = new HTML("<p class='heading'>Eigenschaften:</p>");		
 		vp.add(p);
+		
+		deleteOrga.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				new LöschungOrganisationseinheitWidget();
+				
+			}
+		});
 		
 		Project4uVerwaltung.getPartnerprofilOfOrganisationseinheit(o, new AsyncCallback<Partnerprofil>() {
 			public void onSuccess(Partnerprofil result) {
