@@ -23,7 +23,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
  * 
  * 
  * @author Thies
- * @author Dominik
+ * @author Sasse
  */
 
 public class BewerbungMapper {
@@ -89,10 +89,10 @@ public class BewerbungMapper {
 			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Bewerbung ");
 			
 			if(rs.next()){
-				bewerbung.setBewerbungID(rs.getInt("maxid")+1);
+				bewerbung.setBewerbungId(rs.getInt("maxid")+1);
 				
 				stmt.executeUpdate("INSERT INTO Bewerbung (id, erstelldatum, bewerbungstext, ausschreibung_id, organisationseinheit_id)"
-						+ "VALUES ('" + bewerbung.getBewerbungID() + "','" + sdf.format(bewerbung.getErstelldatum()) + "','" 
+						+ "VALUES ('" + bewerbung.getBewerbungId() + "','" + sdf.format(bewerbung.getErstelldatum()) + "','" 
 						+ bewerbung.getBewerbungstext() + "', '"+a.getAusschreibungId()+"', '"+o.getOrganisationseinheitId()+"')");
 
 			}
@@ -117,7 +117,7 @@ public class BewerbungMapper {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(
 					"UPDATE Bewerbung SET bewerbungstext = '" + bewerbung.getBewerbungstext() + "' WHERE id = '"
-							+ bewerbung.getBewerbungID()+"';");
+							+ bewerbung.getBewerbungId()+"';");
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -136,7 +136,9 @@ public class BewerbungMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Bewerbung WHERE id=" + bewerbung.getBewerbungID());
+
+			stmt.executeUpdate("DELETE FROM Bewerbung " + "WHERE id=" + bewerbung.getBewerbungId());
+
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -161,7 +163,7 @@ public class BewerbungMapper {
 			 */
 			if (rs.next()) {
 				// Ergebnis-Tupel in Objekt umwandeln
-				b.setBewerbungID(rs.getInt("id"));
+				b.setBewerbungId(rs.getInt("id"));
 				b.setErstelldatum(rs.getDate("erstelldatum"));
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
 				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
@@ -193,7 +195,7 @@ public class BewerbungMapper {
 			// erstellt.
 			while (rs.next()) {
 				Bewerbung b = new Bewerbung();
-				b.setBewerbungID(rs.getInt("id"));
+				b.setBewerbungId(rs.getInt("id"));
 				b.setErstelldatum(rs.getDate("erstelldatum"));
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
 				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
@@ -229,7 +231,7 @@ public class BewerbungMapper {
 			// erstellt.
 			while (rs.next()) {
 				Bewerbung b = new Bewerbung();
-				b.setBewerbungID(rs.getInt("id"));
+				b.setBewerbungId(rs.getInt("id"));
 				b.setErstelldatum(rs.getDate("erstelldatum"));
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
 				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
@@ -260,7 +262,7 @@ public class BewerbungMapper {
 
 			while (rs.next()) {
 				Bewerbung b = new Bewerbung();
-				b.setBewerbungID(rs.getInt("id"));
+				b.setBewerbungId(rs.getInt("id"));
 				b.setErstelldatum(rs.getDate("erstelldatum"));
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
 				b.setAusschreibungId(rs.getInt("ausschreibung_id"));

@@ -1,6 +1,5 @@
 package de.hdm.gruppe1.Project4u.client;
 
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -23,10 +22,11 @@ import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 public class Project4u implements EntryPoint {
 
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
-	
 
+	private static String editorHtmlName = "Project4u.html";
 
 	static final int REFRESH_INTERVAL = 5000; // ms
+
 	public static final NavigationsleisteWidget nt = new NavigationsleisteWidget();
 	  private VerticalPanel mainPanel = new VerticalPanel();
 	  private FlexTable stocksFlexTable = new FlexTable();
@@ -38,12 +38,15 @@ public class Project4u implements EntryPoint {
 	    private Anchor signInLink = new Anchor("Sign In");
 	    private Anchor signOutLink = new Anchor("Sign Out");
 
-	  public void onModuleLoad() {
+
+	public void onModuleLoad() {
 		// Check login status using login service.
-		  LoginServiceAsync loginService = ClientsideSettings.getLoginService();
-		  loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
-		  public void onFailure(Throwable error) {
-		  }
+
+		LoginServiceAsync loginService = GWT.create(LoginService.class);
+		loginService.login(GWT.getHostPageBaseURL() + editorHtmlName, new AsyncCallback<LoginInfo>() {
+			public void onFailure(Throwable error) {
+			}
+
 		  public void onSuccess(LoginInfo result) {
 		  loginInfo = result;
 		  ClientsideSettings.setAktuellerUser(result);
@@ -57,7 +60,6 @@ public class Project4u implements EntryPoint {
 		  });
 		  }
 
-	    
 
 	  
 	  private void loadLogin() {
@@ -67,12 +69,10 @@ public class Project4u implements EntryPoint {
 			loginPanel.add(signInLink);
 			RootPanel.get("content").add(loginPanel);
 	  }
-	
-
-		
 
 
 	private void loadProject4u() {
+
 			
 			RootPanel.get("nav").add(nt);
 			nt.homeButtonclick();
@@ -98,5 +98,5 @@ public class Project4u implements EntryPoint {
 		});
 	}
 
+	}
 
-}

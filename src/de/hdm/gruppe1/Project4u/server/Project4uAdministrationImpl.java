@@ -130,6 +130,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * #########################################################################
 	 * 
 	 */
+
 	
 	/*
 	 * #########################################################################
@@ -391,7 +392,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		o = getOrganisationseinheitByUser(login);
 		p.setOrganisationseinheitId(o.getOrganisationseinheitId());
 		return this.projektmarktplatzMapper.insert(p);
-
+ 
 	}
 	
 	public Projektmarktplatz findProjektmarktplatzById(int id) throws IllegalArgumentException {
@@ -560,14 +561,17 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 //	public Vector<Ausschreibung> findbyPerson (String name)throws IllegalArgumentException{
 //		return this.ausschreibungMapper.findByPerson(name);
 //	}
-	
+//	
+//	public Vector<Ausschreibung> findbyProjekt (String name)throws IllegalArgumentException{
+//		return this.ausschreibungMapper.findByProjekt(name);
+//	}
+
 	public Vector<Ausschreibung> findAusschreibungbyProjekt (Projekt projekt)throws IllegalArgumentException{
 		return this.ausschreibungMapper.findByProjekt(projekt);
 	}
 	
-	
-	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException {
-		
+	public ArrayList<Ausschreibung> getAlleAusschreibungen() throws IllegalArgumentException {
+
 		return this.ausschreibungMapper.findAllAusschreibungen();
 	}
 	
@@ -593,7 +597,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public void updateBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)
 			throws IllegalArgumentException {
 		Bewerbung bewerbung = new Bewerbung();
-		bewerbung.setBewerbungID(bewerbungID);
+		bewerbung.setBewerbungId(bewerbungID);
 		bewerbung.setErstelldatum(erstelldatum);
 		bewerbung.setBewerbungstext(bewerbungstext);
 		this.bewerbungMapper.update(bewerbung);
@@ -629,10 +633,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	
 	public Bewertung createBewertung(Bewerbung bewerbung, float bewertungspunkte, String stellungnahme) throws IllegalArgumentException {
 		Bewertung bewertung = new Bewertung();
-		bewertung.setBewerbungID(bewerbung.getBewerbungID());
+		bewertung.setBewerbungID(bewerbung.getBewerbungId());
 		bewertung.setBewertungspunkte(bewertungspunkte);
 		bewertung.setStellungnahme(stellungnahme);
-		return this.bewertungMapper.insert(bewertung);
+		return this.bewertungMapper.insert(bewertung, bewerbung);
 	}
 	
 	public void updateBewertung(Bewertung bewertung) throws IllegalArgumentException {
@@ -673,7 +677,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		beteiligung.setEnddatum(enddatum);
 		beteiligung.setPersonentage(personentage);
 		beteiligung.setOrganisationseinheitId(organisationseinheit.getOrganisationseinheitId());
-		beteiligung.setBewertungId(bewertung.getBewertungID());
+		beteiligung.setBewertungId(bewertung.getBewertungId());
 		beteiligung.setProjektId(projekt.getProjektId());
 	
 		return this.beteiligungMapper.insertBeteiligung(beteiligung);
@@ -710,9 +714,6 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		vtest.add(test);
 		return vtest;
 	}
-
-	
-
 	
 	
 }

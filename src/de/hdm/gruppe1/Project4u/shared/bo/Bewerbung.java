@@ -12,11 +12,11 @@ public class Bewerbung{
 	private Date erstelldatum = null;
 	private String bewerbungstext = null;
 
-	public int getBewerbungID() {
+	public int getBewerbungId() {
 		return bewerbungId;
 	}
 
-	public void setBewerbungID(int bewerbungID) {
+	public void setBewerbungId(int bewerbungID) {
 		this.bewerbungId = bewerbungID;
 	}
 	
@@ -50,6 +50,19 @@ public class Bewerbung{
 
 	public void setBewerbungstext(String bewerbungstext) {
 		this.bewerbungstext = bewerbungstext;
+	}
+
+	private static Bewerbung bewerbung = null;
+	
+	public Bewerbung(){
+	
+	};
+	
+	public static Bewerbung bewerbung() {
+		if (bewerbung == null){
+			bewerbung = new Bewerbung();
+		}
+		return bewerbung;
 	}
 
 }

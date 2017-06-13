@@ -18,7 +18,7 @@ public class ClientsideSettings extends CommonSettings{
 	
 	//private static Project4uAdministrationAsync project4uAdministration = null;
 	private static Project4uAdministrationAsync project4uVerwaltung = null;
-	private static ReportGeneratorAsync reportGenerator = null;
+	private static ReportGeneratorAsync reportVerwaltung = null;
 	private static LoginServiceAsync loginService = null;
 	private static LoginInfo aktuellerUser = null;
 
@@ -63,12 +63,12 @@ public class ClientsideSettings extends CommonSettings{
 	 * 
 	 * @return Instanz des Typs ReportGeneratorAsync
 	 */
-	public static ReportGeneratorAsync getReportGenerator() {
+	public static ReportGeneratorAsync getReportVerwaltung() {
 
-		if (reportGenerator == null) {
-			reportGenerator = GWT.create(ReportGenerator.class);
+		if (reportVerwaltung == null) {
+			reportVerwaltung = GWT.create(ReportGenerator.class);
 		}
-		return reportGenerator;
+		return reportVerwaltung;
 
 	}
 }

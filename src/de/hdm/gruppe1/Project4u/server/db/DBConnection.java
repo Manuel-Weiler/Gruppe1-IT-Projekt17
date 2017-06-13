@@ -1,20 +1,19 @@
 package de.hdm.gruppe1.Project4u.server.db;
 
 import java.sql.*;
-import java.sql.DriverManager;
+
+import com.google.appengine.api.utils.SystemProperty;
 
 import com.google.appengine.api.utils.SystemProperty;
 
 public class DBConnection {
 	private static Connection con = null;
-	//private static String googleUrl = "'jdbc:mysql://173.194.86.227:3306/project4u', 'TobiasReumann', null"; // <-- da muss unsere Google-DatenbankURL rein!
-	//private static String localUrl = ""; // <-- da muss unsere lokale DatenbankURL rein!
-	
-	//Datenbankverbindung aufbauen
-	public static Connection connection(){
-		if (con == null) {
 
+	// Datenbankverbindung aufbauen
+	public static Connection connection() {
+		if (con == null) {
 			try {
+
 				/* if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
 	                    // Load the class that provides the new
 	                    // "jdbc:google:mysql://" prefix.
@@ -40,15 +39,20 @@ public class DBConnection {
 		}
 		return con;
 	}
-    /**
+
+	/**
 	 * Schließt das ResultSet, das Statement und die Connection.
-	 * @param rs ResultSet
-	 * @param stmt Statement
-	 * @param con Datenbankverbindung
+	 * 
+	 * @param rs
+	 *            ResultSet
+	 * @param stmt
+	 *            Statement
+	 * @param con
+	 *            Datenbankverbindung
 	 * @throws Exception
 	 */
-	public static void closeAll(ResultSet rs, Statement stmt, Connection con) throws IllegalArgumentException{
-		
+	public static void closeAll(ResultSet rs, Statement stmt, Connection con) throws IllegalArgumentException {
+
 	}
 
 }

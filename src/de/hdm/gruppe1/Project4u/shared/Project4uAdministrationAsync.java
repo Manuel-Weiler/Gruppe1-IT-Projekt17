@@ -16,6 +16,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
+
 public interface Project4uAdministrationAsync {
 
 	
@@ -39,9 +40,8 @@ public interface Project4uAdministrationAsync {
 	void findAllProjektmarktplatz(AsyncCallback<Vector<Projektmarktplatz>> callback);
 	
 	void testMethode (AsyncCallback<String> callback);
-
 	
-	void getAllAusschreibungen(AsyncCallback<ArrayList<Ausschreibung>> callback);
+	void getAlleAusschreibungen(AsyncCallback<ArrayList<Ausschreibung>> callback);
 
 	void testMethode2(AsyncCallback<Vector<Projektmarktplatz>> callback);
 
@@ -51,7 +51,9 @@ public interface Project4uAdministrationAsync {
 
 	void update(Projekt p, AsyncCallback<Void> callback);
 
+
 	void createProjekt(Projekt p, Projektmarktplatz pm, LoginInfo login, AsyncCallback<Projekt> callback);
+
 
 	void findByProjektmarktplatz(Projektmarktplatz projektmarktplatz, AsyncCallback<Vector<Projekt>> callback);
 

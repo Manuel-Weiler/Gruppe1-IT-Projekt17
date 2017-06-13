@@ -105,29 +105,9 @@ public class AusschreibungMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-	}
-	/*
-	 * 
-	*
-	*
-*public Ausschreibung findByIdAusschreibung (int i) {
-*		Connection con = DBConnection.connection();
-	*	Ausschreibung au = new Ausschreibung();
-		
-	*	try {
-	*
-	*		ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Ausschreibung WHERE id='" + i + "'");
-	*		if (rs.next()) {
-*
-*				au.setID(rs.getInt("id"));
-*				au.setErstellDatum(rs.getDate("erstelldatum"));
-*			}
-*		} catch (SQLException e) {
-*			e.printStackTrace();
-*		}
-*		return au;
-*	}
-*/	
+	} 
+
+	
 	public Ausschreibung findByIdAusschreibung (int i) {
 		Connection con = DBConnection.connection();
 		
@@ -254,8 +234,9 @@ public class AusschreibungMapper {
 		}
 	}
 	
-	//Auslesen alle Ausschreibungen
-	public ArrayList<Ausschreibung> findAll(){
+	
+	//Auslesen aller Ausschreibungen
+	public ArrayList<Ausschreibung> findAllAusschreibungen(){
 		Connection con = DBConnection.connection();
 		
 		ArrayList<Ausschreibung> result = new ArrayList<Ausschreibung>();
@@ -266,7 +247,7 @@ public class AusschreibungMapper {
 			
 			while(rs.next()){
 				Ausschreibung au = new Ausschreibung();
-				au.setAusschreibungId(rs.getInt("id")); //TODO in der DB steht "id" jedoch sollte das vielleicht "AusschreibungID" hei�en
+				au.setAusschreibungId(rs.getInt("id")); 
 				au.setBezeichnung(rs.getString("bezeichnung"));
 				au.setNameProjektleiter(rs.getString("name_projektleiter"));
 				au.setBewerbungsfrist(rs.getDate("bewerbungsfrist"));
@@ -282,6 +263,9 @@ public class AusschreibungMapper {
 		}
 		return result;
 	}
+	
+	
+	
 // So oder mit einem Vector?
 	public Ausschreibung  findByNameAusschreibung (String bezeichnung) {
 		Connection con = DBConnection.connection();
@@ -339,7 +323,8 @@ public class AusschreibungMapper {
 		    return result;
 		  }
 		
-		/**Diese Methode is voll f�r n arsch
+
+		/**TODO: Diese Methode is voll f�r n arsch
 		 * @param profil
 		 * @return
 		 */
@@ -384,35 +369,37 @@ public class AusschreibungMapper {
 			 e2.printStackTrace();
 		}
 	}
-
-	public ArrayList<Ausschreibung> findAllAusschreibungen(){
-		Connection con = DBConnection.connection();
-	    ArrayList<Ausschreibung> result = new ArrayList<Ausschreibung>();
-
-	    try {
-	      Statement stmt = con.createStatement();
-
-	      ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung ORDER BY id;");
-
-	 
-	      while (rs.next()) {
-	        Ausschreibung au = new Ausschreibung();
-			au.setID(rs.getInt("id"));
-			au.setBezeichnung (rs.getString("bezeichnung"));
-			au.setNameProjektleiter (rs.getString("name_projektleiter"));
-			au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
-			au.setAusschreibungstext (rs.getString("ausschreibungstext"));
-			au.setErstellDatum(rs.getDate("erstelldatum"));
-			
-	        result.add(au);
-	      }
-	    }
-	    catch (SQLException e) {
-	      e.printStackTrace();
-	    }
-
-	    return result;
-	}
+	
+//TODO: redundante Methode?
+	
+//	public ArrayList<Ausschreibung> findAllAusschreibungen(){
+//		Connection con = DBConnection.connection();
+//	    ArrayList<Ausschreibung> result = new ArrayList<Ausschreibung>();
+//
+//	    try {
+//	      Statement stmt = con.createStatement();
+//
+//	      ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung ORDER BY id;");
+//
+//	 
+//	      while (rs.next()) {
+//	        Ausschreibung au = new Ausschreibung();
+//			au.setID(rs.getInt("id"));
+//			au.setBezeichnung (rs.getString("bezeichnung"));
+//			au.setNameProjektleiter (rs.getString("name_projektleiter"));
+//			au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
+//			au.setAusschreibungstext (rs.getString("ausschreibungstext"));
+//			au.setErstellDatum(rs.getDate("erstelldatum"));
+//			
+//	        result.add(au);
+//	      }
+//	    }
+//	    catch (SQLException e) {
+//	      e.printStackTrace();
+//	    }
+//
+//	    return result;
+//	}
 
 	
 	/*Notwendig um das zur Ausschreibung zugehörige Partnerprofil zu löschen

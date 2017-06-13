@@ -10,6 +10,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.gruppe1.Project4u.shared.bo.*;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 
 @RemoteServiceRelativePath("projectadministration")
 public interface Project4uAdministration extends RemoteService{
@@ -24,14 +25,12 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Organisationseinheit getOrganisationseinheitById(int id) throws IllegalArgumentException;
 	
-		
-	
 	public Vector<Projektmarktplatz> findAllProjektmarktplatz() throws IllegalArgumentException;
 
 	//TODO: Testmethode l�schen
 	String testMethode();
 
-	public ArrayList<Ausschreibung> getAllAusschreibungen() throws IllegalArgumentException;
+	public ArrayList<Ausschreibung> getAlleAusschreibungen() throws IllegalArgumentException;
 	
 	//TODO: Testmethode l�schen
 	public Vector<Projektmarktplatz> testMethode2() throws IllegalArgumentException;
