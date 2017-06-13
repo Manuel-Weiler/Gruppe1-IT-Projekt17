@@ -11,6 +11,7 @@ public class Bewerbung{
 	private int ausschreibungId;
 	private Date erstelldatum = null;
 	private String bewerbungstext = null;
+	private String Status = null;
 
 	public int getBewerbungId() {
 		return bewerbungId;
@@ -51,6 +52,14 @@ public class Bewerbung{
 	public void setBewerbungstext(String bewerbungstext) {
 		this.bewerbungstext = bewerbungstext;
 	}
+	
+	public String getStatus() {
+		return Status;
+	}
+	
+	public void setStatus(String status) {
+		this.Status = status;
+	}
 
 	private static Bewerbung bewerbung = null;
 	
@@ -65,4 +74,5 @@ public class Bewerbung{
 		return bewerbung;
 	}
 
+	
 }
