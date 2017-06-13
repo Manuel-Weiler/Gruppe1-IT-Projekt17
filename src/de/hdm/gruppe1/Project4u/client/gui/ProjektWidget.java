@@ -53,6 +53,7 @@ public class ProjektWidget extends Composite{
 	Organisationseinheit org = new Organisationseinheit();
 	
 	Button addProjekt = new Button("Projekt anlegen");
+	Button addAusschreibung = new Button("Ausschreibung hinzufügen");
 	VerticalPanel vPanel = new VerticalPanel();
 	//TODO: Projekt löschen,  Ausschreibungen
 	
@@ -84,6 +85,7 @@ public class ProjektWidget extends Composite{
 		getOrganisationseinheitOfUser(ClientsideSettings.getAktuellerUser());
 		this.projektmarktplatz =pMarktpl;
 		
+		addAusschreibung.addClickHandler(new hinzufuegenAusschreibungClickhandler());
 		
 		
 		//Pr�fung, ob schon Projekte zum Projektmarktplatz existieren
@@ -391,8 +393,9 @@ public class ProjektWidget extends Composite{
 	
 	VerticalPanel verP = new VerticalPanel();
 	HorizontalPanel hPanel = new HorizontalPanel();
-	
+	Projekt selectedProjekt = new Projekt();
 	protected void ausschreibungAnsehen(Projekt p){
+		this.selectedProjekt=p;
 		verP.clear();
 		hPanel.clear();
 				
@@ -419,6 +422,7 @@ public class ProjektWidget extends Composite{
 							"<p class='heading'>-- keine Ausschreibungen zu diesem Projekt --</p>");
 					noAusschreibungen.setHeight("30px");
 					verP.add(noAusschreibungen);
+					verP.add(addAusschreibung);
 					vPanel.add(verP);
 					
 				} else {
@@ -537,7 +541,19 @@ public class ProjektWidget extends Composite{
 		 
 		verP.add(hPanel);
 		verP.add(pager);
+		verP.add(addAusschreibung);
 		vPanel.add(verP);
+		
+	}
+	
+	private class hinzufuegenAusschreibungClickhandler implements ClickHandler{
+
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO AusschreibungsprofilWidget
+			
+		}
 		
 	}
 }
