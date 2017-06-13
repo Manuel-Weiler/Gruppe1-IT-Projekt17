@@ -14,6 +14,7 @@ public class MessageBox {
         final DialogBox box = new DialogBox();
         final VerticalPanel panel = new VerticalPanel();
         box.setText(header);
+        box.setGlassEnabled(true);
         panel.add(new Label(content));
         final Button buttonClose = new Button("Close");
         		

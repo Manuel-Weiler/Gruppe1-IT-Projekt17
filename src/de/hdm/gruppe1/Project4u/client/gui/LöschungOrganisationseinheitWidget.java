@@ -31,12 +31,14 @@ public class LöschungOrganisationseinheitWidget extends Composite{
 	VerticalPanel vp = new VerticalPanel();
 	
 	public LöschungOrganisationseinheitWidget(){
+		diaBox.setGlassEnabled(true);
 		vp.add(message);
 		flextable.setWidget(1, 0, abbrechen);
 		flextable.setWidget(1, 1, weiter);
 		vp.add(flextable);
 		diaBox.add(vp);
 		diaBox.center();
+		
 		diaBox.show();
 		
 		

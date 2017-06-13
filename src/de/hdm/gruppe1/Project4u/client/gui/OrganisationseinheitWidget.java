@@ -268,7 +268,7 @@ public class OrganisationseinheitWidget extends Composite{
 		ListDataProvider<Organisationseinheit> dataProvider = new ListDataProvider<Organisationseinheit>();
 	    dataProvider.addDataDisplay(orgaTabelle);
 	    dataProvider.setList(orgas);
-	
+	    //TODO: Pager funktioniert noch nicht, ggf. reihenfolge beachten
 		SimplePager pager = new SimplePager(TextLocation.CENTER, false, 0, false);
 	    pager.setDisplay(orgaTabelle);
 	    pager.setPageSize(6);
@@ -323,8 +323,9 @@ public class OrganisationseinheitWidget extends Composite{
 	 * @author Tobias
 	 */
 	private void orgaProfil(final Organisationseinheit o){
-		
+		 
 		final DialogBox db = new DialogBox();
+		db.setGlassEnabled(true);
 		final VerticalPanel vp = new VerticalPanel();
 		HTML Profil = new HTML("<p class='heading'>Profil: "+o.getName()+"</p>");
 		FlexTable flexTable = new FlexTable();
@@ -591,6 +592,7 @@ public class OrganisationseinheitWidget extends Composite{
 				final Organisationseinheit o = new Organisationseinheit();
 				
 				final DialogBox db = new DialogBox();
+				db.setGlassEnabled(true);
 				final VerticalPanel vp = new VerticalPanel();
 				HorizontalPanel hp = new HorizontalPanel();
 				HTML Profil = new HTML("<p class='heading'>neues Profil: </p>");
