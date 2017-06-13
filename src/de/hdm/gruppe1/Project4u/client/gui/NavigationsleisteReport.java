@@ -29,12 +29,14 @@ public class NavigationsleisteReport extends Composite {
 
 	Button homeButton = new Button("Startseite");
 	Button alleAusschreibungenButton = new Button("Alle Ausschreibungen");
+	Button alleBewerbungenButton = new Button("Alle Bewerbungen");
 	Button testButton = new Button("Test");
 
 	public NavigationsleisteReport() {
 
 		menuReportPanel.add(homeButton);
 		menuReportPanel.add(alleAusschreibungenButton);
+		menuReportPanel.add(alleBewerbungenButton);
 		menuReportPanel.add(testButton);
 
 		// Buttonabstand
