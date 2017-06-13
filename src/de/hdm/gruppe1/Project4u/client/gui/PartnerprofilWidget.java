@@ -75,6 +75,12 @@ public class PartnerprofilWidget extends Composite{
 		}
 	};
 	
+	/**
+	 * Dieser Kontruktor wird verwendet wenn sich ein Nutzer, also eine
+	 * Organisationseinheit, anmeldet, deren Google-ID (EMail-Adresse) bisher
+	 * nicht in der DB gespeichert ist, es sich also um einen neuen Nutzer bei
+	 * seiner ersten Anmeldung handelt.
+	 */
 	public PartnerprofilWidget(){
 		
 		RootPanel.get("contentHeader").clear();
@@ -82,7 +88,7 @@ public class PartnerprofilWidget extends Composite{
 		RootPanel.get("contentHeader").add(neuProfil);
 		
 		
-		
+		//Zunächst wird ein neues Partnerprofil in der DB angelegt.
 		Project4uVerwaltung.createPartnerprofil(new AsyncCallback<Partnerprofil>() {
 			
 			@Override
@@ -107,8 +113,11 @@ public class PartnerprofilWidget extends Composite{
 		flexTable.setWidget(1, 0, orgaName);
 		flexTable.setWidget(1, 1, orgaNam);
 		flexTable.setWidget(2, 0, typ);
+		//Als Nutzer der Plattform muss mindestens ein Personen-Konto angelegt werden.
 		typbox.addItem("Person");
 		typbox.setVisibleItemCount(1);
+		
+		//Dem Nutzer werden beispielhafte Eigenschaften zum Ausfüllen vorgeschlagen.
 		flexTable.setWidget(2, 1, typbox);
 		flexTable.setWidget(3, 0, berufsbezeichnung);
 		flexTable.setWidget(3, 1, berufsbezeichnungBox);
@@ -142,16 +151,26 @@ public class PartnerprofilWidget extends Composite{
 				neuOrga.setName(orgaNam.getValue());
 				neuOrga.setTyp(typbox.getSelectedValue());
 				neuOrga.setPartnerprofilId(neuesProfil.getPartnerprofilId());
-				Project4uVerwaltung.createOrganisationseinheit(neuOrga, new AsyncCallback<Organisationseinheit>() {
-					
-					@Override
-					public void onSuccess(Organisationseinheit result) {								
-						neueOrga = result;
-						if (!berufsbezeichnungBox.getValue().isEmpty()){
-						Eigenschaft eins = new Eigenschaft();
-						eins.setName("Berufsbezeichnung");
-						eins.setWert(berufsbezeichnungBox.getValue());
-						Project4uVerwaltung.insertEigenschaft(eins, neuesProfil, new AsyncCallback<Eigenschaft>() {
+				
+					// Beim Klick auf Speichern wird ein neuen
+					// Organisationseinheiten-Objekt angelegt und in der DB
+					// gespeichert.
+					Project4uVerwaltung.createOrganisationseinheit(neuOrga, new AsyncCallback<Organisationseinheit>() {
+
+						@Override
+						public void onSuccess(Organisationseinheit result) {
+							neueOrga = result;
+
+							/*
+							 * Bei Erfolg des Abspeicherns in der DB werden
+							 * einzeln nacheinander die Beispielseigenschaften
+							 * in der DB gespeichert.
+							 */
+							if (!berufsbezeichnungBox.getValue().isEmpty()) {
+								Eigenschaft eins = new Eigenschaft();
+								eins.setName("Berufsbezeichnung");
+								eins.setWert(berufsbezeichnungBox.getValue());
+								Project4uVerwaltung.insertEigenschaft(eins, neuesProfil, new AsyncCallback<Eigenschaft>() {
 							public void onSuccess(Eigenschaft result) {
 								
 								
@@ -178,10 +197,28 @@ public class PartnerprofilWidget extends Composite{
 															Project4uVerwaltung.insertEigenschaft(vier, neuesProfil, new AsyncCallback<Eigenschaft>() {
 																public void onSuccess(Eigenschaft result) {	
 																	
-																	Project4u.nt.setButtonsEnabled();
-																	RootPanel.get("content").clear();
-																	RootPanel.get("content").add(new PartnerprofilWidget(neueOrga));
-																	
+																			/*
+																			 * Zuletzt
+																			 * wird
+																			 * das
+																			 * PartnerprofilWidget
+																			 * neu
+																			 * erzeugt,
+																			 * und
+																			 * zwar
+																			 * mit
+																			 * dem
+																			 * Konstruktor
+																			 * für
+																			 * bereits
+																			 * bestehende
+																			 * Organisationseinheiten.
+																			 */
+																			Project4u.nt.setButtonsEnabled();
+																			RootPanel.get("content").clear();
+																			RootPanel.get("content").add(
+																					new PartnerprofilWidget(neueOrga));
+	
 																}
 																public void onFailure(Throwable caught) {
 																	Window.alert(caught.getMessage());}
@@ -232,11 +269,26 @@ public class PartnerprofilWidget extends Composite{
 		
 	}
 	
+	/**
+	 * Dieser Konstruktor findet Anwendung, wenn das Partnerprofil einer
+	 * Ausschreibung angezeigt, angelegt oder verändert werden soll.
+	 * 
+	 * @param a
+	 */
 	public PartnerprofilWidget(Ausschreibung a){
 		
 		
 	}
 	
+
+	/**
+	 * Dieser Konstruktor des PartnerprofilWidgets findet Anwendung wenn das
+	 * Profil eines bereits angelegten Nutzers, also einer bereits existierenden
+	 * Organisationseinheit, angezeigt oder verändert werden soll.
+	 * 
+	 * @param o
+	 */
+
 	VerticalPanel vp = new VerticalPanel();
 	public PartnerprofilWidget( Organisationseinheit o){
 		
@@ -246,7 +298,7 @@ public class PartnerprofilWidget extends Composite{
 		RootPanel.get("contentHeader").clear();
 		Label Profil = new Label("Ihr Nutzerprofil");
 		RootPanel.get("contentHeader").add(Profil);
-		//TODO: bearbeiten Nutzername 
+
 		final Button bearbeiten = new Button("Nutzername bearbeiten");
 		final Button save = new Button("Nutzername speichern");
 		
@@ -257,6 +309,7 @@ public class PartnerprofilWidget extends Composite{
 		orgaNam.setEnabled(false);
 		mail.setTitle("Die E-Mail-Adresse kann nicht geändert werden.");
 		typbox.setTitle("Der Kontentyp kann nicht geändert werden. Legen Sie ggf. zusäzliche Organisationseinheiten an.");
+		//Der Button soll in Abhängigkeit zur Bildschirmgröße am rechten Rand platziert sein.
 		int i = (RootPanel.get("content").getOffsetWidth())-550;
 		HTML test = new HTML("<p style='margin-left: "+i+"px'><p>");
 		flexTable.setWidget(0, 0, orgaName);
@@ -277,6 +330,7 @@ public class PartnerprofilWidget extends Composite{
 		HTML p = new HTML("<p class='heading'>Eigenschaften:</p>");		
 		vp.add(p);
 		
+		//Clickhandler zum Ändern des Nutzernamens
 		bearbeiten.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -287,6 +341,7 @@ public class PartnerprofilWidget extends Composite{
 			}
 		});
 		
+		//Clickhandler zum Speichern des geänderten Nutzernamens
 		save.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -314,15 +369,15 @@ public class PartnerprofilWidget extends Composite{
 			}
 		});
 		
+		//Clickhandler zum Löschen des eigenen Benutzerprofils des eingeloggten Nutzers
 		deleteOrga.addClickHandler(new ClickHandler() {
-			
-			@Override
 			public void onClick(ClickEvent event) {
 				new LöschungOrganisationseinheitWidget();
 				
 			}
 		});
 		
+		//Das Partnerprofil des eingeloggten Nutzers wird aus der DB geladen.
 		Project4uVerwaltung.getPartnerprofilOfOrganisationseinheit(o, new AsyncCallback<Partnerprofil>() {
 			public void onSuccess(Partnerprofil result) {
 				neuesProfil= result;
@@ -334,13 +389,16 @@ public class PartnerprofilWidget extends Composite{
 		
 		
 		
-		
+		//Die Eigenschaften des eingeloggten Nutzers wird aus der DB geladen.
 		Project4uVerwaltung.getEigenschaftenOfOrganisationseinheit(o, new AsyncCallback<Vector<Eigenschaft>>() {
 		
 			@Override
 			public void onSuccess(Vector<Eigenschaft> result) {
+				//Die Eigenschaften werden in einer CellTable dargestellt
 				eigenschaftenPanel.add(createCellTable(result));
 				vp.add(eigenschaftenPanel);
+				
+				//Über eine DialogBox kann der Nutzer weitere Eigenschaften hinzufügen
 				add.addClickHandler(new ClickHandler() {
 					
 					@Override
@@ -377,11 +435,14 @@ public class PartnerprofilWidget extends Composite{
 								Eigenschaft eig = new Eigenschaft();
 								eig.setName(name.getValue());
 								eig.setWert(wert.getValue());
+								
+								//Die neue Eigenschaft wird direkt in der Datenbank gespeichert
 								Project4uVerwaltung.insertEigenschaft(eig, neuesProfil, new AsyncCallback<Eigenschaft>() {
 									
 									@Override
 									public void onSuccess(Eigenschaft result) {
 										
+										//Danach wird das PartnerprofilWidget neu geladen
 										Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
 												new AsyncCallback<Organisationseinheit>() {
 											public void onSuccess(Organisationseinheit result) {
@@ -416,6 +477,18 @@ public class PartnerprofilWidget extends Composite{
 				te.add(hr);		
 				te.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
 				vp.add(te);
+				
+				
+				
+				
+				/*
+				 * Unter dem PartnerprofilWidget wird das
+				 * OrganisationseinheiWidget angefügt, dieses stellt alle
+				 * Organisationseinheiten vom Typ "Team" und "Unternehmen" in
+				 * einer Tabelle dar und erlaubt dem Nutzer eine Zugehörigkeit
+				 * zu diesen zu definieren, sowie SCRUD-Operationen
+				 * durchzuführen.
+				 */
 				Project4uVerwaltung.getAllOrganisationseinheitenOfTypTeamUnternehmen(new AsyncCallback<Vector<Organisationseinheit>>() {
 					
 					@Override
@@ -440,23 +513,38 @@ public class PartnerprofilWidget extends Composite{
 		initWidget(vp);
 	}
 	
-	public  void initTeamUnternehmenTable(){
+	
+	
+	/**
+	 * Die Methode fügt unterhalb des Benutzers die Tabelle der Teams und
+	 * Unternehmen hinzu (OrganisationseinheitWidget).
+	 * 
+	 * @author Tobias
+	 *//*
+	public void initTeamUnternehmenTable() {
 		teamUnternehmen.clear();
-		Project4uVerwaltung.getAllOrganisationseinheitenOfTypTeamUnternehmen(new AsyncCallback<Vector<Organisationseinheit>>() {
-			
-			@Override
-			public void onSuccess(Vector<Organisationseinheit> result) {
-				teamUnternehmen.add(new OrganisationseinheitWidget(result));
-				vp.add(teamUnternehmen);
-				
-			}
-			public void onFailure(Throwable caught) {
-				Window.alert(caught.getMessage());
-			}
-		});
-	}
+		Project4uVerwaltung
+				.getAllOrganisationseinheitenOfTypTeamUnternehmen(new AsyncCallback<Vector<Organisationseinheit>>() {
+
+					@Override
+					public void onSuccess(Vector<Organisationseinheit> result) {
+						teamUnternehmen.add(new OrganisationseinheitWidget(result));
+						vp.add(teamUnternehmen);
+
+					}
+
+					public void onFailure(Throwable caught) {
+						Window.alert(caught.getMessage());
+					}
+				});
+	}*/
 	
 	
+	/**
+	 * Die Methode stellt die Eigenschaftsobjekte eines Vector in einer CellTable dar.
+	 * @param eigenschaften
+	 * @return
+	 */
 	private CellTable<Eigenschaft> createCellTable(Vector<Eigenschaft> eigenschaften) {
 		
 		CellTable<Eigenschaft> profilTabelle = new CellTable<Eigenschaft>(KEY_PROVIDER);
@@ -476,6 +564,7 @@ public class PartnerprofilWidget extends Composite{
 			}
 		};
 		
+		//Die buttomColumn soll ein einfaches Löschen der jeweiligen Eigenschaft direkt über den Button erlauben.
 		ButtonCell buttonCell = new ButtonCell();
 		Column<Eigenschaft, String> buttonColumn = new Column<Eigenschaft, String>(buttonCell) {
 		  @Override
@@ -491,12 +580,13 @@ public class PartnerprofilWidget extends Composite{
 		buttonColumn.setFieldUpdater(new FieldUpdater <Eigenschaft, String>() {
 		  public void update(int index, Eigenschaft object, String value) {
 		    // Value is the button value.  Object is the row object.
-			  
+			  //Die gewählte Eigenschaft wird gelöscht.
 			  Project4uVerwaltung.deleteEigenschaft(object, new AsyncCallback<Void>() {
 				
 				@Override
 				public void onSuccess(Void result) {
 					
+					//Nach dem Löschen einer Eigenschafte wird das PartnerprofilWidget neu erzugt und angezeigt.
 					Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
 							new AsyncCallback<Organisationseinheit>() {
 						public void onSuccess(Organisationseinheit result) {
@@ -523,6 +613,7 @@ public class PartnerprofilWidget extends Composite{
 		profilTabelle.addColumn(valueColumn);
 		profilTabelle.addColumn(buttonColumn);
 
+		//Die Daten der Eigenschaftsobjekte können direkt über die Tabellenzellen bearbeitet werden.
 		valueColumn.setFieldUpdater(new FieldUpdater<Eigenschaft, String>() {
 
 			@Override
@@ -545,7 +636,9 @@ public class PartnerprofilWidget extends Composite{
 
 			}
 		});
-
+		
+		
+		//Die Daten der Eigenschaftsobjekte können direkt über die Tabellenzellen bearbeitet werden.
 		nameColumn.setFieldUpdater(new FieldUpdater<Eigenschaft, String>() {
 
 			@Override
@@ -579,68 +672,70 @@ public class PartnerprofilWidget extends Composite{
 	
 	
 	
-	
-	private class addEigenschaftClickhandler implements ClickHandler{
-			
+	/*
+	 * Mit dem addEigenschaftClickhandler wird ein Widget erzeugt, dass das
+	 * Hinzufügen von Eigenschaftsobjekten für den Nutzer ermöglicht.
+	 */
+	private class addEigenschaftClickhandler implements ClickHandler {
+
 		public void onClick(ClickEvent event) {
-				final DialogBox db = new DialogBox();
-				Label nam = new Label ("Bezeichnung:");
-				Label wer = new Label ("Wert:");
-				Button ok = new Button("OK");
-				final TextBox name = new TextBox();
-				final TextBox wert = new TextBox();
-				FlexTable ft = new FlexTable();
-				ft.setWidget(0, 0, nam);
-				ft.setWidget(0, 1, wer);
-				ft.setWidget(1, 0, name);
-				ft.setWidget(1, 1, wert);
-				ft.setWidget(2, 2, ok);
-				db.add(ft);
-				
-				db.center();
-				db.setAnimationEnabled(true);
-				db.setAutoHideEnabled(true);
-				db.show();
-				
-				ok.addClickHandler(new ClickHandler() {
-					
-					@Override
-					public void onClick(ClickEvent event) {
-						if (name.getValue().isEmpty() || wert.getValue().isEmpty()){
-							Window.alert("Bitte beide Felder ausfüllen");
-						}
-						else{
+			final DialogBox db = new DialogBox();
+			Label nam = new Label("Bezeichnung:");
+			Label wer = new Label("Wert:");
+			Button ok = new Button("OK");
+			final TextBox name = new TextBox();
+			final TextBox wert = new TextBox();
+			FlexTable ft = new FlexTable();
+			ft.setWidget(0, 0, nam);
+			ft.setWidget(0, 1, wer);
+			ft.setWidget(1, 0, name);
+			ft.setWidget(1, 1, wert);
+			ft.setWidget(2, 2, ok);
+			db.add(ft);
+
+			db.center();
+			db.setAnimationEnabled(true);
+			db.setAutoHideEnabled(true);
+			db.show();
+
+			ok.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					if (name.getValue().isEmpty() || wert.getValue().isEmpty()) {
+						Window.alert("Bitte beide Felder ausfüllen");
+					} else {
 						db.hide();
 						Eigenschaft eig = new Eigenschaft();
 						eig.setName(name.getValue());
 						eig.setWert(wert.getValue());
+
+						// Die Eigenschaften werden direkt in der DB abgelegt.
 						Project4uVerwaltung.insertEigenschaft(eig, neuesProfil, new AsyncCallback<Eigenschaft>() {
-							
+
 							@Override
 							public void onSuccess(Eigenschaft result) {
-								Label name = new Label(result.getName());
-								Label wert = new Label(result.getWert());
-								
+
+								// ...und anschließend zur Tabelle hinzugefügt.
+								name.setEnabled(false);
+								wert.setEnabled(false);
+
 								flexTable.setWidget(flexTable.getRowCount(), 0, name);
-								flexTable.setWidget(flexTable.getRowCount()-1, 1, wert);
-								
-								
+								flexTable.setWidget(flexTable.getRowCount() - 1, 1, wert);
+
 							}
-							
-							
+
 							public void onFailure(Throwable caught) {
-								Window.alert(caught.getMessage());		
+								Window.alert(caught.getMessage());
 							}
 						});
-						
-						}
+
 					}
-				});
-				
-			}};
-		
-		
-		
+				}
+			});
+
+		}
+	};
 	
 	
 	
