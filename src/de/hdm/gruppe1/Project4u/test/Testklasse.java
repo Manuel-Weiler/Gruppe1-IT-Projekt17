@@ -23,19 +23,28 @@ public class Testklasse {
 	public static void main(String[] args) {
 
 
-		PartnerprofilMapper pm = new PartnerprofilMapper();
-		Partnerprofil pa = new Partnerprofil();
-		EigenschaftMapper em = EigenschaftMapper.eigenschaftMapper();
-		Vector<Eigenschaft> vektorEigenschaft = new Vector<Eigenschaft>();
-		pa = pm.findById(2);
-
-		vektorEigenschaft = em.findByPartnerprofil(pa);
+//		PartnerprofilMapper pm = new PartnerprofilMapper();
+//		Partnerprofil pa = new Partnerprofil();
+//		EigenschaftMapper em = EigenschaftMapper.eigenschaftMapper();
+//		Vector<Eigenschaft> vektorEigenschaft = new Vector<Eigenschaft>();
+//		pa = pm.findById(2);
+//
+//		vektorEigenschaft = em.findByPartnerprofil(pa);
+//		
+//		for(Eigenschaft e : vektorEigenschaft){
+//
+//			System.out.println(e.getName());
+//		}
 		
-		for(Eigenschaft e : vektorEigenschaft){
-
-			System.out.println(e.getName());
-		}
-		
+		AusschreibungMapper au = new AusschreibungMapper();
+		System.out.println(au.findByIdAusschreibung(2).getAusschreibungId());
+		System.out.println(au.findByIdAusschreibung(2).getBezeichnung());
+		System.out.println(au.findByIdAusschreibung(2).getNameProjektleiter());
+		System.out.println(au.findByIdAusschreibung(2).getBewerbungsfrist());
+		System.out.println(au.findByIdAusschreibung(2).getAusschreibungstext());
+		System.out.println(au.findByIdAusschreibung(2).getErstellDatum());
+		System.out.println(au.findByIdAusschreibung(2).getPartnerprofilId());
+		System.out.println(au.findByIdAusschreibung(2).getProjektId());
 		
 		
 	}

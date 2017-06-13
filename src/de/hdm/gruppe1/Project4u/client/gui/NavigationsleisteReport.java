@@ -14,9 +14,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
+import de.hdm.gruppe1.Project4u.server.db.OrganisationseinheitMapper;
 import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
-import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 import de.hdm.gruppe1.Project4u.shared.report.HTMLReportWriter;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
@@ -131,9 +131,8 @@ public class NavigationsleisteReport extends Composite {
 		ausschreibungenForPartnerprofilButton.addClickHandler(new ClickHandler(){
 			
 			public void onClick(ClickEvent event){
-				Organisationseinheit orga = new Organisationseinheit();
-				
-				ReportVerwaltung.createAusschreibungenForPartnerprofil(orga, new AsyncCallback<ReportByAusschreibungenForPartnerprofil>(){
+
+				ReportVerwaltung.createAusschreibungenForPartnerprofil(ClientsideSettings.getAktuellerUser(), new AsyncCallback<ReportByAusschreibungenForPartnerprofil>(){
 					public void onSuccess(ReportByAusschreibungenForPartnerprofil result2){
 						
 						if(result2 != null){

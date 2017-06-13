@@ -19,7 +19,7 @@ import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerp
 import de.hdm.gruppe1.Project4u.shared.report.Row;
 import de.hdm.gruppe1.Project4u.shared.report.SimpleParagraph;
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
-import de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl;
+import de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl; //TODO Methoden ändern auf ReportGenerator Impl
 import de.hdm.gruppe1.Project4u.server.db.AusschreibungMapper;
 import de.hdm.gruppe1.Project4u.server.db.EigenschaftMapper;
 import de.hdm.gruppe1.Project4u.server.db.OrganisationseinheitMapper;
@@ -50,39 +50,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	private Project4uAdministration project4uAdministration = null;
 	private OrganisationseinheitMapper organisationseinheitMapper = null;
 	private PartnerprofilMapper partnerprofilMapper = null;
+	//private AusschreibungMapper ausschreibungMapper = null;
 
-	// Vector wird mit EigenschaftsObjekten des Partnerprofils befüllt
-	public Vector<Eigenschaft> getEigenschaftenOfPartnerprofil(Partnerprofil p) throws IllegalArgumentException {
-		return this.partnerprofilMapper.getEigenschaftenOfPartnerprofil(p);
-	}
-
-	// Ermittelt den aktuellen Nutzer
-	public Organisationseinheit getOrganisationseinheitByUser(LoginInfo login) throws IllegalArgumentException {
-
-		for (Organisationseinheit o : organisationseinheitMapper.findByTyp("Person")) {
-			if (o.getGoogleId().equalsIgnoreCase(login.getEmailAddress())) {
-
-				return o;
-			}
-		}
-		return null;
-
-	};
-
-	// Ermittlung des Partnerprofil der Organisationseinheit
-	public Partnerprofil getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga)
-			throws IllegalArgumentException {
-		return this.partnerprofilMapper.findById(orga.getPartnerprofilId());
-	}
-
-	// Ermittelt Eigenschaften einer Organisationseinheit
-	public Vector<Eigenschaft> getEigenschaftenOfOrganisationseinheit(Organisationseinheit orga)
-			throws IllegalArgumentException {
-		Partnerprofil partnerprofil = new Partnerprofil();
-		partnerprofil = getPartnerprofilOfOrganisationseinheit(orga);
-
-		return getEigenschaftenOfPartnerprofil(partnerprofil);
-	}
 
 	/**
 	 * No-Argument-Konstruktor.
@@ -235,28 +204,19 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 	}
 
-	public ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Organisationseinheit orga)
+	public ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(LoginInfo login)
 			throws IllegalArgumentException {
+
 
 		if (this.getProject4uAdministration() == null)
 			return null;
-
+	
+		
 		// Leeren Report anlegen
 		ReportByAusschreibungenForPartnerprofil result = new ReportByAusschreibungenForPartnerprofil();
-
+		
 		// Titel und Bezeichung des Reports
 		result.setTitle("Meine Ausschreibungen");
-
-		// Impressum hinzufuegen
-		//result.setCreated(new Date());
-
-		// Kopfdaten des Reports
-		//CompositeParagraph header = new CompositeParagraph();
-
-		//header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Ausschreibungen die Ihrerm Partnerprofil entsprechen"));
-
-		// Kopfdaten zu Report hinzufï¿½gen
-		//result.setHeaderData(header);
 
 		// Kopfzeile fï¿½r die Tabelle anlegen:
 		Row headline = new Row();
@@ -276,99 +236,139 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		result.addRow(headline);
 
 		// Reportinhalt:
-
-		// Partnerprofile vergleichen anhand der Eigenschaftsobjekten
-		// Ließt die Eigenschaften von einem Partnerprofil aus
-
-		Partnerprofil pa = new Partnerprofil();
-		EigenschaftMapper em = EigenschaftMapper.eigenschaftMapper();
-		Vector<Eigenschaft> vektorEigenschaft = new Vector<Eigenschaft>();
-		vektorEigenschaft = em.findByPartnerprofil(pa);
 		
-		// Aktuellen Nutzer holen
-		orga = this.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser());
-		// Vektor mit Eigenschaften befüllen
-		Vector<Eigenschaft> vektorEigeneEigenschaften = this.reportGenerator
-				.getEigenschaftenOfOrganisationseinheit(orga);
-		
-		// Hier wird eine ArrayList mit allen Partnerprofilen ausgegeben.
-		PartnerprofilMapper pm = PartnerprofilMapper.partnerprofilMapper();
-
-		// Alle Ausschreibungen aufrufen
-		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
-		ArrayList<Ausschreibung> alleAusschreibungen = new ArrayList<Ausschreibung>();
-		alleAusschreibungen = am.findAllAusschreibungen();
-
-//		// Zunächst muss sichergestellt werden dass wir nur die Partnerprofile
-//		// von Ausschreibungen erhalten.
-//		// Diese Ausschreibungen werden in eine ArrayList geschrieben.
-//
-//		ArrayList<Ausschreibung> ala = new ArrayList<Ausschreibung>();
-//
-//		for (Partnerprofil par : allePartnerprofile) {
-//			for (Ausschreibung aus : alleAusschreibungen) {
-//				if (par.getID() == aus.getPartnerprofilId()) {
-//					ala.add(aus);
-//				}
-//			}
-//		}
-
-		// Eigenschaften zu den einzelnen Partnerprofilen auslesen.
-
-		Vector<Vector<Eigenschaft>> vektormitEigenschaftsVektoren = new Vector<>();
-		
-		for (Ausschreibung auss : alleAusschreibungen) {
-			pa = pm.findById(auss.getPartnerprofilId());
-			vektorEigenschaft = em.findByPartnerprofil(pa);
-			vektormitEigenschaftsVektoren.add(vektorEigenschaft);
-		}
-
-		//Vektor mit Ausschreibungen anlegen bei welchen die gesuchten Eigenschaften mit den eigenen Eigenschaften übereinstimmen.
-		Vector<Ausschreibung> au = new Vector<>();
-		
-		for(Vector<Eigenschaft> VE : vektormitEigenschaftsVektoren){
-			//eigene Eigenschaft mit anderen Eigenschaften vergleichen
-
-			for(int i= 0; i < vektormitEigenschaftsVektoren.size(); i++){
-				
-				if(VE.elementAt(i).getName().equals(vektorEigeneEigenschaften.elementAt(i).getName())){
-					
-				} 
-				if(VE.elementAt(i).getWert().equals(vektorEigeneEigenschaften.elementAt(i).getWert())){
-					
-				}
-				//Wir müssen sicher gehen dass wir nicht unser eigenes Partnerprofil bekommen.
-				if(VE.elementAt(i).getPartnerprofilId() != vektorEigeneEigenschaften.elementAt(i).getPartnerprofilId()){
-					
-				}
-				
-				au = am.findByPartnerprofil(pm.findById(VE.elementAt(i).getPartnerprofilId()));	
-			}
-		}
 		
 		//Von den Vektor passendeVektoren muss nun wieder auf Ausschreibungen gekommen werden, damit diese ausgegeben werden können.	
 		
-		for (Ausschreibung a : au) {
+		
+		//Ausschreibung a = ausschreibungMapper.findByIdAusschreibung(2);
+		AusschreibungMapper au = new AusschreibungMapper();
 			// neue, leere Zeile anlegen
 			Row ausschreibungRow = new Row();
 			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
-			ausschreibungRow.addColumn(new Column(a.getBezeichnung()));
-			ausschreibungRow.addColumn(new Column(a.getNameProjektleiter()));
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
-			ausschreibungRow.addColumn(new Column(a.getAusschreibungstext()));
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(au.findByIdAusschreibung(2).getAusschreibungId())));
+			ausschreibungRow.addColumn(new Column(au.findByIdAusschreibung(2).getBezeichnung()));
+			ausschreibungRow.addColumn(new Column(au.findByIdAusschreibung(2).getNameProjektleiter()));
+			ausschreibungRow.addColumn(new Column(String.valueOf(au.findByIdAusschreibung(2).getBewerbungsfrist())));
+			ausschreibungRow.addColumn(new Column(au.findByIdAusschreibung(2).getAusschreibungstext()));
+			ausschreibungRow.addColumn(new Column(String.valueOf(au.findByIdAusschreibung(2).getErstellDatum())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(au.findByIdAusschreibung(2).getProjektId())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(au.findByIdAusschreibung(2).getPartnerprofilId())));
 
 			// Zeile dem Report hinzufï¿½gen
 			result.addRow(ausschreibungRow);
-		}
 
-		// Report ausgeben
 		return result;
-
 	}
+		
+		
+//
+//
+//		for(Organisationseinheit orga : organisationseinheitMapper.findByTyp("Person")){
+//			if (orga.getGoogleId().equalsIgnoreCase(login.getEmailAddress())){
+//			
+//				ReportByAusschreibungenForPartnerprofil result = new ReportByAusschreibungenForPartnerprofil();
+//				
+//				Row testRow = new Row();
+//				
+//				testRow.addColumn(new Column("Hallo"));
+//				
+//				result.addRow(testRow);
+//
+//				return result;
+//			}
+//
+//		}
+//		return null;
+//
+//	}
+		
+		
+
+//				
+//				// Vektor mit Eigenschaften befüllen
+//				Vector<Eigenschaft> vektorEigeneEigenschaften = this.reportGenerator
+//						.getEigenschaftenOfOrganisationseinheit(orga);
+//				
+//				
+//				
+//				// Partnerprofile vergleichen anhand der Eigenschaftsobjekten
+//				// Ließt die Eigenschaften von einem Partnerprofil aus
+//				
+//				PartnerprofilMapper pm = PartnerprofilMapper.partnerprofilMapper();
+//				Partnerprofil pa = pm.findById(orga.getPartnerprofilId());
+//				EigenschaftMapper em = EigenschaftMapper.eigenschaftMapper();
+//				Vector<Eigenschaft> vektorEigenschaft = new Vector<Eigenschaft>();
+//				vektorEigenschaft = em.findByPartnerprofil(pa);
+//
+//
+//				// Alle Ausschreibungen aufrufen
+//				AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
+//				ArrayList<Ausschreibung> alleAusschreibungen = new ArrayList<Ausschreibung>();
+//				alleAusschreibungen = am.findAllAusschreibungen();
+//
+//				// Eigenschaften zu den einzelnen Partnerprofilen auslesen.
+//
+//				Vector<Vector<Eigenschaft>> vektormitEigenschaftsVektoren = new Vector<>();
+//				
+//				for (Ausschreibung auss : alleAusschreibungen) {
+//					pa = pm.findById(auss.getPartnerprofilId());
+//					vektorEigenschaft = em.findByPartnerprofil(pa);
+//					vektormitEigenschaftsVektoren.add(vektorEigenschaft);
+//				}
+//
+//				//Vektor mit Ausschreibungen anlegen bei welchen die gesuchten Eigenschaften mit den eigenen Eigenschaften übereinstimmen.
+//				Vector<Ausschreibung> au = new Vector<>();
+//				
+//				for(Vector<Eigenschaft> VE : vektormitEigenschaftsVektoren){
+//					//eigene Eigenschaft mit anderen Eigenschaften vergleichen
+//
+//					for(int i= 0; i < vektormitEigenschaftsVektoren.size(); i++){
+//						
+//						if(VE.elementAt(i).getName().equals(vektorEigeneEigenschaften.elementAt(i).getName())){
+//							
+//						} 
+//						if(VE.elementAt(i).getWert().equals(vektorEigeneEigenschaften.elementAt(i).getWert())){
+//							
+//						}
+//						//Wir müssen sicher gehen dass wir nicht unser eigenes Partnerprofil bekommen.
+//						if(VE.elementAt(i).getPartnerprofilId() != vektorEigeneEigenschaften.elementAt(i).getPartnerprofilId()){
+//							
+//						}
+//						
+//						au = am.findByPartnerprofil(pm.findById(VE.elementAt(i).getPartnerprofilId()));	
+//					}
+//				}
+//				
+//				//Von den Vektor passendeVektoren muss nun wieder auf Ausschreibungen gekommen werden, damit diese ausgegeben werden können.	
+//				
+//				for (Ausschreibung a : au) {
+//					// neue, leere Zeile anlegen
+//					Row ausschreibungRow = new Row();
+//					// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
+//					ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
+//					ausschreibungRow.addColumn(new Column(a.getBezeichnung()));
+//					ausschreibungRow.addColumn(new Column(a.getNameProjektleiter()));
+//					ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
+//					ausschreibungRow.addColumn(new Column(a.getAusschreibungstext()));
+//					ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
+//					ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
+//					ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
+//
+//					// Zeile dem Report hinzufï¿½gen
+//					result.addRow(ausschreibungRow);
+//				}
+//
+//
+//				// Report ausgeben
+//				return result;
+				
+
+		
+		
+
+
+	
 
 	// TODO: Testmethode entfernen
 	public String testMethode() {

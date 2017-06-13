@@ -23,7 +23,7 @@ public class AusschreibungMapper {
 	private static AusschreibungMapper ausschreibungMapper = null;
 	
 
-	private AusschreibungMapper() {
+	public AusschreibungMapper() {
 	}
 	
 
@@ -110,21 +110,23 @@ public class AusschreibungMapper {
 	
 	public Ausschreibung findByIdAusschreibung (int i) {
 		Connection con = DBConnection.connection();
-		
+
 		try {
 			Statement stmt = con.createStatement();
-
+			
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung WHERE id='" + i + "'");
 
 			if (rs.next()) {
 				Ausschreibung au = new Ausschreibung();
 
-				au.setID(rs.getInt("id"));
-				au.setBezeichnung (rs.getString("bezeichnung"));
-				au.setNameProjektleiter (rs.getString("name_projektleiter"));
-				au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
-				au.setAusschreibungstext (rs.getString("ausschreibungstext"));
-				au.setErstellDatum(rs.getDate("erstelldatum"));
+				au.setAusschreibungId(rs.getInt("id")); 
+				au.setBezeichnung(rs.getString("bezeichnung"));
+				au.setNameProjektleiter(rs.getString("name_projektleiter"));
+				au.setBewerbungsfrist(rs.getDate("bewerbungsfrist"));
+				au.setAusschreibungstext(rs.getString("ausschreibungstext"));
+				au.setErstellDatum(rs.getDate("erstelldatum")); 
+				au.setProjektId(rs.getInt("projekt_id"));
+				au.setPartnerprofilId(rs.getInt("partnerprofil_id")); 
 				
 				return au;
 							}
