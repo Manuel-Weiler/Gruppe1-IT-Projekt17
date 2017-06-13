@@ -238,15 +238,17 @@ public class PartnerprofilWidget extends Composite{
 	}
 	
 	VerticalPanel vp = new VerticalPanel();
-	public PartnerprofilWidget(Organisationseinheit o){
+	public PartnerprofilWidget( Organisationseinheit o){
 		
+		final Organisationseinheit org=o;
 		Button deleteOrga = new Button("Nutzerprofil löschen");
 		
 		RootPanel.get("contentHeader").clear();
 		Label Profil = new Label("Ihr Nutzerprofil");
 		RootPanel.get("contentHeader").add(Profil);
 		//TODO: bearbeiten Nutzername 
-		Button bearbeiten = new Button("Nutzername bearbeiten");
+		final Button bearbeiten = new Button("Nutzername bearbeiten");
+		final Button save = new Button("Nutzername speichern");
 		
 		
 		mail.setValue(o.getGoogleId());
@@ -274,6 +276,43 @@ public class PartnerprofilWidget extends Composite{
 		
 		HTML p = new HTML("<p class='heading'>Eigenschaften:</p>");		
 		vp.add(p);
+		
+		bearbeiten.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				orgaNam.setEnabled(true);
+				flexTable.clearCell(0, 3);
+				flexTable.setWidget(0, 3, save);
+			}
+		});
+		
+		save.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(!orgaNam.getValue().isEmpty()){
+				org.setName(orgaNam.getValue());
+				
+				Project4uVerwaltung.updateOrganisationseinheit(org, new AsyncCallback<Void>() {
+					
+					@Override
+					public void onSuccess(Void result) {
+						orgaNam.setEnabled(false);
+						flexTable.clearCell(0, 3);
+						flexTable.setWidget(0, 3, bearbeiten);
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+					}
+				});
+				}
+				else{
+					Window.alert("Der Nutzername darf nicht leer sein.");
+				}
+			}
+		});
 		
 		deleteOrga.addClickHandler(new ClickHandler() {
 			
