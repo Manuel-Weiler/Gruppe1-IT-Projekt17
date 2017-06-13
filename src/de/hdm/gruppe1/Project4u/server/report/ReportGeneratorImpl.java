@@ -5,6 +5,7 @@ import java.util.ArrayList;
 //import java.util.ArrayList;
 import java.util.Date;
 //import java.util.logging.Logger;
+import java.util.Vector;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -12,16 +13,21 @@ import de.hdm.gruppe1.Project4u.shared.report.Column;
 import de.hdm.gruppe1.Project4u.shared.report.CompositeParagraph;
 import de.hdm.gruppe1.Project4u.shared.report.Report;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleBewerbungenForAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
 import de.hdm.gruppe1.Project4u.shared.report.Row;
 import de.hdm.gruppe1.Project4u.shared.report.SimpleParagraph;
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl;
 import de.hdm.gruppe1.Project4u.server.db.AusschreibungMapper;
+import de.hdm.gruppe1.Project4u.server.db.BewerbungMapper;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.ReportGenerator;
 import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+
 
 /**
  * Implementierung ReportGenerator-Interface
@@ -114,7 +120,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		/**
 		 * Titel und Bezeichnung des Reports
 		 */
-		report.setTitle(" ");
+		report.setTitle("");
 		
 //this.addImprint(result);
 		
@@ -237,7 +243,79 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	
 		
 		return result;
+		}
+		
+	public ReportByAlleBewerbungenForAusschreibungen createAlleBewerbungenForAusschreibungen(Organisationseinheit o)
+		   throws IllegalArgumentException{
+			
+			if (this.getProject4uAdministration() == null)
+				return null;
+			/**
+			 * leeren Report anlegen
+			 *
+			 */
+	
+			ReportByAlleBewerbungenForAusschreibungen result = new ReportByAlleBewerbungenForAusschreibungen();
+			
+			/**
+			 * Titel und Bezeichnung des Reports
+			 */
+			
+			result.setTitle("Alle Bewerbungen");
+			
+			result.setCreated(new Date());
+			
+			//Kopfdaten des Reports
+			
+			CompositeParagraph header = new CompositeParagraph();
+			
+		   	header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Bewerbungen auf Ausschreibungen"));
+			
+			//Kopfdaten zum Report hinzuf�gen
+			result.setHeaderData(header);
 				
+			//Kopfzeile f�r die Tabelle anlegen:
+			Row headline = new Row();
+			
+			//Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
+			
+			headline.addColumn(new Column("Bewerbungs-ID"));
+			headline.addColumn(new Column("Erstelldatum"));
+			headline.addColumn(new Column("Bewerbungstext"));
+			headline.addColumn(new Column("Ausschreibung-ID"));
+			headline.addColumn(new Column("Organisationseinheit-ID"));
+			headline.addColumn(new Column("Status"));
+
+			//Kopfzeile wird dem Report hinzugefuegt
+			result.addRow(headline);
+			
+			//Reportinhalt:
+			
+			//TODO: Diese Implementierung zu Adminimpl. auslagern.
+		/**	BewerbungMapper bm = BewerbungMapper.bewerbungMapper();
+			Vector<Bewerbung> be = new Vector <Bewerbung>();
+			be = bm.findAll();
+         */
+			BewerbungMapper bm = BewerbungMapper.bewerbungMapper();
+			Vector<Bewerbung> be = new Vector <Bewerbung> ();
+			be= bm.findByOrganisationseinheit(o);
+
+			for(Bewerbung b : be){
+				//neue, leere Zeile anlegen
+				Row bewerbungRow = new Row();
+				//f�r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getBewerbungId())));
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getErstelldatum())));
+				bewerbungRow.addColumn(new Column(b.getBewerbungstext()));
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getAusschreibungId())));
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getOrganisationseinheitId())));
+				bewerbungRow.addColumn(new Column(b.getStatus()));
+
+
+				//Zeile dem Report hinzuf�gen
+				result.addRow(bewerbungRow);
+}
+			return result;		
 	}
 	
 	//TODO: Testmethode entfernen
