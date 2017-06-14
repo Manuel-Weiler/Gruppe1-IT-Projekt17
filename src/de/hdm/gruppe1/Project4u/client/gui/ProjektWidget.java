@@ -86,7 +86,8 @@ public class ProjektWidget extends Composite{
 
 		addAusschreibung.addClickHandler(new hinzufuegenAusschreibungClickhandler());
 		Project4uVerwaltung.findByProjektmarktplatz(pMarktpl, new getProjekteCallback());
-
+		
+		initWidget(vPanel);
 	}
 	
 	
@@ -556,7 +557,7 @@ public class ProjektWidget extends Composite{
 				
 				
 				vPanel.add(projektTabelle);
-				initWidget(vPanel);
+				
 		}
 			
 			

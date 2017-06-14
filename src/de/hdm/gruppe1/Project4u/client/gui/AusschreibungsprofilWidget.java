@@ -37,7 +37,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
  * @author Tobias
  *
  */
-public class AusschreibungsprofilWidget extends Composite{
+public class AusschreibungsprofilWidget {
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	FlexTable flex = new FlexTable();
 	DialogBox db = new DialogBox();
@@ -51,11 +51,14 @@ public class AusschreibungsprofilWidget extends Composite{
 	Button update = new Button("Speichern");
 	Button cancel = new Button("Abbrechen");
  
-	Label bezeichng = new Label("Projektbezeichnung: ");
+	Label bezeichng = new Label("Stellenbezeichnung: ");
 	Label projektleitr = new Label("Projektleiter: ");
 	Label bewerbungsfrst = new Label("Bewerbungsfrist: ");
-	Label ausschrtext = new Label("Ausschreibungstext: ");
+	HTML ausschrtext = new HTML("Ausschreibungstext: ");
 	
+	//TODO: Eigenschaften hinzufügen
+	//TODO: Ausschreibung löschen
+	//TODO: Ausschreibung abbrechen
 	TextBox bezeichnung = new TextBox();
 	TextBox projektleiter = new TextBox();
 	DateBox bewerbungsfrist = new DateBox();
@@ -78,7 +81,7 @@ public class AusschreibungsprofilWidget extends Composite{
 		flex.setWidget(2, 0, bewerbungsfrst);
 		flex.setWidget(2, 1, bewerbungsfrist);
 		flex.setWidget(3, 0, ausschrtext);
-		flex.setWidget(4, 0, ausschreibungstext);
+		flex.setWidget(3, 1, ausschreibungstext);
 		flex.setWidget(5, 0, cancel);
 		
 		vPan.add(flex);
@@ -87,6 +90,9 @@ public class AusschreibungsprofilWidget extends Composite{
 		projektleiter.setEnabled(false);
 		bewerbungsfrist.setEnabled(false);
 		ausschreibungstext.setEnabled(false);
+		
+		ausschreibungstext.setWidth("180px");
+		ausschreibungstext.setHeight("150px");
 		
 		cancel.addClickHandler(new ClickHandler() {
 			
@@ -128,7 +134,8 @@ public class AusschreibungsprofilWidget extends Composite{
 		}
 		
 		db.add(vPan);
-		initWidget(db);
+		
+		
 	}
 	
 	/**
@@ -165,10 +172,14 @@ public class AusschreibungsprofilWidget extends Composite{
 							
 							@Override
 							public void onSuccess(Ausschreibung result) {
-								db.hide();
-								RootPanel.get("content").clear();
-								RootPanel.get("content").add(new ProjektWidget(pMart));
 								
+								
+								ProjektWidget PW = new ProjektWidget(pMart);
+								PW.ausschreibungAnsehen(localProj);
+								RootPanel.get("content").clear();
+								RootPanel.get("content").add(PW);
+								
+								db.hide();
 							}
 							public void onFailure(Throwable caught) {
 							}
@@ -195,6 +206,7 @@ public class AusschreibungsprofilWidget extends Composite{
 		
 		db.setAutoHideEnabled(false);
 		db.setAnimationEnabled(true);
+		//db.center();
 		db.setPopupPosition(left, top);
 		db.show();
 	}

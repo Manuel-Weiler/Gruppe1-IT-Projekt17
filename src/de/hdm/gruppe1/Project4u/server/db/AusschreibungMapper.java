@@ -4,11 +4,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
-import com.ibm.icu.text.SimpleDateFormat;
+
 
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
@@ -203,22 +204,7 @@ public class AusschreibungMapper {
 
 
 	
-// BEARBEITEN EINER AUSSCHREIBUNG
-	public Ausschreibung update (Ausschreibung ausschreibung) {
-		Connection con = DBConnection.connection();
-		Date d = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-		try {
-			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("UPDATE Partnerprofil " + "SET �nderungsdatum='" + sdf.format(d) + "' WHERE id='"
-					+ ausschreibung.getAusschreibungId() + "'");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return ausschreibung;
-	}
 	
 
 // L�schen einer Ausschreibung
