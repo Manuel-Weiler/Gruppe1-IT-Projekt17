@@ -9,19 +9,35 @@
 	<!-- Servlets -->
 
 	<servlet>
-		<servlet-name>Project4uAdministrationImpl</servlet-name>
+		<servlet-name>ProjectadministrationImpl</servlet-name>
 		<servlet-class>de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl</servlet-class>
 	</servlet>
    
 	<servlet-mapping>
-		<servlet-name>Project4uAdministrationImpl</servlet-name>
+		<servlet-name>ProjectadministrationImpl</servlet-name>
 		<url-pattern>/project4u/projectadministration</url-pattern>
-		<url-pattern>/Project4uReport/projectadministration</url-pattern>
+		<url-pattern>project4ureport/projectadministration</url-pattern>
 	</servlet-mapping>
 
 	<!-- Editor Ende -->
 
+	<!-- Report Start -->
+	
+	<servlet>
+		<servlet-name>ReportServlet</servlet-name>
+		<servlet-class>de.hdm.gruppe1.Project4u.server.report.ReportGeneratorImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>ReportServlet</servlet-name>
+		<url-pattern>/project4u/report</url-pattern>
+		<url-pattern>/project4ureport/report</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Report Ende -->
+	
 	<!-- LOGIN Start -->
+	
 	<!-- Servlets -->
 	<servlet>
 		<servlet-name>loginService</servlet-name>

@@ -15,14 +15,11 @@ public class HierarchischeLoeschungTest {
 		Partnerprofil partnerprofil = new Partnerprofil();
 		
 		partnerprofil = aImpl.createPartnerprofil();
-		orga = aImpl.createOrganisationseinheit("max.frisch@gmx.de", "Max Frisch", "Person", partnerprofil);
-		
-		
-		
-		
-		
-		
-		
+		orga.setGoogleId("max.frisch@gmx.de");
+		orga.setName("Max Frisch");
+		orga.setTyp("Typ");
+		orga.setPartnerprofilId(partnerprofil.getID());
+		orga = aImpl.createOrganisationseinheit(orga);
 
 	}
 

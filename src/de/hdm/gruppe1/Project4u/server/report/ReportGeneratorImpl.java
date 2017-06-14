@@ -1,5 +1,6 @@
 package de.hdm.gruppe1.Project4u.server.report;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 //import java.util.ArrayList;
 import java.util.Date;
@@ -10,12 +11,16 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import de.hdm.gruppe1.Project4u.shared.report.Column;
 import de.hdm.gruppe1.Project4u.shared.report.CompositeParagraph;
 import de.hdm.gruppe1.Project4u.shared.report.Report;
-import de.hdm.gruppe1.Project4u.shared.report.ReportByAllAusschreibungen;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
 import de.hdm.gruppe1.Project4u.shared.report.Row;
 import de.hdm.gruppe1.Project4u.shared.report.SimpleParagraph;
+import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl;
+import de.hdm.gruppe1.Project4u.server.db.AusschreibungMapper;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.ReportGenerator;
+import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 
 /**
@@ -23,7 +28,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
  */
 
 @SuppressWarnings("serial")
-public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportGenerator {
+public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportGenerator, Serializable {
 	//Logger log = Logger.getLogger("logger");
 
 	/**
@@ -48,7 +53,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 * @throws IllegalArgumentException
 	 */
 	
-	@Override
 	public void init() throws IllegalArgumentException {
 		Project4uAdministrationImpl a = new Project4uAdministrationImpl();
 		a.init();
@@ -84,19 +88,19 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		//1.Zeile:
 		imprint.addSubParagraph(new SimpleParagraph("Project4u"));
 		
-		//weitere Zeilen können ergänzt wrden
+		//weitere Zeilen kï¿½nnen ergï¿½nzt wrden
 		
 		//Das eigentliche Hinzufuegen des Impressums zum Report
 		r.setImprint(imprint);
 	}
 
 	/**
-	 * Methode um alle Ausschreibungen in einem Report ausgeben zu können
+	 * Methode um alle Ausschreibungen in einem Report ausgeben zu kï¿½nnen
 	 * @return der fertige Report
 	 */
 
-	@Override
-	public ReportByAllAusschreibungen createAllAusschreibungenReport(Ausschreibung au) 
+
+	public ReportByAlleAusschreibungen createAlleAusschreibungenReport() 
 			throws IllegalArgumentException {
 
 		if (this.getProject4uAdministration() == null)
@@ -105,81 +109,47 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		/**
 		 * Leeren Report anlegen
 		 */
-
-		ReportByAllAusschreibungen result = new ReportByAllAusschreibungen();
+		ReportByAlleAusschreibungen report = new ReportByAlleAusschreibungen();
 
 		/**
 		 * Titel und Bezeichnung des Reports
 		 */
-
-		result.setTitle("Alle Ausschreibungen");
+		report.setTitle(" ");
 		
-		//Impressum hinzufuegen
-		this.addImprint(result);
-
+//this.addImprint(result);
+		
 		/*
 		 * Erstelldatum des Reports hinzufuegen
 		 */
-		result.setCreated(new Date());
+//result.setCreated(new Date());
 
 		
 		//Kopfdaten des Reports:
 
-		CompositeParagraph header = new CompositeParagraph();
-		header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Ausschreibungen der Projektplattform"));
+//CompositeParagraph header = new CompositeParagraph();
+//header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Ausschreibungen der Projektplattform"));
 		
-		//Kopfdaten zum Report hinzufügen
-		result.setHeaderData(header);
+		//Kopfdaten zum Report hinzufï¿½gen
+//result.setHeaderData(header);
 
 		/**
-		 * Inhalt des Reports ID
-		 */
-		header.addSubParagraph(new SimpleParagraph("Ausschreibungs-ID: " + au.getAusschreibungId()));
-
-		/**
-		 * Inhalt des Reports Bezeichnung
-		 */
-		header.addSubParagraph(new SimpleParagraph("Bezeichnung: " + au.getBezeichnung()));
-
-		/**
-		 * Inhalt des Reports Projektleiter
-		 */
-		header.addSubParagraph(new SimpleParagraph("Projektleiter: "));
-
-		/**
-		 * Inhalt des Reports Bewerbungsfrist/ Ablaufdatum
-		 */
-		header.addSubParagraph(new SimpleParagraph("Bezeichnung: " + au.getBewerbungsfrist()));
-
-		/**
-		 * Inhalt des Reports Ausschreibungstext
-		 */
-		header.addSubParagraph(new SimpleParagraph("Ausschreibungstext: " + au.getAusschreibungstext()));
-
-		/**
-		 * Inhalt des Reports Erstelldatum
-		 */
-		header.addSubParagraph(new SimpleParagraph("Erstelldatum: "));
-
-		/**
-		 * Inhalt des Reports Projekt-ID
-		 */
-		header.addSubParagraph(new SimpleParagraph("Projekt-ID: "));
-
-		/**
-		 * Inhalt des Reports Partnerprofil-ID
-		 */
-		header.addSubParagraph(new SimpleParagraph("Partnerprofil-ID: "));
+//		 * TODO: Sobald der Login implementiert ist kann ein Nutzer identifiziert werden
+//		 * und in einem Header nochmal ï¿½ber dem Report ausgegeben werden.
+//		 */
+//header.addSubParagraph(new SimpleParagraph("Nutzer-ID:"));
+//
+//
 
 		/**
 		 * Report ausgeben
 		 */
 
 		
-		//Kopfzeile für die Tabelle anlegen:
+		//Kopfzeile fï¿½r die Tabelle anlegen:
 		Row headline = new Row();
 		
 		//Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
+		
 		headline.addColumn(new Column("Ausschreibungs-ID"));
 		headline.addColumn(new Column("Bezeichnung"));
 		headline.addColumn(new Column("Projektleiter"));
@@ -190,31 +160,91 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		headline.addColumn(new Column("Partnerprofil-ID"));
 		
 		//Kopfzeile wird dem Report hinzugefuegt
-		result.addRow(headline);
+		report.addRow(headline);
 		
 		//Reportinhalt:
-		ArrayList<Ausschreibung> allAusschreibungen = this.project4uAdministration.getAllAusschreibungen();
 		
-		for(Ausschreibung a : allAusschreibungen){
+		//Diese Methode funktioniert nicht wie sie soll!
+		//-->ArrayList<Ausschreibung> alleAusschreibungen = this.project4uAdministration.getAlleAusschreibungen();
+		
+		//TODO: Diese Implementierung zu Adminimpl. auslagern.
+		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
+		ArrayList<Ausschreibung> au = new ArrayList<Ausschreibung>();
+		au = am.findAllAusschreibungen();
+		
+		
+		
+		for(Ausschreibung a : au){
 			//neue, leere Zeile anlegen
 			Row ausschreibungRow = new Row();
-			//für jede Spalte dieser Zeile wird nun der Inhalt geschrieben
+			//fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBezeichnung())));
-			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektleiter())));
+			ausschreibungRow.addColumn(new Column(a.getBezeichnung()));
+			ausschreibungRow.addColumn(new Column(a.getNameProjektleiter()));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungstext())));
-			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstelldatum())));
-			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektID())));
-			//TODO ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilID())));
+			ausschreibungRow.addColumn(new Column(a.getAusschreibungstext()));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
 			
-			//Zeile dem Report hinzufügen
-			result.addRow(ausschreibungRow);
+			//Zeile dem Report hinzufï¿½gen
+			report.addRow(ausschreibungRow);
 		}
 		
 		//Report ausgeben
-		return result;
+		return report;
 
 	}
+	
+	public ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Ausschreibung au)
+			throws IllegalArgumentException{
+		
+		if (this.getProject4uAdministration() == null)
+			return null;
+		/**
+		 * leeren Report anlegen
+		 */
+		
+		ReportByAusschreibungenForPartnerprofil result = new ReportByAusschreibungenForPartnerprofil();
+		
+		/**
+		 * Titel und Bezeichung des Reports
+		 */
+		result.setTitle("Meine Ausschreibungen");
+		
+		//Impressum hinzufuegen
+		result.setCreated(new Date());
+		
+		//Kopfdaten des Reports
+		
+		CompositeParagraph header = new CompositeParagraph();
+		
+		header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Ausschreibungen die Ihrerm Partnerprofil entsprechen"));
+		
+		//Kopfdaten zu Report hinzufï¿½gen
+		result.setHeaderData(header);
+		
+		/**
+		 * Inhalt des Reports ID
+		 */
+		
+		header.addSubParagraph(new SimpleParagraph("Ausschreibungs-ID: " + au.getAusschreibungId()));
+		
+		/**
+		 * Inhalt des Reports Bezeichung
+		 */
+		header.addSubParagraph(new SimpleParagraph("Bezeichnung: " + au.getBezeichnung()));
+	
+		
+		return result;
+				
+	}
+	
+	//TODO: Testmethode entfernen
+	public String testMethode(){
+		String test = "Dies ist ein Test für den RPC-Call";
+		return test;
+	}
+
 
 }
