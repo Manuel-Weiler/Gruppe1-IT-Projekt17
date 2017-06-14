@@ -50,6 +50,10 @@ public class AusschreibungsprofilWidget {
 	Button savenew = new Button("Speichern");
 	Button update = new Button("Speichern");
 	Button cancel = new Button("Abbrechen");
+	//TODO:
+	Button change = new Button("Bearbeiten");
+	Button quit = new Button("Ausschreibung abbrechen");
+	Button delete = new Button("Ausschreibung löschen");
  
 	Label bezeichng = new Label("Stellenbezeichnung: ");
 	Label projektleitr = new Label("Projektleiter: ");
@@ -130,6 +134,12 @@ public class AusschreibungsprofilWidget {
 			savenew.addClickHandler(new neueAusschreibungSpeichernClickhandler());
 		}
 		else{
+			
+			bezeichnung.setValue(local.getBezeichnung());
+			bewerbungsfrist.setValue(local.getBewerbungsfrist());
+			ausschreibungstext.setValue(local.getAusschreibungstext());
+			
+			flex.setWidget(5, 1, update);
 			
 		}
 		
