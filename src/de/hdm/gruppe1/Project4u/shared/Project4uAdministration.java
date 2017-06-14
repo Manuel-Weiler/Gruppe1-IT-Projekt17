@@ -32,6 +32,8 @@ public interface Project4uAdministration extends RemoteService{
 
 	public ArrayList<Ausschreibung> getAlleAusschreibungen() throws IllegalArgumentException;
 	
+	public Ausschreibung createAusschreibung(Ausschreibung a, Partnerprofil pa, Projekt pr)throws IllegalArgumentException;
+	
 	//TODO: Testmethode l�schen
 	public Vector<Projektmarktplatz> testMethode2() throws IllegalArgumentException;
 	

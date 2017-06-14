@@ -374,7 +374,7 @@ public class PartnerprofilWidget extends Composite {
 		// Nutzers
 		deleteOrga.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				new LöschungOrganisationseinheitWidget();
+				new LoeschungOrganisationseinheitWidget();
 
 			}
 		});

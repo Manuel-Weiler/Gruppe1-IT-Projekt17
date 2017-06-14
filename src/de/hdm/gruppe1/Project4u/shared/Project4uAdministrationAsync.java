@@ -118,4 +118,6 @@ public interface Project4uAdministrationAsync {
 
 	void deletePartnerprofil(Partnerprofil p, AsyncCallback<Void> callback);
 
+	void createAusschreibung(Ausschreibung a, Partnerprofil pa, Projekt pr, AsyncCallback<Ausschreibung> callback);
+
 }

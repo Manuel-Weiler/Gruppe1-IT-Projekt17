@@ -3,8 +3,14 @@
  */
 package de.hdm.gruppe1.Project4u.client.gui;
 
+import java.util.Date;
+
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -12,6 +18,8 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -21,6 +29,9 @@ import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
+import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
+import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 /**
  * @author Tobias
@@ -32,11 +43,14 @@ public class AusschreibungsprofilWidget extends Composite{
 	DialogBox db = new DialogBox();
 	HTML heading = new HTML("<p class='heading'>Neue Ausschreibung:</p>");
 	VerticalPanel vPan = new VerticalPanel();
+	Ausschreibung local = new Ausschreibung();
+	Projekt localProj = new Projekt();
+	Projektmarktplatz pMart = new Projektmarktplatz();
 	
 	Button savenew = new Button("Speichern");
 	Button update = new Button("Speichern");
 	Button cancel = new Button("Abbrechen");
-	
+ 
 	Label bezeichng = new Label("Projektbezeichnung: ");
 	Label projektleitr = new Label("Projektleiter: ");
 	Label bewerbungsfrst = new Label("Bewerbungsfrist: ");
@@ -48,8 +62,12 @@ public class AusschreibungsprofilWidget extends Composite{
 	TextArea ausschreibungstext = new TextArea();
 	
 	
-	public AusschreibungsprofilWidget(Ausschreibung aus){
+	public AusschreibungsprofilWidget(Ausschreibung aus, Projekt p, Projektmarktplatz pMarkt){
+		this.pMart=pMarkt;
+		this.local= aus;
+		this.localProj=p;
 		db.setGlassEnabled(true);
+		
 		
 		vPan.add(heading);
 		
@@ -70,12 +88,19 @@ public class AusschreibungsprofilWidget extends Composite{
 		bewerbungsfrist.setEnabled(false);
 		ausschreibungstext.setEnabled(false);
 		
-		
+		cancel.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				db.hide();
+			}
+		});
 		
 		
 		
 		// Abfrage ob die Ausschreibung neu erstellt oder ein bestehendes Objekt
-		// ist
+		// ist. Bei einer Ausschreibungs-ID von 0 (dem default-wert bei
+		// Instaniziierung einer Ausschreibung) ist das Objekt neu erzeugt.
 		if (aus.getAusschreibungId() == 0) {
 
 			Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
@@ -96,6 +121,7 @@ public class AusschreibungsprofilWidget extends Composite{
 			
 			flex.setWidget(5, 1, savenew);
 			
+			savenew.addClickHandler(new neueAusschreibungSpeichernClickhandler());
 		}
 		else{
 			
@@ -116,11 +142,61 @@ public class AusschreibungsprofilWidget extends Composite{
 		
 		@Override
 		public void onClick(ClickEvent event) {
+			if(bezeichnung.getValue().isEmpty()&&ausschreibungstext.getValue().isEmpty()){
+				MessageBox.alertWidget("Werte eintragen!", "Bitte alle Felder ausfüllen");
+			}
+			else if(!bewerbungsfrist.getValue().after(new Date())){
+				MessageBox.alertWidget("Bewerbungsfrist!", "Die Bewerbungsfrist muss in der Zukuft liegen");
+			}
+			else{
+				Project4uVerwaltung.createPartnerprofil(new AsyncCallback<Partnerprofil>() {
+					
+					@Override
+					public void onSuccess(Partnerprofil result) {
+						local.setBezeichnung(bezeichnung.getValue());
+						local.setNameProjektleiter(projektleiter.getValue());
+						local.setBewerbungsfrist(bewerbungsfrist.getValue());
+						local.setErstellDatum(new Date());
+						local.setAusschreibungstext(ausschreibungstext.getValue());
+						local.setPartnerprofilId(result.getPartnerprofilId());
+						local.setProjektId(localProj.getProjektId());
+						
+						Project4uVerwaltung.createAusschreibung(local, result, localProj, new AsyncCallback<Ausschreibung>() {
+							
+							@Override
+							public void onSuccess(Ausschreibung result) {
+								db.hide();
+								RootPanel.get("content").clear();
+								RootPanel.get("content").add(new ProjektWidget(pMart));
+								
+							}
+							public void onFailure(Throwable caught) {
+							}
+						});
+						
+						
+					}
+					public void onFailure(Throwable caught) {
+					}
+				});
+				
+				
+			}
 			
 			
 		}
 		
 	}
 	
+	public void show(){
+		
+		 int left = Window.getClientWidth()/ 3;
+         int top = Window.getClientHeight()/ 2;
+		
+		db.setAutoHideEnabled(false);
+		db.setAnimationEnabled(true);
+		db.setPopupPosition(left, top);
+		db.show();
+	}
 	
 }

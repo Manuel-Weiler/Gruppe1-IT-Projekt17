@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class LöschungOrganisationseinheitWidget extends Composite{
+public class LoeschungOrganisationseinheitWidget extends Composite{
 
 	String[] messages = { "Sind Sie sich sicher?", "Ganz ganz sicher?", "<b>Wirklich</b> sicher?",
 			"Noch <b>einmal</b> klicken, dann ist das Konto gelöscht", "Wollen Sie das Konto wirklich löschen?",
@@ -30,7 +30,7 @@ public class LöschungOrganisationseinheitWidget extends Composite{
 	Button weiter = new Button("Weiter");
 	VerticalPanel vp = new VerticalPanel();
 	
-	public LöschungOrganisationseinheitWidget(){
+	public LoeschungOrganisationseinheitWidget(){
 		diaBox.setGlassEnabled(true);
 		vp.add(message);
 		flextable.setWidget(1, 0, abbrechen);
