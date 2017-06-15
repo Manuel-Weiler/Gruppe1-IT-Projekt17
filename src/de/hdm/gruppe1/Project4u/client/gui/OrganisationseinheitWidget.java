@@ -347,7 +347,7 @@ public class OrganisationseinheitWidget extends Composite{
 			bearbeiten.setVisible(true);
 		}
 		
-		vp.add(Profil);
+		
 		
 		mail.setValue(o.getGoogleId());	
 		orgaNam.setValue(o.getName());
@@ -368,8 +368,20 @@ public class OrganisationseinheitWidget extends Composite{
 		flexTable.setWidget(2, 0, typ);			
 		flexTable.setWidget(2, 1, typbox);
 		
-		
+		vp.add(Profil);
 		vp.add(flexTable);
+		vp.add(addEigenschaft);
+		vp.add(bearbeiten);
+		vp.add(speichern);
+		
+		
+		mail.setEnabled(false);
+		orgaNam.setEnabled(false);
+		typbox.setEnabled(false);
+		
+		bearbeiten.setVisible(false);
+		speichern.setVisible(false);
+		addEigenschaft.setVisible(false);
 		
 		Project4uVerwaltung.getEigenschaftenOfOrganisationseinheit(o, new AsyncCallback<Vector<Eigenschaft>>() {
 			
@@ -391,21 +403,12 @@ public class OrganisationseinheitWidget extends Composite{
 				
 				
 				}
-				vp.add(addEigenschaft);
-				vp.add(bearbeiten);
-				vp.add(speichern);
+				
 			}
 			public void onFailure(Throwable caught) {}
 		});
 		
 		
-		
-		mail.setEnabled(false);
-		orgaNam.setEnabled(false);
-		typbox.setEnabled(false);
-		bearbeiten.setVisible(false);
-		speichern.setVisible(false);
-		addEigenschaft.setVisible(false);
 		
 	//TODO: 
 		addEigenschaft.addClickHandler(new ClickHandler() {
