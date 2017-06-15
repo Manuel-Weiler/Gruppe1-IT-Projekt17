@@ -343,10 +343,6 @@ public class OrganisationseinheitWidget extends Composite{
 		Label typ = new Label("Kontentyp:");
 		final ListBox typbox = new ListBox();
 		
-		if(o.getGoogleId().equalsIgnoreCase(ClientsideSettings.getAktuellerUser().getEmailAddress())){
-			bearbeiten.setVisible(true);
-		}
-		
 		
 		
 		mail.setValue(o.getGoogleId());	
@@ -370,9 +366,7 @@ public class OrganisationseinheitWidget extends Composite{
 		
 		vp.add(Profil);
 		vp.add(flexTable);
-		vp.add(addEigenschaft);
-		vp.add(bearbeiten);
-		vp.add(speichern);
+		
 		
 		
 		mail.setEnabled(false);
@@ -382,6 +376,11 @@ public class OrganisationseinheitWidget extends Composite{
 		bearbeiten.setVisible(false);
 		speichern.setVisible(false);
 		addEigenschaft.setVisible(false);
+		if(o.getGoogleId().equalsIgnoreCase(ClientsideSettings.getAktuellerUser().getEmailAddress())){
+			bearbeiten.setVisible(true);
+		}
+		
+		
 		
 		Project4uVerwaltung.getEigenschaftenOfOrganisationseinheit(o, new AsyncCallback<Vector<Eigenschaft>>() {
 			
@@ -404,13 +403,18 @@ public class OrganisationseinheitWidget extends Composite{
 				
 				}
 				
+				vp.add(addEigenschaft);
+				vp.add(bearbeiten);
+				vp.add(speichern);
+				
+				
 			}
 			public void onFailure(Throwable caught) {}
 		});
 		
 		
 		
-	//TODO: 
+	//TODO: bearbeiten möglich machen
 		addEigenschaft.addClickHandler(new ClickHandler() {
 			
 			@Override

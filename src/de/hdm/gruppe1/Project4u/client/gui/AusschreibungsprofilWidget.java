@@ -38,14 +38,19 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
  */
 public class AusschreibungsprofilWidget {
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
+	
 	Vector<Eigenschaft> neueEigenschaften = new Vector<Eigenschaft>();
+	
 	FlexTable flex = new FlexTable();
 	FlexTable eigFlex = new FlexTable();
 	FlexTable buttonFlex = new FlexTable();
 	DialogBox db = new DialogBox();
+	VerticalPanel vPan = new VerticalPanel();
+	
 	HTML heading = new HTML("<p class='heading'>Neue Ausschreibung:</p>");
 	HTML heading2 = new HTML("<p class='heading'>Eigenschaften:</p>");
-	VerticalPanel vPan = new VerticalPanel();
+	
+	
 	Partnerprofil localPart = new Partnerprofil();
 	Ausschreibung localAus = new Ausschreibung();
 	Projekt localProj = new Projekt();
@@ -54,7 +59,8 @@ public class AusschreibungsprofilWidget {
 	Button savenew = new Button("Speichern");
 	Button update = new Button("Speichernnnn");
 	Button cancel = new Button("Abbrechen");
-	//TODO:
+	//TODO: bewerben
+	//TODO: Standardeigenschaften
 	Button change = new Button("Bearbeiten");
 	Button quit = new Button("Ausschreibung abbrechen");
 	Button delete = new Button("Ausschreibung löschen");
@@ -67,7 +73,7 @@ public class AusschreibungsprofilWidget {
 	Label bewerbungsfrst = new Label("Bewerbungsfrist: ");
 	HTML ausschrtext = new HTML("Ausschreibungstext: ");
 	
-	
+	//TODO: Buttongröße
 	//TODO: Ausschreibung löschen
 	//TODO: Ausschreibung abbrechen
 	TextBox bezeichnung = new TextBox();
@@ -174,7 +180,7 @@ public class AusschreibungsprofilWidget {
 		}
 		else{
 			
-			heading.setHTML("Ausschreibung "+aus.getBezeichnung());
+			heading.setHTML("<p class='heading'>Ausschreibung "+aus.getBezeichnung()+"</p>");
 			
 			
 			bezeichnung.setValue(localAus.getBezeichnung());
@@ -474,15 +480,13 @@ public class AusschreibungsprofilWidget {
 					}
 					public void onFailure(Throwable caught) {
 					}
-				});
-				
-				
-			}
-			
-			
-		}
-		
+				});}}
 	}
+	
+	
+	
+	
+	
 	
 	//TODO: refresh
 	private class refreshProjektWidget implements AsyncCallback<Ausschreibung>{
