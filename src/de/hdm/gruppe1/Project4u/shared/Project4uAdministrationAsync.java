@@ -118,7 +118,7 @@ public interface Project4uAdministrationAsync {
 
 	void deletePartnerprofil(Partnerprofil p, AsyncCallback<Void> callback);
 
-	void createAusschreibung(Ausschreibung a, Partnerprofil pa, Projekt pr, AsyncCallback<Ausschreibung> callback);
+	void createAusschreibung(Ausschreibung a, int partnerprofilId, Projekt pr, AsyncCallback<Ausschreibung> callback);
 
 	void insertEigenschaftenByPartnerprofil(Vector<Eigenschaft> eigenschaften, Partnerprofil partnerprofil,
 			AsyncCallback<Void> callback);

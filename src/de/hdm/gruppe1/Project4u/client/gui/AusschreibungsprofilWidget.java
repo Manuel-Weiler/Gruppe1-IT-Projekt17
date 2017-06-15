@@ -62,6 +62,7 @@ public class AusschreibungsprofilWidget {
 	Button quit = new Button("Ausschreibung abbrechen");
 	Button delete = new Button("Ausschreibung löschen");
 	Button addEig	= new Button("Eigenschaft hinzufügen");
+	Button bewerben = new Button("Auf Ausschreibung bewerben");
 	
  
 	Label bezeichng = new Label("Stellenbezeichnung: ");
@@ -98,6 +99,7 @@ public class AusschreibungsprofilWidget {
 		
 		buttonFlex.setWidget(0, 0, cancel);
 		buttonFlex.setWidget(1, 0, change);
+		buttonFlex.setWidget(0, 2, bewerben);
 		buttonFlex.setWidget(2, 0, quit);
 		buttonFlex.setWidget(2, 1, delete);
 		buttonFlex.setWidget(3, 0, addEig);
@@ -109,8 +111,9 @@ public class AusschreibungsprofilWidget {
 		vPan.add(eigFlex);
 		vPan.add(buttonFlex);
 		
-		update.setEnabled(false);
+		update.setVisible(false);
 		change.setVisible(false);
+		bewerben.setVisible(false);
 		quit.setVisible(false);
 		delete.setVisible(false);
 		addEig.setVisible(false);
@@ -170,7 +173,8 @@ public class AusschreibungsprofilWidget {
 		}
 		else{
 			
-			heading= new HTML("Ausschreibung "+aus.getBezeichnung());
+			heading.setHTML("Ausschreibung "+aus.getBezeichnung());
+			
 			
 			bezeichnung.setValue(localAus.getBezeichnung());
 			bewerbungsfrist.setValue(localAus.getBewerbungsfrist());
@@ -180,6 +184,7 @@ public class AusschreibungsprofilWidget {
 			checkIfUserIsProjektleiter();
 			
 			buttonFlex.setWidget(0, 1, update);
+			bewerben.setVisible(true);
 			
 			Project4uVerwaltung.getAllEigenschaftenByPartnerprofilId(aus.getPartnerprofilId(), new AsyncCallback<Vector<Eigenschaft>>() {
 				
@@ -221,21 +226,94 @@ public class AusschreibungsprofilWidget {
 	
 	
 	
+	//TODO: updatespeichern
+	private class updateSpeichernButtonClickHandler implements ClickHandler{
+
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			if(bezeichnung.getValue().isEmpty()&&ausschreibungstext.getValue().isEmpty()){
+				MessageBox.alertWidget("Werte eintragen!", "Bitte alle Felder ausfüllen");
+			}
+			else if(!bewerbungsfrist.getValue().after(new Date())){
+				MessageBox.alertWidget("Bewerbungsfrist!", "Die Bewerbungsfrist muss in der Zukuft liegen");
+			}
+			else{
+				
+				
+				
+				
+				localAus.setBezeichnung(bezeichnung.getValue());
+				
+				localAus.setBewerbungsfrist(bewerbungsfrist.getValue());
+				
+				localAus.setAusschreibungstext(ausschreibungstext.getValue());
+				
+				
+				
+
+				
+				for(int i=0; i<eigFlex.getRowCount(); i++){
+					Eigenschaft e = new Eigenschaft();
+					Widget w = eigFlex.getWidget(i, 0);
+					 if (w instanceof TextBox) {
+						 if(!((TextBox) w).getValue().isEmpty()){
+							e.setName(((TextBox) w).getValue());
+						 };
+					 }
+					 
+					 Widget v = eigFlex.getWidget(i, 1);
+					 if (v instanceof TextBox) {
+						 if(!((TextBox) v).getValue().isEmpty()){
+								e.setWert(((TextBox) v).getValue());
+							 };
+					 }
+					 if(e.getName()!=null && e.getWert()!=null){
+						 neueEigenschaften.add(e);
+						 }}
+				
+				
+				
+				Project4uVerwaltung.insertEigenschaftenByPartnerprofil(neueEigenschaften, localPart, new AsyncCallback<Void>() {
+					
+					@Override
+					public void onSuccess(Void result) {
+						
+						Project4uVerwaltung.createAusschreibung(localAus, localPart.getPartnerprofilId(), localProj, new refreshProjektWidget());
+					}
+					
+					public void onFailure(Throwable caught) {
+					}
+				});
+				
+				
+			}
+			
+			
+		}
+		
+	}
+	
+	
+	
+	
+	
 	
 	private class bearbeitenButtonClickHandler implements ClickHandler{
 
-		//TODO:
+		
 		@Override
 		public void onClick(ClickEvent event) {
 			
 			bezeichnung.setEnabled(true);
 			bewerbungsfrist.setEnabled(true);
 			ausschreibungstext.setEnabled(true);
-			update.setEnabled(true);
+			update.setVisible(true);
 			
 			addEig.setVisible(true);
 			quit.setVisible(true);
 			delete.setVisible(true);
+			change.setVisible(false);
 			
 			for(int i=0; i<eigFlex.getRowCount(); i++){
 				
@@ -390,7 +468,7 @@ public class AusschreibungsprofilWidget {
 							@Override
 							public void onSuccess(Void result) {
 								
-								Project4uVerwaltung.createAusschreibung(localAus, localPart, localProj, new refreshProjektWidget());
+								Project4uVerwaltung.createAusschreibung(localAus, localPart.getPartnerprofilId(), localProj, new refreshProjektWidget());
 							}
 							
 							public void onFailure(Throwable caught) {
@@ -436,6 +514,7 @@ public class AusschreibungsprofilWidget {
 							public void onSuccess(Organisationseinheit projektleiter) {
 								if(ClientsideSettings.getAktuellerUser().getEmailAddress().equalsIgnoreCase(projektleiter.getGoogleId())){
 									change.setVisible(true);
+									bewerben.setVisible(false);
 								}
 							}
 							public void onFailure(Throwable caught) {

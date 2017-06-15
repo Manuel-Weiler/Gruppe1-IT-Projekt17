@@ -522,10 +522,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
-	public Ausschreibung createAusschreibung(Ausschreibung a, Partnerprofil pa, Projekt pr)throws IllegalArgumentException{
+	public Ausschreibung createAusschreibung(Ausschreibung a, int partnerprofilId, Projekt pr)throws IllegalArgumentException{
+		Partnerprofil p=findById(partnerprofilId);
 		
-		
-		return this.ausschreibungMapper.insertAusschreibung(a, pa, pr);
+		return this.ausschreibungMapper.insertAusschreibung(a, p, pr);
 	}
 	
 	public void updateAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {
