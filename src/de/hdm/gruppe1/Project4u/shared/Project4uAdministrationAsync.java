@@ -120,4 +120,9 @@ public interface Project4uAdministrationAsync {
 
 	void createAusschreibung(Ausschreibung a, Partnerprofil pa, Projekt pr, AsyncCallback<Ausschreibung> callback);
 
+	void insertEigenschaftenByPartnerprofil(Vector<Eigenschaft> eigenschaften, Partnerprofil partnerprofil,
+			AsyncCallback<Void> callback);
+
+	void getAllEigenschaftenByPartnerprofilId(int partnerprofilId, AsyncCallback<Vector<Eigenschaft>> callback);
+
 }

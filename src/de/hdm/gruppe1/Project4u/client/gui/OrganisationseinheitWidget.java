@@ -401,7 +401,7 @@ public class OrganisationseinheitWidget extends Composite{
 		speichern.setVisible(false);
 		addEigenschaft.setVisible(false);
 		
-	
+	//TODO: 
 		addEigenschaft.addClickHandler(new ClickHandler() {
 			
 			@Override

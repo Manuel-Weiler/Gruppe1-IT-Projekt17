@@ -354,7 +354,8 @@ public class ProjektWidget extends Composite{
 		buttonColumn.setFieldUpdater(new FieldUpdater <Ausschreibung, String>() {
 		  public void update(int index, Ausschreibung object, String value) {
 		    // Value is the button value.  Object is the row object.
-		    Window.alert("You clicked: " + object.getAusschreibungstext());
+		    AusschreibungsprofilWidget apw = new AusschreibungsprofilWidget(object, selectedProjekt, projektmarktplatz);
+		    apw.show();
 		  }
 		});
 		
