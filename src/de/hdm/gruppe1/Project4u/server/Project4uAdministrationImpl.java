@@ -349,9 +349,11 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		}
 	}
 	
-	public void insertEigenschaftenByPartnerprofil(Vector<Eigenschaft> eigenschaften, Partnerprofil partnerprofil)throws IllegalArgumentException{
-			for(Eigenschaft e : eigenschaften){
-			insertEigenschaft(e, partnerprofil);
+	public void insertEigenschaftenByPartnerprofil(Vector<Eigenschaft> eigenschaften, int partnerprofilId)throws IllegalArgumentException{
+		Partnerprofil partner = findById(partnerprofilId);	
+		
+		for(Eigenschaft e : eigenschaften){
+			insertEigenschaft(e, partner);
 		}
 	}
 	
@@ -367,10 +369,11 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public void deleteAllEigenschaftenOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException{
 		Partnerprofil partnerprofil = new Partnerprofil();
 		partnerprofil = getPartnerprofilOfOrganisationseinheit(orga);
-		deleteAllEigenschaftOfPartnerprofil(partnerprofil);
+		deleteAllEigenschaftOfPartnerprofil(partnerprofil.getPartnerprofilId());
 	}
 	
-	public void deleteAllEigenschaftOfPartnerprofil(Partnerprofil p)throws IllegalArgumentException{
+	public void deleteAllEigenschaftOfPartnerprofil(int partnerprofilId)throws IllegalArgumentException{
+		Partnerprofil p = findById(partnerprofilId);
 		eigenschaftMapper.deleteAllEigenschaftOfPartnerprofil(p);
 	}
 
@@ -528,8 +531,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return this.ausschreibungMapper.insertAusschreibung(a, p, pr);
 	}
 	
-	public void updateAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {
-		ausschreibungMapper.updateAusschreibung(ausschreibung);
+	public Ausschreibung updateAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {
+		return this.ausschreibungMapper.updateAusschreibung(ausschreibung);
 	}
 	
 	public void deleteAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {

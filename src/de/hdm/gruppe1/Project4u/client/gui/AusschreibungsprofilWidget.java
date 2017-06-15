@@ -85,7 +85,7 @@ public class AusschreibungsprofilWidget {
 		this.localProj=p;
 		db.setGlassEnabled(true);
 		
-					
+		//TODO: format datum
 		flex.setWidget(0, 0, bezeichng);
 		flex.setWidget(0, 1, bezeichnung);
 		flex.setWidget(1, 0, projektleitr);
@@ -129,7 +129,7 @@ public class AusschreibungsprofilWidget {
 		ausschreibungstext.setWidth("180px");
 		ausschreibungstext.setHeight("150px");
 		
-		
+		update.addClickHandler(new updateSpeichernButtonClickHandler());
 		savenew.addClickHandler(new neueAusschreibungSpeichernClickhandler());
 		addEig.addClickHandler(new neueEigenschaftClickHandler());
 		change.addClickHandler(new bearbeitenButtonClickHandler());
@@ -186,6 +186,8 @@ public class AusschreibungsprofilWidget {
 			buttonFlex.setWidget(0, 1, update);
 			bewerben.setVisible(true);
 			
+			
+			
 			Project4uVerwaltung.getAllEigenschaftenByPartnerprofilId(aus.getPartnerprofilId(), new AsyncCallback<Vector<Eigenschaft>>() {
 				
 				@Override
@@ -227,73 +229,67 @@ public class AusschreibungsprofilWidget {
 	
 	
 	//TODO: updatespeichern
-	private class updateSpeichernButtonClickHandler implements ClickHandler{
+	private class updateSpeichernButtonClickHandler implements ClickHandler {
 
-		
 		@Override
 		public void onClick(ClickEvent event) {
-			if(bezeichnung.getValue().isEmpty()&&ausschreibungstext.getValue().isEmpty()){
+			if (bezeichnung.getValue().isEmpty() && ausschreibungstext.getValue().isEmpty()) {
 				MessageBox.alertWidget("Werte eintragen!", "Bitte alle Felder ausfüllen");
-			}
-			else if(!bewerbungsfrist.getValue().after(new Date())){
+			} else if (!bewerbungsfrist.getValue().after(new Date())) {
 				MessageBox.alertWidget("Bewerbungsfrist!", "Die Bewerbungsfrist muss in der Zukuft liegen");
-			}
-			else{
-				
-				
-				
-				
+			} else {
 				localAus.setBezeichnung(bezeichnung.getValue());
-				
 				localAus.setBewerbungsfrist(bewerbungsfrist.getValue());
-				
 				localAus.setAusschreibungstext(ausschreibungstext.getValue());
-				
-				
-				
 
-				
-				for(int i=0; i<eigFlex.getRowCount(); i++){
+				for (int i = 0; i < eigFlex.getRowCount(); i++) {
 					Eigenschaft e = new Eigenschaft();
 					Widget w = eigFlex.getWidget(i, 0);
-					 if (w instanceof TextBox) {
-						 if(!((TextBox) w).getValue().isEmpty()){
+					if (w instanceof TextBox) {
+						if (!((TextBox) w).getValue().isEmpty()) {
 							e.setName(((TextBox) w).getValue());
-						 };
-					 }
-					 
-					 Widget v = eigFlex.getWidget(i, 1);
-					 if (v instanceof TextBox) {
-						 if(!((TextBox) v).getValue().isEmpty()){
-								e.setWert(((TextBox) v).getValue());
-							 };
-					 }
-					 if(e.getName()!=null && e.getWert()!=null){
-						 neueEigenschaften.add(e);
-						 }}
-				
-				
-				
-				Project4uVerwaltung.insertEigenschaftenByPartnerprofil(neueEigenschaften, localPart, new AsyncCallback<Void>() {
-					
-					@Override
-					public void onSuccess(Void result) {
-						
-						Project4uVerwaltung.createAusschreibung(localAus, localPart.getPartnerprofilId(), localProj, new refreshProjektWidget());
+						}
+						;
 					}
-					
-					public void onFailure(Throwable caught) {
+
+					Widget v = eigFlex.getWidget(i, 1);
+					if (v instanceof TextBox) {
+						if (!((TextBox) v).getValue().isEmpty()) {
+							e.setWert(((TextBox) v).getValue());
+						}
+						;
 					}
-				});
-				
-				
+					if (e.getName() != null && e.getWert() != null) {
+						neueEigenschaften.add(e);
+					}
+				}
+
+				Project4uVerwaltung.deleteAllEigenschaftOfPartnerprofil(localAus.getPartnerprofilId(),
+						new AsyncCallback<Void>() {
+
+							@Override
+							public void onSuccess(Void result) {
+
+								Project4uVerwaltung.insertEigenschaftenByPartnerprofil(neueEigenschaften, localAus.getPartnerprofilId(),
+										new AsyncCallback<Void>() {
+
+									@Override
+									public void onSuccess(Void result) {
+
+										Project4uVerwaltung.updateAusschreibung(localAus, new refreshProjektWidget());
+									}
+
+									public void onFailure(Throwable caught) {
+									}
+								});
+							}
+
+							public void onFailure(Throwable caught) {
+							}
+						});
 			}
-			
-			
 		}
-		
 	}
-	
 	
 	
 	
@@ -463,7 +459,7 @@ public class AusschreibungsprofilWidget {
 							 if(e.getName()!=null && e.getWert()!=null){
 								 neueEigenschaften.add(e);
 								 }}
-						Project4uVerwaltung.insertEigenschaftenByPartnerprofil(neueEigenschaften, result, new AsyncCallback<Void>() {
+						Project4uVerwaltung.insertEigenschaftenByPartnerprofil(neueEigenschaften, result.getPartnerprofilId(), new AsyncCallback<Void>() {
 							
 							@Override
 							public void onSuccess(Void result) {
@@ -487,7 +483,7 @@ public class AusschreibungsprofilWidget {
 		
 	}
 	
-	
+	//TODO: refresh
 	private class refreshProjektWidget implements AsyncCallback<Ausschreibung>{
 
 		public void onFailure(Throwable caught) {
@@ -500,6 +496,13 @@ public class AusschreibungsprofilWidget {
 			db.hide();
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
