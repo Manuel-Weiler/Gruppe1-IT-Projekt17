@@ -91,9 +91,9 @@ public class BewerbungMapper {
 			if(rs.next()){
 				bewerbung.setBewerbungId(rs.getInt("maxid")+1);
 				
-				stmt.executeUpdate("INSERT INTO Bewerbung (id, erstelldatum, bewerbungstext, ausschreibung_id, organisationseinheit_id)"
+				stmt.executeUpdate("INSERT INTO Bewerbung (id, erstelldatum, bewerbungstext, ausschreibung_id, organisationseinheit_id, status)"
 						+ "VALUES ('" + bewerbung.getBewerbungId() + "','" + sdf.format(bewerbung.getErstelldatum()) + "','" 
-						+ bewerbung.getBewerbungstext() + "', '"+a.getAusschreibungId()+"', '"+o.getOrganisationseinheitId()+"')");
+						+ bewerbung.getBewerbungstext() + "', '"+a.getAusschreibungId()+"', '"+o.getOrganisationseinheitId()+"', '"+bewerbung.getStatus()+"')");
 
 			}
 		} catch (SQLException e) {
@@ -104,20 +104,20 @@ public class BewerbungMapper {
 
 	/**
 	 * Diese Methode bezieht ihre Informationen aus der Project4uImpl und
-	 * erm�glicht es den Bewerbungstext in der Datenbank zu �ndern.
+	 * erm�glicht es den Stautus in der Datenbank zu �ndern.
 	 * 
 	 * @param bewerbung
 	 * @return bewerbung
 	 */
 
-	public void update(Bewerbung bewerbung){
+	public void updateStatus(String status, int bewerbungsId){
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(
-					"UPDATE Bewerbung SET bewerbungstext = '" + bewerbung.getBewerbungstext() + "' WHERE id = '"
-							+ bewerbung.getBewerbungId()+"';");
+					"UPDATE Bewerbung SET status = '"+status+"' WHERE id = '"
+							+ bewerbungsId+"';");
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -187,8 +187,7 @@ public class BewerbungMapper {
 		try {
 
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT id, erstelldatum, bewerbungstext, "
-					+ "ausschreibung_id, organisationseinheit_id " + "FROM Bewerbung ORDER BY id");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Bewerbung ORDER BY id");
 
 			// Für jeden Eintrag im Suchergebnis wird nun ein
 			// Organisationseinheit-Objekt

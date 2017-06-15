@@ -256,7 +256,7 @@ public class ProjektWidget extends Composite{
 		verP.add(heading);
 		
 		
-		//TODO: Ausschreibung anlegen
+		
 		
 		
 		Project4uVerwaltung.findAusschreibungbyProjekt(p, new AsyncCallback<Vector<Ausschreibung>>() {
@@ -396,8 +396,6 @@ public class ProjektWidget extends Composite{
 	
 	private class hinzufuegenAusschreibungClickhandler implements ClickHandler{
 
-		//TODO:
-		@Override
 		public void onClick(ClickEvent event) {
 			
 			AusschreibungsprofilWidget aussch = new AusschreibungsprofilWidget(new Ausschreibung(), selectedProjekt, projektmarktplatz);

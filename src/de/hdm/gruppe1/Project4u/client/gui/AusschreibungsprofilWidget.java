@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -81,11 +82,13 @@ public class AusschreibungsprofilWidget {
 	
 	public AusschreibungsprofilWidget(Ausschreibung aus, Projekt p, Projektmarktplatz pMarkt){
 		this.pMart=pMarkt;
-		this.localAus= aus;
-		this.localProj=p;
+		this.localAus = aus;
+		this.localProj = p;
 		db.setGlassEnabled(true);
+		DateTimeFormat dateFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
+		bewerbungsfrist.setFormat(new DateBox.DefaultFormat(dateFormat));
+
 		
-		//TODO: format datum
 		flex.setWidget(0, 0, bezeichng);
 		flex.setWidget(0, 1, bezeichnung);
 		flex.setWidget(1, 0, projektleitr);
@@ -228,7 +231,7 @@ public class AusschreibungsprofilWidget {
 	
 	
 	
-	//TODO: updatespeichern
+
 	private class updateSpeichernButtonClickHandler implements ClickHandler {
 
 		@Override
@@ -307,7 +310,7 @@ public class AusschreibungsprofilWidget {
 			update.setVisible(true);
 			
 			addEig.setVisible(true);
-			quit.setVisible(true);
+			//quit.setVisible(true);
 			delete.setVisible(true);
 			change.setVisible(false);
 			
@@ -490,9 +493,10 @@ public class AusschreibungsprofilWidget {
 		}
 		public void onSuccess(Ausschreibung result) {
 			ProjektWidget PW = new ProjektWidget(pMart);
-			PW.ausschreibungAnsehen(localProj);
 			RootPanel.get("content").clear();
 			RootPanel.get("content").add(PW);
+			PW.ausschreibungAnsehen(localProj);
+			
 			db.hide();
 		}
 	}

@@ -603,14 +603,13 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return this.bewerbungMapper.insert(bewerbung, null, null);
 	}
 
-	public void updateBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)
+	
+	public void updateStatusOfBewerbung(String status, int bewerbungsID)
 			throws IllegalArgumentException {
-		Bewerbung bewerbung = new Bewerbung();
-		bewerbung.setBewerbungId(bewerbungID);
-		bewerbung.setErstelldatum(erstelldatum);
-		bewerbung.setBewerbungstext(bewerbungstext);
-		this.bewerbungMapper.update(bewerbung);
+		this.bewerbungMapper.updateStatus(status, bewerbungsID);
 	}
+	
+	
 	
 	public void deleteBewerbung(Bewerbung bewerbung) {
 		System.out.println("deleteBewerbung"); 

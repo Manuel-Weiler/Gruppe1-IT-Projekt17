@@ -11,6 +11,8 @@ public class Bewerbung{
 	private int ausschreibungId;
 	private Date erstelldatum = null;
 	private String bewerbungstext = null;
+	//TODO: status als enum implementieren
+	private String status = null;
 
 	public int getBewerbungId() {
 		return bewerbungId;
@@ -63,6 +65,14 @@ public class Bewerbung{
 			bewerbung = new Bewerbung();
 		}
 		return bewerbung;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }
