@@ -123,6 +123,10 @@ public class BewerbungMapper {
 			e2.printStackTrace();
 		}
 	}
+	
+	
+	
+	
 
 	/**
 	 * Diese Methode bezieht ihre Informationen aus der Project4uImpl und

@@ -355,7 +355,7 @@ public class ProjektWidget extends Composite{
 		  public void update(int index, Ausschreibung object, String value) {
 		    // Value is the button value.  Object is the row object.
 		    AusschreibungsprofilWidget apw = new AusschreibungsprofilWidget(object, selectedProjekt, projektmarktplatz);
-		    apw.show();
+		    apw.showBox();
 		  }
 		});
 		
@@ -399,7 +399,7 @@ public class ProjektWidget extends Composite{
 		public void onClick(ClickEvent event) {
 			
 			AusschreibungsprofilWidget aussch = new AusschreibungsprofilWidget(new Ausschreibung(), selectedProjekt, projektmarktplatz);
-			aussch.show();
+			aussch.showBox();
 			
 		}
 		

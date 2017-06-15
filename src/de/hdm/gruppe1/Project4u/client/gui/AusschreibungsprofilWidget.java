@@ -8,18 +8,14 @@ import java.util.Vector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -80,6 +76,7 @@ public class AusschreibungsprofilWidget {
 	TextArea ausschreibungstext = new TextArea();
 	
 	
+	
 	public AusschreibungsprofilWidget(Ausschreibung aus, Projekt p, Projektmarktplatz pMarkt){
 		this.pMart=pMarkt;
 		this.localAus = aus;
@@ -89,6 +86,7 @@ public class AusschreibungsprofilWidget {
 		bewerbungsfrist.setFormat(new DateBox.DefaultFormat(dateFormat));
 
 		
+        
 		flex.setWidget(0, 0, bezeichng);
 		flex.setWidget(0, 1, bezeichnung);
 		flex.setWidget(1, 0, projektleitr);
@@ -530,17 +528,17 @@ public class AusschreibungsprofilWidget {
 	}
 	
 	
-	
-	
-	public void show(){
+	 
+	 
+	 
+	public void showBox(){
 		
-		 int left = Window.getClientWidth()/ 4;
+		 int left = Window.getClientWidth()/ 5;
          int top = Window.getClientHeight()/ 2;
 		
 		db.setAutoHideEnabled(false);
 		db.setAnimationEnabled(true);
-		db.center();
-		//db.setPopupPosition(left, top);
+		db.setPopupPosition(left, top);
 		db.show();
 	}
 	

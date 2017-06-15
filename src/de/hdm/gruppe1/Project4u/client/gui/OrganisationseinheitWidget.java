@@ -343,6 +343,10 @@ public class OrganisationseinheitWidget extends Composite{
 		Label typ = new Label("Kontentyp:");
 		final ListBox typbox = new ListBox();
 		
+		if(o.getGoogleId().equalsIgnoreCase(ClientsideSettings.getAktuellerUser().getEmailAddress())){
+			bearbeiten.setVisible(true);
+		}
+		
 		vp.add(Profil);
 		
 		mail.setValue(o.getGoogleId());	
@@ -384,11 +388,12 @@ public class OrganisationseinheitWidget extends Composite{
 					
 				}
 				vp.add(flexTableEigenschaften);
+				
+				
+				}
 				vp.add(addEigenschaft);
 				vp.add(bearbeiten);
 				vp.add(speichern);
-				
-				}
 			}
 			public void onFailure(Throwable caught) {}
 		});
@@ -397,7 +402,8 @@ public class OrganisationseinheitWidget extends Composite{
 		
 		mail.setEnabled(false);
 		orgaNam.setEnabled(false);
-		typbox.setEnabled(false);		
+		typbox.setEnabled(false);
+		bearbeiten.setVisible(false);
 		speichern.setVisible(false);
 		addEigenschaft.setVisible(false);
 		
