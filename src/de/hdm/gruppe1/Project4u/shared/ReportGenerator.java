@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByProjektverflechtungen;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 
@@ -19,6 +20,8 @@ public interface ReportGenerator extends RemoteService{
 	ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Ausschreibung au);
 	
 	String testMethode();
+
+	ReportByProjektverflechtungen createProjektverflechtungReport();
 	
 	
 }
