@@ -18,9 +18,22 @@ h1 {
 
 .rot{
 	color: red;
-	/*background-color:#b30000;*/
 	text-decoration: line-through;
 }
+
+.linked{
+	
+	background-color: lightgreen;
+	
+	letter-spacing: 2px;
+}
+
+.not-linked{
+	background-color: #F0F0F0;
+	
+	
+}
+
 .heading{
 	font-size: 1em;
 	font: 'Gotham';

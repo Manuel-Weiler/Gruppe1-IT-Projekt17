@@ -107,7 +107,7 @@ public class OrganisationseinheitMapper {
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("UPDATE Organisationseinheit " + "SET google_id=\""
+	      stmt.executeUpdate("UPDATE Organisationseinheit SET google_id=\""
 	          + o.getGoogleId() + "\", " + "name=\"" + o.getName() + "\", " + "typ=\"" + o.getTyp() + "\" "
 	          + "WHERE id=" + o.getOrganisationseinheitId());
 
@@ -119,7 +119,8 @@ public class OrganisationseinheitMapper {
 	    // Um Analogie zu insert(Customer c) zu wahren, geben wir c zurück
 	    return o;
 	  }
-	//uuuu
+
+
 	 public void delete(Organisationseinheit o) {
 		    Connection con = DBConnection.connection();
 
@@ -147,8 +148,7 @@ public class OrganisationseinheitMapper {
 
 		      // Statement ausfüllen und als Query an die DB schicken
 
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM organisationseinheit "
-		              + "WHERE id='" + id + "';");
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM organisationseinheit WHERE id=" + id);
 
 
 		      /*
@@ -163,7 +163,6 @@ public class OrganisationseinheitMapper {
 		        o.setGoogleId(rs.getString("google_id"));
 		        o.setTyp(rs.getString("typ"));
 		        o.setPartnerprofilId(rs.getInt("partnerprofil_id"));
-
 
 		        return o;
 		      }
@@ -354,6 +353,105 @@ public class OrganisationseinheitMapper {
 			e2.printStackTrace();
 		}
 	}
+	
+	public void deleteLinkedTeamUnternehmenOfOrganisationseinheit(Organisationseinheit person,
+			Organisationseinheit team) {
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			// Organisationseinheit löschen
+			stmt.executeUpdate(
+					"DELETE FROM organisationseinheit_has_organisationseinheit WHERE organisationseinheit_id='"
+							+ team.getOrganisationseinheitId() + "' AND person_id='"
+							+ person.getOrganisationseinheitId() + "';");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//Diese Methode löscht alle Verbindungen einer Organisationseinheit zu anderen Organisationseinheiten
+	public void deleteVerbindungenOfOrganisationseinheit(Organisationseinheit organisationseinheit) {
+		Connection con = DBConnection.connection();
+		
+		if (organisationseinheit.getTyp().equalsIgnoreCase("Person")) {
+			try {
+				Statement stmt = con.createStatement();
+
+				//Person löschen
+				stmt.executeUpdate(
+						"DELETE FROM organisationseinheit_has_organisationseinheit WHERE person_id="
+								+ organisationseinheit.getOrganisationseinheitId());
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		} else if(organisationseinheit.getTyp().equalsIgnoreCase("Unternehmen") || organisationseinheit.getTyp().equalsIgnoreCase("Team")) {
+			try {
+				Statement stmt = con.createStatement();
+
+				//Organisationseinheit löschen
+				stmt.executeUpdate(
+						"DELETE FROM organisationseinheit_has_organisationseinheit WHERE organisationseinheit_id="
+								+ organisationseinheit.getOrganisationseinheitId());
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		}
+		//TODO prüfen
+		//Diese Methode löscht alle Verbindungen einer Organisationseinheit zu anderen Organisationseinheiten
+		public Vector<Organisationseinheit> getVerbindungenOfOrganisationseinheit(Organisationseinheit organisationseinheit) {
+			Connection con = DBConnection.connection();
+			Vector<Organisationseinheit> result = new Vector<Organisationseinheit>();
+			
+			if (organisationseinheit.getTyp().equalsIgnoreCase("Person")) {
+				try {
+					Statement stmt = con.createStatement();
+
+					//Verbindungen einer Person finden
+					ResultSet rs = stmt.executeQuery("SELECT * FROM organisationseinheit_has_organisationseinheit WHERE person_id="
+							+ organisationseinheit.getOrganisationseinheitId());
+					
+					while (rs.next()) {
+						Organisationseinheit o = new Organisationseinheit();
+						o = findByKey(rs.getInt("person_id"));
+
+						// Hinzufügen des neuen Objekts zum Ergebnisvektor
+						result.addElement(o);
+					}
+
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} 
+				
+			} else if(organisationseinheit.getTyp().equalsIgnoreCase("Unternehmen") || organisationseinheit.getTyp().equalsIgnoreCase("Team")) {
+				try {
+					Statement stmt = con.createStatement();
+
+					//Verbindungen eines teams oder Unternehmens finden
+					ResultSet rs = stmt.executeQuery("SELECT * FROM organisationseinheit_has_organisationseinheit WHERE organisationseinheit_id="
+							+ organisationseinheit.getOrganisationseinheitId());
+					
+					while (rs.next()) {
+						Organisationseinheit o = new Organisationseinheit();
+						o = findByKey(rs.getInt("organisationseinheit_id"));
+
+						// Hinzufügen des neuen Objekts zum Ergebnisvektor
+						result.addElement(o);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} 
+			} return result;
+
+		
+	}
+	
 	
 	
 	 

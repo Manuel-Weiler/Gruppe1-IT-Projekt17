@@ -107,7 +107,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
       	}
     		//Partnerprofil löschen
     		this.partnerprofilMapper.deletePartnerprofil(p);
-      	}
+    }
 	
 	public Partnerprofil findById(int i) throws IllegalArgumentException {
 		return this.partnerprofilMapper.findById(i);
@@ -163,7 +163,9 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	
 	
 	public void deleteOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
-		 System.out.println("deleteOrga");    
+		 System.out.println("deleteOrga");
+		 
+		
       	
 		//Zugehörige Beteiligungen löschen
 		Vector<Beteiligung> vbe = new Vector<Beteiligung>();	
@@ -202,6 +204,9 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
       		}
       	}	
       	
+      	//Zugehörigkeit zu Teams oder Unternehmen löschen
+      	this.organisationseinheitMapper.deleteVerbindungenOfOrganisationseinheit(organisationseinheit);
+      	
         //Organisationseinheit löschen
       	this.organisationseinheitMapper.delete(organisationseinheit);
 		
@@ -211,6 +216,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
   				this.deletePartnerprofil(partnerprofil);
   			}      	
       	}
+	
+	public void deleteVerbindungenOfOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
+		this.organisationseinheitMapper.deleteVerbindungenOfOrganisationseinheit(organisationseinheit);
+	}
 	
 
 	public Organisationseinheit getOrganisationseinheitById(int id) throws IllegalArgumentException {
@@ -304,6 +313,17 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return organisationseinheitMapper.getLinkedTeamAndUnternehmenOfOrganisationseinheit(o);
 
 	}
+	
+	public void deleteLinkedTeamUnternehmenOfOrganisationseinheit(LoginInfo login,
+			Organisationseinheit team) throws IllegalArgumentException {
+		Organisationseinheit o = new Organisationseinheit();
+		o = getOrganisationseinheitByUser(login);
+		
+		organisationseinheitMapper.deleteLinkedTeamUnternehmenOfOrganisationseinheit(o, team);
+		
+	};
+	
+	
       		
 	/*
 	 * #########################################################################
@@ -330,6 +350,22 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return this.eigenschaftMapper.insertEigenschaft(e, p);
 	}
 	
+	public void insertEigenschaften(Vector<Eigenschaft> eigenschaften, Organisationseinheit orga)throws IllegalArgumentException{
+		Partnerprofil partnerprofil = new Partnerprofil();
+		partnerprofil = getPartnerprofilOfOrganisationseinheit(orga);
+		for(Eigenschaft e : eigenschaften){
+			insertEigenschaft(e, partnerprofil);
+		}
+	}
+	
+	public void insertEigenschaftenByPartnerprofil(Vector<Eigenschaft> eigenschaften, int partnerprofilId)throws IllegalArgumentException{
+		Partnerprofil partner = findById(partnerprofilId);	
+		
+		for(Eigenschaft e : eigenschaften){
+			insertEigenschaft(e, partner);
+		}
+	}
+	
 	public Eigenschaft updateEigenschaft(Eigenschaft e) throws IllegalArgumentException{
 		return this.eigenschaftMapper.updateEigenschaft(e);
 	}
@@ -339,12 +375,19 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		eigenschaftMapper.deleteEigenschaft(e);
 	}
 
+	public void deleteAllEigenschaftenOfOrganisationseinheit(Organisationseinheit orga)throws IllegalArgumentException{
+		Partnerprofil partnerprofil = new Partnerprofil();
+		partnerprofil = getPartnerprofilOfOrganisationseinheit(orga);
+		deleteAllEigenschaftOfPartnerprofil(partnerprofil.getPartnerprofilId());
+	}
 	
-	public void deleteAllEigenschaftOfPartnerprofil(Partnerprofil p)throws IllegalArgumentException{
+	public void deleteAllEigenschaftOfPartnerprofil(int partnerprofilId)throws IllegalArgumentException{
+		Partnerprofil p = findById(partnerprofilId);
 		eigenschaftMapper.deleteAllEigenschaftOfPartnerprofil(p);
 	}
 
-	public Vector<Eigenschaft> selectAllEigenschaftOfPartnerprofil(Partnerprofil p)throws IllegalArgumentException{
+	public Vector<Eigenschaft> getAllEigenschaftenByPartnerprofilId(int partnerprofilId)throws IllegalArgumentException{
+		Partnerprofil p = findById(partnerprofilId);
 		return this.eigenschaftMapper.findByPartnerprofil(p);
 	}
 	
@@ -364,7 +407,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	
 	public Projektmarktplatz createProjektmarktplatz(Projektmarktplatz p, LoginInfo login)
 			throws IllegalArgumentException {
-		Organisationseinheit o = getOrganisationseinheitByUser(login);
+		Organisationseinheit o = new Organisationseinheit();
+		o = getOrganisationseinheitByUser(login);
 		p.setOrganisationseinheitId(o.getOrganisationseinheitId());
 		return this.projektmarktplatzMapper.insert(p);
  
@@ -383,8 +427,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	public void delete(Projektmarktplatz p) throws IllegalArgumentException {
-		System.out.println("deletProjektmarktplatz"); 
-		projektmarktplatzMapper.delete(p);
+		System.out.println("deleteProjektmarktplatz"); 
+		
 		
 		//Zugehörige Projekte löschen
 				Vector<Projekt> pv = new Vector<Projekt>();
@@ -394,6 +438,9 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 						this.delete(projekt);
 					}
 				}
+				
+		//Projektmarktplatz löschen
+		this.projektmarktplatzMapper.delete(p);
 	}	
 
 	/*
@@ -411,9 +458,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
-	public Projekt createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o)
+	public Projekt createProjekt(Projekt p, Projektmarktplatz pm, LoginInfo login)
 			throws IllegalArgumentException {
-		
+		Organisationseinheit o = new Organisationseinheit();
+		o = getOrganisationseinheitByUser(login);
 		return this.projektMapper.insert(p, pm, o);
 	}
 	
@@ -489,15 +537,14 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 	
-	public Ausschreibung createAusschreibung(Partnerprofil pa, Projekt pr)throws IllegalArgumentException{
-		Ausschreibung a = new Ausschreibung();
-		a.setProjektId(pr.getProjektId());
+	public Ausschreibung createAusschreibung(Ausschreibung a, int partnerprofilId, Projekt pr)throws IllegalArgumentException{
+		Partnerprofil p=findById(partnerprofilId);
 		
-		return this.ausschreibungMapper.insertAusschreibung(a, pa, pr);
+		return this.ausschreibungMapper.insertAusschreibung(a, p, pr);
 	}
 	
-	public void updateAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {
-		ausschreibungMapper.updateAusschreibung(ausschreibung);
+	public Ausschreibung updateAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {
+		return this.ausschreibungMapper.updateAusschreibung(ausschreibung);
 	}
 	
 	public void deleteAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {
@@ -568,14 +615,13 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return this.bewerbungMapper.insert(bewerbung, null, null);
 	}
 
-	public void updateBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext)
+	
+	public void updateStatusOfBewerbung(String status, int bewerbungsID)
 			throws IllegalArgumentException {
-		Bewerbung bewerbung = new Bewerbung();
-		bewerbung.setBewerbungId(bewerbungID);
-		bewerbung.setErstelldatum(erstelldatum);
-		bewerbung.setBewerbungstext(bewerbungstext);
-		this.bewerbungMapper.update(bewerbung);
+		this.bewerbungMapper.updateStatus(status, bewerbungsID);
 	}
+	
+	
 	
 	public void deleteBewerbung(Bewerbung bewerbung) {
 		System.out.println("deleteBewerbung"); 
