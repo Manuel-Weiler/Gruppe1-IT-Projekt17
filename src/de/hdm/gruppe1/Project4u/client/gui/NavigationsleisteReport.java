@@ -15,11 +15,15 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 import de.hdm.gruppe1.Project4u.shared.report.HTMLReportWriter;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleBewerbungenForAusschreibungen;
 
 public class NavigationsleisteReport extends Composite {
+
+	protected static final Organisationseinheit Organisationseinheit = null;
 
 	ReportGeneratorAsync ReportVerwaltung = ClientsideSettings.getReportVerwaltung();
 
@@ -128,7 +132,42 @@ public class NavigationsleisteReport extends Composite {
 
 		initWidget(menuReportPanel);
 	}
+	/*
+ TODO	alleBewerbungenButton.addClickHandler(new ClickHandler() {
 
+		
+		public void onClick(ClickEvent event) {
+
+			ReportVerwaltung.createAlleBewerbungenForAusschreibungen(new AsyncCallback<ReportByAlleBewerbungenForAusschreibungen>() {
+				
+				public void onSuccess(ReportByAlleBewerbungenForAusschreibungen result2) {
+									
+					if(result2 != null){
+					HTMLReportWriter writer = new HTMLReportWriter();
+					writer.process(result2);
+					RootPanel.get("contentR").clear();
+					RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+					}
+				}
+
+				
+				public void onFailure(Throwable caught) {
+					DialogBox dBox = new DialogBox();
+
+					Label label = new Label(caught.getMessage());
+					dBox.add(label);
+					dBox.center();
+					dBox.setAutoHideEnabled(true);
+					dBox.show();
+
+				}
+			});
+		}
+	});
+
+	initWidget(menuReportPanel);
+}
+*/
 	public void homeButtonClick() {
 		homeButton.click();
 	}
