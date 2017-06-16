@@ -107,7 +107,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
       	}
     		//Partnerprofil löschen
     		this.partnerprofilMapper.deletePartnerprofil(p);
-      	}
+    }
 	
 	public Partnerprofil findById(int i) throws IllegalArgumentException {
 		return this.partnerprofilMapper.findById(i);
@@ -163,7 +163,9 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	
 	
 	public void deleteOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
-		 System.out.println("deleteOrga");    
+		 System.out.println("deleteOrga");
+		 
+		
       	
 		//Zugehörige Beteiligungen löschen
 		Vector<Beteiligung> vbe = new Vector<Beteiligung>();	
@@ -202,6 +204,9 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
       		}
       	}	
       	
+      	//Zugehörigkeit zu Teams oder Unternehmen löschen
+      	this.organisationseinheitMapper.deleteVerbindungenOfOrganisationseinheit(organisationseinheit);
+      	
         //Organisationseinheit löschen
       	this.organisationseinheitMapper.delete(organisationseinheit);
 		
@@ -211,6 +216,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
   				this.deletePartnerprofil(partnerprofil);
   			}      	
       	}
+	
+	public void deleteVerbindungenOfOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
+		this.organisationseinheitMapper.deleteVerbindungenOfOrganisationseinheit(organisationseinheit);
+	}
 	
 
 	public Organisationseinheit getOrganisationseinheitById(int id) throws IllegalArgumentException {
@@ -418,8 +427,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	public void delete(Projektmarktplatz p) throws IllegalArgumentException {
-		System.out.println("deletProjektmarktplatz"); 
-		projektmarktplatzMapper.delete(p);
+		System.out.println("deleteProjektmarktplatz"); 
+		
 		
 		//Zugehörige Projekte löschen
 				Vector<Projekt> pv = new Vector<Projekt>();
@@ -429,6 +438,9 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 						this.delete(projekt);
 					}
 				}
+				
+		//Projektmarktplatz löschen
+		this.projektmarktplatzMapper.delete(p);
 	}	
 
 	/*
