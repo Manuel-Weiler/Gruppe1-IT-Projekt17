@@ -86,18 +86,7 @@ public class PartnerprofilWidget extends Composite {
 		Label neuProfil = new Label("Neues Profil anlegen");
 		RootPanel.get("contentHeader").add(neuProfil);
 
-		// Zunächst wird ein neues Partnerprofil in der DB angelegt.
-		Project4uVerwaltung.createPartnerprofil(new AsyncCallback<Partnerprofil>() {
-
-			@Override
-			public void onSuccess(Partnerprofil result) {
-				neuesProfil = result;
-			}
-
-			public void onFailure(Throwable caught) {
-				Window.alert(caught.getMessage());
-			}
-		});
+		
 
 		vPanel.add(add);
 
@@ -139,118 +128,142 @@ public class PartnerprofilWidget extends Composite {
 				if (mail.getValue().isEmpty() || orgaNam.getValue().isEmpty()) {
 					Window.alert("Bitte mindestens das Feld Name ausfüllen");
 				} else {
-					speichern.setEnabled(false);
-					Organisationseinheit neuOrga = new Organisationseinheit();
-					neuOrga.setGoogleId(mail.getValue());
-					neuOrga.setName(orgaNam.getValue());
-					neuOrga.setTyp(typbox.getSelectedValue());
-					neuOrga.setPartnerprofilId(neuesProfil.getPartnerprofilId());
-
-					// Beim Klick auf Speichern wird ein neuen
-					// Organisationseinheiten-Objekt angelegt und in der DB
-					// gespeichert.
-					Project4uVerwaltung.createOrganisationseinheit(neuOrga, new AsyncCallback<Organisationseinheit>() {
+					
+					
+					// Zunächst wird ein neues Partnerprofil in der DB angelegt.
+					Project4uVerwaltung.createPartnerprofil(new AsyncCallback<Partnerprofil>() {
 
 						@Override
-						public void onSuccess(Organisationseinheit result) {
-							neueOrga = result;
+						public void onSuccess(Partnerprofil result) {
+							neuesProfil = result;
+							
+							
+							speichern.setEnabled(false);
+							Organisationseinheit neuOrga = new Organisationseinheit();
+							neuOrga.setGoogleId(mail.getValue());
+							neuOrga.setName(orgaNam.getValue());
+							neuOrga.setTyp(typbox.getSelectedValue());
+							neuOrga.setPartnerprofilId(neuesProfil.getPartnerprofilId());
 
-							/*
-							 * Bei Erfolg des Abspeicherns in der DB werden
-							 * einzeln nacheinander die Beispielseigenschaften
-							 * in der DB gespeichert.
-							 */
-							if (!berufsbezeichnungBox.getValue().isEmpty()) {
-								Eigenschaft eins = new Eigenschaft();
-								eins.setName("Berufsbezeichnung");
-								eins.setWert(berufsbezeichnungBox.getValue());
-								Project4uVerwaltung.insertEigenschaft(eins, neuesProfil,
-										new AsyncCallback<Eigenschaft>() {
-									public void onSuccess(Eigenschaft result) {
+							
+							
+							// Beim Klick auf Speichern wird ein neuen
+							// Organisationseinheiten-Objekt angelegt und in der DB
+							// gespeichert.
+							Project4uVerwaltung.createOrganisationseinheit(neuOrga, new AsyncCallback<Organisationseinheit>() {
 
-										if (!berufserfahrungBox.getValue().isEmpty()) {
-											Eigenschaft zwei = new Eigenschaft();
-											zwei.setName("Berufserfahrung");
-											zwei.setWert(berufserfahrungBox.getValue());
-											Project4uVerwaltung.insertEigenschaft(zwei, neuesProfil,
-													new AsyncCallback<Eigenschaft>() {
-												public void onSuccess(Eigenschaft result) {
+								@Override
+								public void onSuccess(Organisationseinheit result) {
+									neueOrga = result;
 
-													if (!abschlussBox.getValue().isEmpty()) {
-														Eigenschaft drei = new Eigenschaft();
-														drei.setName("Abschluss");
-														drei.setWert(abschlussBox.getValue());
-														Project4uVerwaltung.insertEigenschaft(drei, neuesProfil,
-																new AsyncCallback<Eigenschaft>() {
-															public void onSuccess(Eigenschaft result) {
+									/*
+									 * Bei Erfolg des Abspeicherns in der DB werden
+									 * einzeln nacheinander die Beispielseigenschaften
+									 * in der DB gespeichert.
+									 */
+									if (!berufsbezeichnungBox.getValue().isEmpty()) {
+										Eigenschaft eins = new Eigenschaft();
+										eins.setName("Berufsbezeichnung");
+										eins.setWert(berufsbezeichnungBox.getValue());
+										Project4uVerwaltung.insertEigenschaft(eins, neuesProfil,
+												new AsyncCallback<Eigenschaft>() {
+											public void onSuccess(Eigenschaft result) {
 
-																if (!programSpracheBox.getValue().isEmpty()) {
-																	Eigenschaft vier = new Eigenschaft();
-																	vier.setName("Programmiersprache");
-																	vier.setWert(programSpracheBox.getValue());
-																	Project4uVerwaltung.insertEigenschaft(vier,
-																			neuesProfil,
-																			new AsyncCallback<Eigenschaft>() {
-																		public void onSuccess(Eigenschaft result) {
+												if (!berufserfahrungBox.getValue().isEmpty()) {
+													Eigenschaft zwei = new Eigenschaft();
+													zwei.setName("Berufserfahrung");
+													zwei.setWert(berufserfahrungBox.getValue());
+													Project4uVerwaltung.insertEigenschaft(zwei, neuesProfil,
+															new AsyncCallback<Eigenschaft>() {
+														public void onSuccess(Eigenschaft result) {
 
-																			/*
-																			 * Zuletzt
-																			 * wird
-																			 * das
-																			 * PartnerprofilWidget
-																			 * neu
-																			 * erzeugt,
-																			 * und
-																			 * zwar
-																			 * mit
-																			 * dem
-																			 * Konstruktor
-																			 * für
-																			 * bereits
-																			 * bestehende
-																			 * Organisationseinheiten.
-																			 */
-																			Project4u.nt.setButtonsEnabled();
-																			RootPanel.get("content").clear();
-																			RootPanel.get("content").add(
-																					new PartnerprofilWidget(neueOrga));
+															if (!abschlussBox.getValue().isEmpty()) {
+																Eigenschaft drei = new Eigenschaft();
+																drei.setName("Abschluss");
+																drei.setWert(abschlussBox.getValue());
+																Project4uVerwaltung.insertEigenschaft(drei, neuesProfil,
+																		new AsyncCallback<Eigenschaft>() {
+																	public void onSuccess(Eigenschaft result) {
 
+																		if (!programSpracheBox.getValue().isEmpty()) {
+																			Eigenschaft vier = new Eigenschaft();
+																			vier.setName("Programmiersprache");
+																			vier.setWert(programSpracheBox.getValue());
+																			Project4uVerwaltung.insertEigenschaft(vier,
+																					neuesProfil,
+																					new AsyncCallback<Eigenschaft>() {
+																				public void onSuccess(Eigenschaft result) {
+
+																					/*
+																					 * Zuletzt
+																					 * wird
+																					 * das
+																					 * PartnerprofilWidget
+																					 * neu
+																					 * erzeugt,
+																					 * und
+																					 * zwar
+																					 * mit
+																					 * dem
+																					 * Konstruktor
+																					 * für
+																					 * bereits
+																					 * bestehende
+																					 * Organisationseinheiten.
+																					 */
+																					Project4u.nt.setButtonsEnabled();
+																					RootPanel.get("content").clear();
+																					RootPanel.get("content").add(
+																							new PartnerprofilWidget(neueOrga));
+
+																				}
+
+																				public void onFailure(Throwable caught) {
+																					Window.alert(caught.getMessage());
+																				}
+																			});
 																		}
 
-																		public void onFailure(Throwable caught) {
-																			Window.alert(caught.getMessage());
-																		}
-																	});
-																}
+																	}
 
+																	public void onFailure(Throwable caught) {
+																		Window.alert(caught.getMessage());
+																	}
+																});
 															}
+														}
 
-															public void onFailure(Throwable caught) {
-																Window.alert(caught.getMessage());
-															}
-														});
-													}
+														public void onFailure(Throwable caught) {
+															Window.alert(caught.getMessage());
+														}
+													});
 												}
+											}
 
-												public void onFailure(Throwable caught) {
-													Window.alert(caught.getMessage());
-												}
-											});
-										}
+											public void onFailure(Throwable caught) {
+												Window.alert(caught.getMessage());
+											}
+										});
 									}
 
-									public void onFailure(Throwable caught) {
-										Window.alert(caught.getMessage());
-									}
-								});
-							}
+								}
 
+								public void onFailure(Throwable caught) {
+									Window.alert(caught.getMessage());
+								}
+							});
+							
+							
+							
 						}
 
 						public void onFailure(Throwable caught) {
 							Window.alert(caught.getMessage());
 						}
 					});
+					
+					
+					
 				}
 
 			}
@@ -258,28 +271,7 @@ public class PartnerprofilWidget extends Composite {
 
 	}
 
-	/**
-	 * Dieser Konstruktor findet Anwendung, wenn das Partnerprofil einer
-	 * Ausschreibung angezeigt, angelegt oder verändert werden soll.
-	 * 
-	 * @param a
-	 */
-	public PartnerprofilWidget(Ausschreibung a) {
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	}
+	
 
 	/**
 	 * Dieser Konstruktor des PartnerprofilWidgets findet Anwendung wenn das
@@ -515,26 +507,7 @@ public class PartnerprofilWidget extends Composite {
 		initWidget(vp);
 	}
 
-	/**
-	 * Die Methode fügt unterhalb des Benutzers die Tabelle der Teams und
-	 * Unternehmen hinzu (OrganisationseinheitWidget).
-	 * 
-	 * @author Tobias
-	 *//*
-		 * public void initTeamUnternehmenTable() { teamUnternehmen.clear();
-		 * Project4uVerwaltung
-		 * .getAllOrganisationseinheitenOfTypTeamUnternehmen(new
-		 * AsyncCallback<Vector<Organisationseinheit>>() {
-		 * 
-		 * @Override public void onSuccess(Vector<Organisationseinheit> result)
-		 * { teamUnternehmen.add(new OrganisationseinheitWidget(result));
-		 * vp.add(teamUnternehmen);
-		 * 
-		 * }
-		 * 
-		 * public void onFailure(Throwable caught) {
-		 * Window.alert(caught.getMessage()); } }); }
-		 */
+	
 
 	/**
 	 * Die Methode stellt die Eigenschaftsobjekte eines Vector in einer
