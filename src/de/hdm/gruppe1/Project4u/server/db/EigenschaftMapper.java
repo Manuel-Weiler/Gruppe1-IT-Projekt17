@@ -154,8 +154,7 @@ public class EigenschaftMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM eigenschaft WHERE partnerprofil_id='"
-					+ p.getPartnerprofilId() + "'");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Eigenschaft WHERE partnerprofil_id=" + p.getPartnerprofilId());
 			
 			while (rs.next()){
 				Eigenschaft eigenschaft = new Eigenschaft();

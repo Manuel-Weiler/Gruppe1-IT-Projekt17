@@ -119,7 +119,7 @@ public class PartnerprofilMapper {
 
 			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM partnerprofil WHERE id=" + i);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Partnerprofil WHERE id='" + i + "'");
 
 
 			if (rs.next()) {
@@ -177,7 +177,7 @@ public class PartnerprofilMapper {
 		try {
 			Statement stmt = con.createStatement();
 			
-			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE id=" + p.getPartnerprofilId());
+			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE id='" + p.getPartnerprofilId()+"'");
 
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -107,15 +107,20 @@ public class NavigationsleisteWidget extends Composite {
 					
 					@Override
 					public void onSuccess(Organisationseinheit result) {
-						Label erfolgreich1 = new Label("Erfolgreich1");
+						RootPanel.get("content").clear();
+						Label erfolgreich1 = new Label("Name: " 
+														+ result.getName() + " ID: "
+														+ result.getOrganisationseinheitId() + " Typ: "
+														+ result.getTyp() + " Partnerprofil ID: "
+														+ result.getPartnerprofilId());
 						RootPanel.get("content").add(erfolgreich1);
 						
 						Project4uVerwaltung.deleteOrganisationseinheit(result, new AsyncCallback<Void>() {
 							
 							@Override
 							public void onSuccess(Void result) {
-								Label orgaLoeschen = new Label("Erfolgreich2");
-								RootPanel.get("content").clear();
+								Label orgaLoeschen = new Label("Erfolgreich geloescht");
+								//RootPanel.get("content").clear();
 								RootPanel.get("content").add(orgaLoeschen);
 								
 							}
@@ -191,7 +196,7 @@ public class NavigationsleisteWidget extends Composite {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO Logout hinzufügen
+				// TODO Logout hinzufï¿½gen
 
 			}
 		});
