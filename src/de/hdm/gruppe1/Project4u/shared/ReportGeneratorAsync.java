@@ -23,8 +23,7 @@ public interface ReportGeneratorAsync {
 	void createAusschreibungenForPartnerprofil(Ausschreibung au,
 			AsyncCallback<ReportByAusschreibungenForPartnerprofil> callback);
 
-	void createAlleBewerbungenForAusschreibungen(Organisationseinheit o,
-			AsyncCallback<ReportByAlleBewerbungenForAusschreibungen> callback);
+	void createAlleBewerbungenForAusschreibungen(Organisationseinheit o, AsyncCallback<ReportByAlleBewerbungenForAusschreibungen> callback);
 
 	void testMethode(AsyncCallback<String> callback);
 
