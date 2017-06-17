@@ -6,6 +6,8 @@ package de.hdm.gruppe1.Project4u.client.gui;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.Box;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -16,6 +18,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -133,8 +136,8 @@ public class AusschreibungsprofilWidget {
 		
 		heading2.setVisible(false);
 		bewerbungsfrist.setWidth("180px");
-		ausschreibungstext.setWidth("180px");
-		ausschreibungstext.setHeight("150px");
+		ausschreibungstext.setWidth("300px");
+		ausschreibungstext.setHeight("200px");
 		
 		bewerben.addClickHandler(new bewerbenClickhandler());
 		update.addClickHandler(new updateSpeichernButtonClickHandler());
@@ -419,8 +422,18 @@ public class AusschreibungsprofilWidget {
 		@Override
 		public void onClick(ClickEvent event) {
 			BewerbungWidget bw = new BewerbungWidget(localAus);
-			bw.show();
 			
+			db.hide();
+			db.setPopupPositionAndShow(new PositionCallback() {
+				
+				@Override
+				public void setPosition(int offsetWidth, int offsetHeight) {
+					db.setPopupPosition((Window.getClientWidth()/2)-db.getOffsetWidth(), 
+							Window.getClientHeight()/2);
+					
+				}
+			});
+			bw.show();
 		}
 		
 	}

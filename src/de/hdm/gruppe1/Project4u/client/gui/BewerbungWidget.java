@@ -9,6 +9,7 @@ import java.util.Vector;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -19,6 +20,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
@@ -73,11 +75,13 @@ public class BewerbungWidget {
 	
 		bewerbendesProfil.setVisibleItemCount(1);
 		erstelldatum.setEnabled(false);
+		ausschreibungsname.setEnabled(false);
 		freitext.setWidth("300px");
-		freitext.setHeight("200px");;
+		freitext.setHeight("200px");
 		erstelldatum.setFormat(new DateBox.DefaultFormat(dateFormat));
 		erstelldatum.setValue(new Date());
 		ausschreibungsname.setValue(aus.getBezeichnung());
+		
 		
 		
 		cancel.addClickHandler(new ClickHandler() {
@@ -105,14 +109,15 @@ public class BewerbungWidget {
 		public void onSuccess(Vector<Organisationseinheit> result) {
 			orgas=result;
 			for (Organisationseinheit org : result){
-				bewerbendesProfil.addItem(org.getName()+" - "+org.getGoogleId());
+				bewerbendesProfil.addItem(org.getName()+" - "+org.getTyp()+" - "+org.getGoogleId());
 			}
 			
 			Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(), new AsyncCallback<Organisationseinheit>() {
 				
 				public void onSuccess(Organisationseinheit result) {
 					user = result;
-					bewerbendesProfil.addItem(result.getName()+" - "+result.getGoogleId());
+					orgas.addElement(result);
+					bewerbendesProfil.addItem(result.getName()+" - "+result.getTyp()+" - "+result.getGoogleId());
 				}
 				public void onFailure(Throwable caught) {
 				}
@@ -123,7 +128,15 @@ public class BewerbungWidget {
 	
 	public void show(){
 		box.center();
-		box.show();
+		box.setPopupPositionAndShow(new PositionCallback() {
+			
+			@Override
+			public void setPosition(int offsetWidth, int offsetHeight) {
+				box.setPopupPosition(Window.getClientWidth()/2, 
+						Window.getClientHeight()/2);
+				
+			}
+		});
 	}
 	
 	
