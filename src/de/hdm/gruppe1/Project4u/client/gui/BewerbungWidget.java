@@ -3,8 +3,12 @@
  */
 package de.hdm.gruppe1.Project4u.client.gui;
 
+import java.util.Date;
 import java.util.Vector;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -18,6 +22,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
+import de.hdm.gruppe1.Project4u.server.db.DBConnection;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
@@ -28,12 +33,14 @@ import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
  */
 public class BewerbungWidget {
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
+	Vector<Organisationseinheit> orgas= new Vector<Organisationseinheit>(); 
+	Organisationseinheit user = new Organisationseinheit();
 	
 	DialogBox box = new DialogBox();
 	VerticalPanel vp = new VerticalPanel();
 	FlexTable flex = new FlexTable();
 
-	
+	DateTimeFormat dateFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
 	HTML hinweis = new HTML(
 			"<p>Bitte wählen Sie das Profil mit dem Sie sich bewerben <br>Das Profil wird dem Projektleiter übermittel, passen Sie es ggf. an!</p>");
 
@@ -54,8 +61,35 @@ public class BewerbungWidget {
 		
 		Project4uVerwaltung.getLinkedTeamAndUnternehmenOfOrganisationseinheit(ClientsideSettings.getAktuellerUser(), new getOrganisationseinheitenCallback());
 		
+		flex.setWidget(0, 1, bewerbendesProfil);
+		flex.setWidget(1, 0, ausName);
+		flex.setWidget(1, 1, ausschreibungsname);
+		flex.setWidget(2, 0, datum);
+		flex.setWidget(2, 1, erstelldatum);
+		flex.setWidget(3, 0, text);
+		flex.setWidget(3, 1, freitext);
+		flex.setWidget(4, 0, cancel);
+		flex.setWidget(4, 1, save);
+	
+		bewerbendesProfil.setVisibleItemCount(1);
+		erstelldatum.setEnabled(false);
+		freitext.setWidth("300px");
+		freitext.setHeight("200px");;
+		erstelldatum.setFormat(new DateBox.DefaultFormat(dateFormat));
+		erstelldatum.setValue(new Date());
+		ausschreibungsname.setValue(aus.getBezeichnung());
 		
 		
+		cancel.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				box.hide();
+			}
+		});
+		
+		vp.add(hinweis);
+		vp.add(flex);
+		
+		box.add(vp);
 	}
 	
 	
@@ -69,12 +103,31 @@ public class BewerbungWidget {
 		
 		@Override
 		public void onSuccess(Vector<Organisationseinheit> result) {
-			// TODO Auto-generated method stub
+			orgas=result;
+			for (Organisationseinheit org : result){
+				bewerbendesProfil.addItem(org.getName()+" - "+org.getGoogleId());
+			}
 			
-			
-		}
-		
+			Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(), new AsyncCallback<Organisationseinheit>() {
+				
+				public void onSuccess(Organisationseinheit result) {
+					user = result;
+					bewerbendesProfil.addItem(result.getName()+" - "+result.getGoogleId());
+				}
+				public void onFailure(Throwable caught) {
+				}
+			});}}
+	
+	
+	
+	
+	public void show(){
+		box.center();
+		box.show();
 	}
+	
+	
+	
 	
 	
 }

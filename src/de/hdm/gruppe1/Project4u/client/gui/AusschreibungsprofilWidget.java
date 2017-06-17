@@ -136,6 +136,7 @@ public class AusschreibungsprofilWidget {
 		ausschreibungstext.setWidth("180px");
 		ausschreibungstext.setHeight("150px");
 		
+		bewerben.addClickHandler(new bewerbenClickhandler());
 		update.addClickHandler(new updateSpeichernButtonClickHandler());
 		savenew.addClickHandler(new neueAusschreibungSpeichernClickhandler());
 		addEig.addClickHandler(new neueEigenschaftClickHandler());
@@ -409,6 +410,20 @@ public class AusschreibungsprofilWidget {
 	}
 	
 	
+	
+	
+	
+	private class bewerbenClickhandler implements ClickHandler{
+
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			BewerbungWidget bw = new BewerbungWidget(localAus);
+			bw.show();
+			
+		}
+		
+	}
 	
 	
 	

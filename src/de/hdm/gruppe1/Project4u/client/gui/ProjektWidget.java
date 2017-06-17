@@ -111,7 +111,8 @@ public class ProjektWidget extends Composite{
 		final TextBox pLeiter = new TextBox();	
 		pLeiter.setValue(org.getName()+" - "+ClientsideSettings.getAktuellerUser().getEmailAddress());
 		pLeiter.setEnabled(false);
-		pLeiter.setTitle("Wenn Sie nicht der Projektleiter sind, loggen sic");
+		pLeiter.setTitle("Wenn Sie nicht der Projektleiter sind, loggen Sie sich mit dem entsprechenden Account ein");
+		pLeiter.setWidth("300px");
 		vp.add(pLeiter);
 		
 		
