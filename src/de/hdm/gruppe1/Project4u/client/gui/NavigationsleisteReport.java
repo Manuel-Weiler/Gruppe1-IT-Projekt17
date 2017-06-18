@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.server.db.OrganisationseinheitMapper;
+import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.report.HTMLReportWriter;
@@ -24,6 +25,9 @@ import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerp
 public class NavigationsleisteReport extends Composite {
 
 	ReportGeneratorAsync ReportVerwaltung = ClientsideSettings.getReportVerwaltung();
+	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
+
+	public Organisationseinheit aktuellerNutzer = null;
 
 	// Men� f�r den Reportgenerator
 
@@ -33,6 +37,8 @@ public class NavigationsleisteReport extends Composite {
 	Button alleAusschreibungenButton = new Button("Alle Ausschreibungen");
 	Button ausschreibungenForPartnerprofilButton = new Button("Ausschreibungen die zu dir passen");
 	Button testButton = new Button("Test");
+
+	// Methode um den aktuellen Nutzer zu bekommen
 
 	public NavigationsleisteReport() {
 
@@ -65,12 +71,10 @@ public class NavigationsleisteReport extends Composite {
 		// Testmethode
 		testButton.addClickHandler(new ClickHandler() {
 
-			
 			public void onClick(ClickEvent event) {
 
 				ReportVerwaltung.testMethode(new AsyncCallback<String>() {
 
-					
 					public void onSuccess(String result) {
 						DialogBox dBox = new DialogBox();
 
@@ -81,7 +85,6 @@ public class NavigationsleisteReport extends Composite {
 						dBox.show();
 					}
 
-					
 					public void onFailure(Throwable caught) {
 						DialogBox dBox = new DialogBox();
 
@@ -97,23 +100,20 @@ public class NavigationsleisteReport extends Composite {
 
 		alleAusschreibungenButton.addClickHandler(new ClickHandler() {
 
-			
 			public void onClick(ClickEvent event) {
 
 				ReportVerwaltung.createAlleAusschreibungenReport(new AsyncCallback<ReportByAlleAusschreibungen>() {
 
-					
 					public void onSuccess(ReportByAlleAusschreibungen result1) {
-										
-						if(result1 != null){
-						HTMLReportWriter writer = new HTMLReportWriter();
-						writer.process(result1);
-						RootPanel.get("contentR").clear();
-						RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+
+						if (result1 != null) {
+							HTMLReportWriter writer = new HTMLReportWriter();
+							writer.process(result1);
+							RootPanel.get("contentR").clear();
+							RootPanel.get("contentR").add(new HTML(writer.getReportText()));
 						}
 					}
 
-					
 					public void onFailure(Throwable caught) {
 						DialogBox dBox = new DialogBox();
 
@@ -128,36 +128,62 @@ public class NavigationsleisteReport extends Composite {
 			}
 		});
 
-		ausschreibungenForPartnerprofilButton.addClickHandler(new ClickHandler(){
-			
-			public void onClick(ClickEvent event){
+		ausschreibungenForPartnerprofilButton.addClickHandler(new ClickHandler() {
 
-				ReportVerwaltung.createAusschreibungenForPartnerprofil(ClientsideSettings.getAktuellerUser(), new AsyncCallback<ReportByAusschreibungenForPartnerprofil>(){
-					public void onSuccess(ReportByAusschreibungenForPartnerprofil result2){
-						
-						if(result2 != null){
-						HTMLReportWriter writer = new HTMLReportWriter();
-						writer.process(result2);
-						RootPanel.get("contentR").clear();
-						RootPanel.get("contentR").add(new HTML(writer.getReportText()));
-						}
-					}
-					
-					public void onFailure(Throwable caught) {
-						DialogBox dBox = new DialogBox();
+			public void onClick(ClickEvent event) {
 
-						Label label = new Label(caught.getMessage());
-						dBox.add(label);
-						dBox.center();
-						dBox.setAutoHideEnabled(true);
-						dBox.show();
+				Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
+						new AsyncCallback<Organisationseinheit>() {
 
-					}
+							public void onSuccess(Organisationseinheit result) {
+								// if (result != null) {
+								aktuellerNutzer = result;
 
-				});
+								ReportVerwaltung.createAusschreibungenForPartnerprofil(aktuellerNutzer,
+										new AsyncCallback<ReportByAusschreibungenForPartnerprofil>() {
+											public void onSuccess(ReportByAusschreibungenForPartnerprofil result2) {
+
+												if (result2 != null) {
+													HTMLReportWriter writer = new HTMLReportWriter();
+													writer.process(result2);
+													RootPanel.get("contentR").clear();
+													RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+												}
+											}
+
+											public void onFailure(Throwable caught) {
+												DialogBox dBox = new DialogBox();
+
+												Label label = new Label(caught.getMessage());
+												dBox.add(label);
+												dBox.center();
+												dBox.setAutoHideEnabled(true);
+												dBox.show();
+
+											}
+
+										});
+
+								// }
+
+							}
+
+							public void onFailure(Throwable caught) {
+								DialogBox dBox = new DialogBox();
+
+								Label label = new Label(caught.getMessage());
+								dBox.add(label);
+								dBox.center();
+								dBox.setAutoHideEnabled(true);
+								dBox.show();
+
+							}
+
+						});
+
 			}
 		});
-		
+
 		initWidget(menuReportPanel);
 	}
 
@@ -165,4 +191,3 @@ public class NavigationsleisteReport extends Composite {
 		homeButton.click();
 	}
 }
-

@@ -25,7 +25,7 @@ public class EigenschaftMapper {
 	 * Der private Konstruktor verhindert, dass eine Instanz der Klasse
 	 * EigenschaftMapper �ber <code>new</code> erzeugt werden kann.
 	 */
-	private EigenschaftMapper() {
+	public EigenschaftMapper() {
 	}
 	
 	

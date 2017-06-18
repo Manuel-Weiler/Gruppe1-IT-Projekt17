@@ -104,4 +104,6 @@ public interface Project4uAdministrationAsync {
 	void getLinkedTeamAndUnternehmenOfOrganisationseinheit(LoginInfo login,
 			AsyncCallback<Vector<Organisationseinheit>> callback);
 
+	void getAusschreibungenForPartnerprofil(Organisationseinheit orga, AsyncCallback<Vector<Ausschreibung>> callback);
+
 }
