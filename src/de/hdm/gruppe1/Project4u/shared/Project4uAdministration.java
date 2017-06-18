@@ -69,12 +69,12 @@ public interface Project4uAdministration extends RemoteService{
 	public Vector<Organisationseinheit> getLinkedTeamAndUnternehmenOfOrganisationseinheit(LoginInfo login)
 			throws IllegalArgumentException;
 	
-
-	
 	public Vector<Projekt> findByProjektmarktplatz (Projektmarktplatz projektmarktplatz) throws IllegalArgumentException;
 	
-
 	public Vector<Ausschreibung> getAusschreibungenForPartnerprofil(Organisationseinheit orga)
 			throws IllegalArgumentException;
+	
+	public Vector<Bewerbung> getBewerbungForOrganisationseinheit(Organisationseinheit orga) throws IllegalArgumentException;
 
+	public Vector<Organisationseinheit> getAllOrganisationseinheitOfTypPerson()	throws IllegalArgumentException;
 }

@@ -10,6 +10,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
@@ -105,5 +106,9 @@ public interface Project4uAdministrationAsync {
 			AsyncCallback<Vector<Organisationseinheit>> callback);
 
 	void getAusschreibungenForPartnerprofil(Organisationseinheit orga, AsyncCallback<Vector<Ausschreibung>> callback);
+
+	void getBewerbungForOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Vector<Bewerbung>> callback);
+
+	void getAllOrganisationseinheitOfTypPerson(AsyncCallback<Vector<Organisationseinheit>> callback);
 
 }

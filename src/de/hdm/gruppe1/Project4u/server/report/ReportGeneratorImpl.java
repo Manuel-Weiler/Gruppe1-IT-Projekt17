@@ -13,6 +13,9 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.gruppe1.Project4u.shared.report.Column;
 import de.hdm.gruppe1.Project4u.shared.report.CompositeParagraph;
+import de.hdm.gruppe1.Project4u.shared.report.FanIn;
+import de.hdm.gruppe1.Project4u.shared.report.FanInFanOut;
+import de.hdm.gruppe1.Project4u.shared.report.FanOut;
 import de.hdm.gruppe1.Project4u.shared.report.Report;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
@@ -29,6 +32,7 @@ import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.ReportGenerator;
 import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
@@ -225,6 +229,74 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		}
 		return result;
 	}
+	
+	public FanIn createFanInAnalyseReport() throws IllegalArgumentException{
+		
+		if (project4uAdministration == null)
+			return null;
+		
+		FanIn result = new FanIn();
+		
+		result.setTitle("Anzahl der Bewerbungen");
+		
+		Row headline = new Row();
+		headline.addColumn(new Column("ID"));
+		headline.addColumn(new Column("Organisationseinheit"));
+		headline.addColumn(new Column("laufend"));
+		headline.addColumn(new Column("abgelehnt"));
+		headline.addColumn(new Column("angenommen"));
+		
+		result.addRow(headline);
+		
+		Vector<Organisationseinheit> allOrgas = project4uAdministration.getAllOrganisationseinheitOfTypPerson();
+		
+		for(Organisationseinheit orga : allOrgas){
+			Vector<Bewerbung> laufendeBewerbungen = new Vector<Bewerbung>();
+			Vector<Bewerbung> abgelehnteBewerbungen = new Vector<Bewerbung>();
+			Vector<Bewerbung> erfolgreicheBewerbungen = new Vector<Bewerbung>();
+		
+			Vector<Bewerbung> alleBewerbungen = project4uAdministration.getBewerbungForOrganisationseinheit(orga);
+		
+			for(Bewerbung be : alleBewerbungen){
+			
+			//TODO: Status der Bewerbungen abrufen (laufend, abgelehnt, erfolgreich) sobald diese implementiert sind.
+		}
+		}
+		
+		return result;
+	}
+	
+	public FanOut createFanOutAnalyseReport() throws IllegalArgumentException{
+		
+		if (project4uAdministration == null){
+			return null;
+		}
+		
+		FanOut result = new FanOut();
+		
+		result.setTitle("Anzahl der Ausschreibungen");
+		
+		Row headline = new Row();
+		headline.addColumn(new Column("ID"));
+		headline.addColumn(new Column("Organisationseinheit"));
+		headline.addColumn(new Column("belegt"));
+		headline.addColumn(new Column("abgebrochen"));
+		headline.addColumn(new Column("laufend"));
+
+		return result;
+		
+	}
+	
+	public FanInFanOut createFanInFanOutReport() throws IllegalArgumentException{
+		
+		if (project4uAdministration == null)
+			return null;
+		
+		FanInFanOut result = new FanInFanOut();
+		
+		return result;
+	}
+	
 
 	
 

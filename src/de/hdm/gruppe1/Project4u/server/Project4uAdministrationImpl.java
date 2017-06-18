@@ -293,6 +293,39 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	}
 
+	public Vector<Organisationseinheit> getAllOrganisationseinheitOfTypPerson() 
+			throws IllegalArgumentException{
+		
+		Vector<Organisationseinheit> orgas = organisationseinheitMapper.findAll();
+		Vector<Organisationseinheit> result = new Vector<Organisationseinheit>();
+		
+		for (Organisationseinheit orga : orgas){
+			if (orga.getTyp().equalsIgnoreCase("Team")){
+				result.add(orga);
+			}
+		}
+		return result;
+		
+	}
+	
+//	public Vector<Organisationseinheit> getAllOrganisationseinheitenOfTypTeamUnternehmen()
+//			throws IllegalArgumentException {
+//		Vector<Organisationseinheit> result = new Vector<Organisationseinheit>();
+//		Vector<Organisationseinheit> orgas = new Vector<Organisationseinheit>();
+//		orgas = organisationseinheitMapper.findAll();
+//
+//		for (Organisationseinheit o : orgas) {
+//			if (o.getTyp().equalsIgnoreCase("Team") || o.getTyp().equalsIgnoreCase("Unternehmen")) {
+//				result.add(o);
+//			}
+//		}
+//		return result;
+//	}
+	
+	
+	
+	
+	
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Ende: Organisationseinheit
@@ -620,6 +653,22 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		this.bewerbungMapper.delete(bewerbung);
 	}
 
+	public Vector<Bewerbung> getBewerbungForOrganisationseinheit(Organisationseinheit orga) throws IllegalArgumentException{
+		
+		Vector<Bewerbung> result =new Vector<>();
+		
+		if(orga != null && this.bewerbungMapper != null){
+			Vector<Bewerbung> bewerbungen = this.bewerbungMapper.findByOrganisationseinheit(orga);
+			
+			if(bewerbungen != null){
+				result.addAll(bewerbungen);
+			}
+		}
+		return result;
+	}
+	 
+	
+	
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Ende: Bewerbung
