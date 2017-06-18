@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.server.db.OrganisationseinheitMapper;
+import de.hdm.gruppe1.Project4u.shared.LoginInfo;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
@@ -27,8 +28,9 @@ public class NavigationsleisteReport extends Composite {
 	ReportGeneratorAsync ReportVerwaltung = ClientsideSettings.getReportVerwaltung();
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 
-	public Organisationseinheit aktuellerNutzer = null;
-
+	public LoginInfo loginInfo = null;
+	//public Organisationseinheit aktuellerNutzer = null;
+	
 	// Men� f�r den Reportgenerator
 
 	VerticalPanel menuReportPanel = new VerticalPanel();
@@ -136,8 +138,9 @@ public class NavigationsleisteReport extends Composite {
 						new AsyncCallback<Organisationseinheit>() {
 
 							public void onSuccess(Organisationseinheit result) {
-								// if (result != null) {
-								aktuellerNutzer = result;
+								//if (result != null) {
+								Organisationseinheit aktuellerNutzer = result;
+								
 
 								ReportVerwaltung.createAusschreibungenForPartnerprofil(aktuellerNutzer,
 										new AsyncCallback<ReportByAusschreibungenForPartnerprofil>() {

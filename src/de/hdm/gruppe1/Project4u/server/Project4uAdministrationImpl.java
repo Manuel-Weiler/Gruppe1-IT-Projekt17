@@ -547,14 +547,14 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		PartnerprofilMapper pm = new PartnerprofilMapper();
 		AusschreibungMapper am = new AusschreibungMapper();
 
-		Partnerprofil p = pm.findById(orga.getPartnerprofilId());
+		//Partnerprofil p = pm.findById(orga.getPartnerprofilId());
 
-		Vector<Eigenschaft> nutzereigenschaften = em.findByPartnerprofil(p);
+		Vector<Eigenschaft> nutzereigenschaften = em.findByPartnerprofil(pm.findById(orga.getPartnerprofilId()));
 		ArrayList<Ausschreibung> alleAusschreibungen = am.findAllAusschreibungen();
 		Vector<Ausschreibung> ausForPartnerprofil = new Vector<Ausschreibung>();
 
 		for (Ausschreibung au : alleAusschreibungen) {
-			Vector<Eigenschaft> ausEig = em.findByPartnerprofil(p);
+			Vector<Eigenschaft> ausEig = em.findByPartnerprofil(pm.findById(au.getPartnerprofilId()));
 
 			// hier speichern wir die Eigenschaften aller Ausschreibungen ab.
 			for (Eigenschaft eig : ausEig) {
@@ -567,7 +567,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 					// hier vergleichen wir die Eigenschaften des aktuellen
 					// Nutzers mit denen der Auschreibungen.
-					if (eigenschaftAus == eigenschaftUnsere) {
+					if (eigenschaftAus.equals(eigenschaftUnsere)) {
 						ausForPartnerprofil.add(au);
 					}
 				}
