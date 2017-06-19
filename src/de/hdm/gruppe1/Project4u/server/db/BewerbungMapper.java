@@ -227,7 +227,7 @@ public class BewerbungMapper {
 	    	
 	    	Statement stmt = con.createStatement();
 	    	ResultSet rs = stmt.executeQuery("SELECT * FROM Bewerbung"+
-	    	" WHERE organisationseinheit_id= '" + o.getOrganisationseinheitId());
+	    	" WHERE organisationseinheit_id=" + o.getOrganisationseinheitId());
 
 			// Für jeden Eintrag im Suchergebnis wird nun ein
 			// Organisationseinheit-Objekt

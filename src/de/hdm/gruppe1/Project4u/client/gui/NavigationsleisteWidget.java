@@ -191,7 +191,7 @@ public class NavigationsleisteWidget extends Composite {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO Logout hinzufügen
+				// TODO Logout hinzufï¿½gen
 
 			}
 		});
@@ -256,6 +256,15 @@ public class NavigationsleisteWidget extends Composite {
 						Window.alert(caught.getMessage());	
 					}
 				});
+			}
+		});
+		
+		aBewerbungen.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				new AusgangsbewerbungenWidget();
+				
 			}
 		});
 

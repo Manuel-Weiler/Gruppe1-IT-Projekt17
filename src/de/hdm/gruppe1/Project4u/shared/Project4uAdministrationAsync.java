@@ -137,4 +137,6 @@ public interface Project4uAdministrationAsync {
 
 	void getAllBewerbungenOfUser(LoginInfo login, AsyncCallback<Vector<Bewerbung>> callback);
 
+	void findByIdAusschreibung(int id, AsyncCallback<Ausschreibung> callback);
+
 }

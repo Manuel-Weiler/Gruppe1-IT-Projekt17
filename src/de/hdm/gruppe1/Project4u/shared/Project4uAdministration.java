@@ -49,6 +49,8 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Vector<Ausschreibung> findAusschreibungbyProjekt (Projekt projekt)throws IllegalArgumentException;
 	
+	public Ausschreibung findByIdAusschreibung (int id) throws IllegalArgumentException;
+	
 	public Eigenschaft updateEigenschaft(Eigenschaft e) throws IllegalArgumentException;
 	
 	public Partnerprofil createPartnerprofil() throws IllegalArgumentException;
