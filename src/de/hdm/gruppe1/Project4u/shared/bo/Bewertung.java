@@ -1,6 +1,6 @@
 package de.hdm.gruppe1.Project4u.shared.bo;
 
-public class Bewertung {
+public class Bewertung extends BusinessObject{
 
 	private int bewertungId = 0;
 	private int bewerbungId = 0;

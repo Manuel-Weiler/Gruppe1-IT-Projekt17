@@ -4,10 +4,11 @@ import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
-import com.ibm.icu.text.SimpleDateFormat;
+
 
 import de.hdm.gruppe1.Project4u.server.db.DBConnection;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
@@ -77,12 +78,12 @@ public class BewerbungMapper {
 	 * @return bewerbung
 	 */
 
-	public Bewerbung insert(Bewerbung bewerbung, Ausschreibung a, Organisationseinheit o) {
+	public Bewerbung insert(Bewerbung bewerbung, int ausschreibungId, int organisationsId) {
 		Connection con = DBConnection.connection();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
-		bewerbung.setErstelldatum(date);
+		
+		
 		try {
 			Statement stmt = con.createStatement();
 
@@ -93,7 +94,7 @@ public class BewerbungMapper {
 				
 				stmt.executeUpdate("INSERT INTO Bewerbung (id, erstelldatum, bewerbungstext, ausschreibung_id, organisationseinheit_id, status)"
 						+ "VALUES ('" + bewerbung.getBewerbungId() + "','" + sdf.format(bewerbung.getErstelldatum()) + "','" 
-						+ bewerbung.getBewerbungstext() + "', '"+a.getAusschreibungId()+"', '"+o.getOrganisationseinheitId()+"', '"+bewerbung.getStatus()+"')");
+						+ bewerbung.getBewerbungstext() + "', '"+ausschreibungId+"', '"+organisationsId+"', '"+bewerbung.getStatus()+"')");
 
 			}
 		} catch (SQLException e) {
@@ -225,9 +226,8 @@ public class BewerbungMapper {
 	    try {
 	    	
 	    	Statement stmt = con.createStatement();
-	    	ResultSet rs = stmt.executeQuery("SELECT id, erstelldatum, bewerbungstext, "
-	    	 		+ "ausschreibung_id, organisationseinheit_id "
-	   	          	+ "FROM Bewerbung WHERE organisationseinheit_id= '" + o.getOrganisationseinheitId() + "' ORDER BY id");
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM Bewerbung"+
+	    	" WHERE organisationseinheit_id= '" + o.getOrganisationseinheitId());
 
 			// Für jeden Eintrag im Suchergebnis wird nun ein
 			// Organisationseinheit-Objekt
@@ -239,6 +239,7 @@ public class BewerbungMapper {
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
 				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
 				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+				b.setStatus(rs.getString("status"));
 
 				// Hinzufügen des neuen Objekts zum Ergebnisvektor
 				result.addElement(b);

@@ -33,16 +33,17 @@ public class ProjektmarktplatzWidget extends Composite {
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 
 	Button deleteProjektmarktplatz = new Button("Projektmarktplatz löschen"); // TODO:
-																				// anlegen
+	Button addProjektmarktplatz = new Button("Projektmarktplatz anlegen");																			// anlegen
 	Button seeProjektmarktplatz = new Button("Projektmarktplatz ansehen");
+	Button changeProjektmarktplatz = new Button("Projektmarktplatz bearbeiten");
 
+	
+	VerticalPanel vPanel = new VerticalPanel();
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch
 	 * einzelne Objekte der in der Liste weiter verarbeitet werden k�nnen.
-	 * ======= Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit
-	 * auch einzelne Objekte der in der Liste weiter verarbeitet werden
-	 * k�nnen.
-	 */
+	 * */
+	 
 	public static final ProvidesKey<Projektmarktplatz> KEY_PROVIDER = new ProvidesKey<Projektmarktplatz>() {
 		public Object getKey(Projektmarktplatz item) {
 			return item == null ? null : item.getProjektmarktplatzId();
@@ -56,11 +57,11 @@ public class ProjektmarktplatzWidget extends Composite {
 		RootPanel.get("contentHeader").clear();
 		RootPanel.get("contentHeader").add(new Label("Alle Projektmarktplätze:"));
 
-		Button addProjektmarktplatz = new Button("Projektmarktplatz anlegen");
+	
 		addProjektmarktplatz.addClickHandler(new addProjektmarktplatzClickHandler());
 
-		final Button changeProjektmarktplatz = new Button("Projektmarktplatz bearbeiten");
-		VerticalPanel vPanel = new VerticalPanel();
+		
+		
 
 		// Abfrage, ob bisher �berhaupt Projektmarktpl�tze existieren.
 		if (projektmarktplaetze.isEmpty()) {

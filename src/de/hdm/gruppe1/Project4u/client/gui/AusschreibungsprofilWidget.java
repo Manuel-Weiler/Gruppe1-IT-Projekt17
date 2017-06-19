@@ -63,7 +63,7 @@ public class AusschreibungsprofilWidget {
 	Button update = new Button("Speichernnnn");
 	Button cancel = new Button("Abbrechen");
 	//TODO: bewerben
-	//TODO: Standardeigenschaften
+	
 	Button change = new Button("Bearbeiten");
 	Button quit = new Button("Ausschreibung abbrechen");
 	Button delete = new Button("Ausschreibung löschen");
@@ -77,8 +77,8 @@ public class AusschreibungsprofilWidget {
 	HTML ausschrtext = new HTML("Ausschreibungstext: ");
 	
 	//TODO: Buttongröße
-	//TODO: Ausschreibung löschen
-	//TODO: Ausschreibung abbrechen
+	//TODO: STATUS
+	//TODO: Ausschreibung beenden
 	TextBox bezeichnung = new TextBox();
 	TextBox projektleiter = new TextBox();
 	DateBox bewerbungsfrist = new DateBox();
@@ -525,6 +525,7 @@ public class AusschreibungsprofilWidget {
 			ProjektWidget PW = new ProjektWidget(pMart);
 			RootPanel.get("content").clear();
 			RootPanel.get("content").add(PW);
+			
 			PW.ausschreibungAnsehen(localProj);
 			
 			db.hide();

@@ -27,6 +27,7 @@ import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.server.db.DBConnection;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 
 /**
@@ -37,6 +38,7 @@ public class BewerbungWidget {
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	Vector<Organisationseinheit> orgas= new Vector<Organisationseinheit>(); 
 	Organisationseinheit user = new Organisationseinheit();
+	Ausschreibung auss = new Ausschreibung();
 	
 	DialogBox box = new DialogBox();
 	VerticalPanel vp = new VerticalPanel();
@@ -60,6 +62,7 @@ public class BewerbungWidget {
 	Button cancel = new Button("Abbrechen");
 	
 	public BewerbungWidget(Ausschreibung aus){
+		this.auss = aus;
 		
 		Project4uVerwaltung.getLinkedTeamAndUnternehmenOfOrganisationseinheit(ClientsideSettings.getAktuellerUser(), new getOrganisationseinheitenCallback());
 		
@@ -83,7 +86,7 @@ public class BewerbungWidget {
 		ausschreibungsname.setValue(aus.getBezeichnung());
 		
 		
-		
+		save.addClickHandler(new saveClickHandler());
 		cancel.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				box.hide();
@@ -93,7 +96,45 @@ public class BewerbungWidget {
 		vp.add(hinweis);
 		vp.add(flex);
 		
-		box.add(vp);
+		
+	}
+	
+	
+	
+	
+	private class saveClickHandler implements ClickHandler{
+
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			
+		
+			
+			Bewerbung neu = new Bewerbung();
+			
+			neu.setOrganisationseinheitId(orgas.get(bewerbendesProfil.getSelectedIndex()).getOrganisationseinheitId());
+			neu.setErstelldatum(erstelldatum.getValue());
+			neu.setAusschreibungId(auss.getAusschreibungId());
+			neu.setBewerbungstext(freitext.getValue());
+			neu.setStatus("laufend");
+			
+			Project4uVerwaltung.createBewerbung(neu, auss.getAusschreibungId(), neu.getOrganisationseinheitId(), new AsyncCallback<Bewerbung>() {
+				
+				@Override
+				public void onSuccess(Bewerbung result) {
+					
+					box.hide();
+					MessageBox.alertWidget("Erfolg!", "Ihre Bewerbung wurde erfolgreich angelegt, </br> verfolgen Sie den Status Ihrer Bewerbung unter 'Ausgangsbewerbungen'");
+					
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+				}
+			});
+			
+		}
+		
 	}
 	
 	
@@ -127,6 +168,7 @@ public class BewerbungWidget {
 	
 	
 	public void show(){
+		box.add(vp);
 		box.center();
 		box.setPopupPositionAndShow(new PositionCallback() {
 			

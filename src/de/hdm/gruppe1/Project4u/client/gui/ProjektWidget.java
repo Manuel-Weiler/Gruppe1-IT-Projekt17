@@ -456,6 +456,182 @@ public class ProjektWidget extends Composite{
 				public void onSuccess(Vector<Organisationseinheit> allProjektleitr) {
 					allProjektleiter=allProjektleitr;
 					
+					
+					
+					
+					
+					//Pr�fung, ob schon Projekte zum Projektmarktplatz existieren
+					if (projekte.isEmpty()){
+						vPanel.clear();
+						Label noProjekt = new Label("Es existiert noch kein Projekt, lege eines an!");
+						vPanel.add(noProjekt);
+						vPanel.add(addProjekt);
+						
+						addProjekt.addClickHandler(new ClickHandler() {
+							
+							@Override
+							public void onClick(ClickEvent event) {
+								Projekt neu = new Projekt();
+								projektChange(neu, projektmarktplatz);
+								
+							}
+						}); 
+						initWidget(vPanel);
+					}
+					else{
+						vPanel.clear();
+						vPanel.add(addProjekt);
+						addProjekt.addClickHandler(new ClickHandler() {
+
+							@Override
+							public void onClick(ClickEvent event) {
+								Projekt neu = new Projekt();
+								projektChange(neu, projektmarktplatz);
+
+							}
+						});
+						
+						CellTable<Projekt> projektTabelle = new CellTable<Projekt>(KEY_PROVIDER);
+						
+						//Die Spalte der Projekt-Tabelle wird erstellt und deren Inhalt definiert.
+						TextColumn<Projekt> nameColumn = new TextColumn<Projekt>() {
+							public String getValue(Projekt object) {
+								
+								return object.getName();
+							}
+						};
+						
+						//TODO:
+						TextColumn<Projekt> projektleiter = new TextColumn<Projekt>() {
+							public String getValue(Projekt object) {
+								String name = null;
+								for (Organisationseinheit org : allProjektleiter){
+									 
+									if (org.getOrganisationseinheitId()==object.getOrganisationseinheitId()){
+										name = org.getName();
+										
+									}
+									
+								}
+								return name;
+								
+								
+							}
+						};
+						
+						DateCell datecell = new DateCell(); 
+						Column<Projekt, Date> startdatum = new Column<Projekt, Date> (datecell){
+
+							@Override
+							public Date getValue(Projekt object) {
+								return object.getStartdatum();
+							}	
+						};
+						
+						DateCell datecell2 = new DateCell(); 
+						Column<Projekt, Date> enddatum = new Column<Projekt, Date> (datecell2){
+
+							@Override
+							public Date getValue(Projekt object) {
+								return object.getEnddatum();
+							}	
+							public String getCellStyleNames (Context context, Projekt object){
+								if (object.getEnddatum().before(new Date())){
+									return "rot";
+								}
+								else {return null;}
+								
+							}
+						};
+						
+						TextColumn<Projekt> description = new TextColumn<Projekt>() {
+							public String getValue(Projekt object) {
+								return object.getBeschreibung();
+							}
+						};
+						
+						
+						
+						
+						/*
+						 * Das SelectionModel wird zur Tabelle der Projekte hinzugef�gt
+						 * und gewährleistet, ähnlich einem ClickHandler, dass beim Klicken auf
+						 * eine Tabellenzeile das jeweilige Objekt zur�ckgegeben wird.
+						 */
+						final SingleSelectionModel<Projekt> selectionModel = new SingleSelectionModel<Projekt>(KEY_PROVIDER);	
+						projektTabelle.setSelectionModel(selectionModel);
+						selectionModel.addSelectionChangeHandler(new Handler() {
+							
+							@Override
+							public void onSelectionChange(SelectionChangeEvent event) {
+								final DialogBox diBox = new DialogBox();
+								VerticalPanel vPanel = new VerticalPanel();
+								Button seeProjekt = new Button("Ausschreibungen zum Projekt ansehen");
+								seeProjekt.addClickHandler(new ClickHandler() {
+									
+									@Override
+									public void onClick(ClickEvent event) {
+										diBox.hide();
+										ausschreibungAnsehen(selectionModel.getSelectedObject()); 
+										
+									}
+								});
+								Button deleteProjekt = new Button("Projekt löschen");
+								Button changeProjekt = new Button("Projekt bearbeiten");
+								changeProjekt.addClickHandler(new ClickHandler() {
+									
+									@Override
+									public void onClick(ClickEvent event) {
+										projektChange(selectionModel.getSelectedObject(), projektmarktplatz);
+										diBox.hide();
+									}
+								});
+								vPanel.add(seeProjekt);
+								vPanel.add(deleteProjekt);
+								vPanel.add(changeProjekt);
+								diBox.add(vPanel);
+								seeProjekt.setPixelSize(270, 30);
+								deleteProjekt.setPixelSize(270, 30);
+								changeProjekt.setPixelSize(270, 30);
+								diBox.setAnimationEnabled(true);
+								diBox.setAutoHideEnabled(true);
+								diBox.center();
+								diBox.show();
+							}});
+						
+						/**
+						 * Hinzuf�gen der Spalten zur Tabelle, in der Reihenfolge von Links nach
+						 * Rechts. Definition der Spaltennamen.
+						 */
+						
+						projektTabelle.addColumn(nameColumn, "Name");
+						projektTabelle.addColumn(projektleiter, "Projektleiter");
+						projektTabelle.addColumn(startdatum, "Startdatum");
+						projektTabelle.addColumn(enddatum, "Enddatum");
+						projektTabelle.addColumn(description, "Beschreibung");
+						
+					
+						
+						//F�llen der Tabelle ab dem Index 0.
+						projektTabelle.setRowData(0,  projekte);
+						
+						//Anpassen des Widgets an die Breite des div-Elements "content"
+						projektTabelle.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
+						
+						
+						vPanel.add(projektTabelle);
+						
+				}
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 				}
 				
 				@Override
@@ -466,166 +642,7 @@ public class ProjektWidget extends Composite{
 			});
 		
 			
-			//Pr�fung, ob schon Projekte zum Projektmarktplatz existieren
-			if (projekte.isEmpty()){
-				vPanel.clear();
-				Label noProjekt = new Label("Es existiert noch kein Projekt, lege eines an!");
-				vPanel.add(noProjekt);
-				vPanel.add(addProjekt);
-				
-				addProjekt.addClickHandler(new ClickHandler() {
-					
-					@Override
-					public void onClick(ClickEvent event) {
-						Projekt neu = new Projekt();
-						projektChange(neu, projektmarktplatz);
-						
-					}
-				}); 
-				initWidget(vPanel);
-			}
-			else{
-				vPanel.clear();
-				vPanel.add(addProjekt);
-				addProjekt.addClickHandler(new ClickHandler() {
-
-					@Override
-					public void onClick(ClickEvent event) {
-						Projekt neu = new Projekt();
-						projektChange(neu, projektmarktplatz);
-
-					}
-				});
-				
-				CellTable<Projekt> projektTabelle = new CellTable<Projekt>(KEY_PROVIDER);
-				
-				//Die Spalte der Projekt-Tabelle wird erstellt und deren Inhalt definiert.
-				TextColumn<Projekt> nameColumn = new TextColumn<Projekt>() {
-					public String getValue(Projekt object) {
-						
-						return object.getName();
-					}
-				};
-				
-				TextColumn<Projekt> projektleiter = new TextColumn<Projekt>() {
-					public String getValue(Projekt object) {
-						Organisationseinheit result = new Organisationseinheit();
-						for (Organisationseinheit org : allProjektleiter){
-							 
-							if (org.getOrganisationseinheitId()==object.getOrganisationseinheitId()){
-								result = org;
-								break;
-							}
-							return result.getName();
-						}
-						return result.getName();
-						
-						
-					}
-				};
-				
-				DateCell datecell = new DateCell(); 
-				Column<Projekt, Date> startdatum = new Column<Projekt, Date> (datecell){
-
-					@Override
-					public Date getValue(Projekt object) {
-						return object.getStartdatum();
-					}	
-				};
-				
-				DateCell datecell2 = new DateCell(); 
-				Column<Projekt, Date> enddatum = new Column<Projekt, Date> (datecell2){
-
-					@Override
-					public Date getValue(Projekt object) {
-						return object.getEnddatum();
-					}	
-					public String getCellStyleNames (Context context, Projekt object){
-						if (object.getEnddatum().before(new Date())){
-							return "rot";
-						}
-						else {return null;}
-						
-					}
-				};
-				
-				TextColumn<Projekt> description = new TextColumn<Projekt>() {
-					public String getValue(Projekt object) {
-						return object.getBeschreibung();
-					}
-				};
-				
-				
-				
-				
-				/*
-				 * Das SelectionModel wird zur Tabelle der Projekte hinzugef�gt
-				 * und gewährleistet, ähnlich einem ClickHandler, dass beim Klicken auf
-				 * eine Tabellenzeile das jeweilige Objekt zur�ckgegeben wird.
-				 */
-				final SingleSelectionModel<Projekt> selectionModel = new SingleSelectionModel<Projekt>(KEY_PROVIDER);	
-				projektTabelle.setSelectionModel(selectionModel);
-				selectionModel.addSelectionChangeHandler(new Handler() {
-					
-					@Override
-					public void onSelectionChange(SelectionChangeEvent event) {
-						final DialogBox diBox = new DialogBox();
-						VerticalPanel vPanel = new VerticalPanel();
-						Button seeProjekt = new Button("Ausschreibungen zum Projekt ansehen");
-						seeProjekt.addClickHandler(new ClickHandler() {
-							
-							@Override
-							public void onClick(ClickEvent event) {
-								diBox.hide();
-								ausschreibungAnsehen(selectionModel.getSelectedObject()); 
-								
-							}
-						});
-						Button deleteProjekt = new Button("Projekt löschen");
-						Button changeProjekt = new Button("Projekt bearbeiten");
-						changeProjekt.addClickHandler(new ClickHandler() {
-							
-							@Override
-							public void onClick(ClickEvent event) {
-								projektChange(selectionModel.getSelectedObject(), projektmarktplatz);
-								diBox.hide();
-							}
-						});
-						vPanel.add(seeProjekt);
-						vPanel.add(deleteProjekt);
-						vPanel.add(changeProjekt);
-						diBox.add(vPanel);
-						seeProjekt.setPixelSize(270, 30);
-						deleteProjekt.setPixelSize(270, 30);
-						changeProjekt.setPixelSize(270, 30);
-						diBox.setAnimationEnabled(true);
-						diBox.setAutoHideEnabled(true);
-						diBox.center();
-						diBox.show();
-					}});
-				
-				/**
-				 * Hinzuf�gen der Spalten zur Tabelle, in der Reihenfolge von Links nach
-				 * Rechts. Definition der Spaltennamen.
-				 */
-				
-				projektTabelle.addColumn(nameColumn, "Name");
-				projektTabelle.addColumn(startdatum, "Startdatum");
-				projektTabelle.addColumn(enddatum, "Enddatum");
-				projektTabelle.addColumn(description, "Beschreibung");
-				
 			
-				
-				//F�llen der Tabelle ab dem Index 0.
-				projektTabelle.setRowData(0,  projekte);
-				
-				//Anpassen des Widgets an die Breite des div-Elements "content"
-				projektTabelle.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
-				
-				
-				vPanel.add(projektTabelle);
-				
-		}
 			
 			
 			

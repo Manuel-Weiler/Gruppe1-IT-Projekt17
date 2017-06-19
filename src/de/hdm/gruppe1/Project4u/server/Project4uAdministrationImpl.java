@@ -620,9 +620,9 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 
-	public Bewerbung createBewerbung(int bewerbungID, Date erstelldatum, String bewerbungstext) throws IllegalArgumentException {
-		Bewerbung bewerbung = new Bewerbung();
-		return this.bewerbungMapper.insert(bewerbung, null, null);
+	public Bewerbung createBewerbung(Bewerbung bewerbung, int ausschreibungId, int organisationsId) throws IllegalArgumentException {
+		
+		return this.bewerbungMapper.insert(bewerbung, ausschreibungId, organisationsId);
 	}
 
 	
@@ -633,7 +633,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	
 	
 	
-	public void deleteBewerbung(Bewerbung bewerbung) {
+	public void deleteBewerbung(Bewerbung bewerbung)throws IllegalArgumentException {
 		System.out.println("deleteBewerbung"); 
 		
 		//Zuerst wird die zugehörige Bewertung gelöscht, sofern diese vorhanden ist.
@@ -644,6 +644,18 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
   		//Die Bewerbung löschen
   		this.bewerbungMapper.delete(bewerbung);
   		}
+	
+	public Vector<Bewerbung> findByOrganisationseinheit(Organisationseinheit o)throws IllegalArgumentException{
+		return this.bewerbungMapper.findByOrganisationseinheit(o);
+	}
+	
+	
+	public Vector<Bewerbung> getAllBewerbungenOfUser(LoginInfo login) throws IllegalArgumentException{
+		Organisationseinheit org = getOrganisationseinheitByUser(login);
+		
+		return findByOrganisationseinheit(org);
+		
+	}
 		
 		
 		

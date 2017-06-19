@@ -2,7 +2,7 @@ package de.hdm.gruppe1.Project4u.shared.bo;
 
 import java.util.Date;
 
-public class Bewerbung{
+public class Bewerbung extends BusinessObject{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -54,18 +54,7 @@ public class Bewerbung{
 		this.bewerbungstext = bewerbungstext;
 	}
 
-	private static Bewerbung bewerbung = null;
 	
-	public Bewerbung(){
-	
-	};
-	
-	public static Bewerbung bewerbung() {
-		if (bewerbung == null){
-			bewerbung = new Bewerbung();
-		}
-		return bewerbung;
-	}
 
 	public String getStatus() {
 		return status;
