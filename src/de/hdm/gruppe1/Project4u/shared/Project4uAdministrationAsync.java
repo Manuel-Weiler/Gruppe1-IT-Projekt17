@@ -111,4 +111,8 @@ public interface Project4uAdministrationAsync {
 
 	void getAllOrganisationseinheitOfTypPerson(AsyncCallback<Vector<Organisationseinheit>> callback);
 
+	void getAllOrganisationseinheiten(AsyncCallback<Vector<Organisationseinheit>> callback);
+
+	void getAusschreibungenForOrga(Organisationseinheit orga, AsyncCallback<Vector<Ausschreibung>> callback);
+
 }

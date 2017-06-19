@@ -248,7 +248,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		result.addRow(headline);
 		
-		Vector<Organisationseinheit> allOrgas = project4uAdministration.getAllOrganisationseinheitOfTypPerson();
+		Vector<Organisationseinheit> allOrgas = project4uAdministration.getAllOrganisationseinheiten();
 		
 		for(Organisationseinheit orga : allOrgas){
 			Vector<Bewerbung> laufendeBewerbungen = new Vector<Bewerbung>();
@@ -283,6 +283,17 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		headline.addColumn(new Column("abgebrochen"));
 		headline.addColumn(new Column("laufend"));
 
+		result.addRow(headline);
+		
+		Vector<Organisationseinheit> allOrgas = project4uAdministration.getAllOrganisationseinheiten();
+
+		for(Organisationseinheit orga : allOrgas){
+			Vector<Ausschreibung> laufendeAusschreibungen = new Vector<Ausschreibung>();
+			Vector<Ausschreibung> abgebrocheneAusschreibungen = new Vector<Ausschreibung>();
+			Vector<Ausschreibung> besetzteAusschreibungen = new Vector<Ausschreibung>();
+			
+			Vector<Ausschreibung> alleAusschreibungen = project4uAdministration.getAusschreibungenForOrga(orga);
+		}
 		return result;
 		
 	}
@@ -293,6 +304,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			return null;
 		
 		FanInFanOut result = new FanInFanOut();
+		
+		result.setTitle("FanIn- FanOut-Analyse");
+		
+		result.addSubReport(this.createFanInAnalyseReport());
+		result.addSubReport(this.createFanInFanOutReport());
 		
 		return result;
 	}

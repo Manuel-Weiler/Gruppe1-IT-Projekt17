@@ -25,68 +25,43 @@ public class Testklasse {
 	public static void main(String[] args) {
 
 
+		Vector<Ausschreibung> ergebnis = new Vector<Ausschreibung>();
+		AusschreibungMapper am = new AusschreibungMapper();
+		ArrayList<Ausschreibung> auss = am.findAllAusschreibungen();
+		ProjektMapper pm = new ProjektMapper();
+		Vector<Projekt> p = pm.findAll();
+
 		OrganisationseinheitMapper om = new OrganisationseinheitMapper();
-		Organisationseinheit orga = om.findByKey(6);
+		Organisationseinheit orga = om.findByKey(2);
 
-		System.out.println(orga.getID());
-
-		System.out.println(orga.getOrganisationseinheitId());
-		System.out.println(orga.getGoogleId());
-		System.out.println(orga.getName());
-		System.out.println(orga.getTyp());
-		System.out.println(orga.getPartnerprofilId());
-//			EigenschaftMapper em = new EigenschaftMapper();
-//			PartnerprofilMapper pm = new PartnerprofilMapper();
-//			AusschreibungMapper am = new AusschreibungMapper();
-//
-//			//Partnerprofil p = pm.findById(2);
-//
-//			Vector<Eigenschaft> nutzereigenschaften = em.findByPartnerprofil(pm.findById(2));
-//			ArrayList<Ausschreibung> alleAusschreibungen = am.findAllAusschreibungen();
-//			Vector<Ausschreibung> ausForPartnerprofil = new Vector<Ausschreibung>();
-//
-//			for (Ausschreibung au : alleAusschreibungen) {
-//				
-//			Vector<Eigenschaft> ausEig = em.findByPartnerprofil(pm.findById(au.getPartnerprofilId()));
-//
-////			for(int i =0; i< ausEig.size(); i++){
-////
-////				System.out.println(ausEig.elementAt(5).getName());	
-////			}
-//			
-//						
-//				// hier speichern wir die Eigenschaften aller Ausschreibungen ab.
-//				for (Eigenschaft eig : ausEig) {
-//					String eigenschaftAus = eig.getName();
-//
-//					// Hier speichern wir die Eigenschaften des aktuellen Nutzers
-//					// ab.
-//					for (Eigenschaft unsereEigenschaft : nutzereigenschaften) {
-//						String eigenschaftUnsere = unsereEigenschaft.getName();
-//
-//						// hier vergleichen wir die Eigenschaften des aktuellen
-//						// Nutzers mit denen der Auschreibungen.
-//						if (eigenschaftAus.equals(eigenschaftUnsere)) {
-//							ausForPartnerprofil.add(au);
-//						}
-//					}
-//				}
-//
-//			for(Ausschreibung aus : ausForPartnerprofil){
-//				System.out.println(aus.getAusschreibungId());
-//				System.out.println(aus.getBezeichnung());
-//				System.out.println(aus.getNameProjektleiter());
-//				System.out.println(aus.getBewerbungsfrist());
-//				System.out.println(aus.getAusschreibungstext());
-//				System.out.println(aus.getErstellDatum());
-//				System.out.println(aus.getPartnerprofilId());
-//				System.out.println(aus.getProjektId());
-//				}	
-//
-//		}
-
+		for (Projekt pro : p) {
+			// Für alle Projekte mit der OrganisationseinheitsId XY...
+			if (pro.getOrganisationseinheitId() == orga.getOrganisationseinheitId()) {
+				for (Ausschreibung ausschreibung : auss) {
+					// ...füge die Ausschreibungen dem ergebnis-Vektor hinzu.
+					if (pro.getProjektId() == ausschreibung.getProjektId()) {
+						ergebnis.add(ausschreibung);
+					}
+				}
+			}
+		}
+		
+		for(Ausschreibung au : ergebnis){
+			System.out.println(au.getNameProjektleiter());
+		}
+		
+		
 	}
 
-		
-		
 }
+
+
+
+
+
+
+
+
+
+
+

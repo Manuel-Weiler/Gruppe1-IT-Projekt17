@@ -610,6 +610,34 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return ausForPartnerprofil;
 
 	}
+	
+	//Methode um alle Ausschreibungen welche von einer bestimmten Organisationseinheit erstellt wurden zu bekommen.
+	//@author: Dominik Sasse
+	
+	public Vector<Ausschreibung> getAusschreibungenForOrga(Organisationseinheit orga)
+	throws IllegalArgumentException {
+		
+		Vector<Ausschreibung> ergebnis = new Vector<Ausschreibung>();
+		if(orga != null && this.ausschreibungMapper != null){
+			
+			ArrayList<Ausschreibung> auss = ausschreibungMapper.findAllAusschreibungen();
+			Vector<Projekt> p = ProjektMapper.projektMapper().findAll();
+			
+			for(Projekt pro : p){
+				//Für alle Projekte mit der OrganisationseinheitsId XY...
+				if(pro.getOrganisationseinheitId() == orga.getOrganisationseinheitId()){
+					for(Ausschreibung ausschreibung : auss){
+						//...füge die Ausschreibungen dem ergebnis-Vektor hinzu.
+						if(pro.getProjektId() == ausschreibung.getProjektId()){
+							ergebnis.add(ausschreibung);
+						}
+					}
+				}
+			}
+		
+		}
+		return ergebnis;
+	}
 
 	/*
 	 * #########################################################################

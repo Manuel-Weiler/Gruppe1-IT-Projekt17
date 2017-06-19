@@ -77,4 +77,8 @@ public interface Project4uAdministration extends RemoteService{
 	public Vector<Bewerbung> getBewerbungForOrganisationseinheit(Organisationseinheit orga) throws IllegalArgumentException;
 
 	public Vector<Organisationseinheit> getAllOrganisationseinheitOfTypPerson()	throws IllegalArgumentException;
+	
+	public Vector<Organisationseinheit> getAllOrganisationseinheiten() throws IllegalArgumentException;
+	
+	public Vector<Ausschreibung> getAusschreibungenForOrga(Organisationseinheit orga) throws IllegalArgumentException;
 }
