@@ -376,6 +376,7 @@ public class OrganisationseinheitWidget extends Composite{
 		bearbeiten.setVisible(false);
 		speichern.setVisible(false);
 		addEigenschaft.setVisible(false);
+		
 		if(o.getGoogleId().equalsIgnoreCase(ClientsideSettings.getAktuellerUser().getEmailAddress())){
 			bearbeiten.setVisible(true);
 		}
@@ -579,6 +580,7 @@ public class OrganisationseinheitWidget extends Composite{
 				typbox.setEnabled(true);
 				speichern.setVisible(true);
 				addEigenschaft.setVisible(true);
+				bearbeiten.setVisible(false);
 				
 			}
 		});

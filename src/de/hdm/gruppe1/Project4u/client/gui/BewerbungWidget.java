@@ -142,5 +142,13 @@ public class BewerbungWidget {
 	
 	
 	
+	//TODO:
+	public void setAllDisabled (){
+		
+	}
+	
+	
+	
+	
 	
 }

@@ -522,6 +522,16 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return this.projektMapper.findByProjektmarktplatz(projektmarktplatz);
 	}
 	
+	
+	public Vector <Organisationseinheit> findProjektleiterOfProjects (Vector<Projekt> projekte)throws IllegalArgumentException{
+		Vector<Organisationseinheit> result = new Vector<>();
+		for (Projekt pro : projekte){
+			
+		result.add(getOrganisationseinheitById(pro.getOrganisationseinheitId()));
+		}
+		return result;
+	}
+	
 	/*
 	 * #########################################################################
 	 * ABSCHNITT, Ende: Projekt

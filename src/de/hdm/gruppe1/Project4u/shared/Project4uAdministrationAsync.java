@@ -129,4 +129,6 @@ public interface Project4uAdministrationAsync {
 
 	void updateAusschreibung(Ausschreibung ausschreibung, AsyncCallback<Ausschreibung> callback);
 
+	void findProjektleiterOfProjects(Vector<Projekt> projekte, AsyncCallback<Vector<Organisationseinheit>> callback);
+
 }

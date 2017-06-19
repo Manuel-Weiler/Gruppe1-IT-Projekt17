@@ -51,12 +51,17 @@ public class ProjektWidget extends Composite{
 	
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	Projektmarktplatz projektmarktplatz = new Projektmarktplatz();
-	Organisationseinheit org = new Organisationseinheit();
-	Vector<Projekt> projekte = new Vector<Projekt>();
+	private Organisationseinheit orgOfLoggedInUser = new Organisationseinheit();
+	private Vector<Projekt> projekte = new Vector<Projekt>();
+	private Vector<Organisationseinheit> allProjektleiter = new Vector<>();
 	
 	Button addProjekt = new Button("Projekt anlegen");
 	Button addAusschreibung = new Button("Ausschreibung hinzufügen");
 	VerticalPanel vPanel = new VerticalPanel();
+	VerticalPanel verP = new VerticalPanel();
+	HorizontalPanel hPanel = new HorizontalPanel();
+	Projekt selectedProjekt = new Projekt();
+	
 	//TODO: Projekt löschen,  Ausschreibungen
 	
 	//TODO: Bewerbung
@@ -81,11 +86,12 @@ public class ProjektWidget extends Composite{
 	
 	
 	public ProjektWidget(Projektmarktplatz pMarktpl) {
-		getOrganisationseinheitOfUser(ClientsideSettings.getAktuellerUser());
+		//getOrganisationseinheitOfUser(ClientsideSettings.getAktuellerUser());
 		this.projektmarktplatz = pMarktpl;
 
 		addAusschreibung.addClickHandler(new hinzufuegenAusschreibungClickhandler());
 		Project4uVerwaltung.findByProjektmarktplatz(pMarktpl, new getProjekteCallback());
+		
 		
 		initWidget(vPanel);
 	}
@@ -109,7 +115,7 @@ public class ProjektWidget extends Composite{
 		Label projektleiter = new Label("Projektleiter:");
 		vp.add(projektleiter);
 		final TextBox pLeiter = new TextBox();	
-		pLeiter.setValue(org.getName()+" - "+ClientsideSettings.getAktuellerUser().getEmailAddress());
+		pLeiter.setValue(orgOfLoggedInUser.getName()+" - "+ClientsideSettings.getAktuellerUser().getEmailAddress());
 		pLeiter.setEnabled(false);
 		pLeiter.setTitle("Wenn Sie nicht der Projektleiter sind, loggen Sie sich mit dem entsprechenden Account ein");
 		pLeiter.setWidth("300px");
@@ -239,9 +245,7 @@ public class ProjektWidget extends Composite{
 		
 	}
 	
-	VerticalPanel verP = new VerticalPanel();
-	HorizontalPanel hPanel = new HorizontalPanel();
-	Projekt selectedProjekt = new Projekt();
+	
 	public void ausschreibungAnsehen(Projekt p){
 		this.selectedProjekt=p;
 		verP.clear();
@@ -297,6 +301,8 @@ public class ProjektWidget extends Composite{
 			public void onSuccess(Organisationseinheit result) {
 				setOrg(result);
 				
+				
+				
 			}
 			public void onFailure(Throwable caught) {
 			}
@@ -305,7 +311,7 @@ public class ProjektWidget extends Composite{
 	}
 	
 	private void setOrg(Organisationseinheit o){
-		this.org=o;
+		this.orgOfLoggedInUser=o;
 	}
 	
 	
@@ -399,12 +405,39 @@ public class ProjektWidget extends Composite{
 
 		public void onClick(ClickEvent event) {
 			
-			AusschreibungsprofilWidget aussch = new AusschreibungsprofilWidget(new Ausschreibung(), selectedProjekt, projektmarktplatz);
-			aussch.showBox();
+			Project4uVerwaltung.getOrganisationseinheitById(selectedProjekt.getOrganisationseinheitId(),
+					new AsyncCallback<Organisationseinheit>() {
+
+						@Override
+						public void onSuccess(Organisationseinheit projektleiter) {
+							
+							if(projektleiter.getGoogleId().equalsIgnoreCase(ClientsideSettings.getAktuellerUser().getEmailAddress())){
+							
+							
+							AusschreibungsprofilWidget aussch = new AusschreibungsprofilWidget(new Ausschreibung(), selectedProjekt, projektmarktplatz);
+							aussch.showBox();
+							}
+							else
+							{
+								MessageBox.alertWidget("Ausschreibung anlegen", "Sie sind nicht Projektleiter des Projektes <b>'"+selectedProjekt.getName()
+								+"'</b></br> Legen Sie Ihr eigenes Projekt an, oder wenden Sie sich an:</br>" +projektleiter.getGoogleId());
+							}
+						}
+
+						@Override
+						public void onFailure(Throwable caught) {
+							
+
+						}
+					});
+			
+			
 			
 		}
 		
 	}
+	
+	
 	
 	private class getProjekteCallback implements AsyncCallback<Vector<Projekt>>{
 
@@ -416,6 +449,21 @@ public class ProjektWidget extends Composite{
 		public void onSuccess(Vector<Projekt> result) {
 			projekte=result;
 			
+			
+			Project4uVerwaltung.findProjektleiterOfProjects(result, new AsyncCallback<Vector<Organisationseinheit>>() {
+				
+				@Override
+				public void onSuccess(Vector<Organisationseinheit> allProjektleitr) {
+					allProjektleiter=allProjektleitr;
+					
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					
+					
+				}
+			});
 		
 			
 			//Pr�fung, ob schon Projekte zum Projektmarktplatz existieren
@@ -424,7 +472,7 @@ public class ProjektWidget extends Composite{
 				Label noProjekt = new Label("Es existiert noch kein Projekt, lege eines an!");
 				vPanel.add(noProjekt);
 				vPanel.add(addProjekt);
-				initWidget(vPanel);
+				
 				addProjekt.addClickHandler(new ClickHandler() {
 					
 					@Override
@@ -434,6 +482,7 @@ public class ProjektWidget extends Composite{
 						
 					}
 				}); 
+				initWidget(vPanel);
 			}
 			else{
 				vPanel.clear();
@@ -453,7 +502,25 @@ public class ProjektWidget extends Composite{
 				//Die Spalte der Projekt-Tabelle wird erstellt und deren Inhalt definiert.
 				TextColumn<Projekt> nameColumn = new TextColumn<Projekt>() {
 					public String getValue(Projekt object) {
+						
 						return object.getName();
+					}
+				};
+				
+				TextColumn<Projekt> projektleiter = new TextColumn<Projekt>() {
+					public String getValue(Projekt object) {
+						Organisationseinheit result = new Organisationseinheit();
+						for (Organisationseinheit org : allProjektleiter){
+							 
+							if (org.getOrganisationseinheitId()==object.getOrganisationseinheitId()){
+								result = org;
+								break;
+							}
+							return result.getName();
+						}
+						return result.getName();
+						
+						
 					}
 				};
 				
