@@ -117,7 +117,7 @@ public class PartnerprofilMapper {
 
 			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM partnerprofil WHERE id='" + i + "'");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM partnerprofil WHERE id=" + i);
 
 			if (rs.next()) {
 
@@ -154,9 +154,9 @@ public class PartnerprofilMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE partnerprofil SET aenderungsdatum='" + sdf.format(d) + "' WHERE id='"
+			stmt.executeUpdate("UPDATE partnerprofil SET aenderungsdatum='" + sdf.format(d) + "' WHERE id="
+								+ p.getPartnerprofilId());
 
-					+ p.getPartnerprofilId() + "'");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -171,24 +171,22 @@ public class PartnerprofilMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM partnerprofil WHERE id='" + p.getPartnerprofilId() + "';");
-
-			// Wenn das Partnerprofil-Objekt aus der DB gel�scht wird, werden
-			// auch alle in Beziehung
-			// stehenden Eigenschaften gel�scht.
-			EigenschaftMapper.eigenschaftMapper().deleteAllEigenschaftOfPartnerprofil(p);
+			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE id=" + p.getPartnerprofilId());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		//////////////////////////
+
 	}
-	/*
-	 * TODO: Anpassen, wenn Klasse Ausschreibung&Ausschreibungsmapper existiert
-	 * Diese Methode gibt die Ausschreibung zur�ck, die durch das
-	 * Partnerprofil-Objekt beschrieben wird. public Ausschreibung
-	 * getAusschreibungOf(Partnerprofil p) { return a; }
-	 */
+	
+	/* TODO: Anpassen, wenn Klasse Ausschreibung&Ausschreibungsmapper existiert
+	 * Diese Methode gibt die Ausschreibung zur�ck, die durch das Partnerprofil-Objekt 
+	 * beschrieben wird.
+	public Ausschreibung getAusschreibungOf(Partnerprofil p)
+	{
+		return a;
+	} */
+
 
 	/**
 	 * Diese Methode gibt alle Eigenschaftsobjekte zu einem Partnerprofil-Objekt

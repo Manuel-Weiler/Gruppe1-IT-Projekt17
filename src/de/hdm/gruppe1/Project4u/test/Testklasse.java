@@ -15,11 +15,14 @@ import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
 import de.hdm.gruppe1.Project4u.server.db.ProjektMapper;
 import de.hdm.gruppe1.Project4u.shared.LoginInfo;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
+import de.hdm.gruppe1.Project4u.server.db.ProjektmarktplatzMapper;
+import de.hdm.gruppe1.Project4u.shared.LoginInfo;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
+import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 public class Testklasse {
 	public static void main(String[] args) {
@@ -45,10 +48,11 @@ public class Testklasse {
 				}
 			}
 		}
-		
+
 		for(Ausschreibung au : ergebnis){
 			System.out.println(au.getNameProjektleiter());
 		}
+
 		
 		
 	}
