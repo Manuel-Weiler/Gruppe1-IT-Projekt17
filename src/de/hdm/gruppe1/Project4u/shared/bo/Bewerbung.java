@@ -21,6 +21,7 @@ public class Bewerbung extends BusinessObject{
 	private bewerbungStatus status;
 
 
+
 	public String getStatus() {
 		return status.toString();
 	}
@@ -81,5 +82,6 @@ public class Bewerbung extends BusinessObject{
 		}
 		return bewerbung;
 	}
+
 
 }

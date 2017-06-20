@@ -38,7 +38,7 @@ public class ProjektmarktplatzWidget extends Composite {
 
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch
-	 * einzelne Objekte der in der Liste weiter verarbeitet werden können.
+	 * einzelne Objekte der in der Liste weiter verarbeitet werden kï¿½nnen.
 	 * ======= Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit
 	 * auch einzelne Objekte der in der Liste weiter verarbeitet werden
 	 * kï¿½nnen.
@@ -48,7 +48,10 @@ public class ProjektmarktplatzWidget extends Composite {
 			return item == null ? null : item.getProjektmarktplatzId();
 		}
 	};
-
+ 
+	
+	
+	
 	public ProjektmarktplatzWidget(Vector<Projektmarktplatz> projektmarktplaetze) {
 		RootPanel.get("contentHeader").clear();
 		RootPanel.get("contentHeader").add(new Label("Alle ProjektmarktplÃ¤tze:"));
@@ -197,24 +200,15 @@ public class ProjektmarktplatzWidget extends Composite {
 
 						public void onClick(ClickEvent event) {
 
-							Project4uVerwaltung.findByProjektmarktplatz(selectionModel.getSelectedObject(),
-									new AsyncCallback<Vector<Projekt>>() {
-								 
-								public void onSuccess(Vector<Projekt> result) {
-									diBox.hide();
-									RootPanel.get("content").clear();
-									RootPanel.get("content").add(new ProjektWidget(result, selectionModel.getSelectedObject()));
-									
-									RootPanel.get("contentHeader").clear();
-									RootPanel.get("contentHeader")
-											.add(new Label("Alle Projekte des Projektmarktplatzes "
-													+ selectionModel.getSelectedObject().getName()));
-								}
-								@Override
-								public void onFailure(Throwable caught) {												
-								}
-							});
-
+														
+							diBox.hide();
+							RootPanel.get("content").clear();
+							RootPanel.get("content").add(new ProjektWidget(selectionModel.getSelectedObject()));
+							
+							RootPanel.get("contentHeader").clear();
+							RootPanel.get("contentHeader")
+									.add(new Label("Alle Projekte des Projektmarktplatzes "
+											+ selectionModel.getSelectedObject().getName()));
 						}
 					});
 
@@ -241,6 +235,10 @@ public class ProjektmarktplatzWidget extends Composite {
 		}
 
 	}
+	
+
+	
+	
 
 	/*
 	 * Clickhandler fï¿½r das Hinzufï¿½gen eines neuen Projektmarktplatzes. Der
