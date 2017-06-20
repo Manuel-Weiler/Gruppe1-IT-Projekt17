@@ -30,7 +30,7 @@ public class AusgangsbewerbungenWidget {
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	private String erg;
 	VerticalPanel vp = new VerticalPanel();
-	
+	Vector<Bewerbung> bew = new Vector<>();
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch
 	 * einzelne Objekte der in der Liste weiter verarbeitet werden k�nnen.
@@ -41,6 +41,8 @@ public class AusgangsbewerbungenWidget {
 			return item == null ? null : item.getBewerbungId();
 		}
 	};
+	
+	CellTable<Bewerbung> userBewerbungen = new CellTable<Bewerbung>(KEY_PROVIDER);
  
 	
 	public AusgangsbewerbungenWidget(){
@@ -51,6 +53,7 @@ public class AusgangsbewerbungenWidget {
 			
 			@Override
 			public void onSuccess(Vector<Bewerbung> result) {
+				bew = result;
 				vp.add(createTableOfUserbewerbungen(result));
 				RootPanel.get("content").clear();
 				RootPanel.get("content").add(vp);
@@ -75,7 +78,7 @@ public class AusgangsbewerbungenWidget {
 	
 	private CellTable<Bewerbung> createTableOfUserbewerbungen (Vector<Bewerbung> bewerbungen){
 		
-		CellTable<Bewerbung> userBewerbungen = new CellTable<Bewerbung>(KEY_PROVIDER);
+		
 		
 		// Die Spalten der Bewerbung-Tabelle werden erstellt und deren
 		// Inhalt definiert.
@@ -124,9 +127,7 @@ public class AusgangsbewerbungenWidget {
 		userBewerbungen.addColumn(status, "Status");
 		
 
-		// F�llen der Tabelle ab dem Index 0.
-		userBewerbungen.setRowData(0, bewerbungen);
-
+		
 		// Anpassen des Widgets an die Breite des div-Elements "content"
 		userBewerbungen.setWidth(RootPanel.get("content").getOffsetWidth() + "px");
 
@@ -142,7 +143,11 @@ public class AusgangsbewerbungenWidget {
 			@Override
 			public void onSuccess(Ausschreibung result) {
 				erg = result.getBezeichnung();
-				Window.alert(erg);
+				
+				
+				// F�llen der Tabelle ab dem Index 0.
+				userBewerbungen.setRowData(0, bew);
+
 				
 			}
 			
@@ -154,6 +159,8 @@ public class AusgangsbewerbungenWidget {
 		return erg;
 		
 	}
+	
+	
 	
 	
 }

@@ -13,6 +13,8 @@ public class Bewerbung extends BusinessObject{
 	private String bewerbungstext = null;
 	//TODO: status als enum implementieren
 	private String status = null;
+	private String ausschreibungsname = null;
+	private String projektname = null;
 
 	public int getBewerbungId() {
 		return bewerbungId;
@@ -62,6 +64,22 @@ public class Bewerbung extends BusinessObject{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getAusschreibungsname() {
+		return ausschreibungsname;
+	}
+
+	public void setAusschreibungsname(String ausschreibungsname) {
+		this.ausschreibungsname = ausschreibungsname;
+	}
+
+	public String getProjektname() {
+		return projektname;
+	}
+
+	public void setProjektname(String projektname) {
+		this.projektname = projektname;
 	}
 
 }
