@@ -127,16 +127,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	    report.addRow(ProjektverflechtungRow);
 	   
 	    //TODO: Vector erstellen
-		Vector<Organisationseinheit> orgaId = project4uAdministration.getAlleAusschreibungen();
-		
-		for(Organisationseinheit orga : orgaId){
-			Vector<Projekt> projektzugehörigkeit = new Vector<Projekt>();
-			Vector<Ausschreibung> ausschreibungszugehörigkeit = new Vector<Ausschreibung>();
-			Vector<Beteiligung> beteiligungszugehörigkeit = new Vector<Beteiligung>();
-		
-		
-		}
-		
+	    
 		//Report ausgeben
 		return report;
 	}
