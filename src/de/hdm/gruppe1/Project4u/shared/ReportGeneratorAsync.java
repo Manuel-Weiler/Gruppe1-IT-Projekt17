@@ -36,8 +36,6 @@ public interface ReportGeneratorAsync {
 	void createProjektverflechtungReport(Organisationseinheit orga,
 			AsyncCallback<ReportByProjektverflechtungen> callback);
 
-	void createAlleBewerbungenForAusschreibungen(Organisationseinheit o, AsyncCallback<ReportByAlleBewerbungenForAusschreibungen> callback);
-
 	void testMethode(AsyncCallback<String> callback);
 
 	void createFanInAnalyseReport(AsyncCallback<FanIn> callback);
@@ -46,6 +44,7 @@ public interface ReportGeneratorAsync {
 
 	void createFanInFanOutReport(AsyncCallback<FanInFanOut> callback);
 
+	void createAlleBewerbungenForAusschreibungen(Organisationseinheit o, AsyncCallback<ReportByAlleBewerbungenForAusschreibungen> callback);
 
 	
 

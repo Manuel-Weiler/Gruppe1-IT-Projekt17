@@ -35,15 +35,12 @@ public interface ReportGenerator extends RemoteService{
 	FanOut createFanOutAnalyseReport();
 	
 	FanInFanOut createFanInFanOutReport();
-	
-
-	ReportByAlleBewerbungenForAusschreibungen createAlleBewerbungenForAusschreibungen(Organisationseinheit o);
-	
+		
     String testMethode();
-
 
 	ReportByProjektverflechtungen createProjektverflechtungReport(Organisationseinheit orga) throws IllegalArgumentException;
 
-	
+	ReportByAlleBewerbungenForAusschreibungen createAlleBewerbungenForAusschreibungen(Organisationseinheit o);
+
 	
 }

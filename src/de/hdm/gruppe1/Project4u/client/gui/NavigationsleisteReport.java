@@ -19,7 +19,6 @@ import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 
-import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 import de.hdm.gruppe1.Project4u.shared.report.HTMLReportWriter;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleBewerbungenForAusschreibungen;
@@ -42,25 +41,25 @@ public class NavigationsleisteReport extends Composite {
 
 	Button homeButton = new Button("Startseite");
 	Button alleAusschreibungenButton = new Button("Alle Ausschreibungen");
-	Button alleBewerbungenButton = new Button("Alle Bewerbungen");
 	Button projektverflechtungenButton = new Button("Projektverflechtungen");
 	Button ausschreibungenForPartnerprofilButton = new Button("Ausschreibungen die zu dir passen");
 	Button testButton = new Button("Test");
-
-	// Methode um den aktuellen Nutzer zu bekommen
+    Button alleBewerbungenButton = new Button("Alle Bewerbungen");
+	
+    // Methode um den aktuellen Nutzer zu bekommen
 
 	public NavigationsleisteReport() {
 
 		menuReportPanel.add(homeButton);
 
 		menuReportPanel.add(alleAusschreibungenButton);
-		menuReportPanel.add(alleBewerbungenButton);
 		menuReportPanel.add(alleAusschreibungenButton);
 		menuReportPanel.add(projektverflechtungenButton);
 		menuReportPanel.add(ausschreibungenForPartnerprofilButton);
 		menuReportPanel.add(testButton);
-
-		// Buttonabstand
+        menuReportPanel.add(alleBewerbungenButton);
+		
+        // Buttonabstand
 		menuReportPanel.setSpacing(20);
 
 		// Button-Layout
