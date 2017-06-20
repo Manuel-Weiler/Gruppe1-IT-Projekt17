@@ -6,8 +6,8 @@ public class Organisationseinheit extends BusinessObject{
 	//und keine Fehler auftreten.
 	public enum orgaTyp {
 		Person,
-		team,
-		unternehmen;
+		Team,
+		Unternehmen;
 
 	}
 

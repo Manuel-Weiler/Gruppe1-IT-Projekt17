@@ -24,7 +24,6 @@ import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleBewerbungenForAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
 
-
 public class NavigationsleisteReport extends Composite {
 
 	protected static final Organisationseinheit Organisationseinheit = null;
@@ -33,8 +32,8 @@ public class NavigationsleisteReport extends Composite {
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 
 	public LoginInfo loginInfo = null;
-	//public Organisationseinheit aktuellerNutzer = null;
-	
+	// public Organisationseinheit aktuellerNutzer = null;
+
 	// Menï¿½ fï¿½r den Reportgenerator
 
 	VerticalPanel menuReportPanel = new VerticalPanel();
@@ -43,10 +42,9 @@ public class NavigationsleisteReport extends Composite {
 	Button alleAusschreibungenButton = new Button("Alle Ausschreibungen");
 	Button projektverflechtungenButton = new Button("Projektverflechtungen");
 	Button ausschreibungenForPartnerprofilButton = new Button("Ausschreibungen die zu dir passen");
-	Button testButton = new Button("Test");
-    Button alleBewerbungenButton = new Button("Alle Bewerbungen");
-	
-    // Methode um den aktuellen Nutzer zu bekommen
+	Button alleBewerbungenButton = new Button("Alle Bewerbungen");
+
+	// Methode um den aktuellen Nutzer zu bekommen
 
 	public NavigationsleisteReport() {
 
@@ -56,16 +54,18 @@ public class NavigationsleisteReport extends Composite {
 		menuReportPanel.add(alleAusschreibungenButton);
 		menuReportPanel.add(projektverflechtungenButton);
 		menuReportPanel.add(ausschreibungenForPartnerprofilButton);
-		menuReportPanel.add(testButton);
-        menuReportPanel.add(alleBewerbungenButton);
-		
-        // Buttonabstand
+		menuReportPanel.add(alleBewerbungenButton);
+
+		// Buttonabstand
 		menuReportPanel.setSpacing(20);
 
 		// Button-Layout
 
 		homeButton.setPixelSize(200, 40);
-		homeButton.setPixelSize(200, 40);
+		alleAusschreibungenButton.setPixelSize(200, 40);
+		projektverflechtungenButton.setPixelSize(200, 40);
+		ausschreibungenForPartnerprofilButton.setPixelSize(200, 40);
+		alleBewerbungenButton.setPixelSize(200, 40);
 
 		homeButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -77,36 +77,6 @@ public class NavigationsleisteReport extends Composite {
 
 				RootPanel.get("contentR").clear();
 				RootPanel.get("contentR").add(new StartseiteReport());
-			}
-		});
-
-		// Testmethode
-		testButton.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-
-				ReportVerwaltung.testMethode(new AsyncCallback<String>() {
-
-					public void onSuccess(String result) {
-						DialogBox dBox = new DialogBox();
-
-						Label label = new Label(result);
-						dBox.add(label);
-						dBox.center();
-						dBox.setAutoHideEnabled(true);
-						dBox.show();
-					}
-
-					public void onFailure(Throwable caught) {
-						DialogBox dBox = new DialogBox();
-
-						Label label = new Label(caught.getMessage());
-						dBox.add(label);
-						dBox.center();
-						dBox.setAutoHideEnabled(true);
-						dBox.show();
-					}
-				});
 			}
 		});
 
@@ -139,41 +109,6 @@ public class NavigationsleisteReport extends Composite {
 				});
 			}
 		});
-		
-// TODO SubReport implementieren (eventuell mit Auswahlmenü für spezifischen Bewerber)
-		
-//		projektverflechtungenButton.addClickHandler(new ClickHandler() {
-//
-//			
-//			public void onClick(ClickEvent event) {
-//
-//				ReportVerwaltung.createProjektverflechtungReport(orga, (new AsyncCallback<ReportByProjektverflechtungen>() {
-//
-//					
-//					public void onSuccess(ReportByProjektverflechtungen result1) {
-//										
-//						if(result1 != null){
-//						HTMLReportWriter writer = new HTMLReportWriter();
-//						writer.process(result1);
-//						RootPanel.get("contentR").clear();
-//						RootPanel.get("contentR").add(new HTML(writer.getReportText()));
-//						}
-//					}
-//
-//					
-//					public void onFailure(Throwable caught) {
-//						DialogBox dBox = new DialogBox();
-//
-//						Label label = new Label(caught.getMessage());
-//						dBox.add(label);
-//						dBox.center();
-//						dBox.setAutoHideEnabled(true);
-//						dBox.show();
-//
-//					}
-//				});
-//			}
-//		});
 
 		ausschreibungenForPartnerprofilButton.addClickHandler(new ClickHandler() {
 
@@ -183,9 +118,7 @@ public class NavigationsleisteReport extends Composite {
 						new AsyncCallback<Organisationseinheit>() {
 
 							public void onSuccess(Organisationseinheit result) {
-								//if (result != null) {
 								Organisationseinheit aktuellerNutzer = result;
-								
 
 								ReportVerwaltung.createAusschreibungenForPartnerprofil(aktuellerNutzer,
 										new AsyncCallback<ReportByAusschreibungenForPartnerprofil>() {
@@ -212,8 +145,6 @@ public class NavigationsleisteReport extends Composite {
 
 										});
 
-								// }
-
 							}
 
 							public void onFailure(Throwable caught) {
@@ -232,44 +163,94 @@ public class NavigationsleisteReport extends Composite {
 			}
 		});
 
+		alleBewerbungenButton.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
+						new AsyncCallback<Organisationseinheit>() {
+
+							public void onSuccess(Organisationseinheit result) {
+								Organisationseinheit aktuellerNutzer = result;
+
+								ReportVerwaltung.createAlleBewerbungenForAusschreibungen(aktuellerNutzer,
+										new AsyncCallback<ReportByAlleBewerbungenForAusschreibungen>() {
+
+											public void onSuccess(ReportByAlleBewerbungenForAusschreibungen result2) {
+
+												if (result2 != null) {
+													HTMLReportWriter writer = new HTMLReportWriter();
+													writer.process(result2);
+													RootPanel.get("contentR").clear();
+													RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+												}
+											}
+
+											public void onFailure(Throwable caught) {
+												DialogBox dBox = new DialogBox();
+
+												Label label = new Label(caught.getMessage());
+												dBox.add(label);
+												dBox.center();
+												dBox.setAutoHideEnabled(true);
+												dBox.show();
+
+											}
+										});
+							}
+
+							public void onFailure(Throwable caught) {
+								DialogBox dBox = new DialogBox();
+
+								Label label = new Label(caught.getMessage());
+								dBox.add(label);
+								dBox.center();
+								dBox.setAutoHideEnabled(true);
+								dBox.show();
+
+							}
+						});
+			}
+		});
+		// TODO SubReport implementieren (eventuell mit Auswahlmenü für
+		// spezifischen Bewerber)
+
+		// projektverflechtungenButton.addClickHandler(new ClickHandler() {
+		//
+		//
+		// public void onClick(ClickEvent event) {
+		//
+		// ReportVerwaltung.createProjektverflechtungReport(orga, (new
+		// AsyncCallback<ReportByProjektverflechtungen>() {
+		//
+		//
+		// public void onSuccess(ReportByProjektverflechtungen result1) {
+		//
+		// if(result1 != null){
+		// HTMLReportWriter writer = new HTMLReportWriter();
+		// writer.process(result1);
+		// RootPanel.get("contentR").clear();
+		// RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+		// }
+		// }
+		//
+		//
+		// public void onFailure(Throwable caught) {
+		// DialogBox dBox = new DialogBox();
+		//
+		// Label label = new Label(caught.getMessage());
+		// dBox.add(label);
+		// dBox.center();
+		// dBox.setAutoHideEnabled(true);
+		// dBox.show();
+		//
+		// }
+		// });
+		// }
+		// });
+
 		initWidget(menuReportPanel);
 	}
-	/*
- TODO	alleBewerbungenButton.addClickHandler(new ClickHandler() {
 
-		
-		public void onClick(ClickEvent event) {
-
-			ReportVerwaltung.createAlleBewerbungenForAusschreibungen(new AsyncCallback<ReportByAlleBewerbungenForAusschreibungen>() {
-				
-				public void onSuccess(ReportByAlleBewerbungenForAusschreibungen result2) {
-									
-					if(result2 != null){
-					HTMLReportWriter writer = new HTMLReportWriter();
-					writer.process(result2);
-					RootPanel.get("contentR").clear();
-					RootPanel.get("contentR").add(new HTML(writer.getReportText()));
-					}
-				}
-
-				
-				public void onFailure(Throwable caught) {
-					DialogBox dBox = new DialogBox();
-
-					Label label = new Label(caught.getMessage());
-					dBox.add(label);
-					dBox.center();
-					dBox.setAutoHideEnabled(true);
-					dBox.show();
-
-				}
-			});
-		}
-	});
-
-	initWidget(menuReportPanel);
-}
-*/
 	public void homeButtonClick() {
 		homeButton.click();
 	}

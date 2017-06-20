@@ -69,47 +69,24 @@ public interface Project4uAdministrationAsync {
 
 	void insertEigenschaft(Eigenschaft e, Partnerprofil p, AsyncCallback<Eigenschaft> callback);
 
-
-
-
 	void createOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Organisationseinheit> callback);
-
-
-
 
 	void getEigenschaftenOfOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Vector<Eigenschaft>> callback);
 
-
-
-
 	void getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Partnerprofil> callback);
-
-
-
 
 	void getOrganisationseinheitByUser(LoginInfo login, AsyncCallback<Organisationseinheit> callback);
 
-
-
-
 	void getAllOrganisationseinheitenOfTypTeamUnternehmen(AsyncCallback<Vector<Organisationseinheit>> callback);
-
-
-
 
 	void insertLinkedTeamUnternehmenOfOrganisationseinheit(LoginInfo login, Organisationseinheit teamunternehmen,
 			AsyncCallback<Void> callback);
-
-
-
 
 	void getLinkedTeamAndUnternehmenOfOrganisationseinheit(LoginInfo login,
 			AsyncCallback<Vector<Organisationseinheit>> callback);
 
 	void getBeteiligungForOrga(Organisationseinheit orga, AsyncCallback<Vector<Beteiligung>> callback);
-
-	void bewerbungenForOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Vector<Bewerbung>> callback);
-
+	
 	void getAusschreibungenForPartnerprofil(Organisationseinheit orga, AsyncCallback<Vector<Ausschreibung>> callback);
 
 	void getBewerbungForOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Vector<Bewerbung>> callback);

@@ -35,8 +35,6 @@ public interface ReportGenerator extends RemoteService{
 	FanOut createFanOutAnalyseReport();
 	
 	FanInFanOut createFanInFanOutReport();
-		
-    String testMethode();
 
 	ReportByProjektverflechtungen createProjektverflechtungReport(Organisationseinheit orga) throws IllegalArgumentException;
 
