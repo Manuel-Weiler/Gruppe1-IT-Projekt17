@@ -37,7 +37,12 @@ public class Testklasse {
 		be= bm.findByOrganisationseinheit(o);
 
 		for(Bewerbung b : be){
+			System.out.println(b.getBewerbungId());
+			System.out.println(b.getErstelldatum());
 			System.out.println(b.getBewerbungstext());
+			System.out.println(b.getAusschreibungId());
+			System.out.println(b.getOrganisationseinheitId());
+			System.out.println(b.getStatus());
 		}
 
 		

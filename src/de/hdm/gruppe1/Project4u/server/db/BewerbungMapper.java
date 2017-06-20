@@ -172,6 +172,7 @@ public class BewerbungMapper {
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
 				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
 				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+				b.setStatus(rs.getString("status"));
 
 				return b;
 			}
@@ -203,6 +204,7 @@ public class BewerbungMapper {
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
 				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
 				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+				b.setStatus(rs.getString("status"));
 
 				// Hinzufügen des neuen Objekts zum Ergebnisvektor
 				result.addElement(b);
@@ -220,13 +222,10 @@ public class BewerbungMapper {
 		// Ergebnisvektor vorbereiten
 		Vector<Bewerbung> result = new Vector<Bewerbung>();
 
-
-
 	    try {
 	    	
 	    	Statement stmt = con.createStatement();
-	    	ResultSet rs = stmt.executeQuery("SELECT id, erstelldatum, bewerbungstext, "
-	    	 		+ "ausschreibung_id, organisationseinheit_id "
+	    	ResultSet rs = stmt.executeQuery("SELECT * "
 	   	          	+ "FROM Bewerbung WHERE organisationseinheit_id= '" + o.getOrganisationseinheitId() + "' ORDER BY id");
 
 			// Für jeden Eintrag im Suchergebnis wird nun ein
@@ -239,6 +238,7 @@ public class BewerbungMapper {
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
 				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
 				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+				b.setStatus(rs.getString("status"));
 
 				// Hinzufügen des neuen Objekts zum Ergebnisvektor
 				result.addElement(b);
@@ -270,6 +270,7 @@ public class BewerbungMapper {
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
 				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
 				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+				b.setStatus(rs.getString("status"));
 
 				// Hinzufügen des neuen Objekts zum Ergebnisvektor
 				result.addElement(b);

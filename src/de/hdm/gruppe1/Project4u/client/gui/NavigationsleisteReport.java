@@ -118,9 +118,8 @@ public class NavigationsleisteReport extends Composite {
 						new AsyncCallback<Organisationseinheit>() {
 
 							public void onSuccess(Organisationseinheit result) {
-								Organisationseinheit aktuellerNutzer = result;
 
-								ReportVerwaltung.createAusschreibungenForPartnerprofil(aktuellerNutzer,
+								ReportVerwaltung.createAusschreibungenForPartnerprofil(result,
 										new AsyncCallback<ReportByAusschreibungenForPartnerprofil>() {
 											public void onSuccess(ReportByAusschreibungenForPartnerprofil result2) {
 
