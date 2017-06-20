@@ -45,7 +45,7 @@ public class BewerbungMapper {
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 
-	protected BewerbungMapper() {
+	public BewerbungMapper() {
 
 	}
 

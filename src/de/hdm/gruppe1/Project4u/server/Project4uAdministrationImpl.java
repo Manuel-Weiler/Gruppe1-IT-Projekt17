@@ -588,6 +588,17 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
   		//Die Bewerbung löschen
   		this.bewerbungMapper.delete(bewerbung);
   		}
+	
+	public Vector<Bewerbung> bewerbungenForOrganisationseinheit (Organisationseinheit orga) throws IllegalArgumentException{
+		Vector<Bewerbung> result = new Vector<>();
+		
+		Vector<Bewerbung> bewerbung = this.bewerbungMapper.findByOrganisationseinheit(orga);
+		
+		if (bewerbung != null) {
+			result.addAll(bewerbung);
+		}
+		return result;
+	}
 		
 		
 		
@@ -661,6 +672,20 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		System.out.println("deleteBeteiligung"); 
 		this.beteiligungMapper.delete(b);
 	}
+	
+	public Vector<Beteiligung> getBeteiligungForOrga(Organisationseinheit orga) throws IllegalArgumentException{
+		Vector<Beteiligung> result = new Vector<>();
+		
+		Vector<Beteiligung> beteiligungen = this.beteiligungMapper.findByOrganisationseinheit(orga);
+		
+		if(beteiligungen !=null){
+			result.addAll(beteiligungen);
+			
+		}
+		return result;
+	}
+	
+	
 	
 	/*
 	 * #########################################################################

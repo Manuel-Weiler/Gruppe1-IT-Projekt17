@@ -9,6 +9,8 @@ import java.util.Vector;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+import de.hdm.gruppe1.Project4u.shared.report.AllBeteiligungenForNutzer;
+import de.hdm.gruppe1.Project4u.shared.report.AllBewerbungenForNutzer;
 import de.hdm.gruppe1.Project4u.shared.report.Column;
 import de.hdm.gruppe1.Project4u.shared.report.CompositeParagraph;
 import de.hdm.gruppe1.Project4u.shared.report.Report;
@@ -104,7 +106,86 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 //	 * TODO: REPORT PROJEKTVERFLECHTUNGEN Erstellen
 //	 */
 	
-	public ReportByProjektverflechtungen createProjektverflechtungReport (Organisationseinheit organisationseinheit)
+	public AllBeteiligungenForNutzer allBeteiligungenForNutzer(Organisationseinheit orga){
+		
+		if (this.getProject4uAdministration() == null)
+			return null;
+		
+		AllBeteiligungenForNutzer result = new AllBeteiligungenForNutzer();
+		
+		result.setTitle("Alle Beteiligungen");
+		
+		Row headline = new Row();
+
+		headline.addColumn(new Column("ProjektId"));
+		headline.addColumn(new Column("Startdatum"));
+		headline.addColumn(new Column("Enddatum"));
+		headline.addColumn(new Column("Personentage"));
+		headline.addColumn(new Column("OrganisationsId"));
+				
+		result.addRow(headline);
+		
+		Vector<Beteiligung> allBeteiligungen = project4uAdministration.getBeteiligungForOrga(orga);
+		
+		for(Beteiligung be : allBeteiligungen){
+			
+			Row beteiligungsRow = new Row();
+			beteiligungsRow.addColumn(new Column(String.valueOf(be.getProjektId())));
+			beteiligungsRow.addColumn(new Column(String.valueOf(be.getStartdatum())));
+			beteiligungsRow.addColumn(new Column(String.valueOf(be.getEnddatum())));
+			beteiligungsRow.addColumn(new Column(String.valueOf(be.getPersonentage())));
+			beteiligungsRow.addColumn(new Column(String.valueOf(be.getOrganisationseinheitId())));
+
+			result.addRow(beteiligungsRow);
+			
+			
+		}
+		return result;
+	}
+	
+	public AllBewerbungenForNutzer allBewerbungenForNutzer (Organisationseinheit orga){
+		
+		if (this.getProject4uAdministration() == null)
+			return null;
+		
+		AllBewerbungenForNutzer result = new AllBewerbungenForNutzer();
+		
+		result.setTitle("Alle Bewerbungen ");
+		
+		Row headline = new Row();
+		
+		headline.addColumn(new Column("iD"));
+		headline.addColumn(new Column("Erstelldatum"));
+		headline.addColumn(new Column("Bewerbungstext"));
+		headline.addColumn(new Column("AusschreibungId"));
+		headline.addColumn(new Column("OrganisationsId"));
+		headline.addColumn(new Column("Status"));
+		
+		result.addRow(headline);
+		
+		Vector<Bewerbung> allBewerbungen = project4uAdministration.bewerbungenForOrganisationseinheit(orga);
+		
+for(Bewerbung be : allBewerbungen){
+			
+			Row beteiligungsRow = new Row();
+			beteiligungsRow.addColumn(new Column(String.valueOf(be.getBewerbungId())));
+			beteiligungsRow.addColumn(new Column(String.valueOf(be.getErstelldatum())));
+			beteiligungsRow.addColumn(new Column(be.getBewerbungstext()));
+			beteiligungsRow.addColumn(new Column(String.valueOf(be.getAusschreibungId())));
+			beteiligungsRow.addColumn(new Column(String.valueOf(be.getOrganisationseinheitId())));
+			//TODO: Status!!!	beteiligungsRow.addColumn(new Column(String.valueOf(be.get())));
+
+			result.addRow(beteiligungsRow);
+			
+			
+		}
+		return result;
+	}
+	
+	
+	
+	
+	public ReportByProjektverflechtungen createProjektverflechtungReport (Organisationseinheit orga)
 			throws IllegalArgumentException {
 		
 		if (this.getProject4uAdministration() == null)
@@ -113,21 +194,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		ReportByProjektverflechtungen report = new ReportByProjektverflechtungen();
 		
 	    report.setTitle("Projektverflechtungen");
-	    // Datum hinzufügen
-	    report.setCreated(new Date());
 	    
-	    //Spalten
-		Row ProjektverflechtungRow = new Row();
-		ProjektverflechtungRow.addColumn(new Column("Bewerbender"));
-		ProjektverflechtungRow.addColumn(new Column("Projekt"));
-		ProjektverflechtungRow.addColumn(new Column("Ausschreibung"));
+	    report.addSubReport(this.allBeteiligungenForNutzer(orga));
+	    report.addSubReport(this.allBewerbungenForNutzer(orga));
 
-	    
-	    // HinzufÃ¼gen der Kopfzeile
-	    report.addRow(ProjektverflechtungRow);
-	   
-	    //TODO: Vector erstellen
-	    
 		//Report ausgeben
 		return report;
 	}
@@ -282,14 +352,5 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		String test = "Dies ist ein Test für den RPC-Call";
 		return test;
 	}
-
-	@Override
-	public ReportByProjektverflechtungen createProjektverflechtungReport() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-
 
 }

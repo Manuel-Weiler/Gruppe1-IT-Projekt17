@@ -18,6 +18,7 @@ import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 import de.hdm.gruppe1.Project4u.shared.report.HTMLReportWriter;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByProjektverflechtungen;
 
 public class NavigationsleisteReport extends Composite {
 
@@ -29,12 +30,15 @@ public class NavigationsleisteReport extends Composite {
 
 	Button homeButton = new Button("Startseite");
 	Button alleAusschreibungenButton = new Button("Alle Ausschreibungen");
+	Button projektverflechtungenButton = new Button("Projektverflechtungen");
+
 	Button testButton = new Button("Test");
 
 	public NavigationsleisteReport() {
 
 		menuReportPanel.add(homeButton);
 		menuReportPanel.add(alleAusschreibungenButton);
+		menuReportPanel.add(projektverflechtungenButton);
 		menuReportPanel.add(testButton);
 
 		// Buttonabstand
@@ -123,7 +127,43 @@ public class NavigationsleisteReport extends Composite {
 				});
 			}
 		});
+		
+// TODO SubReport implementieren (eventuell mit Auswahlmenü für spezifischen Bewerber)
+		
+//		projektverflechtungenButton.addClickHandler(new ClickHandler() {
+//
+//			
+//			public void onClick(ClickEvent event) {
+//
+//				ReportVerwaltung.createProjektverflechtungReport(orga, (new AsyncCallback<ReportByProjektverflechtungen>() {
+//
+//					
+//					public void onSuccess(ReportByProjektverflechtungen result1) {
+//										
+//						if(result1 != null){
+//						HTMLReportWriter writer = new HTMLReportWriter();
+//						writer.process(result1);
+//						RootPanel.get("contentR").clear();
+//						RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+//						}
+//					}
+//
+//					
+//					public void onFailure(Throwable caught) {
+//						DialogBox dBox = new DialogBox();
+//
+//						Label label = new Label(caught.getMessage());
+//						dBox.add(label);
+//						dBox.center();
+//						dBox.setAutoHideEnabled(true);
+//						dBox.show();
+//
+//					}
+//				});
+//			}
+//		});
 
+		
 		initWidget(menuReportPanel);
 	}
 

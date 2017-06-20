@@ -73,6 +73,9 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Vector<Projekt> findByProjektmarktplatz (Projektmarktplatz projektmarktplatz) throws IllegalArgumentException;
 	
+	public Vector<Beteiligung> getBeteiligungForOrga(Organisationseinheit orga) throws IllegalArgumentException;
+
+	public Vector<Bewerbung> bewerbungenForOrganisationseinheit (Organisationseinheit orga) throws IllegalArgumentException;
 
 
 }
