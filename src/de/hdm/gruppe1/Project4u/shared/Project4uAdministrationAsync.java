@@ -139,4 +139,6 @@ public interface Project4uAdministrationAsync {
 
 	void findByIdAusschreibung(int id, AsyncCallback<Ausschreibung> callback);
 
+	void findProjektById(int id, AsyncCallback<Projekt> callback);
+
 }

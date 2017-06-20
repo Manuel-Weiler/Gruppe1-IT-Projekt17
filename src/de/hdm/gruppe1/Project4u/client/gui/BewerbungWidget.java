@@ -29,6 +29,7 @@ import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 /**
  * @author Tobias
@@ -39,6 +40,7 @@ public class BewerbungWidget {
 	Vector<Organisationseinheit> orgas= new Vector<Organisationseinheit>(); 
 	Organisationseinheit user = new Organisationseinheit();
 	Ausschreibung auss = new Ausschreibung();
+	Projekt proj = new Projekt();
 	
 	DialogBox box = new DialogBox();
 	VerticalPanel vp = new VerticalPanel();
@@ -64,7 +66,10 @@ public class BewerbungWidget {
 	public BewerbungWidget(Ausschreibung aus){
 		this.auss = aus;
 		
-		Project4uVerwaltung.getLinkedTeamAndUnternehmenOfOrganisationseinheit(ClientsideSettings.getAktuellerUser(), new getOrganisationseinheitenCallback());
+		Project4uVerwaltung.getLinkedTeamAndUnternehmenOfOrganisationseinheit(ClientsideSettings.getAktuellerUser(),
+				new getOrganisationseinheitenCallback());
+
+		Project4uVerwaltung.findProjektById(aus.getProjektId(), new getProjektOfAusschreibungAndBewerbung());
 		
 		flex.setWidget(0, 1, bewerbendesProfil);
 		flex.setWidget(1, 0, ausName);
@@ -117,6 +122,7 @@ public class BewerbungWidget {
 			neu.setAusschreibungId(auss.getAusschreibungId());
 			neu.setBewerbungstext(freitext.getValue());
 			neu.setStatus("laufend");
+			neu.setProjektname(proj.getName());
 			
 			Project4uVerwaltung.createBewerbung(neu, auss.getAusschreibungId(), neu.getOrganisationseinheitId(), new AsyncCallback<Bewerbung>() {
 				
@@ -132,10 +138,24 @@ public class BewerbungWidget {
 				public void onFailure(Throwable caught) {
 				}
 			});
-			
 		}
-		
 	}
+	
+	
+	
+	
+	private class getProjektOfAusschreibungAndBewerbung implements AsyncCallback<Projekt>{
+		@Override
+		public void onFailure(Throwable caught) {
+		}
+		@Override
+		public void onSuccess(Projekt result) {
+			proj = result;
+		}	
+	}
+	
+	
+	
 	
 	
 	private class getOrganisationseinheitenCallback implements AsyncCallback<Vector<Organisationseinheit>>{

@@ -92,9 +92,13 @@ public class BewerbungMapper {
 			if(rs.next()){
 				bewerbung.setBewerbungId(rs.getInt("maxid")+1);
 				
-				stmt.executeUpdate("INSERT INTO Bewerbung (id, erstelldatum, bewerbungstext, ausschreibung_id, organisationseinheit_id, status)"
-						+ "VALUES ('" + bewerbung.getBewerbungId() + "','" + sdf.format(bewerbung.getErstelldatum()) + "','" 
-						+ bewerbung.getBewerbungstext() + "', '"+ausschreibungId+"', '"+organisationsId+"', '"+bewerbung.getStatus()+"')");
+				stmt.executeUpdate(
+						"INSERT INTO Bewerbung (id, erstelldatum, bewerbungstext, ausschreibung_id, organisationseinheit_id, status, projektname, ausschreibungsname)"
+								+ "VALUES ('" + bewerbung.getBewerbungId() + "','"
+								+ sdf.format(bewerbung.getErstelldatum()) + "','" + bewerbung.getBewerbungstext()
+								+ "', '" + ausschreibungId + "', '" + organisationsId + "', '" + bewerbung.getStatus()
+								+ "', '" + bewerbung.getProjektname() + "', '" + bewerbung.getAusschreibungsname()
+								+ "');");
 
 			}
 		} catch (SQLException e) {
@@ -173,6 +177,10 @@ public class BewerbungMapper {
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
 				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
 				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+				b.setStatus(rs.getString("status"));
+				b.setProjektname(rs.getString("projektname"));
+				b.setAusschreibungsname(rs.getString("ausschreibungsname"));
+				
 
 				return b;
 			}
@@ -204,7 +212,10 @@ public class BewerbungMapper {
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
 				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
 				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
-
+				b.setStatus(rs.getString("status"));
+				b.setProjektname(rs.getString("projektname"));
+				b.setAusschreibungsname(rs.getString("ausschreibungsname"));
+				
 				// Hinzufügen des neuen Objekts zum Ergebnisvektor
 				result.addElement(b);
 			}
@@ -240,6 +251,8 @@ public class BewerbungMapper {
 				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
 				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 				b.setStatus(rs.getString("status"));
+				b.setProjektname(rs.getString("projektname"));
+				b.setAusschreibungsname(rs.getString("ausschreibungsname"));
 
 				// Hinzufügen des neuen Objekts zum Ergebnisvektor
 				result.addElement(b);
@@ -271,6 +284,9 @@ public class BewerbungMapper {
 				b.setBewerbungstext(rs.getString("bewerbungstext"));
 				b.setAusschreibungId(rs.getInt("ausschreibung_id"));
 				b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+				b.setStatus(rs.getString("status"));
+				b.setProjektname(rs.getString("projektname"));
+				b.setAusschreibungsname(rs.getString("ausschreibungsname"));
 
 				// Hinzufügen des neuen Objekts zum Ergebnisvektor
 				result.addElement(b);
