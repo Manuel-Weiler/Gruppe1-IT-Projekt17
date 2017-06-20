@@ -4,11 +4,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
-import com.ibm.icu.text.SimpleDateFormat;
+
 
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
@@ -23,7 +24,7 @@ public class AusschreibungMapper {
 	private static AusschreibungMapper ausschreibungMapper = null;
 	
 
-	private AusschreibungMapper() {
+	public AusschreibungMapper() {
 	}
 	
 
@@ -74,17 +75,16 @@ public class AusschreibungMapper {
 	
 	public Ausschreibung updateAusschreibung(Ausschreibung au) {
 		Connection con = DBConnection.connection();
-
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("UPDATE Ausschreibung SET "
-					+ "bezeichnung='" + au.getBezeichnung() 
-					+ "name_projektleiter='" + au.getNameProjektleiter() 
-					+ "bewerbungsfrist='" + au.getBewerbungsfrist() 
-					+ "ausschreibungstext='" + au.getAusschreibungstext()
-					+ "erstelldatum='" + au.getErstellDatum() 
-					+ "' WHERE id='"
-					+ au.getAusschreibungId() + "'");
+			stmt.executeUpdate("UPDATE ausschreibung SET "
+					+ "bezeichnung='" + au.getBezeichnung()+"'," 
+					+ "name_projektleiter='" + au.getNameProjektleiter() +"'," 
+					+ "bewerbungsfrist='" + sdf.format(au.getBewerbungsfrist())+"'," 
+					+ "ausschreibungstext='" + au.getAusschreibungstext()+"' " 
+					+ "WHERE id='"+ au.getAusschreibungId() + "';");
 					
 					
 		} catch (SQLException e1) {
@@ -110,21 +110,23 @@ public class AusschreibungMapper {
 	
 	public Ausschreibung findByIdAusschreibung (int i) {
 		Connection con = DBConnection.connection();
-		
+
 		try {
 			Statement stmt = con.createStatement();
-
+			
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung WHERE id='" + i + "'");
 
 			if (rs.next()) {
 				Ausschreibung au = new Ausschreibung();
 
-				au.setID(rs.getInt("id"));
-				au.setBezeichnung (rs.getString("bezeichnung"));
-				au.setNameProjektleiter (rs.getString("name_projektleiter"));
-				au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
-				au.setAusschreibungstext (rs.getString("ausschreibungstext"));
-				au.setErstellDatum(rs.getDate("erstelldatum"));
+				au.setAusschreibungId(rs.getInt("id")); 
+				au.setBezeichnung(rs.getString("bezeichnung"));
+				au.setNameProjektleiter(rs.getString("name_projektleiter"));
+				au.setBewerbungsfrist(rs.getDate("bewerbungsfrist"));
+				au.setAusschreibungstext(rs.getString("ausschreibungstext"));
+				au.setErstellDatum(rs.getDate("erstelldatum")); 
+				au.setProjektId(rs.getInt("projekt_id"));
+				au.setPartnerprofilId(rs.getInt("partnerprofil_id")); 
 				
 				return au;
 							}
@@ -203,22 +205,7 @@ public class AusschreibungMapper {
 
 
 	
-// BEARBEITEN EINER AUSSCHREIBUNG
-	public Ausschreibung update (Ausschreibung ausschreibung) {
-		Connection con = DBConnection.connection();
-		Date d = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-		try {
-			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("UPDATE Partnerprofil " + "SET �nderungsdatum='" + sdf.format(d) + "' WHERE id='"
-					+ ausschreibung.getAusschreibungId() + "'");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return ausschreibung;
-	}
 	
 
 // L�schen einer Ausschreibung

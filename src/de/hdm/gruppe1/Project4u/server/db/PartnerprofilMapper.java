@@ -5,20 +5,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
-
-
 import de.hdm.gruppe1.Project4u.shared.bo.*;
-
 
 public class PartnerprofilMapper {
 
-		/**
+	/**
 	 * Die statische Variable partnerprofilMapper stellt sicher, dass es von der
 	 * Klasse PartnerprofilMapper nur eine einzige Instanz gibt bzw. die
 	 * Variable speichert die einzige Instanz dieser Klasse.
+	 * 
 	 * @author Tobias
 	 */
 	private static PartnerprofilMapper partnerprofilMapper = null;
@@ -27,14 +26,14 @@ public class PartnerprofilMapper {
 	 * Der private Konstruktor verhindert, dass eine Instanz der Klasse
 	 * PartnerprofilMapper �ber <code>new</code> erzeugt werden kann.
 	 */
-	private PartnerprofilMapper() {
+	public PartnerprofilMapper() {
 	}
 
-	
 	/**
 	 * Die Methode partnerprofilMapper stellt die Singleton-Eigenschaft sicher,
 	 * indem Sie dafür sorgt, dass nur eine einzige Instanz von
 	 * <code>NutzerpofilMapper</code> existiert.
+	 * 
 	 * @return ein neu instanziiertes PartnerprofilMapper-Objekt
 	 * @author Tobias
 	 */
@@ -45,82 +44,80 @@ public class PartnerprofilMapper {
 		return partnerprofilMapper;
 	}
 
-		
-	 /**
-	  * Mit dieser Methode wird dem zu speichernden Partnerprofil die richtige
+	/**
+	 * Mit dieser Methode wird dem zu speichernden Partnerprofil die richtige
 	 * <code>id</code> vergeben und das Partnerprofil in der Datenbank abgelegt.
-	 * @param p das Partnerprofil-Objekt, dass in der Datenbank abgelegt wird.
-	 * @param o das Organisationseinheit-Objekt, dem das Partnerprofil zugeordnet ist.
-	 * @return das m�glicherweise durch die Methode ge�nderte Partnerprofil-Objekt.
+	 * 
+	 * @param p
+	 *            das Partnerprofil-Objekt, dass in der Datenbank abgelegt wird.
+	 * @param o
+	 *            das Organisationseinheit-Objekt, dem das Partnerprofil
+	 *            zugeordnet ist.
+	 * @return das m�glicherweise durch die Methode ge�nderte
+	 *         Partnerprofil-Objekt.
 	 * @author Tobias
 	 */
 	public Partnerprofil insertPartnerprofil(Partnerprofil p) {
-		 
-		 Connection con = DBConnection.connection();
-		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		 Date date = new Date();
-			p.setAenderungsdatum(date);
-			p.setErstelldatum(date);
 
-		    try {
-		      Statement stmt = con.createStatement();
+		Connection con = DBConnection.connection();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		p.setAenderungsdatum(date);
+		p.setErstelldatum(date);
 
-		      //Abfrage der gr��ten bisher vergebnen <code>id</code>
-		      ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
-		          + "FROM partnerprofil ");
+		try {
+			Statement stmt = con.createStatement();
 
-		      if (rs.next()) {
-		        /*
-		         * Der bisher gr��te Prim�rschl�ssel wird um 1 erh�ht und dem 
-		         * Partnerprofil-Objekt zugewiesen.
-		         */
-		        p.setPartnerprofilId(rs.getInt("maxid") + 1);
+			// Abfrage der gr��ten bisher vergebnen <code>id</code>
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM partnerprofil ");
 
-		        stmt = con.createStatement();
-		        
-		        
+			if (rs.next()) {
+				/*
+				 * Der bisher gr��te Prim�rschl�ssel wird um 1 erh�ht
+				 * und dem Partnerprofil-Objekt zugewiesen.
+				 */
+				p.setPartnerprofilId(rs.getInt("maxid") + 1);
 
-		        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
+				stmt = con.createStatement();
 
-		        stmt.executeUpdate("INSERT INTO partnerprofil (id, erstelldatum, aenderungsdatum) "
+				// Jetzt erst erfolgt die tatsächliche Einfügeoperation
 
-		            + "VALUES (" + p.getPartnerprofilId() + ",'" + sdf.format(p.getErstelldatum()) + "','"
-		            + sdf.format(p.getAenderungsdatum()) + "')"); 
-		      }
-		    }
-		    catch (SQLException e) {
-		      e.printStackTrace();
-		    }
+				stmt.executeUpdate("INSERT INTO partnerprofil (id, erstelldatum, aenderungsdatum) "
 
-		    /*
-		     * R�ckgabe, des evtl. korrigierten Partnerprofil-Objekts.
-		     * P.S: Diese R�ckgabe ist nicht zwingend notwendig, da die Verweise auf das bisherige 
-		     * Objekt auch auf das ge�nderte Objekt verweisen w�rden. 
-		     */
-		 
+						+ "VALUES (" + p.getPartnerprofilId() + ",'" + sdf.format(p.getErstelldatum()) + "','"
+						+ sdf.format(p.getAenderungsdatum()) + "')");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		/*
+		 * R�ckgabe, des evtl. korrigierten Partnerprofil-Objekts. P.S: Diese
+		 * R�ckgabe ist nicht zwingend notwendig, da die Verweise auf das
+		 * bisherige Objekt auch auf das ge�nderte Objekt verweisen w�rden.
+		 */
+
 		return p;
-		 
-	 }
-	 
-	 
-	
-	/**	  
-	 * Mit dieser Methode wird ein Partnerprofil-Objekt mit einer bestimmten <code>id</code>ausgegeben.
+
+	}
+
+	/**
+	 * Mit dieser Methode wird ein Partnerprofil-Objekt mit einer bestimmten
+	 * <code>id</code>ausgegeben.
+	 * 
 	 * @param id
 	 * @return Partnerprofil p aus der DB
 	 * @author Tobias
 	 */
 	public Partnerprofil findById(int i) {
 		Connection con = DBConnection.connection();
-		
 
 		try {
 			Statement stmt = con.createStatement();
 
 			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM partnerprofil WHERE id='" + i + "'");
-
+			ResultSet rs = stmt.executeQuery("SELECT * FROM partnerprofil WHERE id=" + i);
 
 			if (rs.next()) {
 
@@ -135,18 +132,15 @@ public class PartnerprofilMapper {
 				p.setPartnerprofilId(rs.getInt("id"));
 				p.setErstelldatum(rs.getDate("erstelldatum"));
 				p.setAenderungsdatum(rs.getDate("aenderungsdatum"));
-			    
+
 				return p;
-		      }
-		    }
-		    catch (SQLException e) {
-		      e.printStackTrace();
-		      return null;
-		    }
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 		return null;
 	}
-		
-
 
 	/*
 	 * Die nachfolgende Methode speichert Ver�nderungen am Partnerprofilobjekt
@@ -160,36 +154,31 @@ public class PartnerprofilMapper {
 		try {
 			Statement stmt = con.createStatement();
 
+			stmt.executeUpdate("UPDATE partnerprofil SET aenderungsdatum='" + sdf.format(d) + "' WHERE id="
+								+ p.getPartnerprofilId());
 
-			stmt.executeUpdate("UPDATE partnerprofil SET aenderungsdatum='" + sdf.format(d) + "' WHERE id='"
-
-					+ p.getPartnerprofilId() + "'");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return p;
 	}
-	
+
 	/*
 	 * Diese Methode l�scht ein Partnerprofil aus der Datebank.
 	 */
-	public void deletePartnerprofil (Partnerprofil p){
+	public void deletePartnerprofil(Partnerprofil p) {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
 
-
-			stmt.executeUpdate("DELETE FROM partnerprofil WHERE id='" + p.getPartnerprofilId()+"';");
-			
-			//Wenn das Partnerprofil-Objekt aus der DB gel�scht wird, werden auch alle in Beziehung
-			//stehenden Eigenschaften gel�scht.
-			EigenschaftMapper.eigenschaftMapper().deleteAllEigenschaftOfPartnerprofil(p);
+			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE id=" + p.getPartnerprofilId());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-//////////////////////////	
+
 	}
+	
 	/* TODO: Anpassen, wenn Klasse Ausschreibung&Ausschreibungsmapper existiert
 	 * Diese Methode gibt die Ausschreibung zur�ck, die durch das Partnerprofil-Objekt 
 	 * beschrieben wird.
@@ -198,77 +187,92 @@ public class PartnerprofilMapper {
 		return a;
 	} */
 
-	
-	
+
 	/**
-	 * Diese Methode gibt alle Eigenschaftsobjekte zu einem Partnerprofil-Objekt p zur�ck
+	 * Diese Methode gibt alle Eigenschaftsobjekte zu einem Partnerprofil-Objekt
+	 * p zur�ck
+	 * 
 	 * @param p
 	 * @return
 	 */
-	public Vector <Eigenschaft> getEigenschaftenOfPartnerprofil (Partnerprofil p){
-		
-		
-		
+	public Vector<Eigenschaft> getEigenschaftenOfPartnerprofil(Partnerprofil p) {
+
 		return EigenschaftMapper.eigenschaftMapper().findByPartnerprofil(p);
 	}
-	
-	
-	/*public Partnerprofil findByOrganisationseinheit (Organisationseinheit o) {
-		Connection con = DBConnection.connection();
-		Partnerprofil p = new Partnerprofil();
 
-		try {
-			Statement stmt = con.createStatement();
+	/*
+	 * public Partnerprofil findByOrganisationseinheit (Organisationseinheit o)
+	 * { Connection con = DBConnection.connection(); Partnerprofil p = new
+	 * Partnerprofil();
+	 * 
+	 * try { Statement stmt = con.createStatement();
+	 * 
+	 * // Abfrage des gesuchten Partnerprofils zur <code>id</code> ResultSet rs
+	 * = stmt.executeQuery("SELECT * " +
+	 * "FROM Partnerprofil WHERE organisationseinheit_id='" +
+	 * o.getOrganisationseinheitId() + "'");
+	 * 
+	 * if (rs.next()) {
+	 * 
+	 * 
+	 * Dem R�ckgabeobjekt werden die Werte aus der Tabelle zugewiesen und so
+	 * das Tupel aus der Tabelle wieder in ein Objekt transformiert.
+	 * 
+	 * p.setID(rs.getInt("id")); p.setErstelldatum(rs.getDate("erstelldatum"));
+	 * p.setAenderungsdatum(rs.getDate("�nderungsdatum"));
+	 * 
+	 * return p; } } catch (SQLException e) { e.printStackTrace(); return null;
+	 * }
+	 * 
+	 * return null; }
+	 */
 
-			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
-			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Partnerprofil WHERE organisationseinheit_id='" + o.getOrganisationseinheitId() + "'");
-
-			if (rs.next()) {
-
-				
-				 * Dem R�ckgabeobjekt werden die Werte aus der Tabelle
-				 * zugewiesen und so das Tupel aus der Tabelle wieder in ein
-				 * Objekt transformiert.
-				 
-				p.setID(rs.getInt("id"));
-				p.setErstelldatum(rs.getDate("erstelldatum"));
-				p.setAenderungsdatum(rs.getDate("�nderungsdatum"));
-			    
-				return p;
-		      }
-		    }
-		    catch (SQLException e) {
-		      e.printStackTrace();
-		      return null;
-		    }
-
-		    return null;
-		  }*/
-	
-	
 	public void deletePartnerprofilOfOrganisationseinheit(Organisationseinheit o) {
 		Connection con = DBConnection.connection();
-		
+
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM partnerprofil WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
-			
+			stmt.executeUpdate(
+					"DELETE FROM partnerprofil WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
+
 		} catch (Exception e2) {
-			 e2.printStackTrace();
+			e2.printStackTrace();
 		}
 	}
-	
+
 	public void deletePartnerprofilOfAusschreibung(Ausschreibung a) {
 		Connection con = DBConnection.connection();
-		
+
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM partnerprofil WHERE ausschreibung_id= " + a.getAusschreibungId());
-			
+
 		} catch (Exception e2) {
-			 e2.printStackTrace();
+			e2.printStackTrace();
 		}
 	}
-	
-}
 
+	public ArrayList<Partnerprofil> findAllPartnerprofile() {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Partnerprofil> result = new ArrayList<Partnerprofil>();
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM partnerprofil");
+
+			while (rs.next()) {
+				Partnerprofil pa = new Partnerprofil();
+				pa.setID(rs.getInt("id"));
+				pa.setErstelldatum(rs.getDate("erstelldatum"));
+				pa.setAenderungsdatum(rs.getDate("aenderungsdatum"));
+
+				result.add(pa);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+}

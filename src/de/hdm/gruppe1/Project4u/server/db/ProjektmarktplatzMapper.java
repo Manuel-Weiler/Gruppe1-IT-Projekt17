@@ -111,14 +111,14 @@ public class ProjektmarktplatzMapper {
 		  try{
 			  Statement stmt = con.createStatement();
 			  
-			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM Projektmarktplatz");
-			  
+			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM projektmarktplatz");
+			   
 			  if (rs.next()) {
 	              p.setProjektmarktplatzId(rs.getInt("maxid") + 1);
 	            }
 			  
 			  stmt.executeUpdate("INSERT INTO Projektmarktplatz (id, name, organisationseinheit_id) " 
-			           + "VALUES (" + p.getProjektmarktplatzId() + ", " + p.getName()+", " + p.getOrganisationseinheitId() + ")");
+			           + "VALUES (" + p.getProjektmarktplatzId() + ", '" + p.getName()+"', " + p.getOrganisationseinheitId() + ");");
 			                    
 			          }
 		      catch (SQLException e) {

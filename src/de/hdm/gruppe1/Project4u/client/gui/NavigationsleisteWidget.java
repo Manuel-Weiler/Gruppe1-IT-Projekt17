@@ -40,6 +40,7 @@ public class NavigationsleisteWidget extends Composite {
 	
 	//Test
 	Button orgaLoeschen = new Button("Orga löschen");
+	Button projektmarktplatzLoeschen = new Button("Projektmarktplatz löschen");
 	Button testBtn = new Button("Test");
 
 	public NavigationsleisteWidget() {
@@ -54,6 +55,7 @@ public class NavigationsleisteWidget extends Composite {
 		//Test
 		menuPanel.add(orgaLoeschen);
 		menuPanel.add(testBtn);
+		menuPanel.add(projektmarktplatzLoeschen);
 
 		// Abstand zwischen den einzelnen Buttons
 		menuPanel.setSpacing(20);
@@ -71,6 +73,7 @@ public class NavigationsleisteWidget extends Composite {
 		//Test
 		orgaLoeschen.setPixelSize(200, 40);
 		testBtn.setPixelSize(200, 40);
+		projektmarktplatzLoeschen.setPixelSize(200, 40);
 		
 		
 		testBtn.addClickHandler(new ClickHandler() {
@@ -89,7 +92,7 @@ public class NavigationsleisteWidget extends Composite {
 				
 				@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
+						
 						
 					}
 				});
@@ -98,6 +101,53 @@ public class NavigationsleisteWidget extends Composite {
 		});
 		
 		orgaLoeschen.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				
+				Project4uVerwaltung.getOrganisationseinheitById(1, new AsyncCallback<Organisationseinheit>() {
+					
+					@Override
+					public void onSuccess(Organisationseinheit result) {
+						RootPanel.get("content").clear();
+						Label erfolgreich1 = new Label("Name: " 
+														+ result.getName() + " ID: "
+														+ result.getOrganisationseinheitId() + " Typ: "
+														+ result.getTyp() + " Partnerprofil ID: "
+														+ result.getPartnerprofilId());
+						RootPanel.get("content").add(erfolgreich1);
+						
+						Project4uVerwaltung.deleteOrganisationseinheit(result, new AsyncCallback<Void>() {
+							
+							@Override
+							public void onSuccess(Void result) {
+								Label orgaLoeschen = new Label("Erfolgreich geloescht");
+								//RootPanel.get("content").clear();
+								RootPanel.get("content").add(orgaLoeschen);
+								
+							}
+							
+							@Override
+							public void onFailure(Throwable caught) {
+								Label orgaLoeschen = new Label("Fail2");
+								RootPanel.get("content").clear();
+								RootPanel.get("content").add(orgaLoeschen);
+								
+							}
+						});
+						
+					}
+					@Override
+					public void onFailure(Throwable caught) {
+						Label orgaLoeschen = new Label("Fail1");
+						RootPanel.get("content").clear();
+						RootPanel.get("content").add(orgaLoeschen);
+						
+					}
+				});
+			
+				
+			}
+		});
+		projektmarktplatzLoeschen.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				
 				Project4uVerwaltung.getOrganisationseinheitById(1, new AsyncCallback<Organisationseinheit>() {
@@ -146,7 +196,7 @@ public class NavigationsleisteWidget extends Composite {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO Logout hinzuf�gen
+				// TODO Logout hinzuf�gen
 
 			}
 		});

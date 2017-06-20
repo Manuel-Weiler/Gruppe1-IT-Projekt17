@@ -53,9 +53,9 @@ public interface Project4uAdministrationAsync {
 
 	void update(Projekt p, AsyncCallback<Void> callback);
 
-	void createProjekt(Projekt p, Projektmarktplatz pm, Organisationseinheit o, AsyncCallback<Projekt> callback);
 
-	
+	void createProjekt(Projekt p, Projektmarktplatz pm, LoginInfo login, AsyncCallback<Projekt> callback);
+
 
 	void findByProjektmarktplatz(Projektmarktplatz projektmarktplatz, AsyncCallback<Vector<Projekt>> callback);
 
@@ -109,5 +109,40 @@ public interface Project4uAdministrationAsync {
 	void getBeteiligungForOrga(Organisationseinheit orga, AsyncCallback<Vector<Beteiligung>> callback);
 
 	void bewerbungenForOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Vector<Bewerbung>> callback);
+
+	void getAusschreibungenForPartnerprofil(Organisationseinheit orga, AsyncCallback<Vector<Ausschreibung>> callback);
+
+	void getBewerbungForOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Vector<Bewerbung>> callback);
+
+	void getAllOrganisationseinheitOfTypPerson(AsyncCallback<Vector<Organisationseinheit>> callback);
+
+	void getAllOrganisationseinheiten(AsyncCallback<Vector<Organisationseinheit>> callback);
+
+	void getAusschreibungenForOrga(Organisationseinheit orga, AsyncCallback<Vector<Ausschreibung>> callback);
+
+	void deleteLinkedTeamUnternehmenOfOrganisationseinheit(LoginInfo login, Organisationseinheit team,
+			AsyncCallback<Void> callback);
+
+	void deleteEigenschaft(Eigenschaft e, AsyncCallback<Void> callback);
+
+	void deleteAllEigenschaftenOfOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Void> callback);
+
+	void insertEigenschaften(Vector<Eigenschaft> eigenschaften, Organisationseinheit orga,
+			AsyncCallback<Void> callback);
+
+	void updateOrganisationseinheit(Organisationseinheit organisationseinheit, AsyncCallback<Void> callback);
+
+	void deletePartnerprofil(Partnerprofil p, AsyncCallback<Void> callback);
+
+	void createAusschreibung(Ausschreibung a, int partnerprofilId, Projekt pr, AsyncCallback<Ausschreibung> callback);
+
+	void insertEigenschaftenByPartnerprofil(Vector<Eigenschaft> eigenschaften, int partnerprofilId,
+			AsyncCallback<Void> callback);
+
+	void getAllEigenschaftenByPartnerprofilId(int partnerprofilId, AsyncCallback<Vector<Eigenschaft>> callback);
+
+	void deleteAllEigenschaftOfPartnerprofil(int partnerprofilId, AsyncCallback<Void> callback);
+
+	void updateAusschreibung(Ausschreibung ausschreibung, AsyncCallback<Ausschreibung> callback);
 
 }
