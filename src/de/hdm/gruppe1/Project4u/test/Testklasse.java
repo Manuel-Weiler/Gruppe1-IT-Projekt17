@@ -7,11 +7,14 @@ import java.util.Vector;
 import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.util.Calendar;
 
+import de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl;
 import de.hdm.gruppe1.Project4u.server.db.AusschreibungMapper;
 import de.hdm.gruppe1.Project4u.server.db.EigenschaftMapper;
 import de.hdm.gruppe1.Project4u.server.db.OrganisationseinheitMapper;
 import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
 import de.hdm.gruppe1.Project4u.server.db.ProjektMapper;
+import de.hdm.gruppe1.Project4u.shared.LoginInfo;
+import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.server.db.ProjektmarktplatzMapper;
 import de.hdm.gruppe1.Project4u.shared.LoginInfo;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
@@ -23,75 +26,46 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
 public class Testklasse {
 	public static void main(String[] args) {
-		
-		
-
-		//SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-	/*	
-		Calendar cal = Calendar.getInstance();
-		cal.set(2017, 7, 10);
-		
-		Date date = new Date();
-		date = cal.getTime();
-		
-		
-		//Date date = sdf.parse(strDate); 
-		
-	
 
 
-		a.setNameProjektleiter("HS");
-		a.setPartnerprofilId(2);
-		a.setProjektId(3);
-		a.setErstellDatum(new Date());
-		 
-		Partnerprofil pa = new Partnerprofil();
-		pa.setPartnerprofilId(0);
-		Projekt pr = new Projekt ();
-		pr.setProjektId(1);
-		
-		 
-		PartnerprofilMapper p = PartnerprofilMapper.partnerprofilMapper();
-		ProjektMapper l = ProjektMapper.projektMapper(); */
+		Vector<Ausschreibung> ergebnis = new Vector<Ausschreibung>();
+		AusschreibungMapper am = new AusschreibungMapper();
+		ArrayList<Ausschreibung> auss = am.findAllAusschreibungen();
+		ProjektMapper pm = new ProjektMapper();
+		Vector<Projekt> p = pm.findAll();
 
-		//AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
-	//	p=p.findById(0);
-		
+		OrganisationseinheitMapper om = new OrganisationseinheitMapper();
+		Organisationseinheit orga = om.findByKey(2);
 
-		//am.findByPartnerprofil(pa);
+		for (Projekt pro : p) {
+			// Für alle Projekte mit der OrganisationseinheitsId XY...
+			if (pro.getOrganisationseinheitId() == orga.getOrganisationseinheitId()) {
+				for (Ausschreibung ausschreibung : auss) {
+					// ...füge die Ausschreibungen dem ergebnis-Vektor hinzu.
+					if (pro.getProjektId() == ausschreibung.getProjektId()) {
+						ergebnis.add(ausschreibung);
+					}
+				}
+			}
+		}
 
-		//am.insertAusschreibung(a, pa, pr);
+		for(Ausschreibung au : ergebnis){
+			System.out.println(au.getNameProjektleiter());
+		}
 
-
-
-		OrganisationseinheitMapper om = OrganisationseinheitMapper.organisationseinheitMapper();
-		  Vector<Organisationseinheit> ev= new Vector<Organisationseinheit>();
-
-		
-		LoginInfo login = new LoginInfo();
-		Projektmarktplatz pm = new Projektmarktplatz();
-		pm.setName("knuu");
-		pm.setOrganisationseinheitId(1);
-		
-		
-		
-	//	ProjektmarktplatzMapper om = ProjektmarktplatzMapper.projektmarktplatzMapper();
-		 
-		//om.insert(pm);
-		 
-		/*
-		for(Organisationseinheit e: ev){
-			System.out.println(e.getName());
-
-			
-		} 
-		*/
-		
-		
-		
 		
 		
 	}
-		
-		
+
 }
+
+
+
+
+
+
+
+
+
+
+

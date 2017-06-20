@@ -41,7 +41,7 @@ public class OrganisationseinheitMapper {
 	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
-	protected OrganisationseinheitMapper(){
+	public OrganisationseinheitMapper(){
 		
 	}
 	

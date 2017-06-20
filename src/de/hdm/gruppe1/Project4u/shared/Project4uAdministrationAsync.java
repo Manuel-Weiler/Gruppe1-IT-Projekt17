@@ -10,6 +10,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
+import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
@@ -103,6 +105,20 @@ public interface Project4uAdministrationAsync {
 
 	void getLinkedTeamAndUnternehmenOfOrganisationseinheit(LoginInfo login,
 			AsyncCallback<Vector<Organisationseinheit>> callback);
+
+	void getBeteiligungForOrga(Organisationseinheit orga, AsyncCallback<Vector<Beteiligung>> callback);
+
+	void bewerbungenForOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Vector<Bewerbung>> callback);
+
+	void getAusschreibungenForPartnerprofil(Organisationseinheit orga, AsyncCallback<Vector<Ausschreibung>> callback);
+
+	void getBewerbungForOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Vector<Bewerbung>> callback);
+
+	void getAllOrganisationseinheitOfTypPerson(AsyncCallback<Vector<Organisationseinheit>> callback);
+
+	void getAllOrganisationseinheiten(AsyncCallback<Vector<Organisationseinheit>> callback);
+
+	void getAusschreibungenForOrga(Organisationseinheit orga, AsyncCallback<Vector<Ausschreibung>> callback);
 
 	void deleteLinkedTeamUnternehmenOfOrganisationseinheit(LoginInfo login, Organisationseinheit team,
 			AsyncCallback<Void> callback);

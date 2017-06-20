@@ -40,7 +40,9 @@ public class ProjektMapper {
 	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
-	protected ProjektMapper() {
+
+	public ProjektMapper(){
+		
 
 	}
 
@@ -212,9 +214,7 @@ public class ProjektMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT id, name, startdatum, enddatum, beschreibung,"
-		      		                         + "projektmarktplatz_id, organisationseinheit_id" 
-		    		                         + "FROM Projekt" + "ORDER BY id"+ "'");
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM projekt");
 		   
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
