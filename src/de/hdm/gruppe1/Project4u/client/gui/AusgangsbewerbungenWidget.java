@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
@@ -186,7 +187,15 @@ public class AusgangsbewerbungenWidget extends Composite{
 					vep.add(close);
 					box.setText("Bewerbungsübersicht");
 					box.add(vep);
-					box.center();
+					box.setPopupPositionAndShow(new PositionCallback() {
+						
+						@Override
+						public void setPosition(int offsetWidth, int offsetHeight) {
+							box.setPopupPosition(Window.getClientWidth()/2-(box.getOffsetWidth()), 
+									Window.getClientHeight()/4);
+							
+						}
+					});
 					
 					
 			
