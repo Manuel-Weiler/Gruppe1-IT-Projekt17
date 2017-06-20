@@ -24,7 +24,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
  * @author Tobias
  *
  */
-public class OrganisationseinheitProfilAnzeigeWidget extends Composite{
+public class OrganisationseinheitProfilAnzeigeWidget {
 	
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	
@@ -109,10 +109,12 @@ public class OrganisationseinheitProfilAnzeigeWidget extends Composite{
 			}
 		});
 		
-		initWidget(vp);
+		
 	}
 	
-	
+	public VerticalPanel getVP(){
+		return this.vp;
+	}
 	
 	
 	

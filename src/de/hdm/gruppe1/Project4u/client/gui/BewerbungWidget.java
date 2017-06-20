@@ -12,19 +12,19 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
-import de.hdm.gruppe1.Project4u.server.db.DBConnection;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
@@ -49,7 +49,6 @@ public class BewerbungWidget {
 	DateTimeFormat dateFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
 	HTML hinweis = new HTML(
 			"<p>Bitte wählen Sie das Profil mit dem Sie sich bewerben <br>Das Profil wird dem Projektleiter übermittel, passen Sie es ggf. an!</p>");
-
 	Label ausName = new Label("Bewerbung auf die Ausschreibung: ");
 	Label datum = new Label("Datum ");
 	Label text = new Label("Motivationsschreiben: ");
@@ -62,6 +61,10 @@ public class BewerbungWidget {
 	
 	Button save = new Button("Bewerbung abschicken");
 	Button cancel = new Button("Abbrechen");
+	
+	
+	
+	
 	
 	public BewerbungWidget(Ausschreibung aus){
 		this.auss = aus;
@@ -100,8 +103,15 @@ public class BewerbungWidget {
 		
 		vp.add(hinweis);
 		vp.add(flex);
+		box.add(vp);
 		
 		
+	}
+	
+	
+	
+	public VerticalPanel getVP(){
+		return this.vp;
 	}
 	
 	
@@ -112,8 +122,6 @@ public class BewerbungWidget {
 		
 		@Override
 		public void onClick(ClickEvent event) {
-			
-		
 			
 			Bewerbung neu = new Bewerbung();
 			
@@ -140,6 +148,8 @@ public class BewerbungWidget {
 			});
 		}
 	}
+	
+	
 	
 	
 	
@@ -206,6 +216,13 @@ public class BewerbungWidget {
 	
 	//TODO:
 	public void setAllDisabled (){
+		hinweis.setHTML("<p class='heading'>Ihre Bewerbungsdaten: </p>");
+		
+		save.setVisible(false);
+		cancel.setVisible(false);
+		freitext.setReadOnly(true);
+		
+		bewerbendesProfil.setVisible(false);
 		
 	}
 	

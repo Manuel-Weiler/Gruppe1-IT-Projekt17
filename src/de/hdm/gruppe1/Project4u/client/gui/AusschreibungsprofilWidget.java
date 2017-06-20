@@ -60,9 +60,9 @@ public class AusschreibungsprofilWidget {
 	Projektmarktplatz pMart = new Projektmarktplatz();
 	
 	Button savenew = new Button("Speichern");
-	Button update = new Button("Speichernnnn");
+	Button update = new Button("Speichern");
 	Button cancel = new Button("Abbrechen");
-	//TODO: bewerben
+	
 	
 	Button change = new Button("Bearbeiten");
 	Button quit = new Button("Ausschreibung abbrechen");
@@ -77,7 +77,7 @@ public class AusschreibungsprofilWidget {
 	HTML ausschrtext = new HTML("Ausschreibungstext: ");
 	
 	//TODO: Buttongröße
-	//TODO: STATUS
+	
 	//TODO: Ausschreibung beenden
 	TextBox bezeichnung = new TextBox();
 	TextBox projektleiter = new TextBox();
