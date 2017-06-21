@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
+import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
@@ -50,6 +51,7 @@ public class BewertungWidget {
 	Button save = new Button("Bewertung erstellen");
 	Button cancel = new Button("Abbrechen");
 	Bewerbung bew = new Bewerbung();
+	Bewertung bewertg = new Bewertung();
 	
 	
 	public BewertungWidget(Bewerbung bewerbung){
@@ -108,7 +110,7 @@ public class BewertungWidget {
 				
 				@Override
 				public void onSuccess(Bewertung result) {
-					
+					bewertg = result;
 					box.hide();
 					MessageBox.alertWidget("Erfolg!",
 							"Ihre Bewertung wurde erfolgreich angelegt.");
@@ -122,11 +124,20 @@ public class BewertungWidget {
 							
 							@Override
 							public void onSuccess(Projekt projekt) {
-								// TODO Auto-generated method stub
-								
 								long personentage = projekt.getEnddatum().getTime()-new Date().getTime();
 								long tage =  TimeUnit.DAYS.convert(personentage, TimeUnit.MILLISECONDS);
-								Project4uVerwaltung.createBeteiligung(new Date(), projekt.getEnddatum(), personentage, organisationseinheitId, projektId, bewertungId, callback);
+								int t = (int) tage;
+								Project4uVerwaltung.createBeteiligung(new Date(), projekt.getEnddatum(), t, bew.getOrganisationseinheitId(), projekt.getProjektId(), bewertg.getBewerbungId(), new AsyncCallback<Beteiligung>() {
+									
+									@Override
+									public void onSuccess(Beteiligung result) {
+										// TODO Auto-generated method stub
+										
+									}
+									@Override
+									public void onFailure(Throwable caught) {
+									}
+								});
 
 							}
 							
