@@ -109,17 +109,12 @@ public class EingangsbewerbungenWidget {
 				
 				@Override
 				public void onClick(ClickEvent event) {
-					Project4uVerwaltung.deleteBewerbung(clickedBewerbung, new AsyncCallback<Void>() {
-						
-						@Override
-						public void onSuccess(Void result) {
-							//TODO: Bewerberbung bewerten
-						}
-						
-						@Override
-						public void onFailure(Throwable caught) {
-						}
-					});
+					BewertungWidget bew = new BewertungWidget();
+					details.clear();
+					box.clear();
+					box.hide();
+					bew.show();
+					
 					
 				}
 			});
