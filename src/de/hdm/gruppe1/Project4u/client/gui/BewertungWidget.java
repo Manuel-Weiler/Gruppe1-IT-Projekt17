@@ -22,6 +22,8 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
 
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -41,12 +43,15 @@ public class BewertungWidget {
 	ListBox bewertungspunkte = new ListBox();
 	TextArea beurteilung = new TextArea();
 	HTML punkte = new HTML("Bewerten Sie die Bewerbung</br> mit Punkten von 0,0 bis 1,0 ");
-	Label text = new Label("Beurteilungstext: ");
+	HTML text = new HTML(
+			"Beurteilungstext: </br></br><b>Hinweis:</b> Bei einer Bewertung von 1.0</br> wird automatisch eine Beteiligung festgelegt.");
 	Button save = new Button("Bewertung erstellen");
 	Button cancel = new Button("Abbrechen");
+	Bewerbung bew = new Bewerbung();
 	
 	
-	public BewertungWidget(){
+	public BewertungWidget(Bewerbung bewerbung){
+		bew = bewerbung;
 		
 		flex.setWidget(0, 0, punkte);
 		flex.setWidget(0, 1, bewertungspunkte);
@@ -80,7 +85,37 @@ public class BewertungWidget {
 			}
 		});
 		
+		save.addClickHandler(new saveClickHandler());
 		
+	}
+	
+	
+	
+	private class saveClickHandler implements ClickHandler {
+
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			Bewertung bewert = new Bewertung();
+			float points = Float.parseFloat(bewertungspunkte.getSelectedValue());
+            bewert.setBewertungspunkte(points); 
+            bewert.setStellungnahme(beurteilung.getValue());
+            bewert.setBewerbungID(bew.getBewerbungId());
+			
+			Project4uVerwaltung.createBewertung(bewert, new AsyncCallback<Bewertung>() {
+				
+				@Override
+				public void onSuccess(Bewertung result) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+				}
+			});
+			
+		}
 		
 	}
 	

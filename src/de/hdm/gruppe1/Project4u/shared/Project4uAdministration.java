@@ -123,7 +123,7 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Vector<Bewerbung> getEingangsbewerbungenOfProjektleiter(LoginInfo login)throws IllegalArgumentException;
 	
-
+	public Bewertung createBewertung(Bewertung bewertung)throws IllegalArgumentException ;
 
 
 }

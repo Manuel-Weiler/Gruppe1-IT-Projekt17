@@ -837,13 +837,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 
-	public Bewertung createBewertung(Bewerbung bewerbung, float bewertungspunkte, String stellungnahme)
+	public Bewertung createBewertung(Bewertung bewertung)
 			throws IllegalArgumentException {
-		Bewertung bewertung = new Bewertung();
-		bewertung.setBewerbungID(bewerbung.getBewerbungId());
-		bewertung.setBewertungspunkte(bewertungspunkte);
-		bewertung.setStellungnahme(stellungnahme);
-		return this.bewertungMapper.insert(bewertung, bewerbung);
+		
+		return this.bewertungMapper.insert(bewertung);
 	}
 
 	public void updateBewertung(Bewertung bewertung) throws IllegalArgumentException {

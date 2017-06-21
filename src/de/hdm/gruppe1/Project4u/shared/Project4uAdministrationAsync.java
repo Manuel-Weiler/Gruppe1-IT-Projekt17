@@ -16,6 +16,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
@@ -142,5 +143,7 @@ public interface Project4uAdministrationAsync {
 	void deleteBewerbung(Bewerbung bewerbung, AsyncCallback<Void> callback);
 
 	void getEingangsbewerbungenOfProjektleiter(LoginInfo login, AsyncCallback<Vector<Bewerbung>> callback);
+
+	void createBewertung(Bewertung bewertung, AsyncCallback<Bewertung> callback);
 
 }

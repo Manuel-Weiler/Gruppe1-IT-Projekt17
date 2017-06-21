@@ -109,7 +109,7 @@ public class EingangsbewerbungenWidget {
 				
 				@Override
 				public void onClick(ClickEvent event) {
-					BewertungWidget bew = new BewertungWidget();
+					BewertungWidget bew = new BewertungWidget(clickedBewerbung);
 					details.clear();
 					box.clear();
 					box.hide();
