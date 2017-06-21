@@ -103,7 +103,7 @@ public class BewerbungWidget {
 		
 		vp.add(hinweis);
 		vp.add(flex);
-		box.add(vp);
+		
 		
 		
 	}
@@ -215,11 +215,12 @@ public class BewerbungWidget {
 	
 	
 	
-	public void setAllDisabled (){
+	public void setAllDisabled (Bewerbung b){
 		hinweis.setHTML("<p class='heading'>Ihre Bewerbungsdaten: </p>");
 		
 		save.setVisible(false);
 		cancel.setVisible(false);
+		freitext.setValue(b.getBewerbungstext());
 		freitext.setReadOnly(true);
 		
 		bewerbendesProfil.setVisible(false);

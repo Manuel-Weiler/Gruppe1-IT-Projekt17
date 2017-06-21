@@ -115,6 +115,8 @@ public interface Project4uAdministration extends RemoteService{
 
 	public Bewerbung createBewerbung(Bewerbung bewerbung, int ausschreibungId, int organisationsId) throws IllegalArgumentException;
 
+	public void deleteBewerbung(Bewerbung bewerbung)throws IllegalArgumentException;
+	
 	public Vector<Bewerbung> getAllBewerbungenOfUser(LoginInfo login) throws IllegalArgumentException;
 
 	public Vector<Bewerbung> getAllBewerbungenOfLinkedTeamAndUnternehmen (LoginInfo login)throws IllegalArgumentException;

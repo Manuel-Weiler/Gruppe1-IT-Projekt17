@@ -41,13 +41,17 @@ public class AusgangsbewerbungenWidget extends Composite {
 	VerticalPanel vp = new VerticalPanel();
 	VerticalPanel vep = new VerticalPanel();
 	Vector<Bewerbung> bew = new Vector<>();
+	Bewerbung clickedBewerbung = new Bewerbung();
 	HTML headingUserBew = new HTML("<p class='heading'>Alle Bewerbungen Ihres perönlichen Profils '"
 			+ ClientsideSettings.getAktuellerUser().getEmailAddress() + "'</p>");
 	HTML headingOrgaBew = new HTML(
 			"<p id='heading'>Bewerbungen der Teams und Unternehmen, der Sie zugehörig sind: </p>");
 	DialogBox box = new DialogBox();
 	HorizontalPanel details = new HorizontalPanel();
+	HorizontalPanel buttons = new HorizontalPanel();
 	Button close = new Button("Schließen");
+	Button delete = new Button("Bewerbung zurückziehen");
+	
 
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch
@@ -106,11 +110,35 @@ public class AusgangsbewerbungenWidget extends Composite {
 					public void onFailure(Throwable caught) {
 					}
 				});
+		
+		delete.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Project4uVerwaltung.deleteBewerbung(clickedBewerbung, new AsyncCallback<Void>() {
+					
+					@Override
+					public void onSuccess(Void result) {
+						MessageBox.alertWidget("Löschen Bewerbung", "Ihre Bewerbung wurde erfolgreich gelöscht!");
+						close.click();
+						RootPanel.get("content").clear();
+						new AusgangsbewerbungenWidget();
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+					}
+				});
+				
+			}
+		});
 
 		close.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				details.clear();
+				box.clear();
 				box.hide();
 
 			}
@@ -268,6 +296,7 @@ public class AusgangsbewerbungenWidget extends Composite {
 
 		@Override
 		public void update(int index, final Bewerbung object, String value) {
+			clickedBewerbung = object;
 
 			Project4uVerwaltung.findByIdAusschreibung(object.getAusschreibungId(), new AsyncCallback<Ausschreibung>() {
 
@@ -277,12 +306,14 @@ public class AusgangsbewerbungenWidget extends Composite {
 					OrganisationseinheitProfilAnzeigeWidget profil = new OrganisationseinheitProfilAnzeigeWidget(
 							object.getOrganisationseinheitId());
 					BewerbungWidget bewerbung = new BewerbungWidget(result);
-					bewerbung.setAllDisabled();
+					bewerbung.setAllDisabled(object);
 
 					details.add(profil.getVP());
 					details.add(bewerbung.getVP());
 					vep.add(details);
-					vep.add(close);
+					buttons.add(close);
+					buttons.add(delete);
+					vep.add(buttons);
 					box.setText("Bewerbungsübersicht");
 					box.add(vep);
 					box.setPopupPositionAndShow(new PositionCallback() {
