@@ -28,21 +28,18 @@ public class Project4u implements EntryPoint {
 	static final int REFRESH_INTERVAL = 5000; // ms
 
 	public static final NavigationsleisteWidget nt = new NavigationsleisteWidget();
-	  private VerticalPanel mainPanel = new VerticalPanel();
-	  private FlexTable stocksFlexTable = new FlexTable();
-	  private HorizontalPanel addPanel = new HorizontalPanel();
-	  private Label lastUpdatedLabel = new Label();
+	
 	    private LoginInfo loginInfo = null;
 	    private VerticalPanel loginPanel = new VerticalPanel();
 	    private Label loginLabel = new Label("Bitte einloggen um auf die Project4u-Plattform zugreifen zu können");
 	    private Anchor signInLink = new Anchor("Sign In");
-	    private Anchor signOutLink = new Anchor("Sign Out");
+	    
 
 
 	public void onModuleLoad() {
 		// Check login status using login service.
 
-		LoginServiceAsync loginService = GWT.create(LoginService.class);
+		LoginServiceAsync loginService = ClientsideSettings.getLoginService();
 		loginService.login(GWT.getHostPageBaseURL() + editorHtmlName, new AsyncCallback<LoginInfo>() {
 			public void onFailure(Throwable error) {
 			}
