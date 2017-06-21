@@ -120,7 +120,9 @@ public class AusgangsbewerbungenWidget extends Composite {
 					@Override
 					public void onSuccess(Void result) {
 						MessageBox.alertWidget("Löschen Bewerbung", "Ihre Bewerbung wurde erfolgreich gelöscht!");
-						close.click();
+						details.clear();
+						box.clear();
+						box.hide();
 						RootPanel.get("content").clear();
 						new AusgangsbewerbungenWidget();
 					}

@@ -52,10 +52,8 @@ public class EingangsbewerbungenWidget {
 		VerticalPanel vep = new VerticalPanel();
 		Vector<Bewerbung> bew = new Vector<>();
 		Bewerbung clickedBewerbung = new Bewerbung();
-		HTML headingUserBew = new HTML("<p class='heading'>Alle Bewerbungen Ihres perönlichen Profils '"
-				+ ClientsideSettings.getAktuellerUser().getEmailAddress() + "'</p>");
-		HTML headingOrgaBew = new HTML(
-				"<p id='heading'>Bewerbungen der Teams und Unternehmen, der Sie zugehörig sind: </p>");
+		HTML headingUserBew = new HTML("<p class='heading'>Alle eingegangenen Bewerbungen zu Projekten, an denen Sie Projektleiter sind</p>");
+		
 		DialogBox box = new DialogBox();
 		HorizontalPanel details = new HorizontalPanel();
 		HorizontalPanel buttons = new HorizontalPanel();
@@ -158,7 +156,8 @@ public class EingangsbewerbungenWidget {
 					return object.getAusschreibungsname();
 				}
 			};
-
+			
+			
 			DateCell datecell = new DateCell();
 			Column<Bewerbung, Date> erstelldatum = new Column<Bewerbung, Date>(datecell) {
 
@@ -179,7 +178,7 @@ public class EingangsbewerbungenWidget {
 				@Override
 				public String getValue(Bewerbung bewerbung) {
 					// The value to display in the button.
-					return "Details";
+					return "Bewerberprofil anzeigen";
 				}
 			};
 
@@ -244,7 +243,7 @@ public class EingangsbewerbungenWidget {
 						buttons.add(close);
 						buttons.add(bewerten);
 						vep.add(buttons);
-						box.setText("Bewerbungsübersicht");
+						box.setText("Bewerbungsansicht");
 						box.add(vep);
 						box.setPopupPositionAndShow(new PositionCallback() {
 

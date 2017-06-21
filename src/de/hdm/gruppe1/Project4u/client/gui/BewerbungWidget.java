@@ -131,6 +131,7 @@ public class BewerbungWidget {
 			neu.setBewerbungstext(freitext.getValue());
 			neu.setStatus("ausstehend");
 			neu.setProjektname(proj.getName());
+			neu.setAusschreibungsname(auss.getBezeichnung());
 			
 			Project4uVerwaltung.createBewerbung(neu, auss.getAusschreibungId(), neu.getOrganisationseinheitId(), new AsyncCallback<Bewerbung>() {
 				
