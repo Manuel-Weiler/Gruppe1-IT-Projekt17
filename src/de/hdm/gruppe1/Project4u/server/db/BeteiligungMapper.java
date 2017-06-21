@@ -52,11 +52,11 @@ public class BeteiligungMapper {
 						+ "VALUES ("
 						+ b.getBeteiligungId() + ",'" 
 						+ b.getStartdatum() + "','" 
-						+ b.getEnddatum() + "','" 
-						+ b.getPersonentage() + "','" 
-						+ b.getOrganisationseinheitId() + "','" 
-						+ b.getProjektId() + "','" 
-						+ b.getBewertungId() + "')");
+						+ b.getEnddatum() + "'," 
+						+ b.getPersonentage() + "," 
+						+ b.getOrganisationseinheitId() + "," 
+						+ b.getProjektId() + "," 
+						+ b.getBewertungId() + ")");
 			}
 		} catch (SQLException s) {
 			s.printStackTrace();

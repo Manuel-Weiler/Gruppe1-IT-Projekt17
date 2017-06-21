@@ -4,7 +4,7 @@ package de.hdm.gruppe1.Project4u.shared;
 import java.util.Vector;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -145,5 +145,10 @@ public interface Project4uAdministrationAsync {
 	void getEingangsbewerbungenOfProjektleiter(LoginInfo login, AsyncCallback<Vector<Bewerbung>> callback);
 
 	void createBewertung(Bewertung bewertung, AsyncCallback<Bewertung> callback);
+
+	void createBeteiligung(Date startdatum, Date enddatum, int personentage, int organisationseinheitId, int projektId,
+			int bewertungId, AsyncCallback<Beteiligung> callback);
+
+	void getProjektOfBewerbung(Bewerbung bewerbung, AsyncCallback<Projekt> callback);
 
 }

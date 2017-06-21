@@ -4,7 +4,7 @@ package de.hdm.gruppe1.Project4u.shared;
 import java.util.Vector;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -113,6 +113,8 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Vector <Organisationseinheit> findProjektleiterOfProjects (Vector<Projekt> projekte)throws IllegalArgumentException;
 
+	
+	
 	public Bewerbung createBewerbung(Bewerbung bewerbung, int ausschreibungId, int organisationsId) throws IllegalArgumentException;
 
 	public void deleteBewerbung(Bewerbung bewerbung)throws IllegalArgumentException;
@@ -125,5 +127,7 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Bewertung createBewertung(Bewertung bewertung)throws IllegalArgumentException ;
 
+	public Beteiligung createBeteiligung(Date startdatum, Date enddatum, int personentage, int organisationseinheitId, int projektId, int bewertungId)throws IllegalArgumentException;
 
+	public Projekt getProjektOfBewerbung(Bewerbung bewerbung)throws IllegalArgumentException;
 }

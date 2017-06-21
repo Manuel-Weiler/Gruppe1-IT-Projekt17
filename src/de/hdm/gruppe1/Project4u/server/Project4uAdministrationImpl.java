@@ -542,6 +542,16 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 		return this.projektMapper.findByOrganisationseinheit(orga);
 	}
+	
+	
+	
+	public Projekt getProjektOfBewerbung(Bewerbung bewerbung)throws IllegalArgumentException{
+		
+		Ausschreibung a = findByIdAusschreibung(bewerbung.getAusschreibungId());
+		Projekt p = findProjektById(a.getProjektId());
+		
+		return p;
+	}
 
 	/*
 	 * #########################################################################
@@ -874,16 +884,16 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 */
 
 	public Beteiligung createBeteiligung(Date startdatum, Date enddatum, int personentage,
-			Organisationseinheit organisationseinheit, Projekt projekt, Bewertung bewertung)
+			int organisationseinheitId, int projektId, int bewertungId)
 					throws IllegalArgumentException {
 
 		Beteiligung beteiligung = new Beteiligung();
 		beteiligung.setStartdatum(startdatum);
 		beteiligung.setEnddatum(enddatum);
 		beteiligung.setPersonentage(personentage);
-		beteiligung.setOrganisationseinheitId(organisationseinheit.getOrganisationseinheitId());
-		beteiligung.setBewertungId(bewertung.getBewertungId());
-		beteiligung.setProjektId(projekt.getProjektId());
+		beteiligung.setOrganisationseinheitId(organisationseinheitId);
+		beteiligung.setBewertungId(bewertungId);
+		beteiligung.setProjektId(projektId);
 
 		return this.beteiligungMapper.insertBeteiligung(beteiligung);
 	}
