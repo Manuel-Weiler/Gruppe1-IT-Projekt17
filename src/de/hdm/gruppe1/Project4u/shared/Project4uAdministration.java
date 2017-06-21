@@ -104,5 +104,6 @@ public interface Project4uAdministration extends RemoteService{
 
 	public Vector<Bewerbung> getAllBewerbungenOfUser(LoginInfo login) throws IllegalArgumentException;
 
-
+	public Vector<Bewerbung> getAllBewerbungenOfLinkedTeamAndUnternehmen (LoginInfo login)throws IllegalArgumentException;
+	
 }

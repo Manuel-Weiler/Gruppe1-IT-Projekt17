@@ -141,4 +141,6 @@ public interface Project4uAdministrationAsync {
 
 	void findProjektById(int id, AsyncCallback<Projekt> callback);
 
+	void getAllBewerbungenOfLinkedTeamAndUnternehmen(LoginInfo login, AsyncCallback<Vector<Bewerbung>> callback);
+
 }

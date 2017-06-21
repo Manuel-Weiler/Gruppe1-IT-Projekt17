@@ -35,18 +35,20 @@ import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
-public class AusgangsbewerbungenWidget extends Composite{
+public class AusgangsbewerbungenWidget extends Composite {
 
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	VerticalPanel vp = new VerticalPanel();
 	VerticalPanel vep = new VerticalPanel();
 	Vector<Bewerbung> bew = new Vector<>();
-	HTML headingUserBew = new HTML("<p class='heading'>Alle Bewerbungen Ihres perönlichen Profils '"+ClientsideSettings.getAktuellerUser().getEmailAddress()+"'</p>");
-	HTML headingOrgaBew = new HTML("<p class='heading'>Bewerbungen der Teams und Unternehmen, der Sie zugehörig sind: </p>");
+	HTML headingUserBew = new HTML("<p class='heading'>Alle Bewerbungen Ihres perönlichen Profils '"
+			+ ClientsideSettings.getAktuellerUser().getEmailAddress() + "'</p>");
+	HTML headingOrgaBew = new HTML(
+			"<p id='heading'>Bewerbungen der Teams und Unternehmen, der Sie zugehörig sind: </p>");
 	DialogBox box = new DialogBox();
 	HorizontalPanel details = new HorizontalPanel();
 	Button close = new Button("Schließen");
-	
+
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch
 	 * einzelne Objekte der in der Liste weiter verarbeitet werden k�nnen.
@@ -59,11 +61,17 @@ public class AusgangsbewerbungenWidget extends Composite{
 	};
 
 	CellTable<Bewerbung> userBewerbungen = new CellTable<Bewerbung>(KEY_PROVIDER);
+	CellTable<Bewerbung> linkedBewerbungen = new CellTable<Bewerbung>(KEY_PROVIDER);
+	
+	
+	
 
 	public AusgangsbewerbungenWidget() {
 		RootPanel.get("contentHeader").clear();
-		RootPanel.get("contentHeader").add(new Label("Alle Bewerbungen"));
-
+		RootPanel.get("contentHeader").add(new Label("Ausgangsbewerbungen"));
+		
+		
+		
 		Project4uVerwaltung.getAllBewerbungenOfUser(ClientsideSettings.getAktuellerUser(),
 				new AsyncCallback<Vector<Bewerbung>>() {
 
@@ -72,8 +80,27 @@ public class AusgangsbewerbungenWidget extends Composite{
 						bew = result;
 						vp.add(headingUserBew);
 						vp.add(createTableOfUserbewerbungen(result));
-						RootPanel.get("content").clear();
-						RootPanel.get("content").add(vp);
+
+						Project4uVerwaltung.getAllBewerbungenOfLinkedTeamAndUnternehmen(
+								ClientsideSettings.getAktuellerUser(), new AsyncCallback<Vector<Bewerbung>>() {
+
+							@Override
+							public void onSuccess(Vector<Bewerbung> linkedBewerbungen) {
+								
+								
+								vp.add(headingOrgaBew);
+								vp.add(createTableOfLinkedOrgabewerbungen(linkedBewerbungen));
+
+								RootPanel.get("content").clear();
+								RootPanel.get("content").add(vp);
+
+							}
+
+							@Override
+							public void onFailure(Throwable caught) {
+							}
+						});
+
 					}
 
 					public void onFailure(Throwable caught) {
@@ -81,20 +108,19 @@ public class AusgangsbewerbungenWidget extends Composite{
 				});
 
 		close.addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				box.hide();
-				
+
 			}
 		});
-		
-	}
 
+	}
 	
 	
 	
-	
+
 	private CellTable<Bewerbung> createTableOfUserbewerbungen(Vector<Bewerbung> bewerbungen) {
 
 		// Die Spalten der Bewerbung-Tabelle werden erstellt und deren
@@ -126,21 +152,20 @@ public class AusgangsbewerbungenWidget extends Composite{
 				return object.getStatus();
 			}
 		};
-		
+
 		ButtonCell buttonCell = new ButtonCell();
 		Column<Bewerbung, String> buttonColumn = new Column<Bewerbung, String>(buttonCell) {
-		  @Override
-		  public String getValue(Bewerbung bewerbung) {
-		    // The value to display in the button.
-		    return "Details";
-		  }
+			@Override
+			public String getValue(Bewerbung bewerbung) {
+				// The value to display in the button.
+				return "Details";
+			}
 		};
-		
 
-		//You can then set a FieldUpdater on the Column to be notified of clicks.
-		
+		// You can then set a FieldUpdater on the Column to be notified of
+		// clicks.
+
 		buttonColumn.setFieldUpdater(new detailButtonFieldUpdater());
-		
 
 		/*
 		 * Hinzuf�gen der Spalten zur Tabelle, in der Reihenfolge von Links nach
@@ -157,7 +182,7 @@ public class AusgangsbewerbungenWidget extends Composite{
 		userBewerbungen.setWidth(RootPanel.get("content").getOffsetWidth() + "px");
 
 		userBewerbungen.setRowData(bewerbungen);
-		
+
 		// TODO: ggf. pager
 
 		return userBewerbungen;
@@ -167,20 +192,93 @@ public class AusgangsbewerbungenWidget extends Composite{
 	
 	
 	
-	private class detailButtonFieldUpdater implements FieldUpdater <Bewerbung, String>{
+
+	private CellTable<Bewerbung> createTableOfLinkedOrgabewerbungen(Vector<Bewerbung> bewerbungen) {
+
+		// Die Spalten der Bewerbung-Tabelle werden erstellt und deren
+		// Inhalt definiert.
+
+		TextColumn<Bewerbung> projekt = new TextColumn<Bewerbung>() {
+			public String getValue(Bewerbung object) {
+				return object.getProjektname();
+			}
+		};
+
+		TextColumn<Bewerbung> ausschreibung = new TextColumn<Bewerbung>() {
+			public String getValue(Bewerbung object) {
+				return object.getAusschreibungsname();
+			}
+		};
+
+		DateCell datecell = new DateCell();
+		Column<Bewerbung, Date> erstelldatum = new Column<Bewerbung, Date>(datecell) {
+
+			@Override
+			public Date getValue(Bewerbung object) {
+				return object.getErstelldatum();
+			}
+		};
+
+		TextColumn<Bewerbung> status = new TextColumn<Bewerbung>() {
+			public String getValue(Bewerbung object) {
+				return object.getStatus();
+			}
+		};
+
+		ButtonCell buttonCell = new ButtonCell();
+		Column<Bewerbung, String> buttonColumn = new Column<Bewerbung, String>(buttonCell) {
+			@Override
+			public String getValue(Bewerbung bewerbung) {
+				// The value to display in the button.
+				return "Details";
+			}
+		};
+
+		// You can then set a FieldUpdater on the Column to be notified of
+		// clicks.
+
+		buttonColumn.setFieldUpdater(new detailButtonFieldUpdater());
+
+		/*
+		 * Hinzuf�gen der Spalten zur Tabelle, in der Reihenfolge von Links nach
+		 * Rechts. Definition der Spaltennamen.
+		 */
+
+		linkedBewerbungen.addColumn(projekt, "Projekt");
+		linkedBewerbungen.addColumn(ausschreibung, "Ausschreibung");
+		linkedBewerbungen.addColumn(erstelldatum, "Erstelldatum");
+		linkedBewerbungen.addColumn(status, "Status");
+		linkedBewerbungen.addColumn(buttonColumn);
+
+		// Anpassen des Widgets an die Breite des div-Elements "content"
+		linkedBewerbungen.setWidth(RootPanel.get("content").getOffsetWidth() + "px");
+
+		linkedBewerbungen.setRowData(bewerbungen);
+
+		// TODO: ggf. pager
+
+		return linkedBewerbungen;
+	}
+	
+	
+	
+	
+
+	private class detailButtonFieldUpdater implements FieldUpdater<Bewerbung, String> {
 
 		@Override
 		public void update(int index, final Bewerbung object, String value) {
-			
+
 			Project4uVerwaltung.findByIdAusschreibung(object.getAusschreibungId(), new AsyncCallback<Ausschreibung>() {
-				
+
 				@Override
 				public void onSuccess(Ausschreibung result) {
-					
-					OrganisationseinheitProfilAnzeigeWidget profil = new OrganisationseinheitProfilAnzeigeWidget(object.getOrganisationseinheitId());
+
+					OrganisationseinheitProfilAnzeigeWidget profil = new OrganisationseinheitProfilAnzeigeWidget(
+							object.getOrganisationseinheitId());
 					BewerbungWidget bewerbung = new BewerbungWidget(result);
 					bewerbung.setAllDisabled();
-					
+
 					details.add(profil.getVP());
 					details.add(bewerbung.getVP());
 					vep.add(details);
@@ -188,28 +286,22 @@ public class AusgangsbewerbungenWidget extends Composite{
 					box.setText("Bewerbungsübersicht");
 					box.add(vep);
 					box.setPopupPositionAndShow(new PositionCallback() {
-						
+
 						@Override
 						public void setPosition(int offsetWidth, int offsetHeight) {
-							box.setPopupPosition(Window.getClientWidth()/2-(box.getOffsetWidth()), 
-									Window.getClientHeight()/4);
-							
+							box.setPopupPosition(Window.getClientWidth() / 2 - (box.getOffsetWidth()),
+									Window.getClientHeight() / 4);
+
 						}
 					});
-					
-					
-			
-					
+
 				}
+
 				@Override
 				public void onFailure(Throwable caught) {
 				}
 			});
-		}	
+		}
 	}
-	
-	
-	
-	
-	
+
 }

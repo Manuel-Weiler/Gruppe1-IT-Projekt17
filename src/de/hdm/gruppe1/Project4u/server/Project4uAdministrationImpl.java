@@ -645,17 +645,36 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
   		this.bewerbungMapper.delete(bewerbung);
   		}
 	
-	public Vector<Bewerbung> findByOrganisationseinheit(Organisationseinheit o)throws IllegalArgumentException{
+	
+	
+	public Vector<Bewerbung> findBewerbungOfOrganisationseinheit(Organisationseinheit o)throws IllegalArgumentException{
 		return this.bewerbungMapper.findByOrganisationseinheit(o);
 	}
 	
 	
+	
 	public Vector<Bewerbung> getAllBewerbungenOfUser(LoginInfo login) throws IllegalArgumentException{
 		Organisationseinheit org = getOrganisationseinheitByUser(login);
-		
-		return findByOrganisationseinheit(org);
-		
+		return findBewerbungOfOrganisationseinheit(org);
 	}
+	
+	
+	
+	
+	public Vector<Bewerbung> getAllBewerbungenOfLinkedTeamAndUnternehmen (LoginInfo login)throws IllegalArgumentException{
+		Vector<Organisationseinheit> linkedOrgas = getLinkedTeamAndUnternehmenOfOrganisationseinheit(login);
+		
+		Vector<Bewerbung> bewerbungenOfLinkedOrgas = new Vector<>();
+		
+		for(Organisationseinheit o:linkedOrgas){
+			
+			bewerbungenOfLinkedOrgas.addAll(findBewerbungOfOrganisationseinheit(o));
+			
+		}
+		return bewerbungenOfLinkedOrgas;
+	}
+	
+	
 		
 		
 		

@@ -77,6 +77,17 @@ h1 {
 }
 
 
+#heading{
+	margin-top: 70px;
+	font-size: 1em;
+	font: 'Gotham';
+  	font-weight: lighter !important;
+  	font-variant: small-caps;
+  	letter-spacing: 5px;
+	
+}
+
+
 #header {
     background-color:black;
     color:white;
