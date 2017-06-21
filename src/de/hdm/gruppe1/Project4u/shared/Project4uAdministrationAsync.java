@@ -141,4 +141,6 @@ public interface Project4uAdministrationAsync {
 
 	void deleteBewerbung(Bewerbung bewerbung, AsyncCallback<Void> callback);
 
+	void getEingangsbewerbungenOfProjektleiter(LoginInfo login, AsyncCallback<Vector<Bewerbung>> callback);
+
 }
