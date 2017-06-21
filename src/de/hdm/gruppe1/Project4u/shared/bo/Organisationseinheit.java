@@ -2,10 +2,13 @@ package de.hdm.gruppe1.Project4u.shared.bo;
 
 public class Organisationseinheit extends BusinessObject{
 	
-	public enum organisationseinheitenTyp {
+	//Das Attribut Typ muss als Enum festgelegt werden, so dass nur die folgenden Werte verwendet werden können
+	//und keine Fehler auftreten.
+	public enum orgaTyp {
 		Person,
 		Team,
-		Unternehmen
+		Unternehmen;
+
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -18,8 +21,7 @@ public class Organisationseinheit extends BusinessObject{
 
 	private String google_id;
 	private String name;
-	//TODO: variable "typ" muss als ein Enum definiert werden. Nicht vergessen: MAPPER anpassen
-	private String typ;
+	private orgaTyp typ;
 	private boolean status = false;
 	
 
@@ -66,11 +68,11 @@ public class Organisationseinheit extends BusinessObject{
 	}
 	
 	public String getTyp() {
-		return typ;
+		return typ.toString();
 	}
 	
 	public void setTyp(String typ) {
-		this.typ = typ;
+		this.typ = orgaTyp.valueOf(typ);
 	}
 
 	

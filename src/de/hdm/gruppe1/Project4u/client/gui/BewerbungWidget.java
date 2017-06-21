@@ -129,7 +129,7 @@ public class BewerbungWidget {
 			neu.setErstelldatum(erstelldatum.getValue());
 			neu.setAusschreibungId(auss.getAusschreibungId());
 			neu.setBewerbungstext(freitext.getValue());
-			neu.setStatus("laufend");
+			neu.setStatus("ausstehend");
 			neu.setProjektname(proj.getName());
 			
 			Project4uVerwaltung.createBewerbung(neu, auss.getAusschreibungId(), neu.getOrganisationseinheitId(), new AsyncCallback<Bewerbung>() {
@@ -214,7 +214,7 @@ public class BewerbungWidget {
 	
 	
 	
-	//TODO:
+	
 	public void setAllDisabled (){
 		hinweis.setHTML("<p class='heading'>Ihre Bewerbungsdaten: </p>");
 		

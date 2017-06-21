@@ -91,12 +91,25 @@ public interface Project4uAdministration extends RemoteService{
 	public Vector<Eigenschaft> getAllEigenschaftenByPartnerprofilId(int partnerprofilId)throws IllegalArgumentException;
 	
 	public Vector<Projekt> findByProjektmarktplatz (Projektmarktplatz projektmarktplatz) throws IllegalArgumentException;
+
+	public Vector<Beteiligung> getBeteiligungForOrga(Organisationseinheit orga) throws IllegalArgumentException;
+
+	public Vector<Ausschreibung> getAusschreibungenForPartnerprofil(Organisationseinheit orga)
+			throws IllegalArgumentException;
 	
+	public Vector<Bewerbung> getBewerbungForOrganisationseinheit(Organisationseinheit orga) throws IllegalArgumentException;
+
+	public Vector<Organisationseinheit> getAllOrganisationseinheitOfTypPerson()	throws IllegalArgumentException;
+	
+	public Vector<Organisationseinheit> getAllOrganisationseinheiten() throws IllegalArgumentException;
+	
+	public Vector<Ausschreibung> getAusschreibungenForOrga(Organisationseinheit orga) throws IllegalArgumentException;
 
 	public void deleteLinkedTeamUnternehmenOfOrganisationseinheit(LoginInfo login,
 			Organisationseinheit team) throws IllegalArgumentException;
 
 	public Ausschreibung updateAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException ;
+
 	
 	public Vector <Organisationseinheit> findProjektleiterOfProjects (Vector<Projekt> projekte)throws IllegalArgumentException;
 
@@ -106,4 +119,7 @@ public interface Project4uAdministration extends RemoteService{
 
 	public Vector<Bewerbung> getAllBewerbungenOfLinkedTeamAndUnternehmen (LoginInfo login)throws IllegalArgumentException;
 	
+
+
+
 }

@@ -6,7 +6,7 @@ public class Partnerprofil extends BusinessObject{
 	
 	private static final long serialVersionUID = 1L;
 
-	private int partnerprofilId=0;
+	private int partnerprofilId;
 	private Date erstelldatum;
 	private Date aenderungsdatum;
 	

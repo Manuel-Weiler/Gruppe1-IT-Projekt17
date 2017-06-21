@@ -2,10 +2,12 @@ package de.hdm.gruppe1.Project4u.client.gui;
 
 import java.util.Vector;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -28,6 +30,8 @@ public class NavigationsleisteWidget extends Composite {
 	 */
 	
 	
+	Anchor reportLink = new Anchor("ReportGenerator");
+	
 	VerticalPanel menuPanel = new VerticalPanel();
 
 	Button profilButton = new Button("Nutzerprofil");
@@ -35,6 +39,7 @@ public class NavigationsleisteWidget extends Composite {
 	Button pMarktplatz = new Button("Projektmarktplätze");
 	Button eBewerbungen = new Button("Eingangsbewerbungen");
 	Button aBewerbungen = new Button("Ausgangsbewerbungen");
+	Button reportButton = new Button("Reports");
 	Button logout = new Button("Logout");
 
 	
@@ -51,6 +56,7 @@ public class NavigationsleisteWidget extends Composite {
 		menuPanel.add(pMarktplatz);
 		menuPanel.add(eBewerbungen);
 		menuPanel.add(aBewerbungen);
+		menuPanel.add(reportButton);
 		
 		//Test
 		menuPanel.add(orgaLoeschen);
@@ -66,6 +72,7 @@ public class NavigationsleisteWidget extends Composite {
 		homeButton.setPixelSize(200, 40);
 		pMarktplatz.setPixelSize(200, 40);
 		aBewerbungen.setPixelSize(200, 40);
+		reportButton.setPixelSize(200, 40);
 	
 		
 		
@@ -107,15 +114,20 @@ public class NavigationsleisteWidget extends Composite {
 					
 					@Override
 					public void onSuccess(Organisationseinheit result) {
-						Label erfolgreich1 = new Label("Erfolgreich1");
+						RootPanel.get("content").clear();
+						Label erfolgreich1 = new Label("Name: " 
+														+ result.getName() + " ID: "
+														+ result.getOrganisationseinheitId() + " Typ: "
+														+ result.getTyp() + " Partnerprofil ID: "
+														+ result.getPartnerprofilId());
 						RootPanel.get("content").add(erfolgreich1);
 						
 						Project4uVerwaltung.deleteOrganisationseinheit(result, new AsyncCallback<Void>() {
 							
 							@Override
 							public void onSuccess(Void result) {
-								Label orgaLoeschen = new Label("Erfolgreich2");
-								RootPanel.get("content").clear();
+								Label orgaLoeschen = new Label("Erfolgreich geloescht");
+								//RootPanel.get("content").clear();
 								RootPanel.get("content").add(orgaLoeschen);
 								
 							}
@@ -259,6 +271,7 @@ public class NavigationsleisteWidget extends Composite {
 			}
 		});
 		
+
 		aBewerbungen.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -267,6 +280,19 @@ public class NavigationsleisteWidget extends Composite {
 				
 			}
 		});
+
+		reportButton.addClickHandler(new ClickHandler(){
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					
+					reportLink.setHref(GWT.getHostPageBaseURL()+"Project4uReport.html");
+					Window.open(reportLink.getHref(), "_self", "");
+					
+				}
+			});
+		
+
 
 		initWidget(menuPanel);
 	}

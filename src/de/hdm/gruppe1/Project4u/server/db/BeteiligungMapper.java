@@ -18,7 +18,7 @@ public class BeteiligungMapper {
 	
 	private static BeteiligungMapper beteiligungMapper = null; 
 	
-	protected BeteiligungMapper () {
+	public BeteiligungMapper () {
 	}
 	
 	public static BeteiligungMapper beteiligungMapper (){

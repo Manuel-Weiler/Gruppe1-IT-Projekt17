@@ -94,7 +94,6 @@ public class HTMLReportWriter extends ReportWriter {
 		return "</body></html>";
 	}
 
-	
 	/**
 	 * Zunaechst wird ein Buffer angelegt, in den waehrend der Prozessierung die
 	 * Ergebnisse geschtieben werden. Danach werden nach und nach alle
@@ -103,30 +102,29 @@ public class HTMLReportWriter extends ReportWriter {
 	 * zugewiesen. Dies ermoeglich,das Ergebnis durch getReportText()
 	 * auszulesen.
 	 */
-	
-	public void process(ReportByAlleAusschreibungen a){
-		
+
+	public void process(ReportByAlleAusschreibungen a) {
+
 		this.resetReportText();
 		StringBuffer result = new StringBuffer();
 
 		result.append("<H3>" + a.getTitle() + "</H3>");
-		
+
 		Vector<Row> rows = a.getRows();
 		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
-		
-		for(int i = 0; i< rows.size(); i++){
+
+		for (int i = 0; i < rows.size(); i++) {
 			Row row = rows.elementAt(i);
 			result.append("<tr>");
-			for(int j = 0; j < row.getNumColumns(); j++){
-				if(i==0){
+			for (int j = 0; j < row.getNumColumns(); j++) {
+				if (i == 0) {
 					result.append("<td style=\"background:silver;font-weight:bold\">" + row.getColumnAt(j) + "</td>");
-				}
-				else {
-					if(i>1){
-						result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">" + row.getColumnAt(j) + "</td>");
-					}
-					else {
-						result.append("<td valign=\"top\">" + row.getColumnAt(j) +  "</td>");
+				} else {
+					if (i > 1) {
+						result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">"
+								+ row.getColumnAt(j) + "</td>");
+					} else {
+						result.append("<td valign=\"top\">" + row.getColumnAt(j) + "</td>");
 					}
 				}
 			}
@@ -135,32 +133,69 @@ public class HTMLReportWriter extends ReportWriter {
 		result.append("</table>");
 		this.reportText = result.toString();
 	}
-		
-		
-		
-		
-//	Urspr�nglicher Ansatz:
-		
-//	    /*
-//	     * Nun werden Schritt für Schritt die einzelnen Bestandteile des Reports
-//	     * ausgelesen und in HTML-Form übersetzt.
-//	     */
-//	    result.append("<H1>" + a.getTitle() + "</H1>");
-//	    result.append("<table><tr>");
-//
-//	    if (a.getHeaderData() != null) {
-//	      result.append("<td>" + paragraph2HTML(a.getHeaderData()) + "</td>");
-//	    }
-//
-//	    result.append("<td>" + paragraph2HTML(a.getImprint()) + "</td>");
-//	    result.append("</tr><tr><td></td><td>" + a.getCreated().toString()
-//	        + "</td></tr></table>");
-//
-//
-//		this.reportText = result.toString();
-//
-//	}
-	
+
+	public void process(ReportByAusschreibungenForPartnerprofil b) {
+
+		this.resetReportText();
+		StringBuffer result = new StringBuffer();
+
+		result.append("<H3>" + b.getTitle() + "</H3>");
+
+		Vector<Row> rows = b.getRows();
+		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
+
+		for (int i = 0; i < rows.size(); i++) {
+			Row row = rows.elementAt(i);
+			result.append("<tr>");
+			for (int j = 0; j < row.getNumColumns(); j++) {
+				if (i == 0) {
+					result.append("<td style=\"background:silver;font-weight:bold\">" + row.getColumnAt(j) + "</td>");
+				} else {
+					if (i > 1) {
+						result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">"
+								+ row.getColumnAt(j) + "</td>");
+					} else {
+						result.append("<td valign=\"top\">" + row.getColumnAt(j) + "</td>");
+					}
+				}
+			}
+			result.append("</tr>");
+		}
+		result.append("</table>");
+		this.reportText = result.toString();
+	}
+
+	public void process(ReportByAlleBewerbungenForAusschreibungen b) {
+
+		this.resetReportText();
+		StringBuffer result = new StringBuffer();
+
+		result.append("<H3>" + b.getTitle() + "</H3>");
+
+		Vector<Row> rows = b.getRows();
+		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
+
+		for (int i = 0; i < rows.size(); i++) {
+			Row row = rows.elementAt(i);
+			result.append("<tr>");
+			for (int j = 0; j < row.getNumColumns(); j++) {
+				if (i == 0) {
+					result.append("<td style=\"background:silver;font-weight:bold\">" + row.getColumnAt(j) + "</td>");
+				} else {
+					if (i > 1) {
+						result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">"
+								+ row.getColumnAt(j) + "</td>");
+					} else {
+						result.append("<td valign=\"top\">" + row.getColumnAt(j) + "</td>");
+					}
+				}
+			}
+			result.append("</tr>");
+		}
+		result.append("</table>");
+		this.reportText = result.toString();
+	}
+
 	/**
 	 * Auslesen des Ergebnisses der zuletzt aufgerufenen Prozessierungsmethode.
 	 * 

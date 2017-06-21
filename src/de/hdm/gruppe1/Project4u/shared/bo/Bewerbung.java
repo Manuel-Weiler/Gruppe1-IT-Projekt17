@@ -4,18 +4,39 @@ import java.util.Date;
 
 public class Bewerbung extends BusinessObject{
 
+	
+	//Der Status sollte ein Enum sein, so dass Fehler vermieden werden.
+	public enum bewerbungStatus {
+		ausstehend,
+		angenommen,
+		abgelehnt;
+	}
+
+
 	private static final long serialVersionUID = 1L;
 	
 	private int bewerbungId = 0;
 	private int organisationseinheitId;
 	private int ausschreibungId;
-	private Date erstelldatum = null;
-	private String bewerbungstext = null;
-	//TODO: status als enum implementieren
-	private String status = null;
+
 	private String ausschreibungsname = null;
 	private String projektname = null;
 
+	private Date erstelldatum = null;
+	private String bewerbungstext = null;
+	private bewerbungStatus status;
+
+
+
+
+	public String getStatus() {
+		return status.toString();
+	}
+	
+	public void setStatus(String status) {
+		this.status = bewerbungStatus.valueOf(status);
+	}
+	
 	public int getBewerbungId() {
 		return bewerbungId;
 	}
@@ -55,16 +76,9 @@ public class Bewerbung extends BusinessObject{
 	public void setBewerbungstext(String bewerbungstext) {
 		this.bewerbungstext = bewerbungstext;
 	}
-
 	
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
+	
 
 	public String getAusschreibungsname() {
 		return ausschreibungsname;

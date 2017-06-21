@@ -5,6 +5,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import de.hdm.gruppe1.Project4u.server.db.OrganisationseinheitMapper;
+import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 
@@ -30,6 +31,7 @@ public class OrgaTest {
 		Partnerprofil pp3 = new Partnerprofil();
 		
 		OrganisationseinheitMapper om = OrganisationseinheitMapper.organisationseinheitMapper();
+		PartnerprofilMapper ppm = PartnerprofilMapper.partnerprofilMapper();
 		
 		//Alle finden
 				Vector<Organisationseinheit> vo = new Vector<Organisationseinheit>();
@@ -40,14 +42,15 @@ public class OrgaTest {
 				
 		
 		
-		/*//Orga anlegen
-		o.setName("Karl Wuchtig");
-		o.setGoogleId("karl.wuchtig@gmail.de");
-		o.setTyp("Person");
-		o.setPartnerprofilId(2);
+		//Orga anlegen
+		pp = ppm.insertPartnerprofil(pp);
+		o.setName("HdM");
+		o.setGoogleId("hdm@gmail.de");
+		o.setTyp("unternehmen");
+		o.setPartnerprofilId(pp.getPartnerprofilId());
 		om.insert(o);
 		
-		o2.setName("Max Mustermann");
+	/*	o2.setName("Max Mustermann");
 		o2.setGoogleId("max.mustermann@gmail.de");
 		o2.setTyp("Person");
 		o.setPartnerprofilId(3);
@@ -57,16 +60,16 @@ public class OrgaTest {
 		o3.setGoogleId("hdm@gmail.de");
 		o3.setTyp("Unternehmen");
 		o.setPartnerprofilId(4);
-		om.insert(o3);
+		om.insert(o3);*/
 		
 		//Alle finden
 		Vector<Organisationseinheit> vo2 = new Vector<Organisationseinheit>();
 		vo2 = om.findAll();
 		for(Organisationseinheit oe: vo2){
-			System.out.println("Alle: " + oe.getName() );
+			System.out.println(oe.getName() );
 		}
 		
-		//Orga updaten - Name geändert
+	/*	//Orga updaten - Name geändert
 		o.setName("Karl Wuchtelig");
 		o.setGoogleId("karl.wuchtelig@gmail.de");
 		om.update(o);
@@ -79,11 +82,12 @@ public class OrgaTest {
 		}
 		*/
 		//Nach ID finden
-				Organisationseinheit oEinheit = new Organisationseinheit();
+				/*Organisationseinheit oEinheit = new Organisationseinheit();
 				oEinheit = om.findByKey(2);				
 				System.out.println(oEinheit.getName());
 		
-		/*//Orga löschen
+		
+		//Orga löschen
 		om.delete(o);
 		
 		//Alle finden
