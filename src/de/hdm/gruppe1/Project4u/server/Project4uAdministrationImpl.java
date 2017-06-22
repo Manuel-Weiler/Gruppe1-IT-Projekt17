@@ -577,6 +577,21 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Ausschreibung updateAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {
 		return this.ausschreibungMapper.updateAusschreibung(ausschreibung);
 	}
+	
+	
+	/**
+	 * Die Methode sucht die Ausschreibung mit der übergebenen Id und aktualisiert deren Status um den mitgegebenen
+	 * String. Die Methode gibt die aktualisierte Ausschreibung zurück.
+	 * @param ausschreibungId
+	 * @param status
+	 * @return Ausschreibung
+	 * @author Tobias
+	 */
+	public Ausschreibung updateStatusOfAusschreibung(int ausschreibungId, String status)throws IllegalArgumentException{
+		Ausschreibung a = findByIdAusschreibung(ausschreibungId);
+		a.setStatus(status);
+		return updateAusschreibung(a);
+	}
 
 	public void deleteAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {
 		System.out.println("deleteAusschreibung");

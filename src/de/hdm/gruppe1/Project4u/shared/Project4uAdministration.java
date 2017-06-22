@@ -110,6 +110,7 @@ public interface Project4uAdministration extends RemoteService{
 
 	public Ausschreibung updateAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException ;
 
+	public Ausschreibung updateStatusOfAusschreibung(int ausschreibungId, String status)throws IllegalArgumentException;
 	
 	public Vector <Organisationseinheit> findProjektleiterOfProjects (Vector<Projekt> projekte)throws IllegalArgumentException;
 
@@ -130,4 +131,6 @@ public interface Project4uAdministration extends RemoteService{
 	public Beteiligung createBeteiligung(Date startdatum, Date enddatum, int personentage, int organisationseinheitId, int projektId, int bewertungId)throws IllegalArgumentException;
 
 	public Projekt getProjektOfBewerbung(Bewerbung bewerbung)throws IllegalArgumentException;
+	
+	public void updateStatusOfBewerbung(String status, int bewerbungsID) throws IllegalArgumentException;
 }

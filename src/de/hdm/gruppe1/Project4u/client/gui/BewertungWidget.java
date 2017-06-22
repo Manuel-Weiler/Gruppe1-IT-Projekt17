@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
+import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
@@ -43,8 +44,10 @@ public class BewertungWidget {
 			"Beurteilungstext: </br></br><b>Hinweis:</b> Bei einer Bewertung von 1.0</br> wird automatisch eine Beteiligung festgelegt.");
 	Button save = new Button("Bewertung erstellen");
 	Button cancel = new Button("Abbrechen");
+	
 	Bewerbung bew = new Bewerbung();
 	Bewertung bewertg = new Bewertung();
+	Ausschreibung ausschreibung = new Ausschreibung();
 
 	public BewertungWidget(Bewerbung bewerbung) {
 		bew = bewerbung;
@@ -219,14 +222,60 @@ public class BewertungWidget {
 
 		@Override
 		public void onSuccess(Beteiligung result) {
-			// TODO Auto-generated method stub
+			
 			MessageBox.alertWidget("Erfolg!", "Ihre Bewertung mit '1.0' hat eine Beteiligung erfolgreich angelegt.");
 			
-			//TODO: Update Ausschreibung
-			//TODO: Ablehnen aller anderen Bewerber? Alle Bewerbungen mit Status "ausstehend" auf die jeweilige Ausschreibung
-			//TODO: Status der aktutellen Bewerbung auf "angenommen" ändern
+			/*
+			 * Update der Bewerbung und setzen des Status angenommen. Im
+			 * Anschluss daran werden alle noch nicht bewerteten Bewerbungen
+			 * (Status 'ausstehend')auf die selbe Ausschreibung mit "0.0"
+			 * bewertet und auf "abgelehnt" gesetzt.
+			 */
+			Project4uVerwaltung.updateStatusOfBewerbung("angenommen", bew.getBewerbungId(), new updateStatusOfAktuelleBewerbungCallback());
+			
+			
+			
+			//Status der betroffenen Ausschreibung auf "beendet" ändern
+			Project4uVerwaltung.updateStatusOfAusschreibung(bew.getAusschreibungId(), "beendet", new updateStatusOfAusschreibungCallback());
+		}
+	}
+	
+	
+	
+	
+	private class updateStatusOfAktuelleBewerbungCallback implements AsyncCallback<Void>{
+
+		@Override
+		public void onFailure(Throwable caught) {	
 		}
 
+		@Override
+		public void onSuccess(Void result) {
+			
+			//TODO: Ablehnen aller anderen Bewerber? Alle Bewerbungen mit Status "ausstehend" auf die jeweilige Ausschreibung
+
+			
+		}
+		
 	}
+
+		
+		
+	
+	private class updateStatusOfAusschreibungCallback implements AsyncCallback<Ausschreibung>{
+
+		@Override
+		public void onFailure(Throwable caught) {
+		}
+		@Override
+		public void onSuccess(Ausschreibung result) {
+			ausschreibung = result;
+			
+		}
+		
+	}
+	
+	
+	
 
 }
