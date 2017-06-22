@@ -473,6 +473,7 @@ public class AusschreibungsprofilWidget {
 						localAus.setAusschreibungstext(ausschreibungstext.getValue());
 						localAus.setPartnerprofilId(result.getPartnerprofilId());
 						localAus.setProjektId(localProj.getProjektId());
+						localAus.setStatus("laufend");
 						
 
 						

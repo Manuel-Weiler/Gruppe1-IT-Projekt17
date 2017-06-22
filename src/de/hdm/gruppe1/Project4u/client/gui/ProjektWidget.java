@@ -62,7 +62,7 @@ public class ProjektWidget extends Composite{
 	HorizontalPanel hPanel = new HorizontalPanel();
 	Projekt selectedProjekt = new Projekt();
 	
-	//TODO: Projekt löschen,  Ausschreibungen
+	//TODO: Projekt löschen,  Ausschreibungen beendet nicht anzeigen
 	
 	//TODO: Bewerbung
 
@@ -264,7 +264,7 @@ public class ProjektWidget extends Composite{
 		
 		
 		
-		Project4uVerwaltung.findAusschreibungbyProjekt(p, new AsyncCallback<Vector<Ausschreibung>>() {
+		Project4uVerwaltung.findActiveAusschreibungenOfProjekt(p, new AsyncCallback<Vector<Ausschreibung>>() {
 
 			@Override
 			public void onSuccess(Vector<Ausschreibung> result) {

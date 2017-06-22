@@ -47,9 +47,7 @@ public interface Project4uAdministration extends RemoteService{
 			   throws IllegalArgumentException;
 
 	public Projekt findProjektById(int id) throws IllegalArgumentException;
-	
-	public Vector<Ausschreibung> findAusschreibungbyProjekt (Projekt projekt)throws IllegalArgumentException;
-	
+		
 	public Ausschreibung findByIdAusschreibung (int id) throws IllegalArgumentException;
 	
 	public Eigenschaft updateEigenschaft(Eigenschaft e) throws IllegalArgumentException;
@@ -138,4 +136,5 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public void cancelAllBewerbungenOfAusschreibungWithStatusAusstehend (Ausschreibung aus)throws IllegalArgumentException;
 	
+	public Vector<Ausschreibung> findActiveAusschreibungenOfProjekt(Projekt projekt) throws IllegalArgumentException;
 }

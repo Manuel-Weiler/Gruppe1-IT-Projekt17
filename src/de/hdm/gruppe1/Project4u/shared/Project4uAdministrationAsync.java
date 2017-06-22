@@ -64,7 +64,6 @@ public interface Project4uAdministrationAsync {
 
 	void findByProjektmarktplatz(Projektmarktplatz projektmarktplatz, AsyncCallback<Vector<Projekt>> callback);
 
-	void findAusschreibungbyProjekt(Projekt projekt, AsyncCallback<Vector<Ausschreibung>> callback);
 
 	void checkStatus(LoginInfo loginInfo, AsyncCallback<Boolean> callback);
 
@@ -159,5 +158,7 @@ public interface Project4uAdministrationAsync {
 			AsyncCallback<Vector<Bewerbung>> callback);
 
 	void cancelAllBewerbungenOfAusschreibungWithStatusAusstehend(Ausschreibung aus, AsyncCallback<Void> callback);
+
+	void findActiveAusschreibungenOfProjekt(Projekt projekt, AsyncCallback<Vector<Ausschreibung>> callback);
 
 }
