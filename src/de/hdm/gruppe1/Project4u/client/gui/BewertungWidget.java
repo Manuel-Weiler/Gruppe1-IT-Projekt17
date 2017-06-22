@@ -30,9 +30,9 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
  *
  */
 public class BewertungWidget {
-	
+
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
-	
+
 	DialogBox box = new DialogBox();
 	VerticalPanel vp = new VerticalPanel();
 	FlexTable flex = new FlexTable();
@@ -45,18 +45,17 @@ public class BewertungWidget {
 	Button cancel = new Button("Abbrechen");
 	Bewerbung bew = new Bewerbung();
 	Bewertung bewertg = new Bewertung();
-	
-	
-	public BewertungWidget(Bewerbung bewerbung){
+
+	public BewertungWidget(Bewerbung bewerbung) {
 		bew = bewerbung;
-		
+
 		flex.setWidget(0, 0, punkte);
 		flex.setWidget(0, 1, bewertungspunkte);
 		flex.setWidget(1, 0, text);
 		flex.setWidget(1, 1, beurteilung);
 		flex.setWidget(2, 0, cancel);
 		flex.setWidget(2, 1, save);
-		
+
 		bewertungspunkte.addItem("0.0");
 		bewertungspunkte.addItem("0.1");
 		bewertungspunkte.addItem("0.2");
@@ -68,117 +67,166 @@ public class BewertungWidget {
 		bewertungspunkte.addItem("0.8");
 		bewertungspunkte.addItem("0.9");
 		bewertungspunkte.addItem("1.0");
-		
+
 		bewertungspunkte.setWidth("300px");
 		beurteilung.setWidth("300px");
 		beurteilung.setHeight("200px");
-		
+
 		vp.add(flex);
-		
-		
+
 		cancel.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				box.hide();
 			}
 		});
-		
+
 		save.addClickHandler(new saveClickHandler());
-		
+
 	}
 	
 	
 	
+	
+	
+	
+
 	private class saveClickHandler implements ClickHandler {
 
-		
 		@Override
 		public void onClick(ClickEvent event) {
 			Bewertung bewert = new Bewertung();
 			float points = Float.parseFloat(bewertungspunkte.getSelectedValue());
-            bewert.setBewertungspunkte(points); 
-            bewert.setStellungnahme(beurteilung.getValue());
-            bewert.setBewerbungID(bew.getBewerbungId());
-			
+			bewert.setBewertungspunkte(points);
+			bewert.setStellungnahme(beurteilung.getValue());
+			bewert.setBewerbungID(bew.getBewerbungId());
+
 			Project4uVerwaltung.createBewertung(bewert, new AsyncCallback<Bewertung>() {
-				
+
 				@Override
 				public void onSuccess(Bewertung result) {
 					bewertg = result;
 					box.hide();
-					MessageBox.alertWidget("Erfolg!",
-							"Ihre Bewertung wurde erfolgreich angelegt.");
+
+					//Abgleich, ob die Bewertung "1.0" vergeben wurde. Bei dieser wird automatisch eine Beteiligung erzeugt.
 					float f = result.getBewertungspunkte();
 					float eins = Float.parseFloat("1.0");
 					int u = Float.compare(f, eins);
-					
-					if (u==0){
-						
-						Project4uVerwaltung.getProjektOfBewerbung(bew, new AsyncCallback<Projekt>() {
-							
-							@Override
-							public void onSuccess(Projekt projekt) {
-								long l = daysBetween(new Date(), projekt.getEnddatum());
-								int tage = (int) l;
-								
-								
-								Project4uVerwaltung.createBeteiligung(new Date(), projekt.getEnddatum(), tage, bew.getOrganisationseinheitId(), projekt.getProjektId(), bewertg.getBewerbungId(), new AsyncCallback<Beteiligung>() {
-									
-									@Override
-									public void onSuccess(Beteiligung result) {
-										// TODO Auto-generated method stub
-										
-									}
-									@Override
-									public void onFailure(Throwable caught) {
-									}
-								});
 
-							}
-							
-							@Override
-							public void onFailure(Throwable caught) {
-							}
-						});
-						
+					if (u == 0) {
+
+						Project4uVerwaltung.getProjektOfBewerbung(bew, new getProjektOfBewerbungCallback());
+
+					} else {
+						MessageBox.alertWidget("Erfolg!", "Ihre Bewertung wurde erfolgreich angelegt.");
 					}
 
 				}
-				
+
 				@Override
 				public void onFailure(Throwable caught) {
 				}
 			});
-			
 		}
-		
 	}
 	
 	
+	
+	
+	
+	
+	
+
+	/**
+	 * Die Methode gibt die Anzahl an Tagen zwischen zwei Date-Objekten zurück.
+	 * @param one
+	 * @param two
+	 * @return
+	 */
 	private static long daysBetween(Date one, Date two) {
-		long difference = (one.getTime() - two.getTime()) / 86400000;
+		long difference = (one.getTime() - two.getTime()) / 86400000; // 1000*60*60*24
 		return Math.abs(difference);
 	}
 	
 	
 	
-	public VerticalPanel getVP(){
+	
+	
+	
+
+	public VerticalPanel getVP() {
 		return this.vp;
 	}
 	
 	
-	public void show(){
+	
+	
+
+	/**
+	 * Die Methode fügt das Widget einer DialogBox hinzu, und öffnet diese.
+	 */
+	public void show() {
 		box.add(vp);
 		box.center();
 		box.setPopupPositionAndShow(new PositionCallback() {
-			
+
 			@Override
 			public void setPosition(int offsetWidth, int offsetHeight) {
-				box.setPopupPosition(Window.getClientWidth()/2-(box.getOffsetWidth()/2), 
-						Window.getClientHeight()/3);
-				
+				box.setPopupPosition(Window.getClientWidth() / 2 - (box.getOffsetWidth() / 2),
+						Window.getClientHeight() / 3);
+
 			}
 		});
 	}
 	
+	
+	
+	
+
+	/**
+	 * Im Anschluss an die Anfrage des Projektes wird ein Beteiligungsobjekt über die Proxy erzeugt.
+	 * @author Tobias
+	 *
+	 */
+	private class getProjektOfBewerbungCallback implements AsyncCallback<Projekt> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+		}
+
+		@Override
+		public void onSuccess(Projekt projekt) {
+
+			long l = daysBetween(new Date(), projekt.getEnddatum());
+			int tage = (int) l;
+
+			Project4uVerwaltung.createBeteiligung(new Date(), projekt.getEnddatum(), tage,
+					bew.getOrganisationseinheitId(), projekt.getProjektId(), bewertg.getBewerbungId(),
+					new createBeteiligungCallback());
+
+		}
+
+	}
+
+	
+	
+	
+	
+	
+	private class createBeteiligungCallback implements AsyncCallback<Beteiligung> {
+
+		public void onFailure(Throwable caught) {
+		}
+
+		@Override
+		public void onSuccess(Beteiligung result) {
+			// TODO Auto-generated method stub
+			MessageBox.alertWidget("Erfolg!", "Ihre Bewertung mit '1.0' hat eine Beteiligung erfolgreich angelegt.");
+			
+			//TODO: Update Ausschreibung
+			//TODO: Ablehnen aller anderen Bewerber? Alle Bewerbungen mit Status "ausstehend" auf die jeweilige Ausschreibung
+			//TODO: Status der aktutellen Bewerbung auf "angenommen" ändern
+		}
+
+	}
 
 }
