@@ -4,22 +4,19 @@
 package de.hdm.gruppe1.Project4u.client.gui;
 
 import java.util.Date;
-import java.util.Vector;
-import java.util.concurrent.TimeUnit;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
@@ -27,10 +24,6 @@ import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
-
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * @author Tobias
@@ -124,10 +117,11 @@ public class BewertungWidget {
 							
 							@Override
 							public void onSuccess(Projekt projekt) {
-								long personentage = projekt.getEnddatum().getTime()-new Date().getTime();
-								//long tage =  TimeUnit.DAYS.convert(personentage, TimeUnit.MILLISECONDS);
-								//int t = (int) tage;
-								/*Project4uVerwaltung.createBeteiligung(new Date(), projekt.getEnddatum(), 15, bew.getOrganisationseinheitId(), projekt.getProjektId(), bewertg.getBewerbungId(), new AsyncCallback<Beteiligung>() {
+								long l = daysBetween(new Date(), projekt.getEnddatum());
+								int tage = (int) l;
+								
+								
+								Project4uVerwaltung.createBeteiligung(new Date(), projekt.getEnddatum(), tage, bew.getOrganisationseinheitId(), projekt.getProjektId(), bewertg.getBewerbungId(), new AsyncCallback<Beteiligung>() {
 									
 									@Override
 									public void onSuccess(Beteiligung result) {
@@ -138,7 +132,7 @@ public class BewertungWidget {
 									public void onFailure(Throwable caught) {
 									}
 								});
-*/
+
 							}
 							
 							@Override
@@ -157,6 +151,12 @@ public class BewertungWidget {
 			
 		}
 		
+	}
+	
+	
+	private static long daysBetween(Date one, Date two) {
+		long difference = (one.getTime() - two.getTime()) / 86400000;
+		return Math.abs(difference);
 	}
 	
 	
