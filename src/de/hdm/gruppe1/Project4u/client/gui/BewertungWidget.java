@@ -125,9 +125,9 @@ public class BewertungWidget {
 							@Override
 							public void onSuccess(Projekt projekt) {
 								long personentage = projekt.getEnddatum().getTime()-new Date().getTime();
-								long tage =  TimeUnit.DAYS.convert(personentage, TimeUnit.MILLISECONDS);
-								int t = (int) tage;
-								Project4uVerwaltung.createBeteiligung(new Date(), projekt.getEnddatum(), t, bew.getOrganisationseinheitId(), projekt.getProjektId(), bewertg.getBewerbungId(), new AsyncCallback<Beteiligung>() {
+								//long tage =  TimeUnit.DAYS.convert(personentage, TimeUnit.MILLISECONDS);
+								//int t = (int) tage;
+								/*Project4uVerwaltung.createBeteiligung(new Date(), projekt.getEnddatum(), 15, bew.getOrganisationseinheitId(), projekt.getProjektId(), bewertg.getBewerbungId(), new AsyncCallback<Beteiligung>() {
 									
 									@Override
 									public void onSuccess(Beteiligung result) {
@@ -138,7 +138,7 @@ public class BewertungWidget {
 									public void onFailure(Throwable caught) {
 									}
 								});
-
+*/
 							}
 							
 							@Override
