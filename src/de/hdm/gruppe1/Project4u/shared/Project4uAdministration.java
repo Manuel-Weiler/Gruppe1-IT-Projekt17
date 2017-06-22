@@ -133,4 +133,9 @@ public interface Project4uAdministration extends RemoteService{
 	public Projekt getProjektOfBewerbung(Bewerbung bewerbung)throws IllegalArgumentException;
 	
 	public void updateStatusOfBewerbung(String status, int bewerbungsID) throws IllegalArgumentException;
+	
+	public Vector<Bewerbung> getBewerbungenOfAusschreibungWithStatusAusstehend(Ausschreibung aus)throws IllegalArgumentException;
+	
+	public void cancelAllBewerbungenOfAusschreibungWithStatusAusstehend (Ausschreibung aus)throws IllegalArgumentException;
+	
 }

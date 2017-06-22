@@ -155,4 +155,9 @@ public interface Project4uAdministrationAsync {
 
 	void updateStatusOfBewerbung(String status, int bewerbungsID, AsyncCallback<Void> callback);
 
+	void getBewerbungenOfAusschreibungWithStatusAusstehend(Ausschreibung aus,
+			AsyncCallback<Vector<Bewerbung>> callback);
+
+	void cancelAllBewerbungenOfAusschreibungWithStatusAusstehend(Ausschreibung aus, AsyncCallback<Void> callback);
+
 }

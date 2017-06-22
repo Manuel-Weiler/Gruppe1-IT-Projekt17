@@ -764,6 +764,39 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	
 	
 	
+	public Vector<Bewerbung> getBewerbungenOfAusschreibungWithStatusAusstehend(Ausschreibung aus)throws IllegalArgumentException{
+		Vector<Bewerbung> bewerbungen = getBewerbungenOfAusschreibung(aus);
+		Vector<Bewerbung> result = new Vector<>();
+		
+		for (Bewerbung b : bewerbungen){
+			if(b.getStatus().equalsIgnoreCase("ausstehend")){
+				result.add(b);
+			}
+		}
+		return result;
+		}
+	
+	
+	
+	
+	
+	
+	public void cancelAllBewerbungenOfAusschreibungWithStatusAusstehend (Ausschreibung aus)throws IllegalArgumentException{
+		Vector<Bewerbung> ausstehende = getBewerbungenOfAusschreibungWithStatusAusstehend(aus);
+		
+		for (Bewerbung bew : ausstehende){
+		Bewertung bewert = new Bewertung();
+		bewert.setBewertungspunkte(0);
+		bewert.setStellungnahme("Der Projektleiter hat sich für einen anderen Bewerber entschieden. Ihre Bewerbung ist abgelehnt.");
+		bewert.setBewerbungID(bew.getBewerbungId());
+		bewert= createBewertung(bewert);
+		
+		updateStatusOfBewerbung("abgelehnt", bew.getBewerbungId());
+		}
+	}
+	
+	
+	
 	
 
 	/**

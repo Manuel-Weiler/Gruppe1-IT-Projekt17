@@ -252,8 +252,18 @@ public class BewertungWidget {
 		@Override
 		public void onSuccess(Void result) {
 			
-			//TODO: Ablehnen aller anderen Bewerber? Alle Bewerbungen mit Status "ausstehend" auf die jeweilige Ausschreibung
-
+			
+			//Alle Bewerbungen mit Status "ausstehend" auf die jeweilige Ausschreibung werden abgelehnt und erhalten eine Bewertung mit '0.0'
+			Project4uVerwaltung.cancelAllBewerbungenOfAusschreibungWithStatusAusstehend(ausschreibung, new AsyncCallback<Void>() {
+				
+				@Override
+				public void onSuccess(Void result) {	
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {	
+				}
+			});
 			
 		}
 		
