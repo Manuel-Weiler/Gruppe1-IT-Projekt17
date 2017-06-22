@@ -120,6 +120,14 @@ public class BewertungWidget {
 						Project4uVerwaltung.getProjektOfBewerbung(bew, new getProjektOfBewerbungCallback());
 
 					} else {
+						
+						Project4uVerwaltung.updateStatusOfBewerbung("abgelehnt", bew.getBewerbungId(), new AsyncCallback<Void>() {
+							
+							@Override
+							public void onSuccess(Void result) {}
+							public void onFailure(Throwable caught) {
+								Window.alert(caught.getMessage());}});
+
 						MessageBox.alertWidget("Erfolg!", "Ihre Bewertung wurde erfolgreich angelegt.");
 					}
 
@@ -225,13 +233,6 @@ public class BewertungWidget {
 			
 			MessageBox.alertWidget("Erfolg!", "Ihre Bewertung mit '1.0' hat eine Beteiligung erfolgreich angelegt.");
 			
-			/*
-			 * Update der Bewerbung und setzen des Status angenommen. Im
-			 * Anschluss daran werden alle noch nicht bewerteten Bewerbungen
-			 * (Status 'ausstehend')auf die selbe Ausschreibung mit "0.0"
-			 * bewertet und auf "abgelehnt" gesetzt.
-			 */
-			Project4uVerwaltung.updateStatusOfBewerbung("angenommen", bew.getBewerbungId(), new updateStatusOfAktuelleBewerbungCallback());
 			
 			
 			
@@ -280,6 +281,14 @@ public class BewertungWidget {
 		@Override
 		public void onSuccess(Ausschreibung result) {
 			ausschreibung = result;
+			
+			/*
+			 * Update der Bewerbung und setzen des Status angenommen. Im
+			 * Anschluss daran werden alle noch nicht bewerteten Bewerbungen
+			 * (Status 'ausstehend')auf die selbe Ausschreibung mit "0.0"
+			 * bewertet und auf "abgelehnt" gesetzt.
+			 */
+			Project4uVerwaltung.updateStatusOfBewerbung("angenommen", bew.getBewerbungId(), new updateStatusOfAktuelleBewerbungCallback());
 			
 		}
 		

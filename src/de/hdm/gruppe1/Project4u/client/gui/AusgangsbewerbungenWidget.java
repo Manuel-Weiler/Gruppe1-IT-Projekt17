@@ -149,7 +149,7 @@ public class AusgangsbewerbungenWidget extends Composite {
 	}
 	
 	
-	
+	//TODO: jeweils Spalte einfügen um Bewertung einzusehen
 
 	private CellTable<Bewerbung> createTableOfUserbewerbungen(Vector<Bewerbung> bewerbungen) {
 
