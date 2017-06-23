@@ -18,11 +18,12 @@ import de.hdm.gruppe1.Project4u.shared.LoginInfo;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
-
+import de.hdm.gruppe1.Project4u.shared.report.FanInFanOut;
 import de.hdm.gruppe1.Project4u.shared.report.HTMLReportWriter;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleBewerbungenForAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
+import de.hdm.gruppe1.Project4u.shared.report.ReportByProjektverflechtungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportForEigeneBewerbungen;
 
 public class NavigationsleisteReport extends Composite {
@@ -66,14 +67,13 @@ public class NavigationsleisteReport extends Composite {
 		// Button-Layout
 
 		homeButton.setPixelSize(200, 40);
-		
+
 		alleAusschreibungenButton.setPixelSize(200, 40);
 		ausschreibungenForPartnerprofilButton.setPixelSize(200, 40);
 		alleBewerbungenForUsersAusschreibungenButton.setPixelSize(200, 40);
 		userbewerbungenForAusschreibungButton.setPixelSize(200, 40);
 		projektverflechtungenButton.setPixelSize(200, 40);
 		fanInFanOutButton.setPixelSize(200, 40);
-
 
 		homeButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -89,8 +89,8 @@ public class NavigationsleisteReport extends Composite {
 		});
 
 		/*
-		 * Ausgabe Report 1
-		 * Alle Ausschreibungen
+		 * Ausgabe Report 1 Alle Ausschreibungen
+		 * 
 		 * @author Dominik Sasse
 		 */
 		alleAusschreibungenButton.addClickHandler(new ClickHandler() {
@@ -124,8 +124,8 @@ public class NavigationsleisteReport extends Composite {
 		});
 
 		/*
-		 * Ausgabe Report 2
-		 * Alle Ausschreibungen passend zum Nutzer
+		 * Ausgabe Report 2 Alle Ausschreibungen passend zum Nutzer
+		 * 
 		 * @author Dominik Sasse
 		 */
 		ausschreibungenForPartnerprofilButton.addClickHandler(new ClickHandler() {
@@ -147,11 +147,12 @@ public class NavigationsleisteReport extends Composite {
 													RootPanel.get("contentR").clear();
 													RootPanel.get("contentR").add(new HTML(writer.getReportText()));
 												}
-												
-												else{
+
+										else {
 													DialogBox dBox = new DialogBox();
 
-													Label label = new Label("Es existieren leider keine passenden Ausschreibungen.");
+													Label label = new Label(
+															"Es existieren leider keine passenden Ausschreibungen.");
 													dBox.add(label);
 													dBox.center();
 													dBox.setAutoHideEnabled(true);
@@ -162,7 +163,8 @@ public class NavigationsleisteReport extends Composite {
 											public void onFailure(Throwable caught) {
 												DialogBox dBox = new DialogBox();
 
-												Label label = new Label("Es existieren leider keine passenden Ausschreibungen.");
+												Label label = new Label(
+														"Es existieren leider keine passenden Ausschreibungen.");
 												dBox.add(label);
 												dBox.center();
 												dBox.setAutoHideEnabled(true);
@@ -191,13 +193,13 @@ public class NavigationsleisteReport extends Composite {
 		});
 
 		/*
-		 * Ausgabe Report 3
-		 * AlleBewerbungen auf Ausschreibungen des Nutzers
+		 * Ausgabe Report 3 AlleBewerbungen auf Ausschreibungen des Nutzers
+		 * 
 		 * @author Dominik Sasse
 		 */
 		alleBewerbungenForUsersAusschreibungenButton.addClickHandler(new ClickHandler() {
-			
-			public void onClick(ClickEvent event){
+
+			public void onClick(ClickEvent event) {
 
 				Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
 						new AsyncCallback<Organisationseinheit>() {
@@ -213,11 +215,11 @@ public class NavigationsleisteReport extends Composite {
 													writer.process(y);
 													RootPanel.get("contentR").clear();
 													RootPanel.get("contentR").add(new HTML(writer.getReportText()));
-												}
-												else{
+												} else {
 													DialogBox dBox = new DialogBox();
 
-													Label label = new Label("Es existieren keine Ausschreibungen für diesen Nutzer.");
+													Label label = new Label(
+															"Es existieren keine Ausschreibungen für diesen Nutzer.");
 													dBox.add(label);
 													dBox.center();
 													dBox.setAutoHideEnabled(true);
@@ -228,7 +230,8 @@ public class NavigationsleisteReport extends Composite {
 											public void onFailure(Throwable caught) {
 												DialogBox dBox = new DialogBox();
 
-												Label label = new Label("Es existieren keine Ausschreibungen für diesen Nutzer.");
+												Label label = new Label(
+														"Es existieren keine Ausschreibungen für diesen Nutzer.");
 												dBox.add(label);
 												dBox.center();
 												dBox.setAutoHideEnabled(true);
@@ -255,16 +258,16 @@ public class NavigationsleisteReport extends Composite {
 
 			}
 		});
-		
+
 		/*
-		 * Ausgabe Report 4
-		 * AlleBewerbungen des Nutzers auf Ausschreibungen
+		 * Ausgabe Report 4 AlleBewerbungen des Nutzers auf Ausschreibungen
+		 * 
 		 * @author Dominik Sasse
 		 */
 		userbewerbungenForAusschreibungButton.addClickHandler(new ClickHandler() {
-			
-			public void onClick(ClickEvent event){
-				
+
+			public void onClick(ClickEvent event) {
+
 				Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
 						new AsyncCallback<Organisationseinheit>() {
 
@@ -279,11 +282,11 @@ public class NavigationsleisteReport extends Composite {
 													writer.process(c);
 													RootPanel.get("contentR").clear();
 													RootPanel.get("contentR").add(new HTML(writer.getReportText()));
-												}
-												else{
+												} else {
 													DialogBox dBox = new DialogBox();
 
-													Label label = new Label("Es existieren keine Bewerbungen für diesen Nutzer.");
+													Label label = new Label(
+															"Es existieren keine Bewerbungen für diesen Nutzer.");
 													dBox.add(label);
 													dBox.center();
 													dBox.setAutoHideEnabled(true);
@@ -294,7 +297,8 @@ public class NavigationsleisteReport extends Composite {
 											public void onFailure(Throwable caught) {
 												DialogBox dBox = new DialogBox();
 
-												Label label = new Label("Es existieren keine Bewerbungen für diesen Nutzer.");
+												Label label = new Label(
+														"Es existieren keine Bewerbungen für diesen Nutzer.");
 												dBox.add(label);
 												dBox.center();
 												dBox.setAutoHideEnabled(true);
@@ -322,64 +326,122 @@ public class NavigationsleisteReport extends Composite {
 			}
 		});
 
-		
 		/*
-		 * Ausgabe Report 5
-		 * Projektverflechtungen
+		 * Ausgabe Report 5 Projektverflechtungen
+		 * 
 		 * @author Dominik Sasse
 		 */
-		
+
 		// TODO SubReport implementieren (eventuell mit Auswahlmenü für
 		// spezifischen Bewerber)
 
-		// projektverflechtungenButton.addClickHandler(new ClickHandler() {
-		//
-		//
-		// public void onClick(ClickEvent event) {
-		//
-		// ReportVerwaltung.createProjektverflechtungReport(orga, (new
-		// AsyncCallback<ReportByProjektverflechtungen>() {
-		//
-		//
-		// public void onSuccess(ReportByProjektverflechtungen result1) {
-		//
-		// if(result1 != null){
-		// HTMLReportWriter writer = new HTMLReportWriter();
-		// writer.process(result1);
-		// RootPanel.get("contentR").clear();
-		// RootPanel.get("contentR").add(new HTML(writer.getReportText()));
-		// }
-		// }
-		//
-		//
-		// public void onFailure(Throwable caught) {
-		// DialogBox dBox = new DialogBox();
-		//
-		// Label label = new Label(caught.getMessage());
-		// dBox.add(label);
-		// dBox.center();
-		// dBox.setAutoHideEnabled(true);
-		// dBox.show();
-		//
-		// }
-		// });
-		// }
-		// });
+		projektverflechtungenButton.addClickHandler(new ClickHandler() {
 
-		
+			public void onClick(ClickEvent event) {
+
+				Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
+						new AsyncCallback<Organisationseinheit>() {
+
+							public void onSuccess(Organisationseinheit orga) {
+
+								ReportVerwaltung.createProjektverflechtungReport(orga,
+										new AsyncCallback<ReportByProjektverflechtungen>() {
+											public void onSuccess(ReportByProjektverflechtungen c) {
+
+												if (c != null) {
+													HTMLReportWriter writer = new HTMLReportWriter();
+													writer.process(c);
+													RootPanel.get("contentR").clear();
+													RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+												} else {
+													DialogBox dBox = new DialogBox();
+
+													Label label = new Label(
+															"Es existieren keine Verflechtungen für diesen Nutzer.");
+													dBox.add(label);
+													dBox.center();
+													dBox.setAutoHideEnabled(true);
+													dBox.show();
+												}
+											}
+
+											public void onFailure(Throwable caught) {
+												DialogBox dBox = new DialogBox();
+
+												Label label = new Label(
+														"Es existieren keine Verflechtungen für diesen Nutzer.");
+												dBox.add(label);
+												dBox.center();
+												dBox.setAutoHideEnabled(true);
+												dBox.show();
+
+											}
+
+										});
+
+							}
+
+							public void onFailure(Throwable caught) {
+								DialogBox dBox = new DialogBox();
+
+								Label label = new Label(caught.getMessage());
+								dBox.add(label);
+								dBox.center();
+								dBox.setAutoHideEnabled(true);
+								dBox.show();
+
+							}
+
+						});
+
+			}
+		});
+
 		/*
-		 * Ausgabe Report 6
-		 * FanIn FanOut Analyse
+		 * Ausgabe Report 6 FanIn FanOut Analyse
+		 * 
 		 * @author Dominik Sasse
 		 */
 		fanInFanOutButton.addClickHandler(new ClickHandler() {
-			
-			public void onClick(ClickEvent event){
-				
+
+			public void onClick(ClickEvent event) {
+
+				ReportVerwaltung.createFanInFanOutReport(new AsyncCallback<FanInFanOut>() {
+					public void onSuccess(FanInFanOut c) {
+
+						if (c != null) {
+							HTMLReportWriter writer = new HTMLReportWriter();
+							writer.process(c);
+							RootPanel.get("contentR").clear();
+							RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+						} else {
+							DialogBox dBox = new DialogBox();
+
+							Label label = new Label("Es existieren keine Verflechtungen für diesen Nutzer.");
+							dBox.add(label);
+							dBox.center();
+							dBox.setAutoHideEnabled(true);
+							dBox.show();
+						}
+					}
+
+					public void onFailure(Throwable caught) {
+						DialogBox dBox = new DialogBox();
+
+						Label label = new Label(caught.getMessage());
+						dBox.add(label);
+						dBox.center();
+						dBox.setAutoHideEnabled(true);
+						dBox.show();
+
+					}
+
+				});
+
 			}
+
 		});
-		
-		
+
 		initWidget(menuReportPanel);
 	}
 

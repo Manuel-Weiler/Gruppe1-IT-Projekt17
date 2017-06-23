@@ -2,18 +2,10 @@ package de.hdm.gruppe1.Project4u.server.report;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-//import java.util.ArrayList;
-import java.util.Date;
-//import java.util.logging.Logger;
 import java.util.Vector;
-
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 import de.hdm.gruppe1.Project4u.shared.report.AllBeteiligungenForNutzer;
 import de.hdm.gruppe1.Project4u.shared.report.AllBewerbungenForNutzer;
-import de.hdm.gruppe1.Project4u.shared.report.AlleAusschreibungenForBewerbung;
 import de.hdm.gruppe1.Project4u.shared.report.Column;
 import de.hdm.gruppe1.Project4u.shared.report.CompositeParagraph;
 import de.hdm.gruppe1.Project4u.shared.report.FanIn;
@@ -28,12 +20,9 @@ import de.hdm.gruppe1.Project4u.shared.report.ReportForEigeneBewerbungen;
 import de.hdm.gruppe1.Project4u.shared.report.Row;
 import de.hdm.gruppe1.Project4u.shared.report.SimpleParagraph;
 import de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl;
-
 import de.hdm.gruppe1.Project4u.server.db.AusschreibungMapper;
-import de.hdm.gruppe1.Project4u.server.db.BewerbungMapper;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.ReportGenerator;
-
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
@@ -111,6 +100,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 * 1. Report um alle Ausschreibungen auszugeben
 	 * 
 	 * @author: Dominik Sasse
+	 * 
+	 * @author: Manuel Weiler
 	 */
 
 	public ReportByAlleAusschreibungen createAlleAusschreibungenReport() throws IllegalArgumentException {
@@ -175,7 +166,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 * 
 	 * @author Dominik Sasse
 	 * @author Manuel Weiler
-	 * @return der fertige Report
 	 */
 
 	public ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Organisationseinheit orga)
@@ -269,12 +259,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			ausschreibungsheadline.addColumn(new Column("Ausschreibungsbezeichnung: " + au.getBezeichnung()));
 			ausschreibungsheadline.addColumn(new Column("Projektleiter: " + au.getNameProjektleiter()));
 			result.addRow(ausschreibungsheadline);
-			
-			//Ausschreibungstext hinzufügen
+
+			// Ausschreibungstext hinzufügen
 			Row ausschreibungstextline = new Row();
 			ausschreibungstextline.addColumn(new Column("Ausschreibungstext: " + au.getAusschreibungstext()));
 			result.addRow(ausschreibungstextline);
-			
+
 			// Nun sollen die dazugehörigen Bewerbungen hinzugefügt werden
 			// Kopfzeile fï¿½r die Tabelle anlegen:
 			Row headline = new Row();
@@ -293,16 +283,14 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 			// Reportinhalt:
 
-			
 			Vector<Bewerbung> be = project4uAdministration.getAllBewerbungen();
 			Vector<Bewerbung> bewerbungForAusschreibung = new Vector<Bewerbung>();
 
 			for (Bewerbung bew : be) {
-				if (bew.getAusschreibungId() == au.getAusschreibungId()){
+				if (bew.getAusschreibungId() == au.getAusschreibungId()) {
 					bewerbungForAusschreibung.add(bew);
 				}
-					
-					
+
 			}
 
 			for (Bewerbung b : bewerbungForAusschreibung) {
@@ -398,23 +386,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 	}
 
-	// Anschließend müssen die Ausschreibungen zu diesen Bewerbungen ausgegeben
-	// werden.
-	// public AlleAusschreibungenForBewerbung alleAusschreibungenForBewerbung(){
-	//
-	// if (this.getProject4uAdministration() == null)
-	// return null;
-	//
-	// AlleAusschreibungenForBewerbung result = new
-	// AlleAusschreibungenForBewerbung();
-	//
-	//
-	//
-	// return result;
-	// }
-
 	/*
-	 * Abfrage von Projektverflechtungen (Teilnahmen und weitere
+	 * Report 5. Abfrage von Projektverflechtungen (Teilnahmen und weitere
 	 * Einreichungen/Bewerbungen) eines Bewerbers durch den Ausschreibenden.
 	 * 
 	 * @author Dominik Sasse
@@ -422,6 +395,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 * @author Georg Erich
 	 */
 
+	// Simple Report Alle Beteiligungen pro Nutzer
 	public AllBeteiligungenForNutzer allBeteiligungenForNutzer(Organisationseinheit orga) {
 
 		if (this.getProject4uAdministration() == null)
@@ -458,6 +432,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		return result;
 	}
 
+	// SimpleReport Alle Bewerbungen pro Nutzer
 	public AllBewerbungenForNutzer allBewerbungenForNutzer(Organisationseinheit orga) {
 
 		if (this.getProject4uAdministration() == null)
@@ -478,24 +453,27 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		result.addRow(headline);
 
-		Vector<Bewerbung> allBewerbungen = project4uAdministration.getBewerbungForOrganisationseinheit(orga);
+		Vector<Bewerbung> allBewerbungen = project4uAdministration.getAllBewerbungen();
 
 		for (Bewerbung be : allBewerbungen) {
 
-			Row beteiligungsRow = new Row();
-			beteiligungsRow.addColumn(new Column(String.valueOf(be.getBewerbungId())));
-			beteiligungsRow.addColumn(new Column(String.valueOf(be.getErstelldatum())));
-			beteiligungsRow.addColumn(new Column(be.getBewerbungstext()));
-			beteiligungsRow.addColumn(new Column(String.valueOf(be.getAusschreibungId())));
-			beteiligungsRow.addColumn(new Column(String.valueOf(be.getOrganisationseinheitId())));
-			beteiligungsRow.addColumn(new Column(be.getStatus()));
+			if (be.getOrganisationseinheitId() == orga.getOrganisationseinheitId()) {
+				Row beteiligungsRow = new Row();
+				beteiligungsRow.addColumn(new Column(String.valueOf(be.getBewerbungId())));
+				beteiligungsRow.addColumn(new Column(String.valueOf(be.getErstelldatum())));
+				beteiligungsRow.addColumn(new Column(be.getBewerbungstext()));
+				beteiligungsRow.addColumn(new Column(String.valueOf(be.getAusschreibungId())));
+				beteiligungsRow.addColumn(new Column(String.valueOf(be.getOrganisationseinheitId())));
+				beteiligungsRow.addColumn(new Column(be.getStatus()));
 
-			result.addRow(beteiligungsRow);
+				result.addRow(beteiligungsRow);
 
+			}
 		}
 		return result;
 	}
 
+	// Hier werden nun die 2 SimpleReports zusammengefügt
 	public ReportByProjektverflechtungen createProjektverflechtungReport(Organisationseinheit orga)
 			throws IllegalArgumentException {
 
@@ -509,10 +487,20 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		report.addSubReport(this.allBeteiligungenForNutzer(orga));
 		report.addSubReport(this.allBewerbungenForNutzer(orga));
 
-		// Report ausgeben
 		return report;
 	}
 
+	/*
+	 * Report 6 Durchführung einer Fan-in/Fan-out-Analyse: Zu allen Teilnehmern
+	 * kann jeweils die Anzahl von Bewerbungen (laufende, abgelehnte,
+	 * angenommene) (eine Art Fan-out) und deren Anzahl von Ausschreibungen
+	 * (erfolgreich besetzte, abgebrochene, laufende, also Fan-out) tabellarisch
+	 * aufgeführt werden.
+	 * 
+	 * @author: Dominik Sasse
+	 */
+
+	// Ausgabe der Bewerber mit Status
 	public FanIn createFanInAnalyseReport() throws IllegalArgumentException {
 
 		if (project4uAdministration == null)
@@ -542,14 +530,44 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 			for (Bewerbung be : alleBewerbungen) {
 
-				// TODO: Status der Bewerbungen abrufen (laufend, abgelehnt,
-				// erfolgreich) sobald diese implementiert sind.
+				if (be.getStatus().toString().equals("ausstehend")) {
+					laufendeBewerbungen.add(be);
+				}
+				if (be.getStatus().toString().equals("abgelehnt")) {
+					abgelehnteBewerbungen.add(be);
+				}
+				if (be.getStatus().toString().equals("angenommen")) {
+					erfolgreicheBewerbungen.add(be);
+				}
 			}
+			
+			Row numbRows = new Row();
+			
+			numbRows.addColumn(new Column(String.valueOf(orga.getOrganisationseinheitId())));
+
+			if(orga.getTyp().toString().equals("Person")){
+				numbRows.addColumn(new Column(orga.getName()));
+			}
+
+			if(orga.getTyp().toString().equals("Team")){
+				numbRows.addColumn(new Column(orga.getName()));
+			}
+
+			if(orga.getTyp().toString().equals("Unternehmen")){
+				numbRows.addColumn(new Column(orga.getName()));
+			}
+			
+			numbRows.addColumn(new Column(String.valueOf(laufendeBewerbungen.size())));
+			numbRows.addColumn(new Column(String.valueOf(abgelehnteBewerbungen.size())));
+			numbRows.addColumn(new Column(String.valueOf(erfolgreicheBewerbungen.size())));
+			
+			result.addRow(numbRows);
 		}
 
 		return result;
 	}
 
+	// Ausgabe der Ausschreiber mit Status
 	public FanOut createFanOutAnalyseReport() throws IllegalArgumentException {
 
 		if (project4uAdministration == null) {
@@ -563,9 +581,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		Row headline = new Row();
 		headline.addColumn(new Column("ID"));
 		headline.addColumn(new Column("Organisationseinheit"));
-		headline.addColumn(new Column("geschlossen"));
-		// headline.addColumn(new Column("abgebrochen"));
 		headline.addColumn(new Column("laufend"));
+		headline.addColumn(new Column("geschlossen"));
 
 		result.addRow(headline);
 
@@ -573,10 +590,42 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		for (Organisationseinheit orga : allOrgas) {
 			Vector<Ausschreibung> laufendeAusschreibungen = new Vector<Ausschreibung>();
-			Vector<Ausschreibung> abgebrocheneAusschreibungen = new Vector<Ausschreibung>();
 			Vector<Ausschreibung> besetzteAusschreibungen = new Vector<Ausschreibung>();
 
 			Vector<Ausschreibung> alleAusschreibungen = project4uAdministration.getAusschreibungenForOrga(orga);
+			
+			for (Ausschreibung au : alleAusschreibungen) {
+
+				if (au.getStatus().toString().equals("laufend")) {
+					laufendeAusschreibungen.add(au);
+				}
+				if (au.getStatus().toString().equals("beendet")) {
+					besetzteAusschreibungen.add(au);
+				}
+
+			}
+			
+			Row numbRows = new Row();
+			
+			numbRows.addColumn(new Column(String.valueOf(orga.getOrganisationseinheitId())));
+
+			if(orga.getTyp().toString().equals("Person")){
+				numbRows.addColumn(new Column(orga.getName()));
+			}
+
+			if(orga.getTyp().toString().equals("Team")){
+				numbRows.addColumn(new Column(orga.getName()));
+			}
+
+			if(orga.getTyp().toString().equals("Unternehmen")){
+				numbRows.addColumn(new Column(orga.getName()));
+			}
+			
+			numbRows.addColumn(new Column(String.valueOf(laufendeAusschreibungen.size())));
+			numbRows.addColumn(new Column(String.valueOf(besetzteAusschreibungen.size())));
+
+			
+			result.addRow(numbRows);
 		}
 		return result;
 
@@ -592,7 +641,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		result.setTitle("FanIn- FanOut-Analyse");
 
 		result.addSubReport(this.createFanInAnalyseReport());
-		result.addSubReport(this.createFanInFanOutReport());
+		result.addSubReport(this.createFanOutAnalyseReport());
 
 		return result;
 	}

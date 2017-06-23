@@ -896,15 +896,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	public Vector<Beteiligung> getBeteiligungForOrga(Organisationseinheit orga) throws IllegalArgumentException {
-		Vector<Beteiligung> result = new Vector<>();
 
 		Vector<Beteiligung> beteiligungen = this.beteiligungMapper.findByOrganisationseinheit(orga);
 
-		if (beteiligungen != null) {
-			result.addAll(beteiligungen);
-
-		}
-		return result;
+		return beteiligungen;
 	}
 
 	/*
