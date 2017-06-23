@@ -13,6 +13,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.gruppe1.Project4u.shared.report.AllBeteiligungenForNutzer;
 import de.hdm.gruppe1.Project4u.shared.report.AllBewerbungenForNutzer;
+import de.hdm.gruppe1.Project4u.shared.report.AlleAusschreibungenForBewerbung;
 import de.hdm.gruppe1.Project4u.shared.report.Column;
 import de.hdm.gruppe1.Project4u.shared.report.CompositeParagraph;
 import de.hdm.gruppe1.Project4u.shared.report.FanIn;
@@ -23,6 +24,7 @@ import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleBewerbungenForAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByProjektverflechtungen;
+import de.hdm.gruppe1.Project4u.shared.report.ReportForEigeneBewerbungen;
 import de.hdm.gruppe1.Project4u.shared.report.Row;
 import de.hdm.gruppe1.Project4u.shared.report.SimpleParagraph;
 import de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl;
@@ -105,6 +107,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		r.setImprint(imprint);
 	}
 
+	/*
+	 * 3. Report um alle Ausschreibungen auszugeben
+	 * 
+	 * @author: Dominik Sasse
+	 */
 
 	public ReportByAlleAusschreibungen createAlleAusschreibungenReport() throws IllegalArgumentException {
 
@@ -172,8 +179,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 
 	/**
-	 * Methode um alle Ausschreibungen in einem Report ausgeben zu kï¿½nnen
+	 * 4. Report um alle Ausschreibungen des aktuellen Nutzer auszugeben
 	 * 
+	 * @author Dominik Sasse
+	 * @author Manuel Weiler
 	 * @return der fertige Report
 	 */
 
@@ -231,8 +240,18 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		}
 		return result;
 	}
-	
 
+	/*
+	 * 5. Report welcher alle Bewerbungen auf Ausschreibungen des Benutzers
+	 * zurückgibt.
+	 * 
+	 * @author Dominik Sasse
+	 * 
+	 * @author Ugut Bayrak
+	 */
+
+	// Zuerst brauchen wir alle Ausschreibungen des Benutzer welche wir einzeln
+	// ausgeben. Anschließend
 	public ReportByAlleBewerbungenForAusschreibungen createAlleBewerbungenForAusschreibungen(Organisationseinheit o)
 			throws IllegalArgumentException {
 
@@ -242,17 +261,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		// Leeren Report anlegen
 		ReportByAlleBewerbungenForAusschreibungen result = new ReportByAlleBewerbungenForAusschreibungen();
 
-		result.setTitle("Alle Bewerbungen");
+		result.setTitle("Alle Bewerbungen auf eigene Ausschreibungen");
 
 		result.setCreated(new Date());
-
-		// Kopfdaten des Reports
-		CompositeParagraph header = new CompositeParagraph();
-
-		header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Bewerbungen auf Ausschreibungen"));
-
-		// Kopfdaten zum Report hinzufï¿½gen
-		result.setHeaderData(header);
 
 		// Kopfzeile fï¿½r die Tabelle anlegen:
 		Row headline = new Row();
@@ -271,11 +282,21 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		// Reportinhalt:
 
-		BewerbungMapper bm = BewerbungMapper.bewerbungMapper();
-		Vector<Bewerbung> be = new Vector<Bewerbung>();
-		be = bm.findByOrganisationseinheit(o);
+		// Organisationseinheit hat Ausschreibungen mit einer ID
+		// Diese AusschreibungsID muss = der AusschreibungsID der Bewerbungen
+		// sein.
+		Vector<Ausschreibung> aus = project4uAdministration.getAusschreibungenForOrga(o);
 
-		for (Bewerbung b : be) {
+		Vector<Bewerbung> be = project4uAdministration.getBewerbungForOrganisationseinheit(o);
+		Vector<Bewerbung> bew = new Vector<Bewerbung>();
+
+		for (Bewerbung bewerbung : be) {
+			if (bewerbung.getOrganisationseinheitId() == o.getOrganisationseinheitId()) {
+				bew.add(bewerbung);
+			}
+		}
+
+		for (Bewerbung b : bew) {
 			// neue, leere Zeile anlegen
 			Row bewerbungRow = new Row();
 			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
@@ -293,7 +314,102 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 	}
 
-	
+	/*
+	 * 6. Abfrage der eigenen Bewerbungen und den zugehörigen Ausschreibungen
+	 * des Benutzers
+	 * 
+	 * @author Dominik Sasse
+	 */
+
+	// Zuerst müssen alle Bewerbungen des Nutzers ausgeeben werden
+	public ReportForEigeneBewerbungen createEigeneBewerbungenReport(Organisationseinheit orga) {
+
+		if (this.getProject4uAdministration() == null)
+			return null;
+
+		ReportForEigeneBewerbungen result = new ReportForEigeneBewerbungen();
+
+		result.setTitle("Alle Bewerbungen dieses Nutzers");
+
+		result.setCreated(new Date());
+
+		// Kopfzeile fï¿½r die Tabelle anlegen:
+		Row headline = new Row();
+
+		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
+
+		headline.addColumn(new Column("Bewerbungs-ID"));
+		headline.addColumn(new Column("Erstelldatum"));
+		headline.addColumn(new Column("Bewerbungstext"));
+		headline.addColumn(new Column("Organisationseinheit-ID"));
+		headline.addColumn(new Column("Status"));
+		headline.addColumn(new Column("Ausschreibung-ID"));
+		// Inhalt der Ausschreibung
+		headline.addColumn(new Column("Ausschreibungsbezeichnung"));
+		headline.addColumn(new Column("Projektleiter der Ausschreibung"));
+		headline.addColumn(new Column("Bewerbungsfrist"));
+		headline.addColumn(new Column("Ausschreibungstext"));
+		headline.addColumn(new Column("Erstelldatum"));
+
+		// Kopfzeile wird dem Report hinzugefuegt
+		result.addRow(headline);
+
+		// Reportinhalt:
+
+		Vector<Bewerbung> bew = project4uAdministration.getBewerbungForOrganisationseinheit(orga);
+
+		// Anschließend müssen die Ausschreibungen zu diesen Bewerbungen
+		// ausgegeben werden.
+
+		for (Bewerbung be : bew) {
+			Row bewerbungRow = new Row();
+			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
+			bewerbungRow.addColumn(new Column(String.valueOf(be.getBewerbungId())));
+			bewerbungRow.addColumn(new Column(String.valueOf(be.getErstelldatum())));
+			bewerbungRow.addColumn(new Column(be.getBewerbungstext()));
+			bewerbungRow.addColumn(new Column(String.valueOf(be.getOrganisationseinheitId())));
+			bewerbungRow.addColumn(new Column(be.getStatus()));
+			bewerbungRow.addColumn(new Column(String.valueOf(be.getAusschreibungId())));
+			// Inhalt Ausschreibung
+			Ausschreibung au = project4uAdministration.findByIdAusschreibung(be.getAusschreibungId());
+			bewerbungRow.addColumn(new Column(au.getBezeichnung()));
+			bewerbungRow.addColumn(new Column(au.getNameProjektleiter()));
+			bewerbungRow.addColumn(new Column(String.valueOf(au.getBewerbungsfrist())));
+			bewerbungRow.addColumn(new Column(au.getAusschreibungstext()));
+			bewerbungRow.addColumn(new Column(String.valueOf(au.getErstellDatum())));
+
+			// Zeile dem Report hinzufï¿½gen
+			result.addRow(bewerbungRow);
+		}
+
+		return result;
+
+	}
+
+	// Anschließend müssen die Ausschreibungen zu diesen Bewerbungen ausgegeben
+	// werden.
+	// public AlleAusschreibungenForBewerbung alleAusschreibungenForBewerbung(){
+	//
+	// if (this.getProject4uAdministration() == null)
+	// return null;
+	//
+	// AlleAusschreibungenForBewerbung result = new
+	// AlleAusschreibungenForBewerbung();
+	//
+	//
+	//
+	// return result;
+	// }
+
+	/*
+	 * Abfrage von Projektverflechtungen (Teilnahmen und weitere
+	 * Einreichungen/Bewerbungen) eines Bewerbers durch den Ausschreibenden.
+	 * 
+	 * @author Dominik Sasse
+	 * 
+	 * @author Georg Erich
+	 */
+
 	public AllBeteiligungenForNutzer allBeteiligungenForNutzer(Organisationseinheit orga) {
 
 		if (this.getProject4uAdministration() == null)
@@ -361,7 +477,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			beteiligungsRow.addColumn(new Column(String.valueOf(be.getAusschreibungId())));
 			beteiligungsRow.addColumn(new Column(String.valueOf(be.getOrganisationseinheitId())));
 			beteiligungsRow.addColumn(new Column(be.getStatus()));
-			
+
 			result.addRow(beteiligungsRow);
 
 		}
@@ -384,7 +500,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		// Report ausgeben
 		return report;
 	}
-
 
 	public FanIn createFanInAnalyseReport() throws IllegalArgumentException {
 

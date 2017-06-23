@@ -106,5 +106,7 @@ public interface Project4uAdministration extends RemoteService{
 			Organisationseinheit team) throws IllegalArgumentException;
 
 	public Ausschreibung updateAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException ;
+	
+	public Ausschreibung findByIdAusschreibung(int id) throws IllegalArgumentException;
 
 }

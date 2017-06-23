@@ -40,9 +40,11 @@ public class NavigationsleisteReport extends Composite {
 
 	Button homeButton = new Button("Startseite");
 	Button alleAusschreibungenButton = new Button("Alle Ausschreibungen");
-	Button projektverflechtungenButton = new Button("Projektverflechtungen");
 	Button ausschreibungenForPartnerprofilButton = new Button("Ausschreibungen die zu dir passen");
-	Button alleBewerbungenButton = new Button("Alle Bewerbungen");
+	Button alleBewerbungenForUsersAusschreibungenButton = new Button("Alle Bewerbungen auf deine Ausschreibungen");
+	Button userbewerbungenForAusschreibungButton = new Button("Deine Bewerbungen auf Ausschreibungen");
+	Button projektverflechtungenButton = new Button("Projektverflechtungen");
+	Button fanInFanOutButton = new Button("FanIn-FanOut-Analyse");
 
 	// Methode um den aktuellen Nutzer zu bekommen
 
@@ -51,10 +53,11 @@ public class NavigationsleisteReport extends Composite {
 		menuReportPanel.add(homeButton);
 
 		menuReportPanel.add(alleAusschreibungenButton);
-		menuReportPanel.add(alleAusschreibungenButton);
-		menuReportPanel.add(projektverflechtungenButton);
 		menuReportPanel.add(ausschreibungenForPartnerprofilButton);
-		menuReportPanel.add(alleBewerbungenButton);
+		menuReportPanel.add(alleBewerbungenForUsersAusschreibungenButton);
+		menuReportPanel.add(userbewerbungenForAusschreibungButton);
+		menuReportPanel.add(projektverflechtungenButton);
+		menuReportPanel.add(fanInFanOutButton);
 
 		// Buttonabstand
 		menuReportPanel.setSpacing(20);
@@ -62,10 +65,14 @@ public class NavigationsleisteReport extends Composite {
 		// Button-Layout
 
 		homeButton.setPixelSize(200, 40);
+		
 		alleAusschreibungenButton.setPixelSize(200, 40);
-		projektverflechtungenButton.setPixelSize(200, 40);
 		ausschreibungenForPartnerprofilButton.setPixelSize(200, 40);
-		alleBewerbungenButton.setPixelSize(200, 40);
+		alleBewerbungenForUsersAusschreibungenButton.setPixelSize(200, 40);
+		userbewerbungenForAusschreibungButton.setPixelSize(200, 40);
+		projektverflechtungenButton.setPixelSize(200, 40);
+		fanInFanOutButton.setPixelSize(200, 40);
+
 
 		homeButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -80,6 +87,10 @@ public class NavigationsleisteReport extends Composite {
 			}
 		});
 
+		/*
+		 * Ausgabe Report 1
+		 * @author Dominik Sasse
+		 */
 		alleAusschreibungenButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -110,6 +121,10 @@ public class NavigationsleisteReport extends Composite {
 			}
 		});
 
+		/*
+		 * Ausgabe Report 2
+		 * @author Dominik Sasse
+		 */
 		ausschreibungenForPartnerprofilButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -162,7 +177,12 @@ public class NavigationsleisteReport extends Composite {
 			}
 		});
 
-		alleBewerbungenButton.addClickHandler(new ClickHandler() {
+		
+		/*
+		 * Ausgabe Report 2
+		 * @author Dominik Sasse
+		 */
+		ausschreibungenForPartnerprofilButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),

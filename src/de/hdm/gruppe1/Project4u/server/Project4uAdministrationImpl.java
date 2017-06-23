@@ -725,7 +725,6 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		}
 		return result;
 	}
-	 
 	
 	
 	/*
