@@ -64,7 +64,7 @@ public class ProjektmarktplatzMapper {
 	/**
 	 ** @param id
 <<<<<<< HEAD
-	 ** @return Liefert ein Projektmarktplatz entsprechend der übergebenen id
+	 ** @return Liefert ein Projektmarktplatz entsprechend der ï¿½bergebenen id
 	 *         zurueck.
 =======
 	 ** @return Liefert ein Projektmarktplatz entsprechend der ï¿½bergebenen id zurueck.
@@ -191,7 +191,7 @@ public class ProjektmarktplatzMapper {
 		        p.setName(rs.getString("name"));
 		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 
-		        
+		        result.add(p);
 		      }
 		} catch (SQLException e) {
 			e.printStackTrace();

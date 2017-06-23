@@ -24,7 +24,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
  * @author Tobias
  *
  */
-public class BewerbungsprofilWidget extends Composite{
+public class OrganisationseinheitProfilAnzeigeWidget {
 	
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 	
@@ -43,7 +43,7 @@ public class BewerbungsprofilWidget extends Composite{
 	ListBox typbox = new ListBox();
 	
 	
-	public BewerbungsprofilWidget(int OrgaID){
+	public OrganisationseinheitProfilAnzeigeWidget(int OrgaID){
 		
 		Project4uVerwaltung.getOrganisationseinheitById(OrgaID, new AsyncCallback<Organisationseinheit>() {
 			
@@ -109,10 +109,12 @@ public class BewerbungsprofilWidget extends Composite{
 			}
 		});
 		
-		initWidget(vp);
+		
 	}
 	
-	
+	public VerticalPanel getVP(){
+		return this.vp;
+	}
 	
 	
 	

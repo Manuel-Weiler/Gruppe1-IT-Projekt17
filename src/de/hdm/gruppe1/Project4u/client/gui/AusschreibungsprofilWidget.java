@@ -6,6 +6,8 @@ package de.hdm.gruppe1.Project4u.client.gui;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.Box;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -16,6 +18,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -57,10 +60,10 @@ public class AusschreibungsprofilWidget {
 	Projektmarktplatz pMart = new Projektmarktplatz();
 	
 	Button savenew = new Button("Speichern");
-	Button update = new Button("Speichernnnn");
+	Button update = new Button("Speichern");
 	Button cancel = new Button("Abbrechen");
-	//TODO: bewerben
-	//TODO: Standardeigenschaften
+	
+	
 	Button change = new Button("Bearbeiten");
 	Button quit = new Button("Ausschreibung abbrechen");
 	Button delete = new Button("Ausschreibung löschen");
@@ -74,8 +77,8 @@ public class AusschreibungsprofilWidget {
 	HTML ausschrtext = new HTML("Ausschreibungstext: ");
 	
 	//TODO: Buttongröße
-	//TODO: Ausschreibung löschen
-	//TODO: Ausschreibung abbrechen
+	
+	//TODO: Ausschreibung beenden
 	TextBox bezeichnung = new TextBox();
 	TextBox projektleiter = new TextBox();
 	DateBox bewerbungsfrist = new DateBox();
@@ -133,9 +136,10 @@ public class AusschreibungsprofilWidget {
 		
 		heading2.setVisible(false);
 		bewerbungsfrist.setWidth("180px");
-		ausschreibungstext.setWidth("180px");
-		ausschreibungstext.setHeight("150px");
+		ausschreibungstext.setWidth("300px");
+		ausschreibungstext.setHeight("200px");
 		
+		bewerben.addClickHandler(new bewerbenClickhandler());
 		update.addClickHandler(new updateSpeichernButtonClickHandler());
 		savenew.addClickHandler(new neueAusschreibungSpeichernClickhandler());
 		addEig.addClickHandler(new neueEigenschaftClickHandler());
@@ -412,6 +416,30 @@ public class AusschreibungsprofilWidget {
 	
 	
 	
+	private class bewerbenClickhandler implements ClickHandler{
+
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			BewerbungWidget bw = new BewerbungWidget(localAus);
+			
+			db.hide();
+			db.setPopupPositionAndShow(new PositionCallback() {
+				
+				@Override
+				public void setPosition(int offsetWidth, int offsetHeight) {
+					db.setPopupPosition((Window.getClientWidth()/2)-db.getOffsetWidth(), 
+							Window.getClientHeight()/2);
+					
+				}
+			});
+			bw.show();
+		}
+		
+	}
+	
+	
+	
 	
 	
 	
@@ -497,6 +525,7 @@ public class AusschreibungsprofilWidget {
 			ProjektWidget PW = new ProjektWidget(pMart);
 			RootPanel.get("content").clear();
 			RootPanel.get("content").add(PW);
+			
 			PW.ausschreibungAnsehen(localProj);
 			
 			db.hide();

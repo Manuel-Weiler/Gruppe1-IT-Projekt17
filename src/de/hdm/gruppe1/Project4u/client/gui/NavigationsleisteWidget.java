@@ -30,17 +30,18 @@ public class NavigationsleisteWidget extends Composite {
 	 */
 	
 	
-	Anchor reportLink = new Anchor("ReportGenerator");
+	private Anchor reportLink = new Anchor("ReportGenerator");
+	private Anchor signOutLink = new Anchor();
 	
-	VerticalPanel menuPanel = new VerticalPanel();
+	private VerticalPanel menuPanel = new VerticalPanel();
 
-	Button profilButton = new Button("Nutzerprofil");
-	Button homeButton = new Button("Startseite");
-	Button pMarktplatz = new Button("Projektmarktplätze");
-	Button eBewerbungen = new Button("Eingangsbewerbungen");
-	Button aBewerbungen = new Button("Ausgangsbewerbungen");
-	Button reportButton = new Button("Reports");
-	Button logout = new Button("Logout");
+	private Button profilButton = new Button("Nutzerprofil");
+	private Button homeButton = new Button("Startseite");
+	private Button pMarktplatz = new Button("Projektmarktplätze");
+	private Button eBewerbungen = new Button("Eingangsbewerbungen");
+	private Button aBewerbungen = new Button("Ausgangsbewerbungen");
+	private Button reportButton = new Button("Reports");
+	private Button logout = new Button("Logout");
 
 	
 	//Test
@@ -56,7 +57,8 @@ public class NavigationsleisteWidget extends Composite {
 		menuPanel.add(pMarktplatz);
 		menuPanel.add(eBewerbungen);
 		menuPanel.add(aBewerbungen);
-		menuPanel.add(reportButton);
+		menuPanel.add(logout);
+		
 		
 		//Test
 		menuPanel.add(orgaLoeschen);
@@ -73,7 +75,7 @@ public class NavigationsleisteWidget extends Composite {
 		pMarktplatz.setPixelSize(200, 40);
 		aBewerbungen.setPixelSize(200, 40);
 		reportButton.setPixelSize(200, 40);
-	
+		logout.setPixelSize(200, 40);
 		
 		
 		////////////////////////////////TEST/////////////////////////////////////////////
@@ -199,14 +201,7 @@ public class NavigationsleisteWidget extends Composite {
 		//////////////////////////////////TEST ENDE/////////////////////////////////////////////
 		
 
-		logout.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Logout hinzuf�gen
-
-			}
-		});
+		
 
 		homeButton.addClickHandler(new ClickHandler() {
 
@@ -271,6 +266,24 @@ public class NavigationsleisteWidget extends Composite {
 			}
 		});
 		
+		eBewerbungen.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				new EingangsbewerbungenWidget();
+				
+			}
+		});
+
+		aBewerbungen.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				new AusgangsbewerbungenWidget();
+				
+			}
+		});
+
 		reportButton.addClickHandler(new ClickHandler(){
 				
 				@Override
@@ -282,6 +295,17 @@ public class NavigationsleisteWidget extends Composite {
 				}
 			});
 		
+		logout.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				signOutLink.setHref(ClientsideSettings.getAktuellerUser().getLogoutUrl());
+				Window.Location.assign(signOutLink.getHref());
+
+			}
+		});
+		
+
 
 		initWidget(menuPanel);
 	}

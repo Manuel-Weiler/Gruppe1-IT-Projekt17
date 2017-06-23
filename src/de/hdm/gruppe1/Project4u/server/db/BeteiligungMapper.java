@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
@@ -32,7 +33,8 @@ public class BeteiligungMapper {
 	
 	public Beteiligung insertBeteiligung(Beteiligung b) {
 		Connection con = DBConnection.connection();
-
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
 		try {
 			Statement stmt = con.createStatement();
 
@@ -47,16 +49,16 @@ public class BeteiligungMapper {
 
 				stmt.executeUpdate("INSERT INTO Beteiligung "
 						+ "(id, startdatum, enddatum, "
-						+ "persontage, organisationseinheit_id, projekt_id, "
+						+ "personentage, organisationseinheit_id, projekt_id, "
 						+ "bewertung_id) " 
 						+ "VALUES ("
 						+ b.getBeteiligungId() + ",'" 
-						+ b.getStartdatum() + "','" 
-						+ b.getEnddatum() + "','" 
-						+ b.getPersonentage() + "','" 
-						+ b.getOrganisationseinheitId() + "','" 
-						+ b.getProjektId() + "','" 
-						+ b.getBewertungId() + "')");
+						+ sdf.format(b.getStartdatum()) + "','" 
+						+ sdf.format(b.getEnddatum()) + "'," 
+						+ b.getPersonentage() + "," 
+						+ b.getOrganisationseinheitId() + "," 
+						+ b.getProjektId() + "," 
+						+ b.getBewertungId() + ")");
 			}
 		} catch (SQLException s) {
 			s.printStackTrace();
