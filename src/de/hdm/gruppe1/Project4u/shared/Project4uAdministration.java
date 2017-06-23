@@ -87,8 +87,10 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Vector<Eigenschaft> getAllEigenschaftenByPartnerprofilId(int partnerprofilId)throws IllegalArgumentException;
 	
+	//////PROJEKT//////
 	public Vector<Projekt> findByProjektmarktplatz (Projektmarktplatz projektmarktplatz) throws IllegalArgumentException;
-	
+	public Vector<Projekt> findProjektByOrganisationseinheit (Organisationseinheit organisationseinheit) throws IllegalArgumentException;
+	//////ENDE PROJEKT//////
 	public Vector<Ausschreibung> getAusschreibungenForPartnerprofil(Organisationseinheit orga)
 			throws IllegalArgumentException;
 	

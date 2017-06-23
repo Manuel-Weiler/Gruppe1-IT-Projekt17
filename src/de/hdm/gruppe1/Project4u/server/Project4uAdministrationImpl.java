@@ -530,6 +530,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 			throws IllegalArgumentException {
 		return this.projektMapper.findByProjektmarktplatz(projektmarktplatz);
 	}
+	
+	public Vector<Projekt> findProjektByOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException {
+		return this.projektMapper.findByOrganisationseinheit(organisationseinheit);
+	}
 
 	/*
 	 * #########################################################################
@@ -657,10 +661,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 			Vector<Projekt> p = ProjektMapper.projektMapper().findAll();
 			
 			for(Projekt pro : p){
-				//Für alle Projekte mit der OrganisationseinheitsId XY...
+				//Fï¿½r alle Projekte mit der OrganisationseinheitsId XY...
 				if(pro.getOrganisationseinheitId() == orga.getOrganisationseinheitId()){
 					for(Ausschreibung ausschreibung : auss){
-						//...füge die Ausschreibungen dem ergebnis-Vektor hinzu.
+						//...fï¿½ge die Ausschreibungen dem ergebnis-Vektor hinzu.
 						if(pro.getProjektId() == ausschreibung.getProjektId()){
 							ergebnis.add(ausschreibung);
 						}

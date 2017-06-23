@@ -26,11 +26,15 @@ public interface Project4uAdministrationAsync {
 	 * @param callback
 	 */
 	
-	//Organisationseinheit
+	//////ORGANISATIONSEINHEIT//////
 	void deleteOrganisationseinheit(Organisationseinheit organisationseinheit, AsyncCallback<Void> callback);
 
 	void getOrganisationseinheitById(int id, AsyncCallback<Organisationseinheit> callback);
+	//////ENDE ORGANISATIONSEINHEIT/////
 	
+	//////PROJEKT//////
+	void findProjektByOrganisationseinheit(Organisationseinheit organisationseinheit, AsyncCallback<Vector<Projekt>> callback);
+	//////PROJEKT ENDE//////
 	
 	
 	void init(AsyncCallback<Void> callback);

@@ -19,6 +19,7 @@ import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 import de.hdm.gruppe1.Project4u.client.gui.ProjektmarktplatzWidget;
+//import de.hdm.gruppe1.Project4u.client.gui.MeineProjekteWidget;
 
 public class NavigationsleisteWidget extends Composite {
 
@@ -38,10 +39,11 @@ public class NavigationsleisteWidget extends Composite {
 	Button logout = new Button("Logout");
 
 	
-	//Test
-	Button orgaLoeschen = new Button("Orga löschen");
+	//////TEST////////////////////////////////////////
+	/*Button orgaLoeschen = new Button("Orga löschen");
 	Button projektmarktplatzLoeschen = new Button("Projektmarktplatz löschen");
-	Button testBtn = new Button("Test");
+	Button meineProjekte = new Button("Meine Projekte");*/
+	//////TEST ENDE///////////////////////////////////
 
 	public NavigationsleisteWidget() {
 
@@ -51,11 +53,6 @@ public class NavigationsleisteWidget extends Composite {
 		menuPanel.add(pMarktplatz);
 		menuPanel.add(eBewerbungen);
 		menuPanel.add(aBewerbungen);
-		
-		//Test
-		menuPanel.add(orgaLoeschen);
-		menuPanel.add(testBtn);
-		menuPanel.add(projektmarktplatzLoeschen);
 
 		// Abstand zwischen den einzelnen Buttons
 		menuPanel.setSpacing(20);
@@ -70,13 +67,35 @@ public class NavigationsleisteWidget extends Composite {
 		
 		
 		////////////////////////////////TEST/////////////////////////////////////////////
-		//Test
+		/*menuPanel.add(orgaLoeschen);
+		menuPanel.add(meineProjekte);
+		menuPanel.add(projektmarktplatzLoeschen);
+		
 		orgaLoeschen.setPixelSize(200, 40);
-		testBtn.setPixelSize(200, 40);
+		meineProjekte.setPixelSize(200, 40);
 		projektmarktplatzLoeschen.setPixelSize(200, 40);
 		
 		
-		testBtn.addClickHandler(new ClickHandler() {
+		
+		meineProjekte.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
+						new AsyncCallback<Organisationseinheit>() {
+					public void onSuccess(Organisationseinheit result) {
+						RootPanel.get("content").clear();
+						RootPanel.get("content").add(new MeineProjekteWidget(result));
+						
+					}
+					public void onFailure(Throwable caught) {
+						Window.alert(caught.getMessage());	
+					}
+				});
+			}
+		});
+		
+		meineProjekte.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
@@ -188,7 +207,7 @@ public class NavigationsleisteWidget extends Composite {
 			
 				
 			}
-		});
+		});*/
 		//////////////////////////////////TEST ENDE/////////////////////////////////////////////
 		
 

@@ -5,9 +5,9 @@ public class Organisationseinheit extends BusinessObject{
 	//Das Attribut Typ muss als Enum festgelegt werden, so dass nur die folgenden Werte verwendet werden können
 	//und keine Fehler auftreten.
 	public enum orgaTyp {
-		person,
-		team,
-		unternehmen;
+		Person,
+		Team,
+		Unternehmen;
 
 	}
 
