@@ -813,24 +813,25 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return eingangsbewerbungen;
 
 	}
-	
-	
-	
-	
+
 
 	public Vector<Bewerbung> getBewerbungForOrganisationseinheit(Organisationseinheit orga)
 			throws IllegalArgumentException {
 
-		Vector<Bewerbung> result = new Vector<>();
+			Vector<Bewerbung> result = new Vector<Bewerbung>();
 
-		if (orga != null && this.bewerbungMapper != null) {
-			Vector<Bewerbung> bewerbungen = this.bewerbungMapper.findByOrganisationseinheit(orga);
-
-			if (bewerbungen != null) {
-				result.addAll(bewerbungen);
+			if(orga != null && this.bewerbungMapper != null){
+			Vector<Bewerbung> bewerbungen = this.bewerbungMapper.findAll();
+		
+			for(Bewerbung be :  bewerbungen){
+				
+				if(be.getOrganisationseinheitId() == orga.getOrganisationseinheitId()){
+					result.add(be);
+				}
 			}
-		}
-		return result;
+			}
+			return result;
+
 	}
 
 	/*

@@ -23,6 +23,7 @@ import de.hdm.gruppe1.Project4u.shared.report.HTMLReportWriter;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleBewerbungenForAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
+import de.hdm.gruppe1.Project4u.shared.report.ReportForEigeneBewerbungen;
 
 public class NavigationsleisteReport extends Composite {
 
@@ -60,7 +61,7 @@ public class NavigationsleisteReport extends Composite {
 		menuReportPanel.add(fanInFanOutButton);
 
 		// Buttonabstand
-		menuReportPanel.setSpacing(20);
+		menuReportPanel.setSpacing(5);
 
 		// Button-Layout
 
@@ -89,6 +90,7 @@ public class NavigationsleisteReport extends Composite {
 
 		/*
 		 * Ausgabe Report 1
+		 * Alle Ausschreibungen
 		 * @author Dominik Sasse
 		 */
 		alleAusschreibungenButton.addClickHandler(new ClickHandler() {
@@ -123,6 +125,7 @@ public class NavigationsleisteReport extends Composite {
 
 		/*
 		 * Ausgabe Report 2
+		 * Alle Ausschreibungen passend zum Nutzer
 		 * @author Dominik Sasse
 		 */
 		ausschreibungenForPartnerprofilButton.addClickHandler(new ClickHandler() {
@@ -144,12 +147,100 @@ public class NavigationsleisteReport extends Composite {
 													RootPanel.get("contentR").clear();
 													RootPanel.get("contentR").add(new HTML(writer.getReportText()));
 												}
+												
+												else{
+													DialogBox dBox = new DialogBox();
+
+													Label label = new Label("Es existieren leider keine passenden Ausschreibungen.");
+													dBox.add(label);
+													dBox.center();
+													dBox.setAutoHideEnabled(true);
+													dBox.show();
+												}
 											}
 
 											public void onFailure(Throwable caught) {
 												DialogBox dBox = new DialogBox();
 
-												Label label = new Label(caught.getMessage());
+												Label label = new Label("Es existieren leider keine passenden Ausschreibungen.");
+												dBox.add(label);
+												dBox.center();
+												dBox.setAutoHideEnabled(true);
+												dBox.show();
+
+											}
+
+										});
+
+							}
+
+							public void onFailure(Throwable caught) {
+								DialogBox dBox = new DialogBox();
+
+								Label label = new Label(caught.getMessage());
+								dBox.add(label);
+								dBox.center();
+								dBox.setAutoHideEnabled(true);
+								dBox.show();
+
+							}
+
+						});
+
+			}
+		});
+
+		/*
+		 * Ausgabe Report 3
+		 * AlleBewerbungen auf Ausschreibungen des Nutzers
+		 * @author Dominik Sasse
+		 */
+		alleBewerbungenForUsersAusschreibungenButton.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event){
+				
+			}
+		});
+		
+		/*
+		 * Ausgabe Report 4
+		 * AlleBewerbungen des Nutzers auf Ausschreibungen
+		 * @author Dominik Sasse
+		 */
+		userbewerbungenForAusschreibungButton.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event){
+				
+				Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
+						new AsyncCallback<Organisationseinheit>() {
+
+							public void onSuccess(Organisationseinheit x) {
+
+								ReportVerwaltung.createEigeneBewerbungenReport(x,
+										new AsyncCallback<ReportForEigeneBewerbungen>() {
+											public void onSuccess(ReportForEigeneBewerbungen c) {
+
+												if (c != null) {
+													HTMLReportWriter writer = new HTMLReportWriter();
+													writer.process(c);
+													RootPanel.get("contentR").clear();
+													RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+												}
+												else{
+													DialogBox dBox = new DialogBox();
+
+													Label label = new Label("Es existieren keine Bewerbungen für diesen Nutzer.");
+													dBox.add(label);
+													dBox.center();
+													dBox.setAutoHideEnabled(true);
+													dBox.show();
+												}
+											}
+
+											public void onFailure(Throwable caught) {
+												DialogBox dBox = new DialogBox();
+
+												Label label = new Label("Es existieren keine Bewerbungen für diesen Nutzer.");
 												dBox.add(label);
 												dBox.center();
 												dBox.setAutoHideEnabled(true);
@@ -179,57 +270,11 @@ public class NavigationsleisteReport extends Composite {
 
 		
 		/*
-		 * Ausgabe Report 2
+		 * Ausgabe Report 5
+		 * Projektverflechtungen
 		 * @author Dominik Sasse
 		 */
-		ausschreibungenForPartnerprofilButton.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
-						new AsyncCallback<Organisationseinheit>() {
-
-							public void onSuccess(Organisationseinheit result) {
-								Organisationseinheit aktuellerNutzer = result;
-
-								ReportVerwaltung.createAlleBewerbungenForAusschreibungen(aktuellerNutzer,
-										new AsyncCallback<ReportByAlleBewerbungenForAusschreibungen>() {
-
-											public void onSuccess(ReportByAlleBewerbungenForAusschreibungen result2) {
-
-												if (result2 != null) {
-													HTMLReportWriter writer = new HTMLReportWriter();
-													writer.process(result2);
-													RootPanel.get("contentR").clear();
-													RootPanel.get("contentR").add(new HTML(writer.getReportText()));
-												}
-											}
-
-											public void onFailure(Throwable caught) {
-												DialogBox dBox = new DialogBox();
-
-												Label label = new Label(caught.getMessage());
-												dBox.add(label);
-												dBox.center();
-												dBox.setAutoHideEnabled(true);
-												dBox.show();
-
-											}
-										});
-							}
-
-							public void onFailure(Throwable caught) {
-								DialogBox dBox = new DialogBox();
-
-								Label label = new Label(caught.getMessage());
-								dBox.add(label);
-								dBox.center();
-								dBox.setAutoHideEnabled(true);
-								dBox.show();
-
-							}
-						});
-			}
-		});
+		
 		// TODO SubReport implementieren (eventuell mit Auswahlmenü für
 		// spezifischen Bewerber)
 
@@ -267,6 +312,20 @@ public class NavigationsleisteReport extends Composite {
 		// }
 		// });
 
+		
+		/*
+		 * Ausgabe Report 6
+		 * FanIn FanOut Analyse
+		 * @author Dominik Sasse
+		 */
+		fanInFanOutButton.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event){
+				
+			}
+		});
+		
+		
 		initWidget(menuReportPanel);
 	}
 

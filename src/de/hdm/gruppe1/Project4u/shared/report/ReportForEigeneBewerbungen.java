@@ -1,6 +1,10 @@
 package de.hdm.gruppe1.Project4u.shared.report;
 
-public class ReportForEigeneBewerbungen extends SimpleReport {
+import java.io.Serializable;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class ReportForEigeneBewerbungen extends SimpleReport implements IsSerializable, Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
