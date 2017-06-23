@@ -169,6 +169,23 @@ public class BewertungWidget {
 	}
 	
 	
+	public void setViewModusOn(Bewertung bewertung){
+		bewertungspunkte.clear();
+		bewertungspunkte.addItem(Float.toString(bewertung.getBewertungspunkte()));
+		bewertungspunkte.setEnabled(false);
+		
+		beurteilung.setValue(bewertung.getStellungnahme());
+		beurteilung.setReadOnly(true);
+		
+		save.setVisible(false);
+		
+		punkte.setHTML("<p>Ihre Bewertung hat folgende Punktzahlt erhalten</br> auf einer Skala von 0,0 bis 1,0</p>");
+		
+		text.setHTML("Die Beurteilung Ihrer Bewerbung:");
+		
+	}
+	
+	
 	
 	
 

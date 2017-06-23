@@ -55,7 +55,7 @@ public class AusschreibungMapper {
 				stmt.executeUpdate("INSERT INTO Ausschreibung "
 						+ "(id, bezeichnung, name_projektleiter, "
 						+ "bewerbungsfrist, ausschreibungstext, erstelldatum, "
-						+ "projekt_id, partnerprofil_id) " 
+						+ "projekt_id, partnerprofil_id, status) " 
 						+ "VALUES ('"
 						+ au.getAusschreibungId() + "','" 
 						+ au.getBezeichnung() + "','" 

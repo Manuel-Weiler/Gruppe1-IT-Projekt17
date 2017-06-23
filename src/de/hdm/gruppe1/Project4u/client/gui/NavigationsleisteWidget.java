@@ -57,6 +57,7 @@ public class NavigationsleisteWidget extends Composite {
 		menuPanel.add(pMarktplatz);
 		menuPanel.add(eBewerbungen);
 		menuPanel.add(aBewerbungen);
+		menuPanel.add(reportButton);
 		menuPanel.add(logout);
 		
 		

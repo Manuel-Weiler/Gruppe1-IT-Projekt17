@@ -32,6 +32,7 @@ import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
@@ -51,7 +52,6 @@ public class AusgangsbewerbungenWidget extends Composite {
 	HorizontalPanel buttons = new HorizontalPanel();
 	Button close = new Button("Schließen");
 	Button delete = new Button("Bewerbung zurückziehen");
-	
 
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch
@@ -66,16 +66,11 @@ public class AusgangsbewerbungenWidget extends Composite {
 
 	CellTable<Bewerbung> userBewerbungen = new CellTable<Bewerbung>(KEY_PROVIDER);
 	CellTable<Bewerbung> linkedBewerbungen = new CellTable<Bewerbung>(KEY_PROVIDER);
-	
-	
-	
 
 	public AusgangsbewerbungenWidget() {
 		RootPanel.get("contentHeader").clear();
 		RootPanel.get("contentHeader").add(new Label("Ausgangsbewerbungen"));
-		
-		
-		
+
 		Project4uVerwaltung.getAllBewerbungenOfUser(ClientsideSettings.getAktuellerUser(),
 				new AsyncCallback<Vector<Bewerbung>>() {
 
@@ -90,8 +85,7 @@ public class AusgangsbewerbungenWidget extends Composite {
 
 							@Override
 							public void onSuccess(Vector<Bewerbung> linkedBewerbungen) {
-								
-								
+
 								vp.add(headingOrgaBew);
 								vp.add(createTableOfLinkedOrgabewerbungen(linkedBewerbungen));
 
@@ -110,13 +104,13 @@ public class AusgangsbewerbungenWidget extends Composite {
 					public void onFailure(Throwable caught) {
 					}
 				});
-		
+
 		delete.addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				Project4uVerwaltung.deleteBewerbung(clickedBewerbung, new AsyncCallback<Void>() {
-					
+
 					@Override
 					public void onSuccess(Void result) {
 						MessageBox.alertWidget("Löschen Bewerbung", "Ihre Bewerbung wurde erfolgreich gelöscht!");
@@ -126,12 +120,12 @@ public class AusgangsbewerbungenWidget extends Composite {
 						RootPanel.get("content").clear();
 						new AusgangsbewerbungenWidget();
 					}
-					
+
 					@Override
 					public void onFailure(Throwable caught) {
 					}
 				});
-				
+
 			}
 		});
 
@@ -147,9 +141,8 @@ public class AusgangsbewerbungenWidget extends Composite {
 		});
 
 	}
-	
-	
-	//TODO: jeweils Spalte einfügen um Bewertung einzusehen
+
+	// TODO: jeweils Spalte einfügen um Bewertung einzusehen
 
 	private CellTable<Bewerbung> createTableOfUserbewerbungen(Vector<Bewerbung> bewerbungen) {
 
@@ -179,16 +172,29 @@ public class AusgangsbewerbungenWidget extends Composite {
 
 		TextColumn<Bewerbung> status = new TextColumn<Bewerbung>() {
 			public String getValue(Bewerbung object) {
+
 				return object.getStatus();
 			}
 		};
+
+		ButtonCell buttCell = new ButtonCell();
+		Column<Bewerbung, String> bewertungColumn = new Column<Bewerbung, String>(buttCell) {
+			@Override
+			public String getValue(Bewerbung bewerbung) {
+				// The value to display in the button.
+
+				return "Bewertung einsehen";
+			}
+		};
+
+		bewertungColumn.setFieldUpdater(new bewertungAnsehenButtonFieldUpdater());
 
 		ButtonCell buttonCell = new ButtonCell();
 		Column<Bewerbung, String> buttonColumn = new Column<Bewerbung, String>(buttonCell) {
 			@Override
 			public String getValue(Bewerbung bewerbung) {
 				// The value to display in the button.
-				return "Details";
+				return "Bewerbungsdetails";
 			}
 		};
 
@@ -206,6 +212,7 @@ public class AusgangsbewerbungenWidget extends Composite {
 		userBewerbungen.addColumn(ausschreibung, "Ausschreibung");
 		userBewerbungen.addColumn(erstelldatum, "Erstelldatum");
 		userBewerbungen.addColumn(status, "Status");
+		userBewerbungen.addColumn(bewertungColumn);
 		userBewerbungen.addColumn(buttonColumn);
 
 		// Anpassen des Widgets an die Breite des div-Elements "content"
@@ -217,8 +224,6 @@ public class AusgangsbewerbungenWidget extends Composite {
 
 		return userBewerbungen;
 	}
-	
-	
 	
 	
 	
@@ -255,6 +260,18 @@ public class AusgangsbewerbungenWidget extends Composite {
 			}
 		};
 
+		ButtonCell buttCell = new ButtonCell();
+		Column<Bewerbung, String> bewertungColumn = new Column<Bewerbung, String>(buttCell) {
+			@Override
+			public String getValue(Bewerbung bewerbung) {
+				// The value to display in the button.
+
+				return "Bewertung einsehen";
+			}
+		};
+
+		bewertungColumn.setFieldUpdater(new bewertungAnsehenButtonFieldUpdater());
+
 		ButtonCell buttonCell = new ButtonCell();
 		Column<Bewerbung, String> buttonColumn = new Column<Bewerbung, String>(buttonCell) {
 			@Override
@@ -278,6 +295,7 @@ public class AusgangsbewerbungenWidget extends Composite {
 		linkedBewerbungen.addColumn(ausschreibung, "Ausschreibung");
 		linkedBewerbungen.addColumn(erstelldatum, "Erstelldatum");
 		linkedBewerbungen.addColumn(status, "Status");
+		linkedBewerbungen.addColumn(bewertungColumn);
 		linkedBewerbungen.addColumn(buttonColumn);
 
 		// Anpassen des Widgets an die Breite des div-Elements "content"
@@ -289,10 +307,35 @@ public class AusgangsbewerbungenWidget extends Composite {
 
 		return linkedBewerbungen;
 	}
-	
-	
-	
-	
+
+	private class bewertungAnsehenButtonFieldUpdater implements FieldUpdater<Bewerbung, String> {
+
+		@Override
+		public void update(int index, Bewerbung object, String value) {
+			// TODO Auto-generated method stub
+			if (object.getStatus().equalsIgnoreCase("angenommen") || object.getStatus().equalsIgnoreCase("abgelehnt")) {
+
+				clickedBewerbung = object;
+
+				Project4uVerwaltung.getBewertungOfBewerbung(object, new AsyncCallback<Bewertung>() {
+
+					@Override
+					public void onSuccess(Bewertung result) {
+						// TODO Auto-generated method stub
+						BewertungWidget bw = new BewertungWidget(clickedBewerbung);
+						//TODO: bw.setViewModusOn(result);
+						bw.show();
+
+					}
+
+					public void onFailure(Throwable caught) {
+					}
+				});
+
+			}
+		}
+
+	}
 
 	private class detailButtonFieldUpdater implements FieldUpdater<Bewerbung, String> {
 

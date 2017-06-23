@@ -161,4 +161,6 @@ public interface Project4uAdministrationAsync {
 
 	void findActiveAusschreibungenOfProjekt(Projekt projekt, AsyncCallback<Vector<Ausschreibung>> callback);
 
+	void getBewertungOfBewerbung(Bewerbung b, AsyncCallback<Bewertung> callback);
+
 }

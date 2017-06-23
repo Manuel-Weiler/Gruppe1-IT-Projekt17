@@ -914,6 +914,12 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		// Die Bewertung löschen
 		this.bewertungMapper.delete(bewertung);
 	}
+	
+	public Bewertung getBewertungOfBewerbung (Bewerbung b)throws IllegalArgumentException {
+		
+		
+		return this.bewertungMapper.findByBewerbung(b);
+	}
 
 	/*
 	 * #########################################################################
