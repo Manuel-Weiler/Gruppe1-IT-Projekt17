@@ -38,47 +38,11 @@ public class Testklasse {
 		AusschreibungMapper bm = AusschreibungMapper.ausschreibungMapper();
 		ArrayList<Ausschreibung> bf = new ArrayList<>();
 		bf = bm.findAllAusschreibungen();
-
-		// for(Ausschreibung b : be){
-		//
-		// System.out.println(b.getAusschreibungId());
-		// System.out.println(b.getBezeichnung());
-		// System.out.println(b.getNameProjektleiter());
-		// System.out.println(b.getBewerbungsfrist());
-		// System.out.println(b.getAusschreibungstext());
-		// System.out.println(b.getProjektId());
-		// System.out.println(b.getErstellDatum());
-		// System.out.println(b.getPartnerprofilId());
-		// System.out.println(b.getStatus());
-		// }
-
 		BewerbungMapper bewerbungMapper = new BewerbungMapper();
 
 		Vector<Bewerbung> bew = bewerbungMapper.findByOrganisationseinheit(o);
 
-		// Anschließend müssen die Ausschreibungen zu diesen Bewerbungen
-		// ausgegeben werden.
 
-		for (Bewerbung be : bew) {
-
-			Ausschreibung au = bm.findByIdAusschreibung(be.getAusschreibungId());
-			// Row bewerbungRow = new Row();
-			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
-			System.out.println(be.getBewerbungId());
-			System.out.println(be.getErstelldatum());
-			System.out.println(be.getBewerbungstext());
-			System.out.println(be.getOrganisationseinheitId());
-			System.out.println(be.getStatus());
-			System.out.println(be.getAusschreibungId());
-			// Inhalt Ausschreibung
-
-			System.out.println(au.getBezeichnung());
-			System.out.println(au.getNameProjektleiter());
-			System.out.println(au.getBewerbungsfrist());
-			System.out.println(au.getAusschreibungstext());
-			System.out.println(au.getErstellDatum());
-
-		}
 
 	}
 

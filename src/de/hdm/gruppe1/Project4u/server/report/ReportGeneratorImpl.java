@@ -530,13 +530,13 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 			for (Bewerbung be : alleBewerbungen) {
 
-				if (be.getStatus().toString().equals("ausstehend")) {
+				if (String.valueOf(be.getStatus()).equals("ausstehend")) {
 					laufendeBewerbungen.add(be);
 				}
-				if (be.getStatus().toString().equals("abgelehnt")) {
+				if (String.valueOf(be.getStatus()).equals("abgelehnt")) {
 					abgelehnteBewerbungen.add(be);
 				}
-				if (be.getStatus().toString().equals("angenommen")) {
+				if (String.valueOf(be.getStatus()).equals("angenommen")) {
 					erfolgreicheBewerbungen.add(be);
 				}
 			}
@@ -545,15 +545,15 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			numbRows.addColumn(new Column(String.valueOf(orga.getOrganisationseinheitId())));
 
-			if(orga.getTyp().toString().equals("Person")){
+			if(String.valueOf(orga.getTyp()).equals("Person")){
 				numbRows.addColumn(new Column(orga.getName()));
 			}
 
-			if(orga.getTyp().toString().equals("Team")){
+			if(String.valueOf(orga.getTyp()).equals("Team")){
 				numbRows.addColumn(new Column(orga.getName()));
 			}
 
-			if(orga.getTyp().toString().equals("Unternehmen")){
+			if(String.valueOf(orga.getTyp()).equals("Unternehmen")){
 				numbRows.addColumn(new Column(orga.getName()));
 			}
 			
@@ -609,15 +609,15 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			numbRows.addColumn(new Column(String.valueOf(orga.getOrganisationseinheitId())));
 
-			if(orga.getTyp().toString().equals("Person")){
+			if(String.valueOf(orga.getTyp()).equals("Person")){
 				numbRows.addColumn(new Column(orga.getName()));
 			}
 
-			if(orga.getTyp().toString().equals("Team")){
+			if(String.valueOf(orga.getTyp()).equals("Team")){
 				numbRows.addColumn(new Column(orga.getName()));
 			}
 
-			if(orga.getTyp().toString().equals("Unternehmen")){
+			if(String.valueOf(orga.getTyp()).equals("Unternehmen")){
 				numbRows.addColumn(new Column(orga.getName()));
 			}
 			
