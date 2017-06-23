@@ -312,7 +312,7 @@ public class AusgangsbewerbungenWidget extends Composite {
 
 		@Override
 		public void update(int index, Bewerbung object, String value) {
-			// TODO Auto-generated method stub
+			
 			if (object.getStatus().equalsIgnoreCase("angenommen") || object.getStatus().equalsIgnoreCase("abgelehnt")) {
 
 				clickedBewerbung = object;
@@ -321,10 +321,14 @@ public class AusgangsbewerbungenWidget extends Composite {
 
 					@Override
 					public void onSuccess(Bewertung result) {
-						// TODO Auto-generated method stub
+						if (result!=null){
+						
 						BewertungWidget bw = new BewertungWidget(clickedBewerbung);
-						//TODO: bw.setViewModusOn(result);
+						//TODO: 
+						bw.setViewModusOn(result);
 						bw.show();
+						}
+						else{Window.alert("Fehler, keine Bewertung vorhanden");}
 
 					}
 
@@ -332,6 +336,9 @@ public class AusgangsbewerbungenWidget extends Composite {
 					}
 				});
 
+			}
+			else{
+				MessageBox.alertWidget("Keine Bewertung verfügbar", "Eine Bewertung liegt erst vor, wenn die Bewerbung </br>den Satus 'angenommen' oder 'abgelehnt' hat");
 			}
 		}
 
