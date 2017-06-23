@@ -39,6 +39,7 @@ public class Project4uReport implements EntryPoint {
 
 			public void onSuccess(LoginInfo result) {
 				loginInfo = result;
+				ClientsideSettings.setAktuellerUser(result);
 				if (loginInfo.isLoggedIn()) {
 					loadProject4uReport();
 				} else {

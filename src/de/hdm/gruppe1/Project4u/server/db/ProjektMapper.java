@@ -16,16 +16,14 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
  * Mapper-Klasse, die <code>Projekt</code>-Objekte auf eine relationale
  * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
- * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
+ * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte
+ * können in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
  * 
  * @author Thies
  * @author Ugur
  */
 public class ProjektMapper {
-
-	
 
 	/**
 	 * Die Klasse ProjektMapper wird nur einmal instantiiert. Man spricht
@@ -37,15 +35,17 @@ public class ProjektMapper {
 	 * 
 	 */
 	private static ProjektMapper projektMapper = null;
-	
+
 	/**
 	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
+
 	public ProjektMapper(){
 		
+
 	}
-	
+
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>ProjektMapper.projektMapper()</code>. Sie stellt die
@@ -60,16 +60,29 @@ public class ProjektMapper {
 	 * @return projektMapper <code>ProjektMapper</code>-Objekt.
 	 */
 	public static ProjektMapper projektMapper() {
-	    if (projektMapper == null) {
-	      projektMapper = new ProjektMapper();
-	    }
-         return projektMapper;
-	  }
-	
+		if (projektMapper == null) {
+			projektMapper = new ProjektMapper();
+		}
+		return projektMapper;
+	}
+
 	/**
 	 ** @param id
 	 ** @return Liefert ein Projekt entsprechend der �bergebenen id zurueck.
 	 **/
+
+
+	
+	/**
+	 * Diese Methode bezieht ihre Informationen aus der
+	 * Project4uAdministrationImpl und erstellt mit diesen einen neuen Projekt
+	 * in der Datenbank.
+	 * 
+	 * @param projekt
+	 * @return projekt
+	 */
+
+	
 
       public Projekt findById(int id){
 		 // DB-Verbindung holen
@@ -141,26 +154,29 @@ public class ProjektMapper {
 		    	 e.printStackTrace();
 		    	 }
 		  
+
 		return p;
 
-		   }
-	  
-	  /**
-	   * Wiederholtes Schreiben eines Objekts in die Datenbank.
-	   * 
-	   * @param p das Objekt, das in die DB geschrieben werden soll
-	   * @return das als Parameter übergebene Objekt
-	   */
-	  public Projekt update(Projekt p) {
-	    Connection con = DBConnection.connection();
+	}
+
+	/**
+	 * Wiederholtes Schreiben eines Objekts in die Datenbank.
+	 * 
+	 * @param p
+	 *            das Objekt, das in die DB geschrieben werden soll
+	 * @return das als Parameter übergebene Objekt
+	 */
+	public Projekt update(Projekt p) {
+		Connection con = DBConnection.connection();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-	    try {
-	      Statement stmt = con.createStatement();
+		try {
+			Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("UPDATE Projekt " + "SET name=\""
-		          + p.getName() + "\", " + "startdatum=\"" + sdf.format(p.getStartdatum()) + "\", " + "enddatum=\"" + sdf.format(p.getEnddatum()) + "\", "
-		          + "beschreibung=\"" + p.getBeschreibung() + "\" " + "WHERE id=" + p.getProjektId() );
+			stmt.executeUpdate("UPDATE Projekt " + "SET name=\"" + p.getName() + "\", " + "startdatum=\""
+					+ sdf.format(p.getStartdatum()) + "\", " + "enddatum=\"" + sdf.format(p.getEnddatum()) + "\", "
+					+ "beschreibung=\"" + p.getBeschreibung() + "\" " + "WHERE id=" + p.getProjektId());
+
 
 	    }
 	    catch (SQLException e2) {
@@ -346,6 +362,6 @@ public class ProjektMapper {
 			} catch (Exception e2) {
 				 e2.printStackTrace();
 			}
-		}
 
+		}
 }

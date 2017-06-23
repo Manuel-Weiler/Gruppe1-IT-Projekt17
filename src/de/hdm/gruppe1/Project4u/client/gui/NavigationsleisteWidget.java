@@ -2,10 +2,12 @@ package de.hdm.gruppe1.Project4u.client.gui;
 
 import java.util.Vector;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -29,14 +31,18 @@ public class NavigationsleisteWidget extends Composite {
 	 */
 	
 	
-	VerticalPanel menuPanel = new VerticalPanel();
+	private Anchor reportLink = new Anchor("ReportGenerator");
+	private Anchor signOutLink = new Anchor();
+	
+	private VerticalPanel menuPanel = new VerticalPanel();
 
-	Button profilButton = new Button("Nutzerprofil");
-	Button homeButton = new Button("Startseite");
-	Button pMarktplatz = new Button("Projektmarktplätze");
-	Button eBewerbungen = new Button("Eingangsbewerbungen");
-	Button aBewerbungen = new Button("Ausgangsbewerbungen");
-	Button logout = new Button("Logout");
+	private Button profilButton = new Button("Nutzerprofil");
+	private Button homeButton = new Button("Startseite");
+	private Button pMarktplatz = new Button("Projektmarktplätze");
+	private Button eBewerbungen = new Button("Eingangsbewerbungen");
+	private Button aBewerbungen = new Button("Ausgangsbewerbungen");
+	private Button reportButton = new Button("Reports");
+	private Button logout = new Button("Logout");
 
 	
 	//////TEST////////////////////////////////////////
@@ -54,6 +60,14 @@ public class NavigationsleisteWidget extends Composite {
 		menuPanel.add(eBewerbungen);
 		menuPanel.add(aBewerbungen);
 
+		menuPanel.add(logout);
+		
+		
+		//Test
+	/*	menuPanel.add(orgaLoeschen);
+		menuPanel.add(testBtn);
+		menuPanel.add(projektmarktplatzLoeschen);*/
+
 		// Abstand zwischen den einzelnen Buttons
 		menuPanel.setSpacing(20);
 
@@ -63,7 +77,8 @@ public class NavigationsleisteWidget extends Composite {
 		homeButton.setPixelSize(200, 40);
 		pMarktplatz.setPixelSize(200, 40);
 		aBewerbungen.setPixelSize(200, 40);
-	
+		reportButton.setPixelSize(200, 40);
+		logout.setPixelSize(200, 40);
 		
 		
 		////////////////////////////////TEST/////////////////////////////////////////////
@@ -211,14 +226,7 @@ public class NavigationsleisteWidget extends Composite {
 		//////////////////////////////////TEST ENDE/////////////////////////////////////////////
 		
 
-		logout.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Logout hinzuf�gen
-
-			}
-		});
+		
 
 		homeButton.addClickHandler(new ClickHandler() {
 
@@ -282,6 +290,47 @@ public class NavigationsleisteWidget extends Composite {
 				});
 			}
 		});
+		
+		eBewerbungen.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				new EingangsbewerbungenWidget();
+				
+			}
+		});
+
+		aBewerbungen.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				new AusgangsbewerbungenWidget();
+				
+			}
+		});
+
+		reportButton.addClickHandler(new ClickHandler(){
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					
+					reportLink.setHref(GWT.getHostPageBaseURL()+"Project4uReport.html");
+					Window.open(reportLink.getHref(), "_self", "");
+					
+				}
+			});
+		
+		logout.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				signOutLink.setHref(ClientsideSettings.getAktuellerUser().getLogoutUrl());
+				Window.Location.assign(signOutLink.getHref());
+
+			}
+		});
+		
+
 
 		initWidget(menuPanel);
 	}

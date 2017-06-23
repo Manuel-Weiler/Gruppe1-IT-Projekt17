@@ -64,7 +64,8 @@ public class AusschreibungMapper {
 						+ au.getAusschreibungstext() + "','" 
 						+ sdf.format(au.getErstellDatum()) + "','" 
 						+ pr.getProjektId() + "','" 
-						+ pa.getPartnerprofilId() + "')");
+						+ pa.getPartnerprofilId() + "','"
+						+ au.getStatus()+"');");
 			}
 		} catch (SQLException s) {
 			s.printStackTrace();
@@ -83,7 +84,8 @@ public class AusschreibungMapper {
 					+ "bezeichnung='" + au.getBezeichnung()+"'," 
 					+ "name_projektleiter='" + au.getNameProjektleiter() +"'," 
 					+ "bewerbungsfrist='" + sdf.format(au.getBewerbungsfrist())+"'," 
-					+ "ausschreibungstext='" + au.getAusschreibungstext()+"' " 
+					+ "ausschreibungstext='" + au.getAusschreibungstext()+"', "
+					+ "status='"+au.getStatus()+"' " 
 					+ "WHERE id='"+ au.getAusschreibungId() + "';");
 					
 					
@@ -127,6 +129,7 @@ public class AusschreibungMapper {
 				au.setErstellDatum(rs.getDate("erstelldatum")); 
 				au.setProjektId(rs.getInt("projekt_id"));
 				au.setPartnerprofilId(rs.getInt("partnerprofil_id")); 
+				au.setStatus(rs.getString("status"));
 				
 				return au;
 							}
@@ -156,53 +159,6 @@ public class AusschreibungMapper {
 		return ausschreibung;
 	}
 	
-//FINDEN EINER AUSSCHREIBUNG NACH PROJEKT
-/*public Ausschreibung findByProjekt(Projekt name) {
-		Connection con = DBConnection.connection();
-		Ausschreibung ausschreibung = new Ausschreibung();
-		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM Ausschreibung WHERE Projekt='" + "");
-				//get. of
-			if (rs.next()) {
-				ausschreibung.setID(rs.getInt("id"));
-							}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return ausschreibung;
-	}
-*/
-//public Vector<Ausschreibung> findByProjekt(Projekt projekt) {
-//	Connection con = DBConnection.connection();
-//    Vector<Ausschreibung> result = new Vector<Ausschreibung>();
-//
-//    try {
-//      Statement stmt = con.createStatement();
-//
-//      ResultSet rs = stmt.executeQuery("SELECT * FROM Projekt " + "WHERE name LIKE '" + projekt.getName()
-//    		  							+ "' ORDER BY name");
-//
-// 
-//      while (rs.next()) {
-//        Ausschreibung au = new Ausschreibung();
-//		au.setID(rs.getInt("id"));
-//		au.setBezeichnung (rs.getString("bezeichnung"));
-//		au.setNameProjektleiter (rs.getString("name_projektleiter"));
-//		au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
-//		au.setAusschreibungstext (rs.getString("ausschreibungstext"));
-//		au.setErstellDatum(rs.getDate("erstelldatum"));
-//
-//        result.addElement(au);
-//      }
-//    }
-//    catch (SQLException e) {
-//      e.printStackTrace();
-//    }
-//
-//    return result;
-//  }
-
 
 	
 
@@ -242,6 +198,7 @@ public class AusschreibungMapper {
 				au.setErstellDatum(rs.getDate("erstelldatum")); 
 				au.setProjektId(rs.getInt("projekt_id"));
 				au.setPartnerprofilId(rs.getInt("partnerprofil_id")); 
+				au.setStatus(rs.getString("status"));
 				
 				result.add(au);
 			}
@@ -272,6 +229,9 @@ public class AusschreibungMapper {
 				au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
 				au.setAusschreibungstext (rs.getString("ausschreibungstext"));
 				au.setErstellDatum(rs.getDate("erstelldatum"));
+				au.setProjektId(rs.getInt("projekt_id"));
+				au.setPartnerprofilId(rs.getInt("partnerprofil_id")); 
+				au.setStatus(rs.getString("status"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -299,6 +259,7 @@ public class AusschreibungMapper {
 				au.setErstellDatum(rs.getDate("erstelldatum"));
 				au.setProjektId(rs.getInt("projekt_id"));
 				au.setPartnerprofilId(rs.getInt("partnerprofil_id"));
+				au.setStatus(rs.getString("status"));
 
 		        result.addElement(au);
 		      }
@@ -334,6 +295,9 @@ public class AusschreibungMapper {
 				au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
 				au.setAusschreibungstext (rs.getString("ausschreibungstext"));
 				au.setErstellDatum(rs.getDate("erstelldatum"));
+				au.setProjektId(rs.getInt("projekt_id"));
+				au.setPartnerprofilId(rs.getInt("partnerprofil_id"));
+				au.setStatus(rs.getString("status"));
 
 		        result.addElement(au);
 		      }
@@ -357,67 +321,8 @@ public class AusschreibungMapper {
 		}
 	}
 	
-//TODO: redundante Methode?
-	
-//	public ArrayList<Ausschreibung> findAllAusschreibungen(){
-//		Connection con = DBConnection.connection();
-//	    ArrayList<Ausschreibung> result = new ArrayList<Ausschreibung>();
-//
-//	    try {
-//	      Statement stmt = con.createStatement();
-//
-//	      ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung ORDER BY id;");
-//
-//	 
-//	      while (rs.next()) {
-//	        Ausschreibung au = new Ausschreibung();
-//			au.setID(rs.getInt("id"));
-//			au.setBezeichnung (rs.getString("bezeichnung"));
-//			au.setNameProjektleiter (rs.getString("name_projektleiter"));
-//			au.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
-//			au.setAusschreibungstext (rs.getString("ausschreibungstext"));
-//			au.setErstellDatum(rs.getDate("erstelldatum"));
-//			
-//	        result.add(au);
-//	      }
-//	    }
-//	    catch (SQLException e) {
-//	      e.printStackTrace();
-//	    }
-//
-//	    return result;
-//	}
 
 	
-	/*Notwendig um das zur Ausschreibung zugehörige Partnerprofil zu löschen
-	public Ausschreibung findByPartnerprofilID (int id) {
-		Connection con = DBConnection.connection();
-		Ausschreibung a = new Ausschreibung();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung WHERE partnerprofil_id=" + id);
-
-			if (rs.next()) {
-				a.setID(rs.getInt("id"));
-				a.setBezeichnung (rs.getString("bezeichnung"));
-				a.setNameProjektleiter (rs.getString("name_projektleiter"));
-				a.setBewerbungsfrist (rs.getDate("bewerbungsfrist"));
-				a.setAusschreibungstext (rs.getString("ausschreibungstext"));					
-				a.setErstellDatum(rs.getDate("erstelldatum"));
-			    
-				return a;
-		      }
-		    }
-		    catch (SQLException e) {
-		      e.printStackTrace();
-		      return null;
-		    }
-
-		    return null;
-		  }*/
 	
 
 	}

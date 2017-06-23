@@ -18,12 +18,12 @@ public class TestBewertungsmapper {
 		BewertungMapper bem = BewertungMapper.bewertungMapper();
 
 		BewerbungMapper bewerbungMapper = BewerbungMapper.bewerbungMapper();
-		Bewerbung bewerbung = Bewerbung.bewerbung();
+		//Bewerbung bewerbung = Bewerbung.bewerbung();
 		//int bewerbung = bewerbungMapper.findById(0);
 		
 		
 		
-		bem.insert(be, bewerbung);
+		//bem.insert(be, bewerbung);
 	}
 
 }

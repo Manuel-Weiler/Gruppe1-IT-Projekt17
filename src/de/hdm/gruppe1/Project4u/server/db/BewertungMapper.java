@@ -70,7 +70,7 @@ public class BewertungMapper {
 	 * @return bewertung
 	 */
 
-	public Bewertung insert(Bewertung bewertung, Bewerbung bew) {
+	public Bewertung insert(Bewertung bewertung) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -83,7 +83,7 @@ public class BewertungMapper {
 
 				stmt.executeUpdate("INSERT INTO Bewertung (id, bewertungspunkte, stellungnahme, bewerbung_id)" 
 				+ "VALUES ('"+ bewertung.getBewertungId() + "', '" + bewertung.getBewertungspunkte() + "', '"
-				+ bewertung.getStellungnahme() + "', '"+ bew.getBewerbungId() + "')");
+				+ bewertung.getStellungnahme() + "', "+ bewertung.getBewerbungId() + ")");
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();

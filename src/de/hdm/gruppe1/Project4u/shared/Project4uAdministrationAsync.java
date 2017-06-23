@@ -4,13 +4,19 @@ package de.hdm.gruppe1.Project4u.shared;
 import java.util.Vector;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
+
+import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
+import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
+
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
 import de.hdm.gruppe1.Project4u.shared.bo.Eigenschaft;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
@@ -72,43 +78,24 @@ public interface Project4uAdministrationAsync {
 
 	void insertEigenschaft(Eigenschaft e, Partnerprofil p, AsyncCallback<Eigenschaft> callback);
 
-
-
-
 	void createOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Organisationseinheit> callback);
-
-
-
 
 	void getEigenschaftenOfOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Vector<Eigenschaft>> callback);
 
-
-
-
 	void getPartnerprofilOfOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Partnerprofil> callback);
-
-
-
 
 	void getOrganisationseinheitByUser(LoginInfo login, AsyncCallback<Organisationseinheit> callback);
 
-
-
-
 	void getAllOrganisationseinheitenOfTypTeamUnternehmen(AsyncCallback<Vector<Organisationseinheit>> callback);
-
-
-
 
 	void insertLinkedTeamUnternehmenOfOrganisationseinheit(LoginInfo login, Organisationseinheit teamunternehmen,
 			AsyncCallback<Void> callback);
 
-
-
-
 	void getLinkedTeamAndUnternehmenOfOrganisationseinheit(LoginInfo login,
 			AsyncCallback<Vector<Organisationseinheit>> callback);
 
+	void getBeteiligungForOrga(Organisationseinheit orga, AsyncCallback<Vector<Beteiligung>> callback);
+	
 	void getAusschreibungenForPartnerprofil(Organisationseinheit orga, AsyncCallback<Vector<Ausschreibung>> callback);
 
 	void getBewerbungForOrganisationseinheit(Organisationseinheit orga, AsyncCallback<Vector<Bewerbung>> callback);
@@ -143,5 +130,29 @@ public interface Project4uAdministrationAsync {
 	void deleteAllEigenschaftOfPartnerprofil(int partnerprofilId, AsyncCallback<Void> callback);
 
 	void updateAusschreibung(Ausschreibung ausschreibung, AsyncCallback<Ausschreibung> callback);
+
+	void findProjektleiterOfProjects(Vector<Projekt> projekte, AsyncCallback<Vector<Organisationseinheit>> callback);
+
+	void createBewerbung(Bewerbung bewerbung, int ausschreibungId, int organisationsId,
+			AsyncCallback<Bewerbung> callback);
+
+	void getAllBewerbungenOfUser(LoginInfo login, AsyncCallback<Vector<Bewerbung>> callback);
+
+	void findByIdAusschreibung(int id, AsyncCallback<Ausschreibung> callback);
+
+	void findProjektById(int id, AsyncCallback<Projekt> callback);
+
+	void getAllBewerbungenOfLinkedTeamAndUnternehmen(LoginInfo login, AsyncCallback<Vector<Bewerbung>> callback);
+
+	void deleteBewerbung(Bewerbung bewerbung, AsyncCallback<Void> callback);
+
+	void getEingangsbewerbungenOfProjektleiter(LoginInfo login, AsyncCallback<Vector<Bewerbung>> callback);
+
+	void createBewertung(Bewertung bewertung, AsyncCallback<Bewertung> callback);
+
+	void createBeteiligung(Date startdatum, Date enddatum, int personentage, int organisationseinheitId, int projektId,
+			int bewertungId, AsyncCallback<Beteiligung> callback);
+
+	void getProjektOfBewerbung(Bewerbung bewerbung, AsyncCallback<Projekt> callback);
 
 }

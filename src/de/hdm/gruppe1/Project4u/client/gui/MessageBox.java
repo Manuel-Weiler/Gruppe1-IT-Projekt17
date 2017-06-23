@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -15,7 +16,7 @@ public class MessageBox {
         final VerticalPanel panel = new VerticalPanel();
         box.setText(header);
         box.setGlassEnabled(true);
-        panel.add(new Label(content));
+        panel.add(new HTML(content));
         final Button buttonClose = new Button("Close");
         		
         buttonClose.addClickHandler(new ClickHandler() {

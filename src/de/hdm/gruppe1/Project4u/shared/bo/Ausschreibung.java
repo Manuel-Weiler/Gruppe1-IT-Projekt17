@@ -15,9 +15,23 @@ public class Ausschreibung extends BusinessObject{
 	private Date erstellDatum;	
 	private int projektId;
 	private int partnerprofilId;
+	private ausschreibungStatus status;
+	
+	public enum ausschreibungStatus {
+		laufend,
+		beendet;
+	}
 
 
 	
+
+	public String getStatus() {
+		return status.toString();
+	}
+
+	public void setStatus(String status) {
+		this.status = ausschreibungStatus.valueOf(status);
+	}
 
 	public String getBezeichnung() {
 		return bezeichnung;
