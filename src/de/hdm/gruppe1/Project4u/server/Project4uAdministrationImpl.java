@@ -606,19 +606,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Ausschreibung findByNameAusschreibung(String bezeichnung) throws IllegalArgumentException {
 		return this.ausschreibungMapper.findByNameAusschreibung(bezeichnung);
 	}
-	/*
-	 * Find by Name
-	 */
 
-	// public Vector<Ausschreibung> findbyPerson (String name)throws
-	// IllegalArgumentException{
-	// return this.ausschreibungMapper.findByPerson(name);
-	// }
-	//
-	// public Vector<Ausschreibung> findbyProjekt (String name)throws
-	// IllegalArgumentException{
-	// return this.ausschreibungMapper.findByProjekt(name);
-	// }
 
 	public Vector<Ausschreibung> findAusschreibungbyProjekt(Projekt projekt) throws IllegalArgumentException {
 		return this.ausschreibungMapper.findByProjekt(projekt);
@@ -747,7 +735,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	}
 	
-	
+	public Vector<Bewerbung> getAllBewerbungen() throws IllegalArgumentException {
+		
+		return this.bewerbungMapper.findAll();
+	}
 	
 	
 

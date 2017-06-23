@@ -128,4 +128,6 @@ public interface Project4uAdministration extends RemoteService{
 	public Beteiligung createBeteiligung(Date startdatum, Date enddatum, int personentage, int organisationseinheitId, int projektId, int bewertungId)throws IllegalArgumentException;
 
 	public Projekt getProjektOfBewerbung(Bewerbung bewerbung)throws IllegalArgumentException;
+	
+	public Vector<Bewerbung> getAllBewerbungen() throws IllegalArgumentException;
 }

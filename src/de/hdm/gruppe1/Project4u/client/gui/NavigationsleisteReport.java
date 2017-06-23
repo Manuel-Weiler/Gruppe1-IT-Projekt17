@@ -198,7 +198,61 @@ public class NavigationsleisteReport extends Composite {
 		alleBewerbungenForUsersAusschreibungenButton.addClickHandler(new ClickHandler() {
 			
 			public void onClick(ClickEvent event){
-				
+
+				Project4uVerwaltung.getOrganisationseinheitByUser(ClientsideSettings.getAktuellerUser(),
+						new AsyncCallback<Organisationseinheit>() {
+
+							public void onSuccess(Organisationseinheit x) {
+
+								ReportVerwaltung.createAlleBewerbungenForAusschreibungen(x,
+										new AsyncCallback<ReportByAlleBewerbungenForAusschreibungen>() {
+											public void onSuccess(ReportByAlleBewerbungenForAusschreibungen y) {
+
+												if (y != null) {
+													HTMLReportWriter writer = new HTMLReportWriter();
+													writer.process(y);
+													RootPanel.get("contentR").clear();
+													RootPanel.get("contentR").add(new HTML(writer.getReportText()));
+												}
+												else{
+													DialogBox dBox = new DialogBox();
+
+													Label label = new Label("Es existieren keine Ausschreibungen für diesen Nutzer.");
+													dBox.add(label);
+													dBox.center();
+													dBox.setAutoHideEnabled(true);
+													dBox.show();
+												}
+											}
+
+											public void onFailure(Throwable caught) {
+												DialogBox dBox = new DialogBox();
+
+												Label label = new Label("Es existieren keine Ausschreibungen für diesen Nutzer.");
+												dBox.add(label);
+												dBox.center();
+												dBox.setAutoHideEnabled(true);
+												dBox.show();
+
+											}
+
+										});
+
+							}
+
+							public void onFailure(Throwable caught) {
+								DialogBox dBox = new DialogBox();
+
+								Label label = new Label(caught.getMessage());
+								dBox.add(label);
+								dBox.center();
+								dBox.setAutoHideEnabled(true);
+								dBox.show();
+
+							}
+
+						});
+
 			}
 		});
 		

@@ -37,12 +37,7 @@ public interface Project4uAdministrationAsync {
 
 	void getOrganisationseinheitById(int id, AsyncCallback<Organisationseinheit> callback);
 	
-	
-	
 	void init(AsyncCallback<Void> callback);
-	
-	
-
 	
 	void findAllProjektmarktplatz(AsyncCallback<Vector<Projektmarktplatz>> callback);
 	
@@ -150,5 +145,7 @@ public interface Project4uAdministrationAsync {
 			int bewertungId, AsyncCallback<Beteiligung> callback);
 
 	void getProjektOfBewerbung(Bewerbung bewerbung, AsyncCallback<Projekt> callback);
+
+	void getAllBewerbungen(AsyncCallback<Vector<Bewerbung>> callback);
 
 }

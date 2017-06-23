@@ -245,67 +245,84 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 */
 
 	// Zuerst brauchen wir alle Ausschreibungen des Benutzer welche wir einzeln
-	// ausgeben. Anschließend
+	// ausgeben.
 	public ReportByAlleBewerbungenForAusschreibungen createAlleBewerbungenForAusschreibungen(Organisationseinheit o)
 			throws IllegalArgumentException {
 
 		if (this.getProject4uAdministration() == null)
 			return null;
 
+		// Zuerst werden die Ausschreibungen des Nutzers benötigt
+		Vector<Ausschreibung> aus = project4uAdministration.getAusschreibungenForOrga(o);
+
 		// Leeren Report anlegen
 		ReportByAlleBewerbungenForAusschreibungen result = new ReportByAlleBewerbungenForAusschreibungen();
 
 		result.setTitle("Alle Bewerbungen auf eigene Ausschreibungen");
 
-		result.setCreated(new Date());
+		// Für jede Ausschreibung soll ein Report mit den Bewerbungen erstellt
+		// werden
+		for (Ausschreibung au : aus) {
 
-		// Kopfzeile fï¿½r die Tabelle anlegen:
-		Row headline = new Row();
+			// Ausschreibungsinformationen angeben
+			Row ausschreibungsheadline = new Row();
+			ausschreibungsheadline.addColumn(new Column("Ausschreibungsbezeichnung: " + au.getBezeichnung()));
+			ausschreibungsheadline.addColumn(new Column("Projektleiter: " + au.getNameProjektleiter()));
+			result.addRow(ausschreibungsheadline);
+			
+			//Ausschreibungstext hinzufügen
+			Row ausschreibungstextline = new Row();
+			ausschreibungstextline.addColumn(new Column("Ausschreibungstext: " + au.getAusschreibungstext()));
+			result.addRow(ausschreibungstextline);
+			
+			// Nun sollen die dazugehörigen Bewerbungen hinzugefügt werden
+			// Kopfzeile fï¿½r die Tabelle anlegen:
+			Row headline = new Row();
 
-		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
+			// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
 
-		headline.addColumn(new Column("Bewerbungs-ID"));
-		headline.addColumn(new Column("Erstelldatum"));
-		headline.addColumn(new Column("Bewerbungstext"));
-		headline.addColumn(new Column("Ausschreibung-ID"));
-		headline.addColumn(new Column("Organisationseinheit-ID"));
-		headline.addColumn(new Column("Status"));
+			headline.addColumn(new Column("Bewerbungs-ID"));
+			headline.addColumn(new Column("Erstelldatum"));
+			headline.addColumn(new Column("Bewerbungstext"));
+			headline.addColumn(new Column("Ausschreibung-ID"));
+			headline.addColumn(new Column("Organisationseinheit-ID"));
+			headline.addColumn(new Column("Status"));
 
-		// Kopfzeile wird dem Report hinzugefuegt
-		result.addRow(headline);
+			// Kopfzeile wird dem Report hinzugefuegt
+			result.addRow(headline);
 
-		// Reportinhalt:
+			// Reportinhalt:
 
-		// Organisationseinheit hat Ausschreibungen mit einer ID
-		// Diese AusschreibungsID muss = der AusschreibungsID der Bewerbungen
-		// sein.
-		Vector<Ausschreibung> aus = project4uAdministration.getAusschreibungenForOrga(o);
+			
+			Vector<Bewerbung> be = project4uAdministration.getAllBewerbungen();
+			Vector<Bewerbung> bewerbungForAusschreibung = new Vector<Bewerbung>();
 
-		Vector<Bewerbung> be = project4uAdministration.getBewerbungForOrganisationseinheit(o);
-		Vector<Bewerbung> bew = new Vector<Bewerbung>();
-
-		for (Bewerbung bewerbung : be) {
-			if (bewerbung.getOrganisationseinheitId() == o.getOrganisationseinheitId()) {
-				bew.add(bewerbung);
+			for (Bewerbung bew : be) {
+				if (bew.getAusschreibungId() == au.getAusschreibungId()){
+					bewerbungForAusschreibung.add(bew);
+				}
+					
+					
 			}
-		}
 
-		for (Bewerbung b : bew) {
-			// neue, leere Zeile anlegen
-			Row bewerbungRow = new Row();
-			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
-			bewerbungRow.addColumn(new Column(String.valueOf(b.getBewerbungId())));
-			bewerbungRow.addColumn(new Column(String.valueOf(b.getErstelldatum())));
-			bewerbungRow.addColumn(new Column(b.getBewerbungstext()));
-			bewerbungRow.addColumn(new Column(String.valueOf(b.getAusschreibungId())));
-			bewerbungRow.addColumn(new Column(String.valueOf(b.getOrganisationseinheitId())));
-			bewerbungRow.addColumn(new Column(b.getStatus()));
+			for (Bewerbung b : bewerbungForAusschreibung) {
+				// neue, leere Zeile anlegen
+				Row bewerbungRow = new Row();
+				// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt
+				// geschrieben
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getBewerbungId())));
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getErstelldatum())));
+				bewerbungRow.addColumn(new Column(b.getBewerbungstext()));
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getAusschreibungId())));
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getOrganisationseinheitId())));
+				bewerbungRow.addColumn(new Column(b.getStatus()));
 
-			// Zeile dem Report hinzufï¿½gen
-			result.addRow(bewerbungRow);
+				// Zeile dem Report hinzufï¿½gen
+				result.addRow(bewerbungRow);
+			}
+
 		}
 		return result;
-
 	}
 
 	/*
@@ -316,7 +333,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 */
 
 	// Zuerst müssen alle Bewerbungen des Nutzers ausgeeben werden
-	public ReportForEigeneBewerbungen createEigeneBewerbungenReport(Organisationseinheit orga) throws IllegalArgumentException {
+	public ReportForEigeneBewerbungen createEigeneBewerbungenReport(Organisationseinheit orga)
+			throws IllegalArgumentException {
 
 		if (this.getProject4uAdministration() == null)
 			return null;
@@ -372,9 +390,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			bewerbungRow.addColumn(new Column(au.getAusschreibungstext()));
 			bewerbungRow.addColumn(new Column(String.valueOf(au.getErstellDatum())));
 
-			
 			// Zeile dem Report hinzufï¿½gen
-			 result.addRow(bewerbungRow);
+			result.addRow(bewerbungRow);
 		}
 
 		return result;
