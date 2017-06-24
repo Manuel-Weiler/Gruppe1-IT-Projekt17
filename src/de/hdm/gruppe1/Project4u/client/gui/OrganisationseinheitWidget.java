@@ -253,8 +253,8 @@ public class OrganisationseinheitWidget extends Composite{
 		orgaTabelle.addColumn(nameColumn, "Name");
 		orgaTabelle.addColumn(typeColumn, "Typ");
 		orgaTabelle.addColumn(status, "Status");
-		orgaTabelle.addColumn(buttonColumn);
-		orgaTabelle.addColumn(detailsColumn);
+		orgaTabelle.addColumn(buttonColumn, "");
+		orgaTabelle.addColumn(detailsColumn, "");
 		
 		orgaTabelle.setRowCount(orgas.size());
 		
@@ -269,15 +269,17 @@ public class OrganisationseinheitWidget extends Composite{
 		ListDataProvider<Organisationseinheit> dataProvider = new ListDataProvider<Organisationseinheit>();
 	    dataProvider.addDataDisplay(orgaTabelle);
 	    dataProvider.setList(orgas);
-	    //TODO: Pager funktioniert noch nicht, ggf. reihenfolge beachten
+	    
+	    
 		SimplePager pager = new SimplePager(TextLocation.CENTER, false, 0, false);
 	    pager.setDisplay(orgaTabelle);
-	    pager.setPageSize(6);
+	    pager.setPageSize(10);
 	    
 	    orgaTabelle.setWidth("100%");
 	    
 	    
 	    vPanel.add(orgaTabelle);
+	    vPanel.add(pager);
 	    vPanel.add(addOrga);
 	}
 	

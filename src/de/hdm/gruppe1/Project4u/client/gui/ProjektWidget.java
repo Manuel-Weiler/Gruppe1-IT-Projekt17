@@ -501,7 +501,7 @@ public class ProjektWidget extends Composite{
 							}
 						};
 						
-						//TODO:
+						
 						TextColumn<Projekt> projektleiter = new TextColumn<Projekt>() {
 							public String getValue(Projekt object) {
 								String name = null;
@@ -610,16 +610,32 @@ public class ProjektWidget extends Composite{
 						projektTabelle.addColumn(enddatum, "Enddatum");
 						projektTabelle.addColumn(description, "Beschreibung");
 						
-					
+						projektTabelle.setRowCount(projekte.size());
 						
 						//F�llen der Tabelle ab dem Index 0.
 						projektTabelle.setRowData(0,  projekte);
 						
 						//Anpassen des Widgets an die Breite des div-Elements "content"
-						projektTabelle.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
+						//projektTabelle.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
+						
+						
+						/*
+						 * Der DataListProvider ermöglicht zusammen mit dem SimplePager die Anzeige der 
+						 * Daten über mehere Seiten hinweg
+						 */
+						ListDataProvider<Projekt> dataProvider = new ListDataProvider<Projekt>();
+					    dataProvider.addDataDisplay(projektTabelle);
+					    dataProvider.setList(projekte);
+					
+						SimplePager pager = new SimplePager(TextLocation.CENTER, false, 0, false);
+					    pager.setDisplay(projektTabelle);
+					    pager.setPageSize(10);
+					    
+					    projektTabelle.setWidth("100%");
 						
 						
 						vPanel.add(projektTabelle);
+						vPanel.add(pager);
 						
 				}
 					
