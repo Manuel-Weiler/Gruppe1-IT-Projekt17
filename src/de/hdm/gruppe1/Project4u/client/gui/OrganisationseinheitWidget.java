@@ -44,6 +44,7 @@ public class OrganisationseinheitWidget extends Composite{
 		}
 	};
 	
+	Button close = new Button("Schließen");
 	Button addOrga = new Button("Organisationseinheit hinzufügen");
 	VerticalPanel vPanel = new VerticalPanel();
 	HTML heading = new HTML("<h2 class='h2heading'>Teams und Unternehmen:</h2>");
@@ -291,7 +292,32 @@ public class OrganisationseinheitWidget extends Composite{
 			MessageBox.alertWidget("Löschen "+orga.getName(), "Sie sind nicht der Ersteller der Organisationseinheit, wenden Sie sich an: "+orga.getGoogleId());
 		}
 		else{
-			//TODO: delete Organisationseinheit
+			Project4uVerwaltung.deleteOrganisationseinheit(orga, new AsyncCallback<Void>() {
+				
+				@Override
+				public void onSuccess(Void result) {
+					MessageBox.alertWidget("Erfolg!", "Die Organisationseinheit wurde erfolgreich gelöscht");
+					
+					Project4uVerwaltung.getAllOrganisationseinheitenOfTypTeamUnternehmen(new AsyncCallback<Vector<Organisationseinheit>>() {
+						
+						@Override
+						public void onSuccess(Vector<Organisationseinheit> result) {
+							vPanel.clear();
+							vPanel.add(new OrganisationseinheitWidget(result));
+							
+						}
+						public void onFailure(Throwable caught) {
+							Window.alert(caught.getMessage());
+						}
+					});
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert(caught.getMessage());
+					
+				}
+			});
 		}
 	}
 	
@@ -322,6 +348,7 @@ public class OrganisationseinheitWidget extends Composite{
 	 * @param o
 	 * @author Tobias
 	 */
+	
 	private void orgaProfil(final Organisationseinheit o){
 		 
 		final DialogBox db = new DialogBox();
@@ -334,6 +361,7 @@ public class OrganisationseinheitWidget extends Composite{
 		speichern.setWidth("100px"); 
 		final Button bearbeiten = new Button("Bearbeiten");
 		bearbeiten.setWidth("100px");
+		close.setWidth("100px");
 		final Button addEigenschaft = new Button("Eigenschaft hinzufügen");
 		
 		Label email = new Label("E-Mail:");
@@ -403,7 +431,7 @@ public class OrganisationseinheitWidget extends Composite{
 				
 				
 				}
-				
+				vp.add(close);
 				vp.add(addEigenschaft);
 				vp.add(bearbeiten);
 				vp.add(speichern);
@@ -415,7 +443,7 @@ public class OrganisationseinheitWidget extends Composite{
 		
 		
 		
-	//TODO: bearbeiten möglich machen
+	
 		addEigenschaft.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -560,7 +588,14 @@ public class OrganisationseinheitWidget extends Composite{
 		});
 		
 		
-		
+		close.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				db.hide();
+				
+			}
+		});
 		
 		bearbeiten.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {

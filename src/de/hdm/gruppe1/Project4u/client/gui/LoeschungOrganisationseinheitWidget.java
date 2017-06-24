@@ -78,21 +78,21 @@ public class LoeschungOrganisationseinheitWidget extends Composite{
 					stagecounter++;
 				}
 				else{
-					//TODO: delete ORGA
+					
 					Project4uVerwaltung.deleteOrganisationseinheit(organisationseinheit, new AsyncCallback<Void>() {
-						
+
 						@Override
 						public void onSuccess(Void result) {
 							diaBox.hide();
-							MessageBox.alertWidget("Tschüss!", "Ihr Nutzerprofil, Ihre Projektmarktplätze Ihre Projekte, </br>Ihre Ausschreibungen, Ihre Beteiligungen sowie Ihre Bewerbungen wurden gelöscht!");
+							MessageBox.alertWidget("Tschüss!",
+									"Ihr Nutzerprofil, Ihre Projektmarktplätze Ihre Projekte, </br>Ihre Ausschreibungen, Ihre Beteiligungen sowie Ihre Bewerbungen wurden gelöscht! </br> Von Ihnen erstellte Teams und Unternehmen bleiben erhalten");
 							signOutLink.setHref(ClientsideSettings.getAktuellerUser().getLogoutUrl());
 							Window.Location.assign(signOutLink.getHref());
 						}
-						
+
 						@Override
 						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
-							
+						Window.alert(caught.getMessage());	
 						}
 					});
 				}

@@ -17,7 +17,7 @@ public class MessageBox {
         box.setText(header);
         box.setGlassEnabled(true);
         panel.add(new HTML(content));
-        final Button buttonClose = new Button("Close");
+        final Button buttonClose = new Button("OK");
         		
         buttonClose.addClickHandler(new ClickHandler() {
 			
