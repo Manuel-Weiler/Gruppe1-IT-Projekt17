@@ -60,9 +60,14 @@ public class ProjektWidget extends Composite{
 	VerticalPanel vPanel = new VerticalPanel();
 	VerticalPanel verP = new VerticalPanel();
 	HorizontalPanel hPanel = new HorizontalPanel();
+	DateBox stdate = new DateBox();
+	DateTimeFormat dateFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
+	DialogBox db = new DialogBox();
+	VerticalPanel vp = new VerticalPanel();
+	
 	Projekt selectedProjekt = new Projekt();
 	
-	//TODO: Projekt löschen
+	
 	
 	
 
@@ -102,8 +107,6 @@ public class ProjektWidget extends Composite{
 	
 	protected void projektChange( final Projekt p, final Projektmarktplatz m){
 		
-		final DialogBox db = new DialogBox();
-		VerticalPanel vp = new VerticalPanel();
 		
 		
 		Label name = new Label("Projektname:");
@@ -124,8 +127,7 @@ public class ProjektWidget extends Composite{
 		
 		Label sdate = new Label("Startdatum:");
 		vp.add(sdate);
-		final DateBox stdate = new DateBox();
-		final DateTimeFormat dateFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
+		
 		
 		stdate.setFormat(new DateBox.DefaultFormat(dateFormat));		
 		vp.add(stdate);
@@ -618,7 +620,7 @@ public class ProjektWidget extends Composite{
 														else
 														{
 															
-															MessageBox.alertWidget("Projekt bearbeiten", "Sie sind nicht Projektleiter des Projektes <b>'"+selectionModel.getSelectedObject().getName()
+															MessageBox.alertWidget("Projekt löschen", "Sie sind nicht Projektleiter des Projektes <b>'"+selectionModel.getSelectedObject().getName()
 															+"'</b></br> Legen Sie Ihr eigenes Projekt an, oder wenden Sie sich an:</br><b>" +projektleiter.getGoogleId()+"</b>");
 														}
 													}

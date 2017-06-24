@@ -17,9 +17,16 @@ h1 {
 }
 
 .rot{
-	color: red;
-	text-decoration: line-through;
+	color: red;	
 }
+
+
+.green{
+	color: ForestGreen;	
+	background-color: lightgreen;
+	letter-spacing: 2px;
+}
+
 
 .linked{
 	

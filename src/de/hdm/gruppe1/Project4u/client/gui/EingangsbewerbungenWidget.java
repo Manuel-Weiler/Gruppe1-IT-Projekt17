@@ -14,7 +14,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -27,6 +29,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
@@ -36,6 +39,7 @@ import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
@@ -46,7 +50,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
  */
 public class EingangsbewerbungenWidget {
 	
-	//TODO: nur laufende Bewerbungen listen
+	
 	//TODO: nach bewertung aktualisieren
 	
 		Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
@@ -61,6 +65,8 @@ public class EingangsbewerbungenWidget {
 		HorizontalPanel buttons = new HorizontalPanel();
 		Button close = new Button("Schließen");
 		Button bewerten = new Button("Bewerbung bewerten");
+		
+		SimplePager pager = new SimplePager(TextLocation.CENTER, false, 0, false);
 		
 
 		/*
@@ -92,6 +98,7 @@ public class EingangsbewerbungenWidget {
 					bew = result;
 					vp.add(headingUserBew);
 					vp.add(createTableOfUserbewerbungen(result));
+					vp.add(pager);
 
 					
 					RootPanel.get("content").clear();
@@ -195,12 +202,32 @@ public class EingangsbewerbungenWidget {
 			userBewerbungen.addColumn(status, "Status");
 			userBewerbungen.addColumn(buttonColumn);
 
-			// Anpassen des Widgets an die Breite des div-Elements "content"
-			userBewerbungen.setWidth(RootPanel.get("content").getOffsetWidth() + "px");
 
+			userBewerbungen.setRowCount(bewerbungen.size());
+			
 			userBewerbungen.setRowData(bewerbungen);
 
-			// TODO: ggf. pager
+			
+			
+			
+			/*
+			 * Der DataListProvider ermöglicht zusammen mit dem SimplePager die Anzeige der 
+			 * Daten über mehere Seiten hinweg
+			 */
+			ListDataProvider<Bewerbung> dataProvider = new ListDataProvider<Bewerbung>();
+		    dataProvider.addDataDisplay(userBewerbungen);
+		    dataProvider.setList(bewerbungen);
+		    
+		    
+			
+		    pager.setDisplay(userBewerbungen);
+		    pager.setPageSize(15);
+		    
+		    userBewerbungen.setWidth("100%");
+		    
+			
+			
+		
 
 			return userBewerbungen;
 		}
