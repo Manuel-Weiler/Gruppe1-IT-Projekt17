@@ -396,7 +396,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 */
 
 	// Simple Report Alle Beteiligungen pro Nutzer
-	public AllBeteiligungenForNutzer allBeteiligungenForNutzer(Organisationseinheit orga) {
+	public AllBeteiligungenForNutzer allBeteiligungenForNutzer(Organisationseinheit orga) throws IllegalArgumentException {
 
 		if (this.getProject4uAdministration() == null)
 			return null;
@@ -433,7 +433,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 
 	// SimpleReport Alle Bewerbungen pro Nutzer
-	public AllBewerbungenForNutzer allBewerbungenForNutzer(Organisationseinheit orga) {
+	public AllBewerbungenForNutzer allBewerbungenForNutzer(Organisationseinheit orga) throws IllegalArgumentException {
 
 		if (this.getProject4uAdministration() == null)
 			return null;
@@ -640,6 +640,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		result.setTitle("FanIn- FanOut-Analyse");
 
+		
+		
 		result.addSubReport(this.createFanInAnalyseReport());
 		result.addSubReport(this.createFanOutAnalyseReport());
 
