@@ -25,6 +25,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
+import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
@@ -37,6 +38,7 @@ public class ProjektmarktplatzWidget extends Composite {
 	Button seeProjektmarktplatz = new Button("Projektmarktplatz ansehen");
 	Button changeProjektmarktplatz = new Button("Projektmarktplatz bearbeiten");
 
+	Organisationseinheit orga = new Organisationseinheit();
 	
 	VerticalPanel vPanel = new VerticalPanel();
 	/*
@@ -128,66 +130,87 @@ public class ProjektmarktplatzWidget extends Composite {
 
 						@Override
 						public void onClick(ClickEvent event) {
-
-							diBox.hide();
-							final DialogBox Box = new DialogBox();
-
-							VerticalPanel vPanel = new VerticalPanel();
-							Label name = new Label("Name des Projektmarktplatzes");
-							final TextBox pName = new TextBox();
-							pName.setValue(selectionModel.getSelectedObject().getName());
-							Button update = new Button("Änderungen am Projektmarktplatz speichern");
-
-							update.addClickHandler(new ClickHandler() {
-
+							
+							Project4uVerwaltung.getOrganisationseinheitById(selectionModel.getSelectedObject().getOrganisationseinheitId(), new AsyncCallback<Organisationseinheit>() {
+								
 								@Override
-								public void onClick(ClickEvent event) {
-									if (pName.getValue() != null) {
+								public void onSuccess(Organisationseinheit result) {
+									orga = result;
+									if(result.getGoogleId().equalsIgnoreCase(ClientsideSettings.getAktuellerUser().getEmailAddress())){
+										diBox.hide();
+										final DialogBox Box = new DialogBox();
 
-										Projektmarktplatz p = selectionModel.getSelectedObject();
-										p.setName(pName.getValue());
-										Project4uVerwaltung.update(p, new AsyncCallback<Void>() {
+										VerticalPanel vPanel = new VerticalPanel();
+										Label name = new Label("Name des Projektmarktplatzes");
+										final TextBox pName = new TextBox();
+										pName.setValue(selectionModel.getSelectedObject().getName());
+										Button update = new Button("Änderungen am Projektmarktplatz speichern");
 
+										update.addClickHandler(new ClickHandler() {
+											
 											@Override
-											public void onSuccess(Void result) {
-												Project4uVerwaltung.findAllProjektmarktplatz(
-														new AsyncCallback<Vector<Projektmarktplatz>>() {
+											public void onClick(ClickEvent event) {
+												if (pName.getValue() != null) {
 
-															public void onSuccess(Vector<Projektmarktplatz> result) {
+													Projektmarktplatz p = selectionModel.getSelectedObject();
+													p.setName(pName.getValue());
+													Project4uVerwaltung.update(p, new AsyncCallback<Void>() {
 
-																RootPanel.get("content").clear();
-																RootPanel.get("content")
-																		.add(new ProjektmarktplatzWidget(result));
+														@Override
+														public void onSuccess(Void result) {
+															Project4uVerwaltung.findAllProjektmarktplatz(
+																	new AsyncCallback<Vector<Projektmarktplatz>>() {
 
-															}
+																		public void onSuccess(Vector<Projektmarktplatz> result) {
 
-															@Override
-															public void onFailure(Throwable caught) {
-															}
-														});
-											}
+																			RootPanel.get("content").clear();
+																			RootPanel.get("content")
+																					.add(new ProjektmarktplatzWidget(result));
 
-											@Override
-											public void onFailure(Throwable caught) {
-												Window.alert(caught.getMessage());
+																		}
+
+																		@Override
+																		public void onFailure(Throwable caught) {
+																		}
+																	});
+														}
+
+														@Override
+														public void onFailure(Throwable caught) {
+															Window.alert(caught.getMessage());
+														}
+													});
+													Box.hide();
+												} else {
+													Window.alert("Bitte einen Namen eingeben");
+												}
 											}
 										});
-										Box.hide();
+
+										vPanel.add(name);
+										vPanel.add(pName);
+										vPanel.add(update);
+										Box.add(vPanel);
+										Box.center();
+										Box.setAnimationEnabled(true);
+										Box.setAutoHideEnabled(true);
+										Box.show();
+
 									} else {
-										Window.alert("Bitte einen Namen eingeben");
+										MessageBox.alertWidget("Bearbeiten Projektmarktplatz",
+												"Sie sind nicht der Ersteller des Projektmarktplatzes,</br> wenden Sie sich ggf. an: "
+														+ orga.getGoogleId());
 									}
+
+								}
+
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert(caught.getMessage());
+
 								}
 							});
-
-							vPanel.add(name);
-							vPanel.add(pName);
-							vPanel.add(update);
-							Box.add(vPanel);
-							Box.center();
-							Box.setAnimationEnabled(true);
-							Box.setAutoHideEnabled(true);
-							Box.show();
-
+							
 						}
 					});
 
@@ -219,7 +242,58 @@ public class ProjektmarktplatzWidget extends Composite {
 						public void onClick(ClickEvent event) {
 
 							// TODO: Löschen des Projektmarktplatzes
+							Project4uVerwaltung.getOrganisationseinheitById(selectionModel.getSelectedObject().getOrganisationseinheitId(), new AsyncCallback<Organisationseinheit>() {
+								
+								@Override
+								public void onSuccess(Organisationseinheit result) {
+									
+									if(result.getGoogleId().equalsIgnoreCase(ClientsideSettings.getAktuellerUser().getEmailAddress())){
+										Project4uVerwaltung.delete(selectionModel.getSelectedObject(), new AsyncCallback<Void>() {
+											
+											@Override
+											public void onSuccess(Void result) {
+												
+												MessageBox.alertWidget("Löschen Projektmarktplatz",
+														"Der Projektmarktplatz wurde erfolgreich gelöscht");
+												Project4uVerwaltung.findAllProjektmarktplatz(
+														new AsyncCallback<Vector<Projektmarktplatz>>() {
 
+															public void onSuccess(Vector<Projektmarktplatz> result) {
+
+																RootPanel.get("content").clear();
+																RootPanel.get("content")
+																		.add(new ProjektmarktplatzWidget(result));
+
+															}
+
+															@Override
+															public void onFailure(Throwable caught) {
+															}
+														});
+											}
+											
+											@Override
+											public void onFailure(Throwable caught) {
+												Window.alert(caught.getMessage());
+												
+											}
+										}); 
+										
+									} else {
+										MessageBox.alertWidget("Löschen Projektmarktplatz",
+												"Sie sind nicht Ersteller des Projektmarktplatzes"
+														+ selectionModel.getSelectedObject().getName()
+														+ "</br> Wenden Sie sich ggf. an: " + result.getGoogleId());
+									}		
+									
+								}
+								
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert(caught.getMessage());
+									
+								}
+							});
 						}
 					});
 

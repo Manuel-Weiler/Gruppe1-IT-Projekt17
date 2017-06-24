@@ -75,8 +75,6 @@ public class AusschreibungsprofilWidget {
 	Label bewerbungsfrst = new Label("Bewerbungsfrist: ");
 	HTML ausschrtext = new HTML("Ausschreibungstext: ");
 	
-	//TODO: Buttongröße
-	
 	
 	TextBox bezeichnung = new TextBox();
 	TextBox projektleiter = new TextBox();

@@ -163,5 +163,7 @@ public interface Project4uAdministrationAsync {
 
 	void deleteProjekt(Projekt projekt, AsyncCallback<Void> callback);
 
+	void delete(Projektmarktplatz p, AsyncCallback<Void> callback);
+
 
 }

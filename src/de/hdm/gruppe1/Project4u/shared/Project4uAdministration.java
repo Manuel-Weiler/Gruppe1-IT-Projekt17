@@ -146,5 +146,7 @@ public interface Project4uAdministration extends RemoteService{
 	public Vector<Bewerbung> getAllBewerbungen() throws IllegalArgumentException;
 	
 	public void deleteProjekt(Projekt projekt) throws IllegalArgumentException;
+	
+	public void delete(Projektmarktplatz p) throws IllegalArgumentException;
 
 }
