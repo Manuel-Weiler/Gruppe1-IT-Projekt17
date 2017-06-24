@@ -9,6 +9,8 @@ import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerp
 import de.hdm.gruppe1.Project4u.shared.report.ReportByProjektverflechtungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportForEigeneBewerbungen;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.report.AllBeteiligungenForNutzer;
+import de.hdm.gruppe1.Project4u.shared.report.AllBewerbungenForNutzer;
 import de.hdm.gruppe1.Project4u.shared.report.FanIn;
 import de.hdm.gruppe1.Project4u.shared.report.FanInFanOut;
 import de.hdm.gruppe1.Project4u.shared.report.FanOut;
@@ -35,5 +37,9 @@ public interface ReportGenerator extends RemoteService{
 	ReportByAlleBewerbungenForAusschreibungen createAlleBewerbungenForAusschreibungen(Organisationseinheit o) throws IllegalArgumentException;
 	
 	ReportForEigeneBewerbungen createEigeneBewerbungenReport(Organisationseinheit orga) throws IllegalArgumentException;
+	
+	AllBewerbungenForNutzer allBewerbungenForNutzer(Organisationseinheit orga) throws IllegalArgumentException;
+	
+	AllBeteiligungenForNutzer allBeteiligungenForNutzer(Organisationseinheit orga) throws IllegalArgumentException;
 	
 }

@@ -84,7 +84,7 @@ public abstract class Report implements IsSerializable, Serializable {
 	 * 
 	 * @return Titeltext
 	 */
-	public String getTitle() {
+	public String getTitel() {
 		return title;
 	}
 

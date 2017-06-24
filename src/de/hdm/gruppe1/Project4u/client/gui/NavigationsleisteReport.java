@@ -18,7 +18,11 @@ import de.hdm.gruppe1.Project4u.shared.LoginInfo;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.ReportGeneratorAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.report.AllBeteiligungenForNutzer;
+import de.hdm.gruppe1.Project4u.shared.report.AllBewerbungenForNutzer;
+import de.hdm.gruppe1.Project4u.shared.report.FanIn;
 import de.hdm.gruppe1.Project4u.shared.report.FanInFanOut;
+import de.hdm.gruppe1.Project4u.shared.report.FanOut;
 import de.hdm.gruppe1.Project4u.shared.report.HTMLReportWriter;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleBewerbungenForAusschreibungen;
@@ -414,15 +418,7 @@ public class NavigationsleisteReport extends Composite {
 							writer.process(c);
 							RootPanel.get("contentR").clear();
 							RootPanel.get("contentR").add(new HTML(writer.getReportText()));
-						} else {
-							DialogBox dBox = new DialogBox();
-
-							Label label = new Label("Es existieren keine Verflechtungen für diesen Nutzer.");
-							dBox.add(label);
-							dBox.center();
-							dBox.setAutoHideEnabled(true);
-							dBox.show();
-						}
+						} 
 					}
 
 					public void onFailure(Throwable caught) {
