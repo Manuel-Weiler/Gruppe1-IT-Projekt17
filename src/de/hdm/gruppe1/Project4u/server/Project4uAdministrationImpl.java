@@ -110,10 +110,6 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return this.partnerprofilMapper.findById(i);
 	}
 
-	/*
-	 * TODO: public Ausschreibung getAusschreibungOf(Partnerprofil p) public
-	 * Vector <Eigenschaft> getEigenschaftenOf (Partnerprofil p)
-	 */
 
 	public Vector<Eigenschaft> getEigenschaftenOfPartnerprofil(Partnerprofil p) throws IllegalArgumentException {
 		return this.partnerprofilMapper.getEigenschaftenOfPartnerprofil(p);
@@ -137,7 +133,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public boolean checkStatus(LoginInfo loginInfo) {
 		boolean status = false;
 		Vector<Organisationseinheit> orgas = new Vector<Organisationseinheit>();
-		orgas = organisationseinheitMapper.findAll();
+		orgas = getAllOrganisationseinheitOfTypPerson();
 		for (Organisationseinheit o : orgas) {
 			if (o.getGoogleId().equalsIgnoreCase(loginInfo.getEmailAddress())) {
 				status = true;

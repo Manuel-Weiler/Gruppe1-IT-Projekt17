@@ -59,9 +59,14 @@ public class PartnerprofilWidget extends Composite {
 
 	Button add = new Button("Eigenschaft hinzufügen");
 	Button speichern = new Button("Speichern");
+	Button deleteOrga = new Button("Nutzerprofil löschen");
+	Button bearbeiten = new Button("Nutzername bearbeiten");
+	Button save = new Button("Nutzername speichern");
 
 	Partnerprofil neuesProfil = new Partnerprofil();
 	Organisationseinheit neueOrga = new Organisationseinheit();
+	Organisationseinheit org = new Organisationseinheit();
+	
 	VerticalPanel vPanel = new VerticalPanel();
 	VerticalPanel eigenschaftenPanel = new VerticalPanel();
 	VerticalPanel teamUnternehmen = new VerticalPanel();
@@ -274,15 +279,14 @@ public class PartnerprofilWidget extends Composite {
 
 	public PartnerprofilWidget(Organisationseinheit o) {
 
-		final Organisationseinheit org = o;
-		Button deleteOrga = new Button("Nutzerprofil löschen");
+		this.org = o;
+		
 
 		RootPanel.get("contentHeader").clear();
 		Label Profil = new Label("Ihr Nutzerprofil");
 		RootPanel.get("contentHeader").add(Profil);
 
-		final Button bearbeiten = new Button("Nutzername bearbeiten");
-		final Button save = new Button("Nutzername speichern");
+		
 
 		mail.setValue(o.getGoogleId());
 		mail.setEnabled(false);
@@ -290,7 +294,7 @@ public class PartnerprofilWidget extends Composite {
 		orgaNam.setEnabled(false);
 		mail.setTitle("Die E-Mail-Adresse kann nicht geändert werden.");
 		typbox.setTitle(
-				"Der Kontentyp kann nicht geändert werden. Legen Sie ggf. zusäzliche Organisationseinheiten an.");
+				"Der Kontentyp kann nicht geändert werden. Legen Sie ggf. zusäzlich ein Team oder Unternehmen an.");
 		// Der Button soll in Abhängigkeit zur Bildschirmgröße am rechten Rand
 		// platziert sein.
 		int i = (RootPanel.get("content").getOffsetWidth()) - 550;
@@ -355,7 +359,7 @@ public class PartnerprofilWidget extends Composite {
 		// Nutzers
 		deleteOrga.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				new LoeschungOrganisationseinheitWidget();
+				new LoeschungOrganisationseinheitWidget(org);
 
 			}
 		});
