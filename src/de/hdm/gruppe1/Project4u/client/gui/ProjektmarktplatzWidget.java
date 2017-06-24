@@ -248,6 +248,7 @@ public class ProjektmarktplatzWidget extends Composite {
 								public void onSuccess(Organisationseinheit result) {
 									
 									if(result.getGoogleId().equalsIgnoreCase(ClientsideSettings.getAktuellerUser().getEmailAddress())){
+										diBox.hide();
 										Project4uVerwaltung.delete(selectionModel.getSelectedObject(), new AsyncCallback<Void>() {
 											
 											@Override
@@ -281,9 +282,9 @@ public class ProjektmarktplatzWidget extends Composite {
 										
 									} else {
 										MessageBox.alertWidget("Löschen Projektmarktplatz",
-												"Sie sind nicht Ersteller des Projektmarktplatzes"
+												"Sie sind nicht Ersteller des Projektmarktplatzes '"
 														+ selectionModel.getSelectedObject().getName()
-														+ "</br> Wenden Sie sich ggf. an: " + result.getGoogleId());
+														+ "'</br> Wenden Sie sich ggf. an: " + result.getGoogleId());
 									}		
 									
 								}

@@ -6,6 +6,7 @@ import java.util.Vector;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -175,6 +176,18 @@ public class AusgangsbewerbungenWidget extends Composite {
 
 				return object.getStatus();
 			}
+			public String getCellStyleNames(Context context, Bewerbung object) {
+				if(object.getStatus().equalsIgnoreCase("angenommen")){
+					return "green";
+				}
+				else if(object.getStatus().equalsIgnoreCase("abgelehnt")){
+					return "rot";
+				}
+				else {
+					return super.getCellStyleNames(context, object);	
+					}
+				
+			}
 		};
 
 		ButtonCell buttCell = new ButtonCell();
@@ -258,6 +271,21 @@ public class AusgangsbewerbungenWidget extends Composite {
 			public String getValue(Bewerbung object) {
 				return object.getStatus();
 			}
+			
+			@Override
+			public String getCellStyleNames(Context context, Bewerbung object) {
+				if(object.getStatus().equalsIgnoreCase("angenommen")){
+					return "green";
+				}
+				else if(object.getStatus().equalsIgnoreCase("abgelehnt")){
+					return "rot";
+				}
+				else {
+					return super.getCellStyleNames(context, object);	
+					}
+				
+			}
+			
 		};
 
 		ButtonCell buttCell = new ButtonCell();
