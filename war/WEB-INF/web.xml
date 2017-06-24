@@ -16,7 +16,7 @@
 	<servlet-mapping>
 		<servlet-name>ProjectadministrationImpl</servlet-name>
 		<url-pattern>/project4u/projectadministration</url-pattern>
-		<url-pattern>project4ureport/projectadministration</url-pattern>
+		<url-pattern>/project4ureport/projectadministration</url-pattern>
 	</servlet-mapping>
 
 	<!-- Editor Ende -->
