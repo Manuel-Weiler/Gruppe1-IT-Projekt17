@@ -305,7 +305,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		Vector<Organisationseinheit> result = new Vector<Organisationseinheit>();
 
 		for (Organisationseinheit orga : orgas) {
-			if (orga.getTyp().equalsIgnoreCase("Team")) {
+			if (orga.getTyp().equalsIgnoreCase("Person")) {
 				result.add(orga);
 			}
 		}

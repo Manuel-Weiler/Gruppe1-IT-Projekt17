@@ -11,7 +11,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -24,6 +26,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
@@ -53,6 +56,8 @@ public class AusgangsbewerbungenWidget extends Composite {
 	HorizontalPanel buttons = new HorizontalPanel();
 	Button close = new Button("Schließen");
 	Button delete = new Button("Bewerbung zurückziehen");
+	SimplePager pagerLinkedBewerbungen = new SimplePager(TextLocation.CENTER, false, 0, false);
+	SimplePager pagerUserbewerbungen = new SimplePager(TextLocation.CENTER, false, 0, false);
 
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch
@@ -80,6 +85,7 @@ public class AusgangsbewerbungenWidget extends Composite {
 						bew = result;
 						vp.add(headingUserBew);
 						vp.add(createTableOfUserbewerbungen(result));
+						vp.add(pagerUserbewerbungen);
 
 						Project4uVerwaltung.getAllBewerbungenOfLinkedTeamAndUnternehmen(
 								ClientsideSettings.getAktuellerUser(), new AsyncCallback<Vector<Bewerbung>>() {
@@ -89,6 +95,7 @@ public class AusgangsbewerbungenWidget extends Composite {
 
 								vp.add(headingOrgaBew);
 								vp.add(createTableOfLinkedOrgabewerbungen(linkedBewerbungen));
+								vp.add(pagerLinkedBewerbungen);
 
 								RootPanel.get("content").clear();
 								RootPanel.get("content").add(vp);
@@ -143,7 +150,7 @@ public class AusgangsbewerbungenWidget extends Composite {
 
 	}
 
-	// TODO: jeweils Spalte einfügen um Bewertung einzusehen
+
 
 	private CellTable<Bewerbung> createTableOfUserbewerbungen(Vector<Bewerbung> bewerbungen) {
 
@@ -228,12 +235,30 @@ public class AusgangsbewerbungenWidget extends Composite {
 		userBewerbungen.addColumn(bewertungColumn);
 		userBewerbungen.addColumn(buttonColumn);
 
-		// Anpassen des Widgets an die Breite des div-Elements "content"
-		userBewerbungen.setWidth(RootPanel.get("content").getOffsetWidth() + "px");
+		
+
+		userBewerbungen.setRowCount(bewerbungen.size());
 
 		userBewerbungen.setRowData(bewerbungen);
+		
+		
+		
+		/*
+		 * Der DataListProvider ermöglicht zusammen mit dem SimplePager die Anzeige der 
+		 * Daten über mehere Seiten hinweg
+		 */
+		ListDataProvider<Bewerbung> dataProvider = new ListDataProvider<Bewerbung>();
+	    dataProvider.addDataDisplay(userBewerbungen);
+	    dataProvider.setList(bewerbungen);
+	    
+	    
+		
+	    pagerUserbewerbungen.setDisplay(userBewerbungen);
+	    pagerUserbewerbungen.setPageSize(10);
+	    
+	    userBewerbungen.setWidth("100%");
 
-		// TODO: ggf. pager
+
 
 		return userBewerbungen;
 	}
@@ -326,12 +351,31 @@ public class AusgangsbewerbungenWidget extends Composite {
 		linkedBewerbungen.addColumn(bewertungColumn);
 		linkedBewerbungen.addColumn(buttonColumn);
 
-		// Anpassen des Widgets an die Breite des div-Elements "content"
-		linkedBewerbungen.setWidth(RootPanel.get("content").getOffsetWidth() + "px");
+		linkedBewerbungen.setRowCount(bewerbungen.size());
 
 		linkedBewerbungen.setRowData(bewerbungen);
+		
+		
+		
+		linkedBewerbungen.setRowData(bewerbungen);
 
-		// TODO: ggf. pager
+		
+		/*
+		 * Der DataListProvider ermöglicht zusammen mit dem SimplePager die Anzeige der 
+		 * Daten über mehere Seiten hinweg
+		 */
+		ListDataProvider<Bewerbung> dataProvider = new ListDataProvider<Bewerbung>();
+	    dataProvider.addDataDisplay(linkedBewerbungen);
+	    dataProvider.setList(bewerbungen);
+	    
+	    
+		
+	    pagerLinkedBewerbungen.setDisplay(linkedBewerbungen);
+	    pagerLinkedBewerbungen.setPageSize(10);
+	    
+	    linkedBewerbungen.setWidth("100%");
+
+		
 
 		return linkedBewerbungen;
 	}
@@ -352,7 +396,7 @@ public class AusgangsbewerbungenWidget extends Composite {
 						if (result!=null){
 						
 						BewertungWidget bw = new BewertungWidget(clickedBewerbung);
-						//TODO: 
+						
 						bw.setViewModusOn(result);
 						bw.show();
 						}
@@ -392,6 +436,9 @@ public class AusgangsbewerbungenWidget extends Composite {
 					details.add(bewerbung.getVP());
 					vep.add(details);
 					buttons.add(close);
+					if (object.getStatus().equalsIgnoreCase("angenommen")||object.getStatus().equalsIgnoreCase("abgelehnt")){
+						delete.setVisible(false);
+					}
 					buttons.add(delete);
 					vep.add(buttons);
 					box.setText("Bewerbungsübersicht");
