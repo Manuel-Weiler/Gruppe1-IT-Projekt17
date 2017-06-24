@@ -576,14 +576,101 @@ public class ProjektWidget extends Composite{
 										
 									}
 								});
+								
 								Button deleteProjekt = new Button("Projekt löschen");
 								Button changeProjekt = new Button("Projekt bearbeiten");
+								
+								deleteProjekt.addClickHandler(new ClickHandler() {
+									
+									@Override
+									public void onClick(ClickEvent event) {
+										Project4uVerwaltung.getOrganisationseinheitById(selectionModel.getSelectedObject().getOrganisationseinheitId(),
+												new AsyncCallback<Organisationseinheit>() {
+
+													@Override
+													public void onSuccess(Organisationseinheit projektleiter) {
+														
+														if(projektleiter.getGoogleId().equalsIgnoreCase(ClientsideSettings.getAktuellerUser().getEmailAddress())){
+														
+														 
+															Project4uVerwaltung.deleteProjekt(selectionModel.getSelectedObject(), new AsyncCallback<Void>() {
+																
+																@Override
+																public void onSuccess(Void result) {
+																	
+																	diBox.hide();
+																	MessageBox.alertWidget("Projekt gelöscht!", "Sie haben das Projekt <b>'"+selectionModel.getSelectedObject().getName()
+																			+"'</b> erfolgreich gelöscht");
+																	RootPanel.get("content").clear();
+																	RootPanel.get("content").add(new ProjektWidget(projektmarktplatz));
+																		
+																}
+																
+																@Override
+																public void onFailure(Throwable caught) {
+																	Window.alert(caught.getMessage());
+																	
+																}
+															});
+															
+															
+														}
+														else
+														{
+															
+															MessageBox.alertWidget("Projekt bearbeiten", "Sie sind nicht Projektleiter des Projektes <b>'"+selectionModel.getSelectedObject().getName()
+															+"'</b></br> Legen Sie Ihr eigenes Projekt an, oder wenden Sie sich an:</br><b>" +projektleiter.getGoogleId()+"</b>");
+														}
+													}
+
+													@Override
+													public void onFailure(Throwable caught) {
+														Window.alert(caught.getMessage());
+
+													}
+												});
+										
+									}
+								});
+								
+								
+								
+								
+								
+								
 								changeProjekt.addClickHandler(new ClickHandler() {
 									
 									@Override
 									public void onClick(ClickEvent event) {
-										projektChange(selectionModel.getSelectedObject(), projektmarktplatz);
-										diBox.hide();
+										
+										Project4uVerwaltung.getOrganisationseinheitById(selectionModel.getSelectedObject().getOrganisationseinheitId(),
+												new AsyncCallback<Organisationseinheit>() {
+
+													@Override
+													public void onSuccess(Organisationseinheit projektleiter) {
+														
+														if(projektleiter.getGoogleId().equalsIgnoreCase(ClientsideSettings.getAktuellerUser().getEmailAddress())){
+														
+														 
+															projektChange(selectionModel.getSelectedObject(), projektmarktplatz);
+															diBox.hide();
+														}
+														else
+														{
+															
+															MessageBox.alertWidget("Projekt bearbeiten", "Sie sind nicht Projektleiter des Projektes <b>'"+selectionModel.getSelectedObject().getName()
+															+"'</b></br> Legen Sie Ihr eigenes Projekt an, oder wenden Sie sich an:</br><b>" +projektleiter.getGoogleId()+"</b>");
+														}
+													}
+
+													@Override
+													public void onFailure(Throwable caught) {
+														Window.alert(caught.getMessage());
+
+													}
+												});
+										
+										
 									}
 								});
 								vPanel.add(seeProjekt);

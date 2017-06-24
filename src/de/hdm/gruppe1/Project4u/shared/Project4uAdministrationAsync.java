@@ -161,5 +161,7 @@ public interface Project4uAdministrationAsync {
 
 	void getAllBewerbungen(AsyncCallback<Vector<Bewerbung>> callback);
 
+	void deleteProjekt(Projekt projekt, AsyncCallback<Void> callback);
+
 
 }

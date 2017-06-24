@@ -175,7 +175,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		vp = projektMapper.findByOrganisationseinheit(organisationseinheit);
 		if (vp != null) {
 			for (Projekt projekt : vp) {
-				this.delete(projekt);
+				this.deleteProjekt(projekt);
 			}
 		}
 
@@ -437,7 +437,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		pv = projektMapper.findByProjektmarktplatz(p);
 		if (pv != null) {
 			for (Projekt projekt : pv) {
-				this.delete(projekt);
+				this.deleteProjekt(projekt);
 			}
 		}
 
@@ -493,7 +493,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		projektMapper.update(p);
 	}
 
-	public void delete(Projekt projekt) throws IllegalArgumentException {
+	public void deleteProjekt(Projekt projekt) throws IllegalArgumentException {
 		System.out.println("deleteProjekt");
 
 		// Zugehörige Ausschreibungen löschen
