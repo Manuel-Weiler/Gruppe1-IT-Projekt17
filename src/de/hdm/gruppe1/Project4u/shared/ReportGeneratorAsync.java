@@ -18,6 +18,7 @@ import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleBewerbungenForAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByProjektverflechtungen;
+import de.hdm.gruppe1.Project4u.shared.report.ReportForEigeneBewerbungen;
 
 public interface ReportGeneratorAsync {
 
@@ -43,5 +44,7 @@ public interface ReportGeneratorAsync {
 	void createFanInFanOutReport(AsyncCallback<FanInFanOut> callback);
 
 	void createAlleBewerbungenForAusschreibungen(Organisationseinheit o, AsyncCallback<ReportByAlleBewerbungenForAusschreibungen> callback);
+
+	void createEigeneBewerbungenReport(Organisationseinheit orga, AsyncCallback<ReportForEigeneBewerbungen> callback);
 
 }

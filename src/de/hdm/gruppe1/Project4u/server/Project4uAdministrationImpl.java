@@ -621,7 +621,9 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Ausschreibung findByNameAusschreibung(String bezeichnung) throws IllegalArgumentException {
 		return this.ausschreibungMapper.findByNameAusschreibung(bezeichnung);
 	}
+
 	
+
 
 	
 	
@@ -635,6 +637,11 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 			}
 		}
 		return result;
+	}
+
+	public Vector<Ausschreibung> findAusschreibungbyProjekt(Projekt projekt) throws IllegalArgumentException {
+		return this.ausschreibungMapper.findByProjekt(projekt);
+
 	}
 
 	public ArrayList<Ausschreibung> getAlleAusschreibungen() throws IllegalArgumentException {
@@ -760,7 +767,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	}
 	
-	
+	public Vector<Bewerbung> getAllBewerbungen() throws IllegalArgumentException {
+		
+		return this.bewerbungMapper.findAll();
+	}
 	
 	public Vector<Bewerbung> getBewerbungenOfAusschreibungWithStatusAusstehend(Ausschreibung aus)throws IllegalArgumentException{
 		Vector<Bewerbung> bewerbungen = getBewerbungenOfAusschreibung(aus);
@@ -866,24 +876,25 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return aktive;
 
 	}
-	
-	
-	
-	
+
 
 	public Vector<Bewerbung> getBewerbungForOrganisationseinheit(Organisationseinheit orga)
 			throws IllegalArgumentException {
 
-		Vector<Bewerbung> result = new Vector<>();
+			Vector<Bewerbung> result = new Vector<Bewerbung>();
 
-		if (orga != null && this.bewerbungMapper != null) {
-			Vector<Bewerbung> bewerbungen = this.bewerbungMapper.findByOrganisationseinheit(orga);
-
-			if (bewerbungen != null) {
-				result.addAll(bewerbungen);
+			if(orga != null && this.bewerbungMapper != null){
+			Vector<Bewerbung> bewerbungen = this.bewerbungMapper.findAll();
+		
+			for(Bewerbung be :  bewerbungen){
+				
+				if(be.getOrganisationseinheitId() == orga.getOrganisationseinheitId()){
+					result.add(be);
+				}
 			}
-		}
-		return result;
+			}
+			return result;
+
 	}
 
 	/*
@@ -979,15 +990,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	public Vector<Beteiligung> getBeteiligungForOrga(Organisationseinheit orga) throws IllegalArgumentException {
-		Vector<Beteiligung> result = new Vector<>();
 
 		Vector<Beteiligung> beteiligungen = this.beteiligungMapper.findByOrganisationseinheit(orga);
 
-		if (beteiligungen != null) {
-			result.addAll(beteiligungen);
-
-		}
-		return result;
+		return beteiligungen;
 	}
 
 	/*
