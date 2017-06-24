@@ -849,6 +849,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		Vector<Projekt> projekte = getAllProjekteOfProjektleiter(org);
 		Vector<Ausschreibung> ausschreibungen = new Vector<>();
 		Vector<Bewerbung> eingangsbewerbungen = new Vector<>();
+		Vector<Bewerbung> aktive = new Vector<>();
 
 		for (Projekt pro : projekte) {
 			ausschreibungen.addAll(findActiveAusschreibungenOfProjekt(pro));
@@ -856,7 +857,13 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		for (Ausschreibung aus : ausschreibungen) {
 			eingangsbewerbungen.addAll(getBewerbungenOfAusschreibung(aus));
 		}
-		return eingangsbewerbungen;
+		for (Bewerbung b : eingangsbewerbungen) {
+			if(b.getStatus().equalsIgnoreCase("laufend")){
+				aktive.add(b);
+			}
+		}
+		
+		return aktive;
 
 	}
 	
