@@ -121,8 +121,10 @@ public class BewertungWidget {
 							
 							@Override
 							public void onSuccess(Void result) {
+								
 								MessageBox.alertWidget("Erfolg!", "Ihre Bewertung mit '1.0' hat eine Beteiligung erfolgreich angelegt.");
 								
+								new EingangsbewerbungenWidget();
 							}
 							
 							@Override
@@ -140,6 +142,7 @@ public class BewertungWidget {
 								Window.alert(caught.getMessage());}});
 
 						MessageBox.alertWidget("Erfolg!", "Ihre Bewertung wurde erfolgreich angelegt.");
+						new EingangsbewerbungenWidget();
 					}
 
 				}

@@ -858,7 +858,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 			eingangsbewerbungen.addAll(getBewerbungenOfAusschreibung(aus));
 		}
 		for (Bewerbung b : eingangsbewerbungen) {
-			if(b.getStatus().equalsIgnoreCase("laufend")){
+			if(b.getStatus().equalsIgnoreCase("ausstehend")){
 				aktive.add(b);
 			}
 		}
