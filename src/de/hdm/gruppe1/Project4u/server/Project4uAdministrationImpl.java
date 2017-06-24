@@ -935,19 +935,35 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 
-	public Beteiligung createBeteiligung(Date startdatum, Date enddatum, int personentage,
-			int organisationseinheitId, int projektId, int bewertungId)
+	public Beteiligung createBeteiligung(Beteiligung beteiligung)
 					throws IllegalArgumentException {
 
-		Beteiligung beteiligung = new Beteiligung();
-		beteiligung.setStartdatum(startdatum);
-		beteiligung.setEnddatum(enddatum);
-		beteiligung.setPersonentage(personentage);
-		beteiligung.setOrganisationseinheitId(organisationseinheitId);
-		beteiligung.setBewertungId(bewertungId);
-		beteiligung.setProjektId(projektId);
-
 		return this.beteiligungMapper.insertBeteiligung(beteiligung);
+	}
+	
+	
+	public void createBeteiligungAndUpdateAllOtherBewerbungenAndUpdateAusschreibung(Bewerbung bewerbung, Bewertung bertung)throws IllegalArgumentException{
+		Projekt p = getProjektOfBewerbung(bewerbung);
+		long difference = (new Date().getTime() - p.getEnddatum().getTime()) / 86400000; // 1000*60*60*24
+		long erg = Math.abs(difference);
+		int personentage = (int) erg;
+		
+		Beteiligung beteiligung = new Beteiligung();
+		beteiligung.setOrganisationseinheitId(bewerbung.getOrganisationseinheitId());
+		beteiligung.setPersonentage(personentage);
+		beteiligung.setProjektId(p.getProjektId());
+		beteiligung.setStartdatum(new Date());
+		beteiligung.setEnddatum(p.getEnddatum());
+		beteiligung.setBewertungId(bertung.getBewertungId());
+		createBeteiligung(beteiligung);
+		
+		Ausschreibung aus= updateStatusOfAusschreibung(bewerbung.getAusschreibungId(), "beendet");
+		updateStatusOfBewerbung("angenommen", bewerbung.getBewerbungId());
+		
+		//Alle Bewerbungen mit Status "ausstehend" auf die jeweilige Ausschreibung werden abgelehnt und erhalten eine Bewertung mit '0.0'
+		cancelAllBewerbungenOfAusschreibungWithStatusAusstehend(aus);
+		
+		
 	}
 
 	public void deleteBeteiligung(Beteiligung b) throws IllegalArgumentException {

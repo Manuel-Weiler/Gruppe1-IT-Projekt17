@@ -145,8 +145,6 @@ public interface Project4uAdministrationAsync {
 
 	void createBewertung(Bewertung bewertung, AsyncCallback<Bewertung> callback);
 
-	void createBeteiligung(Date startdatum, Date enddatum, int personentage, int organisationseinheitId, int projektId,
-			int bewertungId, AsyncCallback<Beteiligung> callback);
 
 	void getProjektOfBewerbung(Bewerbung bewerbung, AsyncCallback<Projekt> callback);
 
@@ -162,5 +160,8 @@ public interface Project4uAdministrationAsync {
 	void findActiveAusschreibungenOfProjekt(Projekt projekt, AsyncCallback<Vector<Ausschreibung>> callback);
 
 	void getBewertungOfBewerbung(Bewerbung b, AsyncCallback<Bewertung> callback);
+
+	void createBeteiligungAndUpdateAllOtherBewerbungenAndUpdateAusschreibung(Bewerbung bewerbung, Bewertung bertung,
+			AsyncCallback<Void> callback);
 
 }

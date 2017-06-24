@@ -126,8 +126,6 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Bewertung createBewertung(Bewertung bewertung)throws IllegalArgumentException ;
 
-	public Beteiligung createBeteiligung(Date startdatum, Date enddatum, int personentage, int organisationseinheitId, int projektId, int bewertungId)throws IllegalArgumentException;
-
 	public Projekt getProjektOfBewerbung(Bewerbung bewerbung)throws IllegalArgumentException;
 	
 	public void updateStatusOfBewerbung(String status, int bewerbungsID) throws IllegalArgumentException;
@@ -140,5 +138,7 @@ public interface Project4uAdministration extends RemoteService{
 	
 	
 	public Bewertung getBewertungOfBewerbung (Bewerbung b)throws IllegalArgumentException;
+	
+	public void createBeteiligungAndUpdateAllOtherBewerbungenAndUpdateAusschreibung(Bewerbung bewerbung, Bewertung bertung)throws IllegalArgumentException;
 	
 }

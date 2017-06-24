@@ -117,8 +117,19 @@ public class BewertungWidget {
 
 					if (u == 0) {
 
-						Project4uVerwaltung.getProjektOfBewerbung(bew, new getProjektOfBewerbungCallback());
-
+						Project4uVerwaltung.createBeteiligungAndUpdateAllOtherBewerbungenAndUpdateAusschreibung(bew, result, new AsyncCallback<Void>() {
+							
+							@Override
+							public void onSuccess(Void result) {
+								MessageBox.alertWidget("Erfolg!", "Ihre Bewertung mit '1.0' hat eine Beteiligung erfolgreich angelegt.");
+								
+							}
+							
+							@Override
+							public void onFailure(Throwable caught) {
+							}
+						});
+						
 					} else {
 						
 						Project4uVerwaltung.updateStatusOfBewerbung("abgelehnt", bew.getBewerbungId(), new AsyncCallback<Void>() {
@@ -147,26 +158,8 @@ public class BewertungWidget {
 	
 	
 
-	/**
-	 * Die Methode gibt die Anzahl an Tagen zwischen zwei Date-Objekten zurück.
-	 * @param one
-	 * @param two
-	 * @return
-	 */
-	private static long daysBetween(Date one, Date two) {
-		long difference = (one.getTime() - two.getTime()) / 86400000; // 1000*60*60*24
-		return Math.abs(difference);
-	}
 	
 	
-	
-	
-	
-	
-
-	public VerticalPanel getVP() {
-		return this.vp;
-	}
 	
 	
 	public void setViewModusOn(Bewertung bewertung){
@@ -207,109 +200,6 @@ public class BewertungWidget {
 	}
 	
 	
-	
-	
-
-	/**
-	 * Im Anschluss an die Anfrage des Projektes wird ein Beteiligungsobjekt über die Proxy erzeugt.
-	 * @author Tobias
-	 *
-	 */
-	private class getProjektOfBewerbungCallback implements AsyncCallback<Projekt> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-		}
-
-		@Override
-		public void onSuccess(Projekt projekt) {
-
-			long l = daysBetween(new Date(), projekt.getEnddatum());
-			int tage = (int) l;
-
-			Project4uVerwaltung.createBeteiligung(new Date(), projekt.getEnddatum(), tage,
-					bew.getOrganisationseinheitId(), projekt.getProjektId(), bewertg.getBewerbungId(),
-					new createBeteiligungCallback());
-
-		}
-
-	}
-
-	
-	
-	
-	
-	
-	private class createBeteiligungCallback implements AsyncCallback<Beteiligung> {
-
-		public void onFailure(Throwable caught) {
-		}
-
-		@Override
-		public void onSuccess(Beteiligung result) {
-			
-			MessageBox.alertWidget("Erfolg!", "Ihre Bewertung mit '1.0' hat eine Beteiligung erfolgreich angelegt.");
-			
-			
-			
-			
-			//Status der betroffenen Ausschreibung auf "beendet" ändern
-			Project4uVerwaltung.updateStatusOfAusschreibung(bew.getAusschreibungId(), "beendet", new updateStatusOfAusschreibungCallback());
-		}
-	}
-	
-	
-	
-	
-	private class updateStatusOfAktuelleBewerbungCallback implements AsyncCallback<Void>{
-
-		@Override
-		public void onFailure(Throwable caught) {	
-		}
-
-		@Override
-		public void onSuccess(Void result) {
-			
-			
-			//Alle Bewerbungen mit Status "ausstehend" auf die jeweilige Ausschreibung werden abgelehnt und erhalten eine Bewertung mit '0.0'
-			Project4uVerwaltung.cancelAllBewerbungenOfAusschreibungWithStatusAusstehend(ausschreibung, new AsyncCallback<Void>() {
-				
-				@Override
-				public void onSuccess(Void result) {	
-				}
-				
-				@Override
-				public void onFailure(Throwable caught) {	
-				}
-			});
-			
-		}
-		
-	}
-
-		
-		
-	
-	private class updateStatusOfAusschreibungCallback implements AsyncCallback<Ausschreibung>{
-
-		@Override
-		public void onFailure(Throwable caught) {
-		}
-		@Override
-		public void onSuccess(Ausschreibung result) {
-			ausschreibung = result;
-			
-			/*
-			 * Update der Bewerbung und setzen des Status angenommen. Im
-			 * Anschluss daran werden alle noch nicht bewerteten Bewerbungen
-			 * (Status 'ausstehend')auf die selbe Ausschreibung mit "0.0"
-			 * bewertet und auf "abgelehnt" gesetzt.
-			 */
-			Project4uVerwaltung.updateStatusOfBewerbung("angenommen", bew.getBewerbungId(), new updateStatusOfAktuelleBewerbungCallback());
-			
-		}
-		
-	}
 	
 	
 	

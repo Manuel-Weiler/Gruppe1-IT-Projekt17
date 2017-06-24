@@ -62,9 +62,9 @@ public class ProjektWidget extends Composite{
 	HorizontalPanel hPanel = new HorizontalPanel();
 	Projekt selectedProjekt = new Projekt();
 	
-	//TODO: Projekt löschen,  Ausschreibungen beendet nicht anzeigen
+	//TODO: Projekt löschen
 	
-	//TODO: Bewerbung
+	
 
 
 	/*
@@ -86,7 +86,7 @@ public class ProjektWidget extends Composite{
 	
 	
 	public ProjektWidget(Projektmarktplatz pMarktpl) {
-		//getOrganisationseinheitOfUser(ClientsideSettings.getAktuellerUser());
+		getOrganisationseinheitOfUser(ClientsideSettings.getAktuellerUser());
 		this.projektmarktplatz = pMarktpl;
 
 		addAusschreibung.addClickHandler(new hinzufuegenAusschreibungClickhandler());
