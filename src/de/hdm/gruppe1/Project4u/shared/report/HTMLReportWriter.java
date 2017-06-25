@@ -188,14 +188,14 @@ public class HTMLReportWriter extends ReportWriter {
 		result.append("<H3>" + b.getTitel() + "</H3>");
 
 		Vector<Row> rows = b.getRows();
-		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
+		result.append("<table style=\"width:600px;margin-bottom: 30px\">");
 
 		for (int i = 0; i < rows.size(); i++) {
 			Row row = rows.elementAt(i);
 			result.append("<tr>");
 			for (int j = 0; j < row.getNumColumns(); j++) {
 				if (i == 0) {
-					result.append("<td style=\"background:silver;font-weight:bold\">" + row.getColumnAt(j) + "</td>");
+					result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">" + row.getColumnAt(j) + "</td>");
 				} else {
 					if (i > 1) {
 						result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">"
