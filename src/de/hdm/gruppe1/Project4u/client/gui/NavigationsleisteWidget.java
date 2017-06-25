@@ -49,7 +49,7 @@ public class NavigationsleisteWidget extends Composite {
 	Button orgaLoeschen = new Button("Orga löschen");
 	Button projektmarktplatzLoeschen = new Button("Projektmarktplatz löschen");
 	Button testBtn = new Button("Test");
-	Button testBtn2 = new Button("Test2");
+
 
 	public NavigationsleisteWidget() {
 
@@ -65,8 +65,8 @@ public class NavigationsleisteWidget extends Composite {
 		//TODO: Testcode löschen
 		//Test
 		//menuPanel.add(orgaLoeschen);
-		menuPanel.add(testBtn);
-		menuPanel.add(testBtn2);
+		//menuPanel.add(testBtn);
+		
 		//menuPanel.add(projektmarktplatzLoeschen);
 
 		// Abstand zwischen den einzelnen Buttons
@@ -89,48 +89,8 @@ public class NavigationsleisteWidget extends Composite {
 		projektmarktplatzLoeschen.setPixelSize(200, 40);
 		
 		
-		testBtn.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				Project4uVerwaltung.createPartnerprofil(new AsyncCallback<Partnerprofil>() {
-					
-					@Override
-					public void onSuccess(Partnerprofil result) {
-						MessageBox.alertWidget("done", "id:"+result.getPartnerprofilId()+", erstelldatum:"+result.getErstelldatum());
-						
-					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						Window.alert(caught.getMessage());
-						
-					}
-				});
-				
-			}
-		});
-testBtn2.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				Project4uVerwaltung.createPartnerprofil(new AsyncCallback<Partnerprofil>() {
-					
-					@Override
-					public void onSuccess(Partnerprofil result) {
-						MessageBox.alertWidget("done", "id:"+result.getPartnerprofilId()+", erstelldatum:"+result.getErstelldatum());
-						
-					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						Window.alert(caught.getMessage());
-						
-					}
-				});
-				
-			}
-		});
+		
+
 		
 		orgaLoeschen.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
