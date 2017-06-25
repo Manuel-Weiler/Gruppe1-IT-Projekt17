@@ -119,14 +119,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
 
-		headline.addColumn(new Column("Ausschreibungs-ID"));
 		headline.addColumn(new Column("Bezeichnung"));
 		headline.addColumn(new Column("Projektleiter"));
 		headline.addColumn(new Column("Bewerbungsfrist"));
 		headline.addColumn(new Column("Ausschreibungstext"));
 		headline.addColumn(new Column("Erstelldatum:"));
-		headline.addColumn(new Column("Projekt-ID"));
-		headline.addColumn(new Column("Partnerprofil-ID"));
 		headline.addColumn(new Column("Status"));
 
 		// Kopfzeile wird dem Report hinzugefuegt
@@ -142,14 +139,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			// neue, leere Zeile anlegen
 			Row ausschreibungRow = new Row();
 			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
 			ausschreibungRow.addColumn(new Column(a.getBezeichnung()));
 			ausschreibungRow.addColumn(new Column(a.getNameProjektleiter()));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
 			ausschreibungRow.addColumn(new Column(a.getAusschreibungstext()));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(a.getStatus())));
 
 			// Zeile dem Report hinzufï¿½gen
@@ -184,14 +178,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
 
-		headline.addColumn(new Column("Ausschreibungs-ID"));
 		headline.addColumn(new Column("Bezeichnung"));
 		headline.addColumn(new Column("Projektleiter"));
 		headline.addColumn(new Column("Bewerbungsfrist"));
 		headline.addColumn(new Column("Ausschreibungstext"));
-		headline.addColumn(new Column("Erstelldatum:"));
-		headline.addColumn(new Column("Projekt-ID"));
-		headline.addColumn(new Column("Partnerprofil-ID"));
+		headline.addColumn(new Column("Erstelldatum"));
 		headline.addColumn(new Column("Status"));
 
 		// Kopfzeile wird dem Report hinzugefuegt
@@ -209,14 +200,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			// neue, leere Zeile anlegen
 			Row ausschreibungRow = new Row();
 			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
-			ausschreibungRow.addColumn(new Column(String.valueOf(au.getAusschreibungId())));
 			ausschreibungRow.addColumn(new Column(au.getBezeichnung()));
 			ausschreibungRow.addColumn(new Column(au.getNameProjektleiter()));
 			ausschreibungRow.addColumn(new Column(String.valueOf(au.getBewerbungsfrist())));
 			ausschreibungRow.addColumn(new Column(au.getAusschreibungstext()));
 			ausschreibungRow.addColumn(new Column(String.valueOf(au.getErstellDatum())));
-			ausschreibungRow.addColumn(new Column(String.valueOf(au.getProjektId())));
-			ausschreibungRow.addColumn(new Column(String.valueOf(au.getPartnerprofilId())));
 			ausschreibungRow.addColumn(new Column(String.valueOf(au.getStatus())));
 
 			// Zeile dem Report hinzufï¿½gen
@@ -257,12 +245,19 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			// Ausschreibungsinformationen angeben
 			Row ausschreibungsheadline = new Row();
 			ausschreibungsheadline.addColumn(new Column("Ausschreibungsbezeichnung: " + au.getBezeichnung()));
-			ausschreibungsheadline.addColumn(new Column("Projektleiter: " + au.getNameProjektleiter()));
 			result.addRow(ausschreibungsheadline);
+			
+			Row ausschreibungsHeadline1 = new Row();
+			ausschreibungsHeadline1.addColumn(new Column("Projektleiter: " + au.getNameProjektleiter()));
+			result.addRow(ausschreibungsHeadline1);
+			
+			Row ausschreibungsheadline2 = new Row();
+			ausschreibungsheadline2.addColumn(new Column("Ausschreibungstext: " + au.getAusschreibungstext()));
+			result.addRow(ausschreibungsheadline2);
 
 			// Ausschreibungstext hinzufügen
 			Row ausschreibungstextline = new Row();
-			ausschreibungstextline.addColumn(new Column("Ausschreibungstext: " + au.getAusschreibungstext()));
+			ausschreibungstextline.addColumn(new Column(" "));
 			result.addRow(ausschreibungstextline);
 
 			// Nun sollen die dazugehörigen Bewerbungen hinzugefügt werden
@@ -271,11 +266,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 			// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
 
-			headline.addColumn(new Column("Bewerbungs-ID"));
-			headline.addColumn(new Column("Erstelldatum"));
 			headline.addColumn(new Column("Bewerbungstext"));
-			headline.addColumn(new Column("Ausschreibung-ID"));
-			headline.addColumn(new Column("Organisationseinheit-ID"));
+			headline.addColumn(new Column("Erstelldatum"));
 			headline.addColumn(new Column("Status"));
 
 			// Kopfzeile wird dem Report hinzugefuegt
@@ -298,11 +290,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				Row bewerbungRow = new Row();
 				// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt
 				// geschrieben
-				bewerbungRow.addColumn(new Column(String.valueOf(b.getBewerbungId())));
-				bewerbungRow.addColumn(new Column(String.valueOf(b.getErstelldatum())));
 				bewerbungRow.addColumn(new Column(b.getBewerbungstext()));
-				bewerbungRow.addColumn(new Column(String.valueOf(b.getAusschreibungId())));
-				bewerbungRow.addColumn(new Column(String.valueOf(b.getOrganisationseinheitId())));
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getErstelldatum())));
 				bewerbungRow.addColumn(new Column(b.getStatus()));
 
 				// Zeile dem Report hinzufï¿½gen
@@ -336,12 +325,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
 
-		headline.addColumn(new Column("Bewerbungs-ID"));
 		headline.addColumn(new Column("Erstelldatum"));
 		headline.addColumn(new Column("Bewerbungstext"));
-		headline.addColumn(new Column("Organisationseinheit-ID"));
 		headline.addColumn(new Column("Status"));
-		headline.addColumn(new Column("Ausschreibung-ID"));
+		//leere Spalte einfügen für inhaltliche Trennung
+		headline.addColumn(new Column("  "));
 		// Inhalt der Ausschreibung
 		headline.addColumn(new Column("Ausschreibungsbezeichnung"));
 		headline.addColumn(new Column("Projektleiter der Ausschreibung"));
@@ -364,14 +352,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			Ausschreibung au = project4uAdministration.findByIdAusschreibung(be.getAusschreibungId());
 			Row bewerbungRow = new Row();
 			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
-			bewerbungRow.addColumn(new Column(String.valueOf(be.getBewerbungId())));
 			bewerbungRow.addColumn(new Column(String.valueOf(be.getErstelldatum())));
 			bewerbungRow.addColumn(new Column(be.getBewerbungstext()));
-			bewerbungRow.addColumn(new Column(String.valueOf(be.getOrganisationseinheitId())));
 			bewerbungRow.addColumn(new Column(String.valueOf(be.getStatus())));
-			bewerbungRow.addColumn(new Column(String.valueOf(be.getAusschreibungId())));
+			//leere Spalte für inhaltliche Trennung
+			bewerbungRow.addColumn(new Column(""));
 			// Inhalt Ausschreibung
-
 			bewerbungRow.addColumn(new Column(au.getBezeichnung()));
 			bewerbungRow.addColumn(new Column(au.getNameProjektleiter()));
 			bewerbungRow.addColumn(new Column(String.valueOf(au.getBewerbungsfrist())));
@@ -407,11 +393,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		Row headline = new Row();
 
-		headline.addColumn(new Column("ProjektId"));
 		headline.addColumn(new Column("Startdatum"));
 		headline.addColumn(new Column("Enddatum"));
 		headline.addColumn(new Column("Personentage"));
-		headline.addColumn(new Column("OrganisationsId"));
 
 		result.addRow(headline);
 
@@ -420,11 +404,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		for (Beteiligung be : allBeteiligungen) {
 
 			Row beteiligungsRow = new Row();
-			beteiligungsRow.addColumn(new Column(String.valueOf(be.getProjektId())));
 			beteiligungsRow.addColumn(new Column(String.valueOf(be.getStartdatum())));
 			beteiligungsRow.addColumn(new Column(String.valueOf(be.getEnddatum())));
 			beteiligungsRow.addColumn(new Column(String.valueOf(be.getPersonentage())));
-			beteiligungsRow.addColumn(new Column(String.valueOf(be.getOrganisationseinheitId())));
 
 			result.addRow(beteiligungsRow);
 
@@ -444,11 +426,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		Row headline = new Row();
 
-		headline.addColumn(new Column("iD"));
 		headline.addColumn(new Column("Erstelldatum"));
 		headline.addColumn(new Column("Bewerbungstext"));
-		headline.addColumn(new Column("AusschreibungId"));
-		headline.addColumn(new Column("OrganisationsId"));
 		headline.addColumn(new Column("Status"));
 
 		result.addRow(headline);
@@ -459,11 +438,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 			if (be.getOrganisationseinheitId() == orga.getOrganisationseinheitId()) {
 				Row beteiligungsRow = new Row();
-				beteiligungsRow.addColumn(new Column(String.valueOf(be.getBewerbungId())));
 				beteiligungsRow.addColumn(new Column(String.valueOf(be.getErstelldatum())));
 				beteiligungsRow.addColumn(new Column(be.getBewerbungstext()));
-				beteiligungsRow.addColumn(new Column(String.valueOf(be.getAusschreibungId())));
-				beteiligungsRow.addColumn(new Column(String.valueOf(be.getOrganisationseinheitId())));
 				beteiligungsRow.addColumn(new Column(be.getStatus()));
 
 				result.addRow(beteiligungsRow);
