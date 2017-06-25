@@ -63,13 +63,9 @@ public class ProjektmarktplatzMapper {
 
 	/**
 	 ** @param id
-<<<<<<< HEAD
 	 ** @return Liefert ein Projektmarktplatz entsprechend der �bergebenen id
 	 *         zurueck.
-=======
-	 ** @return Liefert ein Projektmarktplatz entsprechend der �bergebenen id zurueck.
->>>>>>> refs/heads/master
-	 **/
+	*/
 
       public Projektmarktplatz findById(int id){
 		 // DB-Verbindung holen
@@ -118,7 +114,7 @@ public class ProjektmarktplatzMapper {
 		  try{
 			  Statement stmt = con.createStatement();
 			  
-			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM projektmarktplatz");
+			  ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM Projektmarktplatz");
 			   
 			  if (rs.next()) {
 	              p.setProjektmarktplatzId(rs.getInt("maxid") + 1);
@@ -142,7 +138,7 @@ public class ProjektmarktplatzMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE projektmarktplatz SET name = '" + p.getName() + "' WHERE id ='"
+			stmt.executeUpdate("UPDATE Projektmarktplatz SET name = '" + p.getName() + "' WHERE id ='"
 					+ p.getProjektmarktplatzId() + "';");
 		} catch (SQLException e2) {
 			e2.printStackTrace();

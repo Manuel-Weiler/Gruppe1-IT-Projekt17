@@ -19,6 +19,7 @@ import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.client.Project4u;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
+import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 import de.hdm.gruppe1.Project4u.client.gui.ProjektmarktplatzWidget;
 
@@ -48,6 +49,7 @@ public class NavigationsleisteWidget extends Composite {
 	Button orgaLoeschen = new Button("Orga löschen");
 	Button projektmarktplatzLoeschen = new Button("Projektmarktplatz löschen");
 	Button testBtn = new Button("Test");
+	Button testBtn2 = new Button("Test2");
 
 	public NavigationsleisteWidget() {
 
@@ -63,7 +65,8 @@ public class NavigationsleisteWidget extends Composite {
 		//TODO: Testcode löschen
 		//Test
 		//menuPanel.add(orgaLoeschen);
-		//menuPanel.add(testBtn);
+		menuPanel.add(testBtn);
+		menuPanel.add(testBtn2);
 		//menuPanel.add(projektmarktplatzLoeschen);
 
 		// Abstand zwischen den einzelnen Buttons
@@ -90,19 +93,38 @@ public class NavigationsleisteWidget extends Composite {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				
-				Project4uVerwaltung.testMethode(new AsyncCallback<String>() {
-				@Override
-				public void onSuccess(String result) {
-					Label test = new Label(result);
-					RootPanel.get("content").clear();
-					RootPanel.get("content").add(test);
+				Project4uVerwaltung.createPartnerprofil(new AsyncCallback<Partnerprofil>() {
 					
-				}
-				
-				@Override
-					public void onFailure(Throwable caught) {
+					@Override
+					public void onSuccess(Partnerprofil result) {
+						MessageBox.alertWidget("done", "id:"+result.getPartnerprofilId()+", erstelldatum:"+result.getErstelldatum());
 						
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert(caught.getMessage());
+						
+					}
+				});
+				
+			}
+		});
+testBtn2.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Project4uVerwaltung.createPartnerprofil(new AsyncCallback<Partnerprofil>() {
+					
+					@Override
+					public void onSuccess(Partnerprofil result) {
+						MessageBox.alertWidget("done", "id:"+result.getPartnerprofilId()+", erstelldatum:"+result.getErstelldatum());
+						
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert(caught.getMessage());
 						
 					}
 				});

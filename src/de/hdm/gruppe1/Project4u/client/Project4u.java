@@ -49,7 +49,7 @@ public class Project4u implements EntryPoint {
 		  ClientsideSettings.setAktuellerUser(result);
 		  if(loginInfo.isLoggedIn()) {
 		  loadProject4u();
-		  newUserCheck(result);	 
+		  //newUserCheck(result);	 
 		  } else {
 		  loadLogin();
 		  }
