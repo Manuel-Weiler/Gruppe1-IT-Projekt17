@@ -65,8 +65,7 @@ public class AusschreibungsprofilWidget {
 	
 	
 	Button change = new Button("Bearbeiten");
-	Button quit = new Button("Ausschreibung abbrechen");
-	Button delete = new Button("Ausschreibung löschen");
+	Button quit = new Button("Ausschreibung beenden");
 	Button addEig	= new Button("Eigenschaft hinzufügen");
 	Button bewerben = new Button("Auf Ausschreibung bewerben");
 	
@@ -76,9 +75,7 @@ public class AusschreibungsprofilWidget {
 	Label bewerbungsfrst = new Label("Bewerbungsfrist: ");
 	HTML ausschrtext = new HTML("Ausschreibungstext: ");
 	
-	//TODO: Buttongröße
 	
-	//TODO: Ausschreibung beenden
 	TextBox bezeichnung = new TextBox();
 	TextBox projektleiter = new TextBox();
 	DateBox bewerbungsfrist = new DateBox();
@@ -111,7 +108,6 @@ public class AusschreibungsprofilWidget {
 		buttonFlex.setWidget(1, 0, change);
 		buttonFlex.setWidget(0, 2, bewerben);
 		buttonFlex.setWidget(2, 0, quit);
-		buttonFlex.setWidget(2, 1, delete);
 		buttonFlex.setWidget(3, 0, addEig);
 		
 		
@@ -125,7 +121,6 @@ public class AusschreibungsprofilWidget {
 		change.setVisible(false);
 		bewerben.setVisible(false);
 		quit.setVisible(false);
-		delete.setVisible(false);
 		addEig.setVisible(false);
 		
 		
@@ -144,6 +139,7 @@ public class AusschreibungsprofilWidget {
 		savenew.addClickHandler(new neueAusschreibungSpeichernClickhandler());
 		addEig.addClickHandler(new neueEigenschaftClickHandler());
 		change.addClickHandler(new bearbeitenButtonClickHandler());
+		quit.addClickHandler(new quitAusschreibungButtonClickHandler());
 		cancel.addClickHandler(new ClickHandler() {
 	
 			@Override
@@ -306,6 +302,21 @@ public class AusschreibungsprofilWidget {
 	
 	
 	
+	private class quitAusschreibungButtonClickHandler implements ClickHandler{
+
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			
+			Project4uVerwaltung.updateStatusOfAusschreibung(localAus.getAusschreibungId(), "beendet", new refreshProjektWidget());
+		}
+		
+	}
+	
+	
+	
+	
+	
 	private class bearbeitenButtonClickHandler implements ClickHandler{
 
 		
@@ -318,8 +329,7 @@ public class AusschreibungsprofilWidget {
 			update.setVisible(true);
 			
 			addEig.setVisible(true);
-			//quit.setVisible(true);
-			delete.setVisible(true);
+			quit.setVisible(true);
 			change.setVisible(false);
 			
 			for(int i=0; i<eigFlex.getRowCount(); i++){
@@ -473,6 +483,7 @@ public class AusschreibungsprofilWidget {
 						localAus.setAusschreibungstext(ausschreibungstext.getValue());
 						localAus.setPartnerprofilId(result.getPartnerprofilId());
 						localAus.setProjektId(localProj.getProjektId());
+						localAus.setStatus("laufend");
 						
 
 						
@@ -516,17 +527,19 @@ public class AusschreibungsprofilWidget {
 	
 	
 	
-	//TODO: refresh
+
 	private class refreshProjektWidget implements AsyncCallback<Ausschreibung>{
 
 		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
 		}
 		public void onSuccess(Ausschreibung result) {
 			ProjektWidget PW = new ProjektWidget(pMart);
+			PW.ausschreibungAnsehen(localProj);
 			RootPanel.get("content").clear();
 			RootPanel.get("content").add(PW);
 			
-			PW.ausschreibungAnsehen(localProj);
+			
 			
 			db.hide();
 		}

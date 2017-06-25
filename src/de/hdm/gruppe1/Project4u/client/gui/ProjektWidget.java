@@ -60,11 +60,16 @@ public class ProjektWidget extends Composite{
 	VerticalPanel vPanel = new VerticalPanel();
 	VerticalPanel verP = new VerticalPanel();
 	HorizontalPanel hPanel = new HorizontalPanel();
+	DateBox stdate = new DateBox();
+	DateTimeFormat dateFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
+	DialogBox db = new DialogBox();
+	VerticalPanel vp = new VerticalPanel();
+	
 	Projekt selectedProjekt = new Projekt();
 	
-	//TODO: Projekt löschen,  Ausschreibungen
 	
-	//TODO: Bewerbung
+	
+	
 
 
 	/*
@@ -86,7 +91,7 @@ public class ProjektWidget extends Composite{
 	
 	
 	public ProjektWidget(Projektmarktplatz pMarktpl) {
-		//getOrganisationseinheitOfUser(ClientsideSettings.getAktuellerUser());
+		getOrganisationseinheitOfUser(ClientsideSettings.getAktuellerUser());
 		this.projektmarktplatz = pMarktpl;
 
 		addAusschreibung.addClickHandler(new hinzufuegenAusschreibungClickhandler());
@@ -102,8 +107,6 @@ public class ProjektWidget extends Composite{
 	
 	protected void projektChange( final Projekt p, final Projektmarktplatz m){
 		
-		final DialogBox db = new DialogBox();
-		VerticalPanel vp = new VerticalPanel();
 		
 		
 		Label name = new Label("Projektname:");
@@ -124,8 +127,7 @@ public class ProjektWidget extends Composite{
 		
 		Label sdate = new Label("Startdatum:");
 		vp.add(sdate);
-		final DateBox stdate = new DateBox();
-		final DateTimeFormat dateFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
+		
 		
 		stdate.setFormat(new DateBox.DefaultFormat(dateFormat));		
 		vp.add(stdate);
@@ -264,7 +266,7 @@ public class ProjektWidget extends Composite{
 		
 		
 		
-		Project4uVerwaltung.findAusschreibungbyProjekt(p, new AsyncCallback<Vector<Ausschreibung>>() {
+		Project4uVerwaltung.findActiveAusschreibungenOfProjekt(p, new AsyncCallback<Vector<Ausschreibung>>() {
 
 			@Override
 			public void onSuccess(Vector<Ausschreibung> result) {
@@ -501,7 +503,7 @@ public class ProjektWidget extends Composite{
 							}
 						};
 						
-						//TODO:
+						
 						TextColumn<Projekt> projektleiter = new TextColumn<Projekt>() {
 							public String getValue(Projekt object) {
 								String name = null;
@@ -576,14 +578,101 @@ public class ProjektWidget extends Composite{
 										
 									}
 								});
+								
 								Button deleteProjekt = new Button("Projekt löschen");
 								Button changeProjekt = new Button("Projekt bearbeiten");
+								
+								deleteProjekt.addClickHandler(new ClickHandler() {
+									
+									@Override
+									public void onClick(ClickEvent event) {
+										Project4uVerwaltung.getOrganisationseinheitById(selectionModel.getSelectedObject().getOrganisationseinheitId(),
+												new AsyncCallback<Organisationseinheit>() {
+
+													@Override
+													public void onSuccess(Organisationseinheit projektleiter) {
+														
+														if(projektleiter.getGoogleId().equalsIgnoreCase(ClientsideSettings.getAktuellerUser().getEmailAddress())){
+														
+														 
+															Project4uVerwaltung.deleteProjekt(selectionModel.getSelectedObject(), new AsyncCallback<Void>() {
+																
+																@Override
+																public void onSuccess(Void result) {
+																	
+																	diBox.hide();
+																	MessageBox.alertWidget("Projekt gelöscht!", "Sie haben das Projekt <b>'"+selectionModel.getSelectedObject().getName()
+																			+"'</b> erfolgreich gelöscht");
+																	RootPanel.get("content").clear();
+																	RootPanel.get("content").add(new ProjektWidget(projektmarktplatz));
+																		
+																}
+																
+																@Override
+																public void onFailure(Throwable caught) {
+																	Window.alert(caught.getMessage());
+																	
+																}
+															});
+															
+															
+														}
+														else
+														{
+															
+															MessageBox.alertWidget("Projekt löschen", "Sie sind nicht Projektleiter des Projektes <b>'"+selectionModel.getSelectedObject().getName()
+															+"'</b></br> Legen Sie Ihr eigenes Projekt an, oder wenden Sie sich an:</br><b>" +projektleiter.getGoogleId()+"</b>");
+														}
+													}
+
+													@Override
+													public void onFailure(Throwable caught) {
+														Window.alert(caught.getMessage());
+
+													}
+												});
+										
+									}
+								});
+								
+								
+								
+								
+								
+								
 								changeProjekt.addClickHandler(new ClickHandler() {
 									
 									@Override
 									public void onClick(ClickEvent event) {
-										projektChange(selectionModel.getSelectedObject(), projektmarktplatz);
-										diBox.hide();
+										
+										Project4uVerwaltung.getOrganisationseinheitById(selectionModel.getSelectedObject().getOrganisationseinheitId(),
+												new AsyncCallback<Organisationseinheit>() {
+
+													@Override
+													public void onSuccess(Organisationseinheit projektleiter) {
+														
+														if(projektleiter.getGoogleId().equalsIgnoreCase(ClientsideSettings.getAktuellerUser().getEmailAddress())){
+														
+														 
+															projektChange(selectionModel.getSelectedObject(), projektmarktplatz);
+															diBox.hide();
+														}
+														else
+														{
+															
+															MessageBox.alertWidget("Projekt bearbeiten", "Sie sind nicht Projektleiter des Projektes <b>'"+selectionModel.getSelectedObject().getName()
+															+"'</b></br> Legen Sie Ihr eigenes Projekt an, oder wenden Sie sich an:</br><b>" +projektleiter.getGoogleId()+"</b>");
+														}
+													}
+
+													@Override
+													public void onFailure(Throwable caught) {
+														Window.alert(caught.getMessage());
+
+													}
+												});
+										
+										
 									}
 								});
 								vPanel.add(seeProjekt);
@@ -610,16 +699,32 @@ public class ProjektWidget extends Composite{
 						projektTabelle.addColumn(enddatum, "Enddatum");
 						projektTabelle.addColumn(description, "Beschreibung");
 						
-					
+						projektTabelle.setRowCount(projekte.size());
 						
 						//F�llen der Tabelle ab dem Index 0.
 						projektTabelle.setRowData(0,  projekte);
 						
 						//Anpassen des Widgets an die Breite des div-Elements "content"
-						projektTabelle.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
+						//projektTabelle.setWidth(RootPanel.get("content").getOffsetWidth()+"px");
+						
+						
+						/*
+						 * Der DataListProvider ermöglicht zusammen mit dem SimplePager die Anzeige der 
+						 * Daten über mehere Seiten hinweg
+						 */
+						ListDataProvider<Projekt> dataProvider = new ListDataProvider<Projekt>();
+					    dataProvider.addDataDisplay(projektTabelle);
+					    dataProvider.setList(projekte);
+					
+						SimplePager pager = new SimplePager(TextLocation.CENTER, false, 0, false);
+					    pager.setDisplay(projektTabelle);
+					    pager.setPageSize(10);
+					    
+					    projektTabelle.setWidth("100%");
 						
 						
 						vPanel.add(projektTabelle);
+						vPanel.add(pager);
 						
 				}
 					

@@ -60,13 +60,15 @@ public class NavigationsleisteWidget extends Composite {
 		menuPanel.add(eBewerbungen);
 		menuPanel.add(aBewerbungen);
 
+		menuPanel.add(reportButton);
+
 		menuPanel.add(logout);
 		
-		
-		//Test
+		//TODO: Testcode löschen
 	/*	menuPanel.add(orgaLoeschen);
 		menuPanel.add(testBtn);
 		menuPanel.add(projektmarktplatzLoeschen);*/
+
 
 		// Abstand zwischen den einzelnen Buttons
 		menuPanel.setSpacing(20);
@@ -339,12 +341,15 @@ public class NavigationsleisteWidget extends Composite {
 		homeButton.click();
 	}
 	
+
+	
 	public void setButtonsEnabled(){
 		pMarktplatz.setEnabled(true);
 		eBewerbungen.setEnabled(true);
 		aBewerbungen.setEnabled(true);
 		profilButton.setEnabled(true);
 		homeButton.setEnabled(true);
+		reportButton.setEnabled(true);
 	}
 	
 	public void setButtonsUnenabled(){	
@@ -353,6 +358,7 @@ public class NavigationsleisteWidget extends Composite {
 		aBewerbungen.setEnabled(false);
 		profilButton.setEnabled(false);
 		homeButton.setEnabled(false);
+		reportButton.setEnabled(false);
 		
 		
 	}

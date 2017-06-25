@@ -137,6 +137,7 @@ public class BewertungMapper {
 				bewertung.setBewertungId(rs.getInt("id"));
 				bewertung.setBewertungspunkte(rs.getInt("bewertungspunkte"));
 				bewertung.setStellungnahme(rs.getString("stellungnahme"));
+				bewertung.setBewerbungID(rs.getInt("bewerbung_id"));
 			    
 				return bewertung;
 		      }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
+import org.apache.tools.ant.types.CommandlineJava.SysProperties;
+
 import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.util.Calendar;
 
@@ -25,34 +27,23 @@ import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
+import de.hdm.gruppe1.Project4u.shared.report.Column;
+import de.hdm.gruppe1.Project4u.shared.report.Row;
 
 public class Testklasse {
 	public static void main(String[] args) {
 
-
 		OrganisationseinheitMapper om = new OrganisationseinheitMapper();
-		Organisationseinheit o = om.findByKey(2);
-		BewerbungMapper bm = BewerbungMapper.bewerbungMapper();
-		Vector<Bewerbung> be = new Vector <Bewerbung> ();
-		be= bm.findByOrganisationseinheit(o);
+		Organisationseinheit o = om.findByKey(7);
+		AusschreibungMapper bm = AusschreibungMapper.ausschreibungMapper();
+		ArrayList<Ausschreibung> bf = new ArrayList<>();
+		bf = bm.findAllAusschreibungen();
+		BewerbungMapper bewerbungMapper = new BewerbungMapper();
 
-		for(Bewerbung b : be){
-			System.out.println(b.getBewerbungstext());
-		}
+		Vector<Bewerbung> bew = bewerbungMapper.findByOrganisationseinheit(o);
 
-		
-		
+
+
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-

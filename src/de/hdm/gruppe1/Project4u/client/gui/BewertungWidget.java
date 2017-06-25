@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
+import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
@@ -43,8 +44,10 @@ public class BewertungWidget {
 			"Beurteilungstext: </br></br><b>Hinweis:</b> Bei einer Bewertung von 1.0</br> wird automatisch eine Beteiligung festgelegt.");
 	Button save = new Button("Bewertung erstellen");
 	Button cancel = new Button("Abbrechen");
+	
 	Bewerbung bew = new Bewerbung();
 	Bewertung bewertg = new Bewertung();
+	Ausschreibung ausschreibung = new Ausschreibung();
 
 	public BewertungWidget(Bewerbung bewerbung) {
 		bew = bewerbung;
@@ -114,10 +117,32 @@ public class BewertungWidget {
 
 					if (u == 0) {
 
-						Project4uVerwaltung.getProjektOfBewerbung(bew, new getProjektOfBewerbungCallback());
-
+						Project4uVerwaltung.createBeteiligungAndUpdateAllOtherBewerbungenAndUpdateAusschreibung(bew, result, new AsyncCallback<Void>() {
+							
+							@Override
+							public void onSuccess(Void result) {
+								
+								MessageBox.alertWidget("Erfolg!", "Ihre Bewertung mit '1.0' hat eine Beteiligung erfolgreich angelegt.");
+								
+								new EingangsbewerbungenWidget();
+							}
+							
+							@Override
+							public void onFailure(Throwable caught) {
+							}
+						});
+						
 					} else {
+						
+						Project4uVerwaltung.updateStatusOfBewerbung("abgelehnt", bew.getBewerbungId(), new AsyncCallback<Void>() {
+							
+							@Override
+							public void onSuccess(Void result) {}
+							public void onFailure(Throwable caught) {
+								Window.alert(caught.getMessage());}});
+
 						MessageBox.alertWidget("Erfolg!", "Ihre Bewertung wurde erfolgreich angelegt.");
+						new EingangsbewerbungenWidget();
 					}
 
 				}
@@ -136,25 +161,24 @@ public class BewertungWidget {
 	
 	
 
-	/**
-	 * Die Methode gibt die Anzahl an Tagen zwischen zwei Date-Objekten zurück.
-	 * @param one
-	 * @param two
-	 * @return
-	 */
-	private static long daysBetween(Date one, Date two) {
-		long difference = (one.getTime() - two.getTime()) / 86400000; // 1000*60*60*24
-		return Math.abs(difference);
-	}
 	
 	
 	
 	
-	
-	
-
-	public VerticalPanel getVP() {
-		return this.vp;
+	public void setViewModusOn(Bewertung bewertung){
+		bewertungspunkte.clear();
+		bewertungspunkte.addItem(Float.toString(bewertung.getBewertungspunkte()));
+		bewertungspunkte.setEnabled(false);
+		
+		beurteilung.setValue(bewertung.getStellungnahme());
+		beurteilung.setReadOnly(true);
+		
+		save.setVisible(false);
+		
+		punkte.setHTML("<p>Ihre Bewertung hat folgende Punktzahlt erhalten</br> auf einer Skala von 0,0 bis 1,0</p>");
+		
+		text.setHTML("Die Beurteilung Ihrer Bewerbung:");
+		
 	}
 	
 	
@@ -181,52 +205,6 @@ public class BewertungWidget {
 	
 	
 	
-
-	/**
-	 * Im Anschluss an die Anfrage des Projektes wird ein Beteiligungsobjekt über die Proxy erzeugt.
-	 * @author Tobias
-	 *
-	 */
-	private class getProjektOfBewerbungCallback implements AsyncCallback<Projekt> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-		}
-
-		@Override
-		public void onSuccess(Projekt projekt) {
-
-			long l = daysBetween(new Date(), projekt.getEnddatum());
-			int tage = (int) l;
-
-			Project4uVerwaltung.createBeteiligung(new Date(), projekt.getEnddatum(), tage,
-					bew.getOrganisationseinheitId(), projekt.getProjektId(), bewertg.getBewerbungId(),
-					new createBeteiligungCallback());
-
-		}
-
-	}
-
 	
-	
-	
-	
-	
-	private class createBeteiligungCallback implements AsyncCallback<Beteiligung> {
-
-		public void onFailure(Throwable caught) {
-		}
-
-		@Override
-		public void onSuccess(Beteiligung result) {
-			// TODO Auto-generated method stub
-			MessageBox.alertWidget("Erfolg!", "Ihre Bewertung mit '1.0' hat eine Beteiligung erfolgreich angelegt.");
-			
-			//TODO: Update Ausschreibung
-			//TODO: Ablehnen aller anderen Bewerber? Alle Bewerbungen mit Status "ausstehend" auf die jeweilige Ausschreibung
-			//TODO: Status der aktutellen Bewerbung auf "angenommen" ändern
-		}
-
-	}
 
 }

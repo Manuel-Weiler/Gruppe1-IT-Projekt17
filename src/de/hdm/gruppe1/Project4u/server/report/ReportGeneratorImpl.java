@@ -2,15 +2,8 @@ package de.hdm.gruppe1.Project4u.server.report;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-//import java.util.ArrayList;
-import java.util.Date;
-//import java.util.logging.Logger;
 import java.util.Vector;
-
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 import de.hdm.gruppe1.Project4u.shared.report.AllBeteiligungenForNutzer;
 import de.hdm.gruppe1.Project4u.shared.report.AllBewerbungenForNutzer;
 import de.hdm.gruppe1.Project4u.shared.report.Column;
@@ -23,15 +16,13 @@ import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAlleBewerbungenForAusschreibungen;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByAusschreibungenForPartnerprofil;
 import de.hdm.gruppe1.Project4u.shared.report.ReportByProjektverflechtungen;
+import de.hdm.gruppe1.Project4u.shared.report.ReportForEigeneBewerbungen;
 import de.hdm.gruppe1.Project4u.shared.report.Row;
 import de.hdm.gruppe1.Project4u.shared.report.SimpleParagraph;
 import de.hdm.gruppe1.Project4u.server.Project4uAdministrationImpl;
-
 import de.hdm.gruppe1.Project4u.server.db.AusschreibungMapper;
-import de.hdm.gruppe1.Project4u.server.db.BewerbungMapper;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministration;
 import de.hdm.gruppe1.Project4u.shared.ReportGenerator;
-
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
@@ -105,7 +96,307 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		r.setImprint(imprint);
 	}
 
-	public AllBeteiligungenForNutzer allBeteiligungenForNutzer(Organisationseinheit orga) {
+	/*
+	 * 1. Report um alle Ausschreibungen auszugeben
+	 * 
+	 * @author: Dominik Sasse
+	 * 
+	 * @author: Manuel Weiler
+	 */
+
+	public ReportByAlleAusschreibungen createAlleAusschreibungenReport() throws IllegalArgumentException {
+
+		if (this.getProject4uAdministration() == null)
+			return null;
+
+		// Leeren Report anlegen
+		ReportByAlleAusschreibungen report = new ReportByAlleAusschreibungen();
+
+		report.setTitle("Alle Ausschreibungen");
+
+		// Kopfzeile fï¿½r die Tabelle anlegen:
+		Row headline = new Row();
+
+		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
+
+		headline.addColumn(new Column("Ausschreibungs-ID"));
+		headline.addColumn(new Column("Bezeichnung"));
+		headline.addColumn(new Column("Projektleiter"));
+		headline.addColumn(new Column("Bewerbungsfrist"));
+		headline.addColumn(new Column("Ausschreibungstext"));
+		headline.addColumn(new Column("Erstelldatum:"));
+		headline.addColumn(new Column("Projekt-ID"));
+		headline.addColumn(new Column("Partnerprofil-ID"));
+		headline.addColumn(new Column("Status"));
+
+		// Kopfzeile wird dem Report hinzugefuegt
+		report.addRow(headline);
+
+		// Reportinhalt:
+
+		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
+		ArrayList<Ausschreibung> au = new ArrayList<Ausschreibung>();
+		au = am.findAllAusschreibungen();
+
+		for (Ausschreibung a : au) {
+			// neue, leere Zeile anlegen
+			Row ausschreibungRow = new Row();
+			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
+			ausschreibungRow.addColumn(new Column(a.getBezeichnung()));
+			ausschreibungRow.addColumn(new Column(a.getNameProjektleiter()));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
+			ausschreibungRow.addColumn(new Column(a.getAusschreibungstext()));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(a.getStatus())));
+
+			// Zeile dem Report hinzufï¿½gen
+			report.addRow(ausschreibungRow);
+		}
+
+		// Report ausgeben
+		return report;
+
+	}
+
+	/**
+	 * 2. Report um alle Ausschreibungen des aktuellen Nutzer auszugeben
+	 * 
+	 * @author Dominik Sasse
+	 * @author Manuel Weiler
+	 */
+
+	public ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Organisationseinheit orga)
+			throws IllegalArgumentException {
+
+		if (project4uAdministration == null)
+			return null;
+		// Leeren Report anlegen
+		ReportByAusschreibungenForPartnerprofil result = new ReportByAusschreibungenForPartnerprofil();
+
+		// Titel und Bezeichung des Reports
+		result.setTitle("Meine Ausschreibungen");
+
+		// Kopfzeile fï¿½r die Tabelle anlegen:
+		Row headline = new Row();
+
+		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
+
+		headline.addColumn(new Column("Ausschreibungs-ID"));
+		headline.addColumn(new Column("Bezeichnung"));
+		headline.addColumn(new Column("Projektleiter"));
+		headline.addColumn(new Column("Bewerbungsfrist"));
+		headline.addColumn(new Column("Ausschreibungstext"));
+		headline.addColumn(new Column("Erstelldatum:"));
+		headline.addColumn(new Column("Projekt-ID"));
+		headline.addColumn(new Column("Partnerprofil-ID"));
+		headline.addColumn(new Column("Status"));
+
+		// Kopfzeile wird dem Report hinzugefuegt
+		result.addRow(headline);
+
+		// Reportinhalt:
+
+		// Von den Vektor passendeVektoren muss nun wieder auf Ausschreibungen
+		// gekommen werden, damit diese ausgegeben werden können.
+
+		Vector<Ausschreibung> passendeAusschreibungen = this.project4uAdministration
+				.getAusschreibungenForPartnerprofil(orga);
+
+		for (Ausschreibung au : passendeAusschreibungen) {
+			// neue, leere Zeile anlegen
+			Row ausschreibungRow = new Row();
+			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
+			ausschreibungRow.addColumn(new Column(String.valueOf(au.getAusschreibungId())));
+			ausschreibungRow.addColumn(new Column(au.getBezeichnung()));
+			ausschreibungRow.addColumn(new Column(au.getNameProjektleiter()));
+			ausschreibungRow.addColumn(new Column(String.valueOf(au.getBewerbungsfrist())));
+			ausschreibungRow.addColumn(new Column(au.getAusschreibungstext()));
+			ausschreibungRow.addColumn(new Column(String.valueOf(au.getErstellDatum())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(au.getProjektId())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(au.getPartnerprofilId())));
+			ausschreibungRow.addColumn(new Column(String.valueOf(au.getStatus())));
+
+			// Zeile dem Report hinzufï¿½gen
+			result.addRow(ausschreibungRow);
+		}
+		return result;
+	}
+
+	/*
+	 * 3. Report welcher alle Bewerbungen auf Ausschreibungen des Benutzers
+	 * zurückgibt.
+	 * 
+	 * @author Dominik Sasse
+	 * 
+	 * @author Ugut Bayrak
+	 */
+
+	// Zuerst brauchen wir alle Ausschreibungen des Benutzer welche wir einzeln
+	// ausgeben.
+	public ReportByAlleBewerbungenForAusschreibungen createAlleBewerbungenForAusschreibungen(Organisationseinheit o)
+			throws IllegalArgumentException {
+
+		if (this.getProject4uAdministration() == null)
+			return null;
+
+		// Zuerst werden die Ausschreibungen des Nutzers benötigt
+		Vector<Ausschreibung> aus = project4uAdministration.getAusschreibungenForOrga(o);
+
+		// Leeren Report anlegen
+		ReportByAlleBewerbungenForAusschreibungen result = new ReportByAlleBewerbungenForAusschreibungen();
+
+		result.setTitle("Alle Bewerbungen auf eigene Ausschreibungen");
+
+		// Für jede Ausschreibung soll ein Report mit den Bewerbungen erstellt
+		// werden
+		for (Ausschreibung au : aus) {
+
+			// Ausschreibungsinformationen angeben
+			Row ausschreibungsheadline = new Row();
+			ausschreibungsheadline.addColumn(new Column("Ausschreibungsbezeichnung: " + au.getBezeichnung()));
+			ausschreibungsheadline.addColumn(new Column("Projektleiter: " + au.getNameProjektleiter()));
+			result.addRow(ausschreibungsheadline);
+
+			// Ausschreibungstext hinzufügen
+			Row ausschreibungstextline = new Row();
+			ausschreibungstextline.addColumn(new Column("Ausschreibungstext: " + au.getAusschreibungstext()));
+			result.addRow(ausschreibungstextline);
+
+			// Nun sollen die dazugehörigen Bewerbungen hinzugefügt werden
+			// Kopfzeile fï¿½r die Tabelle anlegen:
+			Row headline = new Row();
+
+			// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
+
+			headline.addColumn(new Column("Bewerbungs-ID"));
+			headline.addColumn(new Column("Erstelldatum"));
+			headline.addColumn(new Column("Bewerbungstext"));
+			headline.addColumn(new Column("Ausschreibung-ID"));
+			headline.addColumn(new Column("Organisationseinheit-ID"));
+			headline.addColumn(new Column("Status"));
+
+			// Kopfzeile wird dem Report hinzugefuegt
+			result.addRow(headline);
+
+			// Reportinhalt:
+
+			Vector<Bewerbung> be = project4uAdministration.getAllBewerbungen();
+			Vector<Bewerbung> bewerbungForAusschreibung = new Vector<Bewerbung>();
+
+			for (Bewerbung bew : be) {
+				if (bew.getAusschreibungId() == au.getAusschreibungId()) {
+					bewerbungForAusschreibung.add(bew);
+				}
+
+			}
+
+			for (Bewerbung b : bewerbungForAusschreibung) {
+				// neue, leere Zeile anlegen
+				Row bewerbungRow = new Row();
+				// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt
+				// geschrieben
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getBewerbungId())));
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getErstelldatum())));
+				bewerbungRow.addColumn(new Column(b.getBewerbungstext()));
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getAusschreibungId())));
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getOrganisationseinheitId())));
+				bewerbungRow.addColumn(new Column(b.getStatus()));
+
+				// Zeile dem Report hinzufï¿½gen
+				result.addRow(bewerbungRow);
+			}
+
+		}
+		return result;
+	}
+
+	/*
+	 * 4. Abfrage der eigenen Bewerbungen und den zugehörigen Ausschreibungen
+	 * des Benutzers
+	 * 
+	 * @author Dominik Sasse
+	 */
+
+	// Zuerst müssen alle Bewerbungen des Nutzers ausgeeben werden
+	public ReportForEigeneBewerbungen createEigeneBewerbungenReport(Organisationseinheit orga)
+			throws IllegalArgumentException {
+
+		if (this.getProject4uAdministration() == null)
+			return null;
+
+		ReportForEigeneBewerbungen result = new ReportForEigeneBewerbungen();
+
+		result.setTitle("Alle Bewerbungen dieses Nutzers");
+
+		// Kopfzeile fï¿½r die Tabelle anlegen:
+		Row headline = new Row();
+
+		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
+
+		headline.addColumn(new Column("Bewerbungs-ID"));
+		headline.addColumn(new Column("Erstelldatum"));
+		headline.addColumn(new Column("Bewerbungstext"));
+		headline.addColumn(new Column("Organisationseinheit-ID"));
+		headline.addColumn(new Column("Status"));
+		headline.addColumn(new Column("Ausschreibung-ID"));
+		// Inhalt der Ausschreibung
+		headline.addColumn(new Column("Ausschreibungsbezeichnung"));
+		headline.addColumn(new Column("Projektleiter der Ausschreibung"));
+		headline.addColumn(new Column("Bewerbungsfrist"));
+		headline.addColumn(new Column("Ausschreibungstext"));
+		headline.addColumn(new Column("Erstelldatum"));
+
+		// Kopfzeile wird dem Report hinzugefuegt
+		result.addRow(headline);
+
+		// Reportinhalt:
+
+		Vector<Bewerbung> bew = project4uAdministration.getBewerbungForOrganisationseinheit(orga);
+
+		// Anschließend müssen die Ausschreibungen zu diesen Bewerbungen
+		// ausgegeben werden.
+
+		for (Bewerbung be : bew) {
+
+			Ausschreibung au = project4uAdministration.findByIdAusschreibung(be.getAusschreibungId());
+			Row bewerbungRow = new Row();
+			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
+			bewerbungRow.addColumn(new Column(String.valueOf(be.getBewerbungId())));
+			bewerbungRow.addColumn(new Column(String.valueOf(be.getErstelldatum())));
+			bewerbungRow.addColumn(new Column(be.getBewerbungstext()));
+			bewerbungRow.addColumn(new Column(String.valueOf(be.getOrganisationseinheitId())));
+			bewerbungRow.addColumn(new Column(String.valueOf(be.getStatus())));
+			bewerbungRow.addColumn(new Column(String.valueOf(be.getAusschreibungId())));
+			// Inhalt Ausschreibung
+
+			bewerbungRow.addColumn(new Column(au.getBezeichnung()));
+			bewerbungRow.addColumn(new Column(au.getNameProjektleiter()));
+			bewerbungRow.addColumn(new Column(String.valueOf(au.getBewerbungsfrist())));
+			bewerbungRow.addColumn(new Column(au.getAusschreibungstext()));
+			bewerbungRow.addColumn(new Column(String.valueOf(au.getErstellDatum())));
+
+			// Zeile dem Report hinzufï¿½gen
+			result.addRow(bewerbungRow);
+		}
+
+		return result;
+
+	}
+
+	/*
+	 * Report 5. Abfrage von Projektverflechtungen (Teilnahmen und weitere
+	 * Einreichungen/Bewerbungen) eines Bewerbers durch den Ausschreibenden.
+	 * 
+	 * @author Dominik Sasse
+	 * 
+	 * @author Georg Erich
+	 */
+
+	// Simple Report Alle Beteiligungen pro Nutzer
+	public AllBeteiligungenForNutzer allBeteiligungenForNutzer(Organisationseinheit orga) throws IllegalArgumentException {
 
 		if (this.getProject4uAdministration() == null)
 			return null;
@@ -141,7 +432,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		return result;
 	}
 
-	public AllBewerbungenForNutzer allBewerbungenForNutzer(Organisationseinheit orga) {
+	// SimpleReport Alle Bewerbungen pro Nutzer
+	public AllBewerbungenForNutzer allBewerbungenForNutzer(Organisationseinheit orga) throws IllegalArgumentException {
 
 		if (this.getProject4uAdministration() == null)
 			return null;
@@ -161,25 +453,27 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		result.addRow(headline);
 
-		Vector<Bewerbung> allBewerbungen = project4uAdministration.getBewerbungForOrganisationseinheit(orga);
+		Vector<Bewerbung> allBewerbungen = project4uAdministration.getAllBewerbungen();
 
 		for (Bewerbung be : allBewerbungen) {
 
-			Row beteiligungsRow = new Row();
-			beteiligungsRow.addColumn(new Column(String.valueOf(be.getBewerbungId())));
-			beteiligungsRow.addColumn(new Column(String.valueOf(be.getErstelldatum())));
-			beteiligungsRow.addColumn(new Column(be.getBewerbungstext()));
-			beteiligungsRow.addColumn(new Column(String.valueOf(be.getAusschreibungId())));
-			beteiligungsRow.addColumn(new Column(String.valueOf(be.getOrganisationseinheitId())));
-			// TODO: Status!!! beteiligungsRow.addColumn(new
-			// Column(String.valueOf(be.get())));
+			if (be.getOrganisationseinheitId() == orga.getOrganisationseinheitId()) {
+				Row beteiligungsRow = new Row();
+				beteiligungsRow.addColumn(new Column(String.valueOf(be.getBewerbungId())));
+				beteiligungsRow.addColumn(new Column(String.valueOf(be.getErstelldatum())));
+				beteiligungsRow.addColumn(new Column(be.getBewerbungstext()));
+				beteiligungsRow.addColumn(new Column(String.valueOf(be.getAusschreibungId())));
+				beteiligungsRow.addColumn(new Column(String.valueOf(be.getOrganisationseinheitId())));
+				beteiligungsRow.addColumn(new Column(be.getStatus()));
 
-			result.addRow(beteiligungsRow);
+				result.addRow(beteiligungsRow);
 
+			}
 		}
 		return result;
 	}
 
+	// Hier werden nun die 2 SimpleReports zusammengefügt
 	public ReportByProjektverflechtungen createProjektverflechtungReport(Organisationseinheit orga)
 			throws IllegalArgumentException {
 
@@ -193,136 +487,20 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		report.addSubReport(this.allBeteiligungenForNutzer(orga));
 		report.addSubReport(this.allBewerbungenForNutzer(orga));
 
-		// Report ausgeben
 		return report;
 	}
 
-	/**
-	 * Methode um alle Ausschreibungen in einem Report ausgeben zu kï¿½nnen
+	/*
+	 * Report 6 Durchführung einer Fan-in/Fan-out-Analyse: Zu allen Teilnehmern
+	 * kann jeweils die Anzahl von Bewerbungen (laufende, abgelehnte,
+	 * angenommene) (eine Art Fan-out) und deren Anzahl von Ausschreibungen
+	 * (erfolgreich besetzte, abgebrochene, laufende, also Fan-out) tabellarisch
+	 * aufgeführt werden.
 	 * 
-	 * @return der fertige Report
+	 * @author: Dominik Sasse
 	 */
 
-	public ReportByAlleAusschreibungen createAlleAusschreibungenReport() throws IllegalArgumentException {
-
-		if (this.getProject4uAdministration() == null)
-			return null;
-
-		/**
-		 * Leeren Report anlegen
-		 */
-		ReportByAlleAusschreibungen report = new ReportByAlleAusschreibungen();
-
-		/**
-		 * Titel und Bezeichnung des Reports
-		 */
-
-		report.setTitle("Alle Ausschreibungen");
-
-		/**
-		 * Report ausgeben
-		 */
-
-		// Kopfzeile fï¿½r die Tabelle anlegen:
-		Row headline = new Row();
-
-		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
-
-		headline.addColumn(new Column("Ausschreibungs-ID"));
-		headline.addColumn(new Column("Bezeichnung"));
-		headline.addColumn(new Column("Projektleiter"));
-		headline.addColumn(new Column("Bewerbungsfrist"));
-		headline.addColumn(new Column("Ausschreibungstext"));
-		headline.addColumn(new Column("Erstelldatum:"));
-		headline.addColumn(new Column("Projekt-ID"));
-		headline.addColumn(new Column("Partnerprofil-ID"));
-
-		// Kopfzeile wird dem Report hinzugefuegt
-		report.addRow(headline);
-
-		// Reportinhalt:
-
-		AusschreibungMapper am = AusschreibungMapper.ausschreibungMapper();
-		ArrayList<Ausschreibung> au = new ArrayList<Ausschreibung>();
-		au = am.findAllAusschreibungen();
-
-		for (Ausschreibung a : au) {
-			// neue, leere Zeile anlegen
-			Row ausschreibungRow = new Row();
-			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getAusschreibungId())));
-			ausschreibungRow.addColumn(new Column(a.getBezeichnung()));
-			ausschreibungRow.addColumn(new Column(a.getNameProjektleiter()));
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getBewerbungsfrist())));
-			ausschreibungRow.addColumn(new Column(a.getAusschreibungstext()));
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getErstellDatum())));
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getProjektId())));
-			ausschreibungRow.addColumn(new Column(String.valueOf(a.getPartnerprofilId())));
-
-			// Zeile dem Report hinzufï¿½gen
-			report.addRow(ausschreibungRow);
-		}
-
-		// Report ausgeben
-		return report;
-
-	}
-
-	public ReportByAusschreibungenForPartnerprofil createAusschreibungenForPartnerprofil(Organisationseinheit orga)
-			throws IllegalArgumentException {
-
-		if (project4uAdministration == null)
-			return null;
-		// Leeren Report anlegen
-		ReportByAusschreibungenForPartnerprofil result = new ReportByAusschreibungenForPartnerprofil();
-
-		// Titel und Bezeichung des Reports
-		result.setTitle("Meine Ausschreibungen");
-
-		// Kopfzeile fï¿½r die Tabelle anlegen:
-		Row headline = new Row();
-
-		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
-
-		headline.addColumn(new Column("Ausschreibungs-ID"));
-		headline.addColumn(new Column("Bezeichnung"));
-		headline.addColumn(new Column("Projektleiter"));
-		headline.addColumn(new Column("Bewerbungsfrist"));
-		headline.addColumn(new Column("Ausschreibungstext"));
-		headline.addColumn(new Column("Erstelldatum:"));
-		headline.addColumn(new Column("Projekt-ID"));
-		headline.addColumn(new Column("Partnerprofil-ID"));
-
-		// Kopfzeile wird dem Report hinzugefuegt
-		result.addRow(headline);
-
-		// Reportinhalt:
-
-		// Von den Vektor passendeVektoren muss nun wieder auf Ausschreibungen
-		// gekommen werden, damit diese ausgegeben werden können.
-
-		Vector<Ausschreibung> passendeAusschreibungen = this.project4uAdministration
-				.getAusschreibungenForPartnerprofil(orga);
-
-		for (Ausschreibung au : passendeAusschreibungen) {
-			// neue, leere Zeile anlegen
-			Row ausschreibungRow = new Row();
-			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
-			ausschreibungRow.addColumn(new Column(String.valueOf(au.getAusschreibungId())));
-			ausschreibungRow.addColumn(new Column(au.getBezeichnung()));
-			ausschreibungRow.addColumn(new Column(au.getNameProjektleiter()));
-			ausschreibungRow.addColumn(new Column(String.valueOf(au.getBewerbungsfrist())));
-			ausschreibungRow.addColumn(new Column(au.getAusschreibungstext()));
-			ausschreibungRow.addColumn(new Column(String.valueOf(au.getErstellDatum())));
-			ausschreibungRow.addColumn(new Column(String.valueOf(au.getProjektId())));
-			ausschreibungRow.addColumn(new Column(String.valueOf(au.getPartnerprofilId())));
-
-			// Zeile dem Report hinzufï¿½gen
-			result.addRow(ausschreibungRow);
-		}
-		return result;
-	}
-
+	// Ausgabe der Bewerber mit Status
 	public FanIn createFanInAnalyseReport() throws IllegalArgumentException {
 
 		if (project4uAdministration == null)
@@ -352,14 +530,44 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 			for (Bewerbung be : alleBewerbungen) {
 
-				// TODO: Status der Bewerbungen abrufen (laufend, abgelehnt,
-				// erfolgreich) sobald diese implementiert sind.
+				if (String.valueOf(be.getStatus()).equals("ausstehend")) {
+					laufendeBewerbungen.add(be);
+				}
+				if (String.valueOf(be.getStatus()).equals("abgelehnt")) {
+					abgelehnteBewerbungen.add(be);
+				}
+				if (String.valueOf(be.getStatus()).equals("angenommen")) {
+					erfolgreicheBewerbungen.add(be);
+				}
 			}
+			
+			Row numbRows = new Row();
+			
+			numbRows.addColumn(new Column(String.valueOf(orga.getOrganisationseinheitId())));
+
+			if(String.valueOf(orga.getTyp()).equals("Person")){
+				numbRows.addColumn(new Column(orga.getName()));
+			}
+
+			if(String.valueOf(orga.getTyp()).equals("Team")){
+				numbRows.addColumn(new Column(orga.getName()));
+			}
+
+			if(String.valueOf(orga.getTyp()).equals("Unternehmen")){
+				numbRows.addColumn(new Column(orga.getName()));
+			}
+			
+			numbRows.addColumn(new Column(String.valueOf(laufendeBewerbungen.size())));
+			numbRows.addColumn(new Column(String.valueOf(abgelehnteBewerbungen.size())));
+			numbRows.addColumn(new Column(String.valueOf(erfolgreicheBewerbungen.size())));
+			
+			result.addRow(numbRows);
 		}
 
 		return result;
 	}
 
+	// Ausgabe der Ausschreiber mit Status
 	public FanOut createFanOutAnalyseReport() throws IllegalArgumentException {
 
 		if (project4uAdministration == null) {
@@ -373,9 +581,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		Row headline = new Row();
 		headline.addColumn(new Column("ID"));
 		headline.addColumn(new Column("Organisationseinheit"));
-		headline.addColumn(new Column("geschlossen"));
-		// headline.addColumn(new Column("abgebrochen"));
 		headline.addColumn(new Column("laufend"));
+		headline.addColumn(new Column("geschlossen"));
 
 		result.addRow(headline);
 
@@ -383,10 +590,42 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		for (Organisationseinheit orga : allOrgas) {
 			Vector<Ausschreibung> laufendeAusschreibungen = new Vector<Ausschreibung>();
-			Vector<Ausschreibung> abgebrocheneAusschreibungen = new Vector<Ausschreibung>();
 			Vector<Ausschreibung> besetzteAusschreibungen = new Vector<Ausschreibung>();
 
 			Vector<Ausschreibung> alleAusschreibungen = project4uAdministration.getAusschreibungenForOrga(orga);
+			
+			for (Ausschreibung au : alleAusschreibungen) {
+
+				if (au.getStatus().toString().equals("laufend")) {
+					laufendeAusschreibungen.add(au);
+				}
+				if (au.getStatus().toString().equals("beendet")) {
+					besetzteAusschreibungen.add(au);
+				}
+
+			}
+			
+			Row numbRows = new Row();
+			
+			numbRows.addColumn(new Column(String.valueOf(orga.getOrganisationseinheitId())));
+
+			if(String.valueOf(orga.getTyp()).equals("Person")){
+				numbRows.addColumn(new Column(orga.getName()));
+			}
+
+			if(String.valueOf(orga.getTyp()).equals("Team")){
+				numbRows.addColumn(new Column(orga.getName()));
+			}
+
+			if(String.valueOf(orga.getTyp()).equals("Unternehmen")){
+				numbRows.addColumn(new Column(orga.getName()));
+			}
+			
+			numbRows.addColumn(new Column(String.valueOf(laufendeAusschreibungen.size())));
+			numbRows.addColumn(new Column(String.valueOf(besetzteAusschreibungen.size())));
+
+			
+			result.addRow(numbRows);
 		}
 		return result;
 
@@ -401,69 +640,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		result.setTitle("FanIn- FanOut-Analyse");
 
+		
+		
 		result.addSubReport(this.createFanInAnalyseReport());
-		result.addSubReport(this.createFanInFanOutReport());
+		result.addSubReport(this.createFanOutAnalyseReport());
 
 		return result;
 	}
 
-	public ReportByAlleBewerbungenForAusschreibungen createAlleBewerbungenForAusschreibungen(Organisationseinheit o)
-			throws IllegalArgumentException {
-
-		if (this.getProject4uAdministration() == null)
-			return null;
-
-		// Leeren Report anlegen
-		ReportByAlleBewerbungenForAusschreibungen result = new ReportByAlleBewerbungenForAusschreibungen();
-
-		result.setTitle("Alle Bewerbungen");
-
-		result.setCreated(new Date());
-
-		// Kopfdaten des Reports
-		CompositeParagraph header = new CompositeParagraph();
-
-		header.addSubParagraph(new SimpleParagraph("Hier sehen Sie alle Bewerbungen auf Ausschreibungen"));
-
-		// Kopfdaten zum Report hinzufï¿½gen
-		result.setHeaderData(header);
-
-		// Kopfzeile fï¿½r die Tabelle anlegen:
-		Row headline = new Row();
-
-		// Kopfzeile soll n Spalten haben mit folgenden Ueberschriften:
-
-		headline.addColumn(new Column("Bewerbungs-ID"));
-		headline.addColumn(new Column("Erstelldatum"));
-		headline.addColumn(new Column("Bewerbungstext"));
-		headline.addColumn(new Column("Ausschreibung-ID"));
-		headline.addColumn(new Column("Organisationseinheit-ID"));
-		headline.addColumn(new Column("Status"));
-
-		// Kopfzeile wird dem Report hinzugefuegt
-		result.addRow(headline);
-
-		// Reportinhalt:
-
-		BewerbungMapper bm = BewerbungMapper.bewerbungMapper();
-		Vector<Bewerbung> be = new Vector<Bewerbung>();
-		be = bm.findByOrganisationseinheit(o);
-
-		for (Bewerbung b : be) {
-			// neue, leere Zeile anlegen
-			Row bewerbungRow = new Row();
-			// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt geschrieben
-			bewerbungRow.addColumn(new Column(String.valueOf(b.getBewerbungId())));
-			bewerbungRow.addColumn(new Column(String.valueOf(b.getErstelldatum())));
-			bewerbungRow.addColumn(new Column(b.getBewerbungstext()));
-			bewerbungRow.addColumn(new Column(String.valueOf(b.getAusschreibungId())));
-			bewerbungRow.addColumn(new Column(String.valueOf(b.getOrganisationseinheitId())));
-			bewerbungRow.addColumn(new Column(b.getStatus()));
-
-			// Zeile dem Report hinzufï¿½gen
-			result.addRow(bewerbungRow);
-		}
-		return result;
-
-	}
 }

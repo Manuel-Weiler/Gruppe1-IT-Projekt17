@@ -103,12 +103,17 @@ public class HTMLReportWriter extends ReportWriter {
 	 * auszulesen.
 	 */
 
+	/*
+	 * Report 1 Ausgabe aller Ausschreibungen
+	 * 
+	 * @author: Dominik Sasse
+	 */
 	public void process(ReportByAlleAusschreibungen a) {
 
 		this.resetReportText();
 		StringBuffer result = new StringBuffer();
 
-		result.append("<H3>" + a.getTitle() + "</H3>");
+		result.append("<H3>" + a.getTitel() + "</H3>");
 
 		Vector<Row> rows = a.getRows();
 		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
@@ -134,12 +139,17 @@ public class HTMLReportWriter extends ReportWriter {
 		this.reportText = result.toString();
 	}
 
+	/*
+	 * Report 2 Ausgabe aller Ausschreibungen passend zum Nutzer
+	 * 
+	 * @author: Dominik Sasse
+	 */
 	public void process(ReportByAusschreibungenForPartnerprofil b) {
 
 		this.resetReportText();
 		StringBuffer result = new StringBuffer();
 
-		result.append("<H3>" + b.getTitle() + "</H3>");
+		result.append("<H3>" + b.getTitel() + "</H3>");
 
 		Vector<Row> rows = b.getRows();
 		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
@@ -165,12 +175,17 @@ public class HTMLReportWriter extends ReportWriter {
 		this.reportText = result.toString();
 	}
 
+	/*
+	 * Report 3 Ausgabe aller Ausschreibungen
+	 * 
+	 * @author: Dominik Sasse
+	 */
 	public void process(ReportByAlleBewerbungenForAusschreibungen b) {
 
 		this.resetReportText();
 		StringBuffer result = new StringBuffer();
 
-		result.append("<H3>" + b.getTitle() + "</H3>");
+		result.append("<H3>" + b.getTitel() + "</H3>");
 
 		Vector<Row> rows = b.getRows();
 		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
@@ -193,6 +208,265 @@ public class HTMLReportWriter extends ReportWriter {
 			result.append("</tr>");
 		}
 		result.append("</table>");
+		this.reportText = result.toString();
+	}
+
+	/*
+	 * Report 4 Abfrage der eigenen Bewerbungen und den zugehörigen
+	 * Ausschreibungen des Benutzers
+	 * 
+	 * @author: Dominik Sasse
+	 */
+	public void process(ReportForEigeneBewerbungen c) {
+
+		this.resetReportText();
+		StringBuffer result = new StringBuffer();
+
+		result.append("<H3>" + c.getTitel() + "</H3>");
+
+		Vector<Row> rows = c.getRows();
+		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
+
+		for (int i = 0; i < rows.size(); i++) {
+			Row row = rows.elementAt(i);
+			result.append("<tr>");
+			for (int j = 0; j < row.getNumColumns(); j++) {
+				if (i == 0) {
+					result.append("<td style=\"background:silver;font-weight:bold\">" + row.getColumnAt(j) + "</td>");
+				} else {
+					if (i > 1) {
+						result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">"
+								+ row.getColumnAt(j) + "</td>");
+					} else {
+						result.append("<td valign=\"top\">" + row.getColumnAt(j) + "</td>");
+					}
+				}
+			}
+			result.append("</tr>");
+		}
+		result.append("</table>");
+		this.reportText = result.toString();
+	}
+
+	/*
+	 * Report 5 Projektverflechtungen
+	 * 
+	 * @author: Dominik Sasse
+	 */
+
+	// Sub Report 1
+	public void process(AllBewerbungenForNutzer c) {
+
+		this.resetReportText();
+		StringBuffer result = new StringBuffer();
+
+		result.append("<H3>" + c.getTitel() + "</H3>");
+
+		Vector<Row> rows = c.getRows();
+		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
+
+		for (int i = 0; i < rows.size(); i++) {
+			Row row = rows.elementAt(i);
+			result.append("<tr>");
+			for (int j = 0; j < row.getNumColumns(); j++) {
+				if (i == 0) {
+					result.append("<td style=\"background:silver;font-weight:bold\">" + row.getColumnAt(j) + "</td>");
+				} else {
+					if (i > 1) {
+						result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">"
+								+ row.getColumnAt(j) + "</td>");
+					} else {
+						result.append("<td valign=\"top\">" + row.getColumnAt(j) + "</td>");
+					}
+				}
+			}
+			result.append("</tr>");
+		}
+		result.append("</table>");
+		this.reportText = result.toString();
+	}
+
+	// SubReport 2
+	public void process(AllBeteiligungenForNutzer c) {
+
+		this.resetReportText();
+		StringBuffer result = new StringBuffer();
+
+		result.append("<H3>" + c.getTitel() + "</H3>");
+
+		Vector<Row> rows = c.getRows();
+		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
+
+		for (int i = 0; i < rows.size(); i++) {
+			Row row = rows.elementAt(i);
+			result.append("<tr>");
+			for (int j = 0; j < row.getNumColumns(); j++) {
+				if (i == 0) {
+					result.append("<td style=\"background:silver;font-weight:bold\">" + row.getColumnAt(j) + "</td>");
+				} else {
+					if (i > 1) {
+						result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">"
+								+ row.getColumnAt(j) + "</td>");
+					} else {
+						result.append("<td valign=\"top\">" + row.getColumnAt(j) + "</td>");
+					}
+				}
+			}
+			result.append("</tr>");
+		}
+		result.append("</table>");
+		this.reportText = result.toString();
+	}
+
+	// Ausgabe der beiden Sub Reports
+
+	public void process(ReportByProjektverflechtungen c) {
+
+		this.resetReportText();
+		StringBuffer result = new StringBuffer();
+
+		result.append("<H2>" + c.getTitel() + "</H2>");
+		result.append("<table><tr>");
+
+		for (int i = 0; i < c.getNumSubReports(); i++) {
+
+			this.processSimpleReport(c.getSubReportAt(i));
+			result.append(this.reportText + "\n");
+
+			this.resetReportText();
+		}
+
+		this.reportText = result.toString();
+	}
+
+	/*
+	 * Report 6 FanIn FanOut Analyse
+	 * 
+	 * @author: Dominik Sasse
+	 */
+
+	// Sub Report 1
+	public void process(FanIn c) {
+
+		this.resetReportText();
+
+		StringBuffer result = new StringBuffer();
+
+		result.append("<H3>" + c.getTitel() + "</H3>");
+
+		Vector<Row> rows = c.getRows();
+		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
+
+		for (int i = 0; i < rows.size(); i++) {
+			Row row = rows.elementAt(i);
+			result.append("<tr>");
+			for (int j = 0; j < row.getNumColumns(); j++) {
+				if (i == 0) {
+					result.append("<td style=\"background:silver;font-weight:bold\">" + row.getColumnAt(j) + "</td>");
+				} else {
+					if (i > 1) {
+						result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">"
+								+ row.getColumnAt(j) + "</td>");
+					} else {
+						result.append("<td valign=\"top\">" + row.getColumnAt(j) + "</td>");
+					}
+				}
+			}
+			result.append("</tr>");
+		}
+		result.append("</table>");
+		this.reportText = result.toString();
+	}
+
+	// SubReport 2
+	public void process(FanOut c) {
+
+		this.resetReportText();
+		StringBuffer result = new StringBuffer();
+
+		result.append("<H3>" + c.getTitel() + "</H3>");
+
+		Vector<Row> rows = c.getRows();
+		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
+
+		for (int i = 0; i < rows.size(); i++) {
+			Row row = rows.elementAt(i);
+			result.append("<tr>");
+			for (int j = 0; j < row.getNumColumns(); j++) {
+				if (i == 0) {
+					result.append("<td style=\"background:silver;font-weight:bold\">" + row.getColumnAt(j) + "</td>");
+				} else {
+					if (i > 1) {
+						result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">"
+								+ row.getColumnAt(j) + "</td>");
+					} else {
+						result.append("<td valign=\"top\">" + row.getColumnAt(j) + "</td>");
+					}
+				}
+			}
+			result.append("</tr>");
+		}
+		result.append("</table>");
+		this.reportText = result.toString();
+	}
+
+	// Ausgabe der beiden Sub Reports
+
+	public void process(FanInFanOut c) {
+
+		this.resetReportText();
+
+		StringBuffer result = new StringBuffer();
+
+		result.append("<H2>" + c.getTitel() + "</H2>");
+		result.append("<table><tr>");
+
+		for (int i = 0; i < c.getNumSubReports(); i++) {
+
+			this.processSimpleReport(c.getSubReportAt(i));
+			result.append(this.reportText + "\n");
+
+			this.resetReportText();
+		}
+
+		this.reportText = result.toString();
+	}
+
+	// Methode für die tabellarische Darstellung der Sub-Reports.
+
+	public void processSimpleReport(Report report) {
+
+		SimpleReport r = (SimpleReport) report;
+
+		this.resetReportText();
+
+		StringBuffer result = new StringBuffer();
+
+		result.append("<H3>" + r.getTitel() + "</H3>");
+
+		Vector<Row> rows = r.getRows();
+		result.append("<table style=\"width:400px;margin-bottom: 30px\">");
+
+		for (int i = 0; i < rows.size(); i++) {
+			Row row = rows.elementAt(i);
+			result.append("<tr>");
+			for (int k = 0; k < row.getNumColumns(); k++) {
+				if (i == 0) {
+					result.append("<td style=\"background:silver;font-weight:bold\">" + row.getColumnAt(k) + "</td>");
+				} else {
+					if (i > 1) {
+						result.append("<td style=\"border-top:1px solid silver;margin-bottom: 30px\">"
+								+ row.getColumnAt(k) + "</td>");
+					} else {
+						result.append("<td valign=\"top\">" + row.getColumnAt(k) + "</td>");
+					}
+				}
+			}
+			result.append("</tr>");
+		}
+
+		result.append("</table>");
+
 		this.reportText = result.toString();
 	}
 

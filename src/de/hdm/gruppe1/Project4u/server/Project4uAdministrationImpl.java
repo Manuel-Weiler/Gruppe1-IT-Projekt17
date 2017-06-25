@@ -110,10 +110,6 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		return this.partnerprofilMapper.findById(i);
 	}
 
-	/*
-	 * TODO: public Ausschreibung getAusschreibungOf(Partnerprofil p) public
-	 * Vector <Eigenschaft> getEigenschaftenOf (Partnerprofil p)
-	 */
 
 	public Vector<Eigenschaft> getEigenschaftenOfPartnerprofil(Partnerprofil p) throws IllegalArgumentException {
 		return this.partnerprofilMapper.getEigenschaftenOfPartnerprofil(p);
@@ -137,7 +133,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public boolean checkStatus(LoginInfo loginInfo) {
 		boolean status = false;
 		Vector<Organisationseinheit> orgas = new Vector<Organisationseinheit>();
-		orgas = organisationseinheitMapper.findAll();
+		orgas = getAllOrganisationseinheitOfTypPerson();
 		for (Organisationseinheit o : orgas) {
 			if (o.getGoogleId().equalsIgnoreCase(loginInfo.getEmailAddress())) {
 				status = true;
@@ -179,7 +175,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		vp = projektMapper.findByOrganisationseinheit(organisationseinheit);
 		if (vp != null) {
 			for (Projekt projekt : vp) {
-				this.delete(projekt);
+				this.deleteProjekt(projekt);
 			}
 		}
 
@@ -309,7 +305,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		Vector<Organisationseinheit> result = new Vector<Organisationseinheit>();
 
 		for (Organisationseinheit orga : orgas) {
-			if (orga.getTyp().equalsIgnoreCase("Team")) {
+			if (orga.getTyp().equalsIgnoreCase("Person")) {
 				result.add(orga);
 			}
 		}
@@ -441,7 +437,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		pv = projektMapper.findByProjektmarktplatz(p);
 		if (pv != null) {
 			for (Projekt projekt : pv) {
-				this.delete(projekt);
+				this.deleteProjekt(projekt);
 			}
 		}
 
@@ -497,7 +493,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		projektMapper.update(p);
 	}
 
-	public void delete(Projekt projekt) throws IllegalArgumentException {
+	public void deleteProjekt(Projekt projekt) throws IllegalArgumentException {
 		System.out.println("deleteProjekt");
 
 		// Zugehörige Ausschreibungen löschen
@@ -581,6 +577,21 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Ausschreibung updateAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {
 		return this.ausschreibungMapper.updateAusschreibung(ausschreibung);
 	}
+	
+	
+	/**
+	 * Die Methode sucht die Ausschreibung mit der übergebenen Id und aktualisiert deren Status um den mitgegebenen
+	 * String. Die Methode gibt die aktualisierte Ausschreibung zurück.
+	 * @param ausschreibungId
+	 * @param status
+	 * @return Ausschreibung
+	 * @author Tobias
+	 */
+	public Ausschreibung updateStatusOfAusschreibung(int ausschreibungId, String status)throws IllegalArgumentException{
+		Ausschreibung a = findByIdAusschreibung(ausschreibungId);
+		a.setStatus(status);
+		return updateAusschreibung(a);
+	}
 
 	public void deleteAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {
 		System.out.println("deleteAusschreibung");
@@ -610,22 +621,27 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Ausschreibung findByNameAusschreibung(String bezeichnung) throws IllegalArgumentException {
 		return this.ausschreibungMapper.findByNameAusschreibung(bezeichnung);
 	}
-	/*
-	 * Find by Name
-	 */
 
-	// public Vector<Ausschreibung> findbyPerson (String name)throws
-	// IllegalArgumentException{
-	// return this.ausschreibungMapper.findByPerson(name);
-	// }
-	//
-	// public Vector<Ausschreibung> findbyProjekt (String name)throws
-	// IllegalArgumentException{
-	// return this.ausschreibungMapper.findByProjekt(name);
-	// }
+	
+
+
+	
+	
+	
+	public Vector<Ausschreibung> findActiveAusschreibungenOfProjekt(Projekt projekt) throws IllegalArgumentException {
+		Vector<Ausschreibung> all = ausschreibungMapper.findByProjekt(projekt);
+		Vector<Ausschreibung> result = new Vector<>();
+		for (Ausschreibung a : all){
+			if(a.getStatus().equalsIgnoreCase("laufend")){
+				result.add(a);
+			}
+		}
+		return result;
+	}
 
 	public Vector<Ausschreibung> findAusschreibungbyProjekt(Projekt projekt) throws IllegalArgumentException {
 		return this.ausschreibungMapper.findByProjekt(projekt);
+
 	}
 
 	public ArrayList<Ausschreibung> getAlleAusschreibungen() throws IllegalArgumentException {
@@ -751,6 +767,42 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 	}
 	
+	public Vector<Bewerbung> getAllBewerbungen() throws IllegalArgumentException {
+		
+		return this.bewerbungMapper.findAll();
+	}
+	
+	public Vector<Bewerbung> getBewerbungenOfAusschreibungWithStatusAusstehend(Ausschreibung aus)throws IllegalArgumentException{
+		Vector<Bewerbung> bewerbungen = getBewerbungenOfAusschreibung(aus);
+		Vector<Bewerbung> result = new Vector<>();
+		
+		for (Bewerbung b : bewerbungen){
+			if(b.getStatus().equalsIgnoreCase("ausstehend")){
+				result.add(b);
+			}
+		}
+		return result;
+		}
+	
+	
+	
+	
+	
+	
+	public void cancelAllBewerbungenOfAusschreibungWithStatusAusstehend (Ausschreibung aus)throws IllegalArgumentException{
+		Vector<Bewerbung> ausstehende = getBewerbungenOfAusschreibungWithStatusAusstehend(aus);
+		
+		for (Bewerbung bew : ausstehende){
+		Bewertung bewert = new Bewertung();
+		bewert.setBewertungspunkte(0);
+		bewert.setStellungnahme("Der Projektleiter hat sich für einen anderen Bewerber entschieden. Ihre Bewerbung ist abgelehnt.");
+		bewert.setBewerbungID(bew.getBewerbungId());
+		bewert= createBewertung(bewert);
+		
+		updateStatusOfBewerbung("abgelehnt", bew.getBewerbungId());
+		}
+	}
+	
 	
 	
 	
@@ -807,34 +859,42 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		Vector<Projekt> projekte = getAllProjekteOfProjektleiter(org);
 		Vector<Ausschreibung> ausschreibungen = new Vector<>();
 		Vector<Bewerbung> eingangsbewerbungen = new Vector<>();
+		Vector<Bewerbung> aktive = new Vector<>();
 
 		for (Projekt pro : projekte) {
-			ausschreibungen.addAll(findAusschreibungbyProjekt(pro));
+			ausschreibungen.addAll(findActiveAusschreibungenOfProjekt(pro));
 		}
 		for (Ausschreibung aus : ausschreibungen) {
 			eingangsbewerbungen.addAll(getBewerbungenOfAusschreibung(aus));
 		}
-		return eingangsbewerbungen;
+		for (Bewerbung b : eingangsbewerbungen) {
+			if(b.getStatus().equalsIgnoreCase("ausstehend")){
+				aktive.add(b);
+			}
+		}
+		
+		return aktive;
 
 	}
-	
-	
-	
-	
+
 
 	public Vector<Bewerbung> getBewerbungForOrganisationseinheit(Organisationseinheit orga)
 			throws IllegalArgumentException {
 
-		Vector<Bewerbung> result = new Vector<>();
+			Vector<Bewerbung> result = new Vector<Bewerbung>();
 
-		if (orga != null && this.bewerbungMapper != null) {
-			Vector<Bewerbung> bewerbungen = this.bewerbungMapper.findByOrganisationseinheit(orga);
-
-			if (bewerbungen != null) {
-				result.addAll(bewerbungen);
+			if(orga != null && this.bewerbungMapper != null){
+			Vector<Bewerbung> bewerbungen = this.bewerbungMapper.findAll();
+		
+			for(Bewerbung be :  bewerbungen){
+				
+				if(be.getOrganisationseinheitId() == orga.getOrganisationseinheitId()){
+					result.add(be);
+				}
 			}
-		}
-		return result;
+			}
+			return result;
+
 	}
 
 	/*
@@ -872,6 +932,12 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		// Die Bewertung löschen
 		this.bewertungMapper.delete(bewertung);
 	}
+	
+	public Bewertung getBewertungOfBewerbung (Bewerbung b)throws IllegalArgumentException {
+		
+		
+		return this.bewertungMapper.findByBewerbung(b);
+	}
 
 	/*
 	 * #########################################################################
@@ -887,19 +953,35 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 
-	public Beteiligung createBeteiligung(Date startdatum, Date enddatum, int personentage,
-			int organisationseinheitId, int projektId, int bewertungId)
+	public Beteiligung createBeteiligung(Beteiligung beteiligung)
 					throws IllegalArgumentException {
 
-		Beteiligung beteiligung = new Beteiligung();
-		beteiligung.setStartdatum(startdatum);
-		beteiligung.setEnddatum(enddatum);
-		beteiligung.setPersonentage(personentage);
-		beteiligung.setOrganisationseinheitId(organisationseinheitId);
-		beteiligung.setBewertungId(bewertungId);
-		beteiligung.setProjektId(projektId);
-
 		return this.beteiligungMapper.insertBeteiligung(beteiligung);
+	}
+	
+	
+	public void createBeteiligungAndUpdateAllOtherBewerbungenAndUpdateAusschreibung(Bewerbung bewerbung, Bewertung bertung)throws IllegalArgumentException{
+		Projekt p = getProjektOfBewerbung(bewerbung);
+		long difference = (new Date().getTime() - p.getEnddatum().getTime()) / 86400000; // 1000*60*60*24
+		long erg = Math.abs(difference);
+		int personentage = (int) erg;
+		
+		Beteiligung beteiligung = new Beteiligung();
+		beteiligung.setOrganisationseinheitId(bewerbung.getOrganisationseinheitId());
+		beteiligung.setPersonentage(personentage);
+		beteiligung.setProjektId(p.getProjektId());
+		beteiligung.setStartdatum(new Date());
+		beteiligung.setEnddatum(p.getEnddatum());
+		beteiligung.setBewertungId(bertung.getBewertungId());
+		createBeteiligung(beteiligung);
+		
+		Ausschreibung aus= updateStatusOfAusschreibung(bewerbung.getAusschreibungId(), "beendet");
+		updateStatusOfBewerbung("angenommen", bewerbung.getBewerbungId());
+		
+		//Alle Bewerbungen mit Status "ausstehend" auf die jeweilige Ausschreibung werden abgelehnt und erhalten eine Bewertung mit '0.0'
+		cancelAllBewerbungenOfAusschreibungWithStatusAusstehend(aus);
+		
+		
 	}
 
 	public void deleteBeteiligung(Beteiligung b) throws IllegalArgumentException {
@@ -908,15 +990,10 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	public Vector<Beteiligung> getBeteiligungForOrga(Organisationseinheit orga) throws IllegalArgumentException {
-		Vector<Beteiligung> result = new Vector<>();
 
 		Vector<Beteiligung> beteiligungen = this.beteiligungMapper.findByOrganisationseinheit(orga);
 
-		if (beteiligungen != null) {
-			result.addAll(beteiligungen);
-
-		}
-		return result;
+		return beteiligungen;
 	}
 
 	/*

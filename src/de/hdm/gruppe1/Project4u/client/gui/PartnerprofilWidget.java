@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
@@ -39,6 +40,7 @@ public class PartnerprofilWidget extends Composite {
 	Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 
 	FlexTable flexTable = new FlexTable();
+	FlexTable additionalEigenschaften = new FlexTable();
 	Label email = new Label("E-Mail:");
 	TextBox mail = new TextBox();
 	Label orgaName = new Label("Profilname:");
@@ -57,9 +59,14 @@ public class PartnerprofilWidget extends Composite {
 
 	Button add = new Button("Eigenschaft hinzufügen");
 	Button speichern = new Button("Speichern");
+	Button deleteOrga = new Button("Nutzerprofil löschen");
+	Button bearbeiten = new Button("Nutzername bearbeiten");
+	Button save = new Button("Nutzername speichern");
 
 	Partnerprofil neuesProfil = new Partnerprofil();
 	Organisationseinheit neueOrga = new Organisationseinheit();
+	Organisationseinheit org = new Organisationseinheit();
+	
 	VerticalPanel vPanel = new VerticalPanel();
 	VerticalPanel eigenschaftenPanel = new VerticalPanel();
 	VerticalPanel teamUnternehmen = new VerticalPanel();
@@ -116,6 +123,7 @@ public class PartnerprofilWidget extends Composite {
 		flexTable.setWidget(6, 1, programSpracheBox);
 
 		vPanel.add(flexTable);
+		vPanel.add(additionalEigenschaften);
 		vPanel.add(speichern);
 		initWidget(vPanel);
 
@@ -155,106 +163,92 @@ public class PartnerprofilWidget extends Composite {
 								@Override
 								public void onSuccess(Organisationseinheit result) {
 									neueOrga = result;
-
+									
 									/*
-									 * Bei Erfolg des Abspeicherns in der DB werden
-									 * einzeln nacheinander die Beispielseigenschaften
-									 * in der DB gespeichert.
+									 * Zunächst werden alle
+									 * Beispieleigenschaften, sodenn Werte
+									 * vergeben wurden, erstellt und einem
+									 * Vector hinzugefügt.
 									 */
+									Vector<Eigenschaft> neueEigenschaften = new Vector<>();
+									
 									if (!berufsbezeichnungBox.getValue().isEmpty()) {
-										Eigenschaft eins = new Eigenschaft();
-										eins.setName("Berufsbezeichnung");
-										eins.setWert(berufsbezeichnungBox.getValue());
-										Project4uVerwaltung.insertEigenschaft(eins, neuesProfil,
-												new AsyncCallback<Eigenschaft>() {
-											public void onSuccess(Eigenschaft result) {
-
-												if (!berufserfahrungBox.getValue().isEmpty()) {
-													Eigenschaft zwei = new Eigenschaft();
-													zwei.setName("Berufserfahrung");
-													zwei.setWert(berufserfahrungBox.getValue());
-													Project4uVerwaltung.insertEigenschaft(zwei, neuesProfil,
-															new AsyncCallback<Eigenschaft>() {
-														public void onSuccess(Eigenschaft result) {
-
-															if (!abschlussBox.getValue().isEmpty()) {
-																Eigenschaft drei = new Eigenschaft();
-																drei.setName("Abschluss");
-																drei.setWert(abschlussBox.getValue());
-																Project4uVerwaltung.insertEigenschaft(drei, neuesProfil,
-																		new AsyncCallback<Eigenschaft>() {
-																	public void onSuccess(Eigenschaft result) {
-
-																		if (!programSpracheBox.getValue().isEmpty()) {
-																			Eigenschaft vier = new Eigenschaft();
-																			vier.setName("Programmiersprache");
-																			vier.setWert(programSpracheBox.getValue());
-																			Project4uVerwaltung.insertEigenschaft(vier,
-																					neuesProfil,
-																					new AsyncCallback<Eigenschaft>() {
-																				public void onSuccess(Eigenschaft result) {
-
-																					/*
-																					 * Zuletzt
-																					 * wird
-																					 * das
-																					 * PartnerprofilWidget
-																					 * neu
-																					 * erzeugt,
-																					 * und
-																					 * zwar
-																					 * mit
-																					 * dem
-																					 * Konstruktor
-																					 * für
-																					 * bereits
-																					 * bestehende
-																					 * Organisationseinheiten.
-																					 */
-																					Project4u.nt.setButtonsEnabled();
-																					RootPanel.get("content").clear();
-																					RootPanel.get("content").add(
-																							new PartnerprofilWidget(neueOrga));
-
-																				}
-
-																				public void onFailure(Throwable caught) {
-																					Window.alert(caught.getMessage());
-																				}
-																			});
-																		}
-
-																	}
-
-																	public void onFailure(Throwable caught) {
-																		Window.alert(caught.getMessage());
-																	}
-																});
-															}
-														}
-
-														public void onFailure(Throwable caught) {
-															Window.alert(caught.getMessage());
-														}
-													});
-												}
-											}
-
-											public void onFailure(Throwable caught) {
-												Window.alert(caught.getMessage());
-											}
-										});
+									Eigenschaft eins = new Eigenschaft();
+									eins.setName("Berufsbezeichnung");
+									eins.setWert(berufsbezeichnungBox.getValue());
+									neueEigenschaften.add(eins);}
+									
+									if (!berufserfahrungBox.getValue().isEmpty()) {
+									Eigenschaft zwei = new Eigenschaft();
+									zwei.setName("Berufserfahrung");
+									zwei.setWert(berufserfahrungBox.getValue());
+									neueEigenschaften.add(zwei);}
+									
+									if (!abschlussBox.getValue().isEmpty()) {
+									Eigenschaft drei = new Eigenschaft();
+									drei.setName("Abschluss");
+									drei.setWert(abschlussBox.getValue());								
+									neueEigenschaften.add(drei);}
+									
+									if (!programSpracheBox.getValue().isEmpty()) {
+									Eigenschaft vier = new Eigenschaft();
+									vier.setName("Programmiersprache");
+									vier.setWert(programSpracheBox.getValue());
+									neueEigenschaften.add(vier);}
+									
+									/*
+									 * Anschließend werden alle individuell
+									 * erstellten Eigenschaften dem
+									 * Eigenschaften-Vector hinzugefügt und im
+									 * Anschluss in der DB abgelegt.
+									 */
+									for(int i=0; i<additionalEigenschaften.getRowCount(); i++){
+										Eigenschaft e = new Eigenschaft();
+										Widget w = additionalEigenschaften.getWidget(i, 0);
+										 if (w instanceof TextBox) {
+											 if(!((TextBox) w).getValue().isEmpty()){
+												e.setName(((TextBox) w).getValue());
+											 };
+										 }
+										 
+										 Widget v = additionalEigenschaften.getWidget(i, 1);
+										 if (v instanceof TextBox) {
+											 if(!((TextBox) v).getValue().isEmpty()){
+													e.setWert(((TextBox) v).getValue());
+												 };
+										 }
+										 if(e.getName()!=null && e.getWert()!=null){
+											 neueEigenschaften.add(e);
+											 }
 									}
+									
+									Project4uVerwaltung.insertEigenschaften(neueEigenschaften, result, new AsyncCallback<Void>() {
+										
+										@Override
+										public void onSuccess(Void result) {
+											/*
+											 * Zuletzt wird das
+											 * PartnerprofilWidget neu erzeugt,
+											 * und zwar mit dem Konstruktor für
+											 * bereits bestehende
+											 * Organisationseinheiten.
+											 */
+											Project4u.nt.setButtonsEnabled();
+											RootPanel.get("content").clear();
+											RootPanel.get("content").add(
+													new PartnerprofilWidget(neueOrga));
 
-								}
+										}
+										
+										@Override
+										public void onFailure(Throwable caught) {
+											Window.alert(caught.getMessage());}
+									});}
 
 								public void onFailure(Throwable caught) {
 									Window.alert(caught.getMessage());
 								}
-							});
-							
-							
-							
+							});				
 						}
 
 						public void onFailure(Throwable caught) {
@@ -285,15 +279,14 @@ public class PartnerprofilWidget extends Composite {
 
 	public PartnerprofilWidget(Organisationseinheit o) {
 
-		final Organisationseinheit org = o;
-		Button deleteOrga = new Button("Nutzerprofil löschen");
+		this.org = o;
+		
 
 		RootPanel.get("contentHeader").clear();
 		Label Profil = new Label("Ihr Nutzerprofil");
 		RootPanel.get("contentHeader").add(Profil);
 
-		final Button bearbeiten = new Button("Nutzername bearbeiten");
-		final Button save = new Button("Nutzername speichern");
+		
 
 		mail.setValue(o.getGoogleId());
 		mail.setEnabled(false);
@@ -301,7 +294,7 @@ public class PartnerprofilWidget extends Composite {
 		orgaNam.setEnabled(false);
 		mail.setTitle("Die E-Mail-Adresse kann nicht geändert werden.");
 		typbox.setTitle(
-				"Der Kontentyp kann nicht geändert werden. Legen Sie ggf. zusäzliche Organisationseinheiten an.");
+				"Der Kontentyp kann nicht geändert werden. Legen Sie ggf. zusäzlich ein Team oder Unternehmen an.");
 		// Der Button soll in Abhängigkeit zur Bildschirmgröße am rechten Rand
 		// platziert sein.
 		int i = (RootPanel.get("content").getOffsetWidth()) - 550;
@@ -366,7 +359,7 @@ public class PartnerprofilWidget extends Composite {
 		// Nutzers
 		deleteOrga.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				new LoeschungOrganisationseinheitWidget();
+				new LoeschungOrganisationseinheitWidget(org);
 
 			}
 		});
@@ -676,27 +669,11 @@ public class PartnerprofilWidget extends Composite {
 						Eigenschaft eig = new Eigenschaft();
 						eig.setName(name.getValue());
 						eig.setWert(wert.getValue());
-
-						// Die Eigenschaften werden direkt in der DB abgelegt.
-						Project4uVerwaltung.insertEigenschaft(eig, neuesProfil, new AsyncCallback<Eigenschaft>() {
-
-							@Override
-							public void onSuccess(Eigenschaft result) {
-
-								// ...und anschließend zur Tabelle hinzugefügt.
-								name.setEnabled(false);
-								wert.setEnabled(false);
-
-								flexTable.setWidget(flexTable.getRowCount(), 0, name);
-								flexTable.setWidget(flexTable.getRowCount() - 1, 1, wert);
-
-							}
-
-							public void onFailure(Throwable caught) {
-								Window.alert(caught.getMessage());
-							}
-						});
-
+						
+						additionalEigenschaften.setWidget(additionalEigenschaften.getRowCount(), 0, name);
+						additionalEigenschaften.setWidget(additionalEigenschaften.getRowCount() - 1, 1, wert);
+						
+				
 					}
 				}
 			});

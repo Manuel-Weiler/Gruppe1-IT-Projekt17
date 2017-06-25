@@ -47,9 +47,7 @@ public interface Project4uAdministration extends RemoteService{
 			   throws IllegalArgumentException;
 
 	public Projekt findProjektById(int id) throws IllegalArgumentException;
-	
-	public Vector<Ausschreibung> findAusschreibungbyProjekt (Projekt projekt)throws IllegalArgumentException;
-	
+		
 	public Ausschreibung findByIdAusschreibung (int id) throws IllegalArgumentException;
 	
 	public Eigenschaft updateEigenschaft(Eigenschaft e) throws IllegalArgumentException;
@@ -115,10 +113,12 @@ public interface Project4uAdministration extends RemoteService{
 
 	public Ausschreibung updateAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException ;
 
+
+	public Ausschreibung updateStatusOfAusschreibung(int ausschreibungId, String status)throws IllegalArgumentException;
+
 	
 	public Vector <Organisationseinheit> findProjektleiterOfProjects (Vector<Projekt> projekte)throws IllegalArgumentException;
 
-	
 	
 	public Bewerbung createBewerbung(Bewerbung bewerbung, int ausschreibungId, int organisationsId) throws IllegalArgumentException;
 
@@ -132,7 +132,26 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Bewertung createBewertung(Bewertung bewertung)throws IllegalArgumentException ;
 
-	public Beteiligung createBeteiligung(Date startdatum, Date enddatum, int personentage, int organisationseinheitId, int projektId, int bewertungId)throws IllegalArgumentException;
-
+	
+	public void updateStatusOfBewerbung(String status, int bewerbungsID) throws IllegalArgumentException;
+	
+	public Vector<Bewerbung> getBewerbungenOfAusschreibungWithStatusAusstehend(Ausschreibung aus)throws IllegalArgumentException;
+	
+	public void cancelAllBewerbungenOfAusschreibungWithStatusAusstehend (Ausschreibung aus)throws IllegalArgumentException;
+	
+	public Vector<Ausschreibung> findActiveAusschreibungenOfProjekt(Projekt projekt) throws IllegalArgumentException;
+	
+	
+	public Bewertung getBewertungOfBewerbung (Bewerbung b)throws IllegalArgumentException;
+	
+	public void createBeteiligungAndUpdateAllOtherBewerbungenAndUpdateAusschreibung(Bewerbung bewerbung, Bewertung bertung)throws IllegalArgumentException;
+	
 	public Projekt getProjektOfBewerbung(Bewerbung bewerbung)throws IllegalArgumentException;
+	
+	public Vector<Bewerbung> getAllBewerbungen() throws IllegalArgumentException;
+	
+	public void deleteProjekt(Projekt projekt) throws IllegalArgumentException;
+	
+	public void delete(Projektmarktplatz p) throws IllegalArgumentException;
+
 }

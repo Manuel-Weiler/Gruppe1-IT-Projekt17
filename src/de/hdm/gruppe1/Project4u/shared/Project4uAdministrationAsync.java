@@ -42,10 +42,7 @@ public interface Project4uAdministrationAsync {
 	void findProjektByOrganisationseinheit(Organisationseinheit organisationseinheit, AsyncCallback<Vector<Projekt>> callback);
 	//////PROJEKT ENDE//////
 	
-	
 	void init(AsyncCallback<Void> callback);
-	
-	
 
 	
 	void findAllProjektmarktplatz(AsyncCallback<Vector<Projektmarktplatz>> callback);
@@ -68,7 +65,6 @@ public interface Project4uAdministrationAsync {
 
 	void findByProjektmarktplatz(Projektmarktplatz projektmarktplatz, AsyncCallback<Vector<Projekt>> callback);
 
-	void findAusschreibungbyProjekt(Projekt projekt, AsyncCallback<Vector<Ausschreibung>> callback);
 
 	void checkStatus(LoginInfo loginInfo, AsyncCallback<Boolean> callback);
 
@@ -150,9 +146,30 @@ public interface Project4uAdministrationAsync {
 
 	void createBewertung(Bewertung bewertung, AsyncCallback<Bewertung> callback);
 
-	void createBeteiligung(Date startdatum, Date enddatum, int personentage, int organisationseinheitId, int projektId,
-			int bewertungId, AsyncCallback<Beteiligung> callback);
 
 	void getProjektOfBewerbung(Bewerbung bewerbung, AsyncCallback<Projekt> callback);
+
+	void updateStatusOfAusschreibung(int ausschreibungId, String status, AsyncCallback<Ausschreibung> callback);
+
+	void updateStatusOfBewerbung(String status, int bewerbungsID, AsyncCallback<Void> callback);
+
+	void getBewerbungenOfAusschreibungWithStatusAusstehend(Ausschreibung aus,
+			AsyncCallback<Vector<Bewerbung>> callback);
+
+	void cancelAllBewerbungenOfAusschreibungWithStatusAusstehend(Ausschreibung aus, AsyncCallback<Void> callback);
+
+	void findActiveAusschreibungenOfProjekt(Projekt projekt, AsyncCallback<Vector<Ausschreibung>> callback);
+
+	void getBewertungOfBewerbung(Bewerbung b, AsyncCallback<Bewertung> callback);
+
+	void createBeteiligungAndUpdateAllOtherBewerbungenAndUpdateAusschreibung(Bewerbung bewerbung, Bewertung bertung,
+			AsyncCallback<Void> callback);
+
+	void getAllBewerbungen(AsyncCallback<Vector<Bewerbung>> callback);
+
+	void deleteProjekt(Projekt projekt, AsyncCallback<Void> callback);
+
+	void delete(Projektmarktplatz p, AsyncCallback<Void> callback);
+
 
 }

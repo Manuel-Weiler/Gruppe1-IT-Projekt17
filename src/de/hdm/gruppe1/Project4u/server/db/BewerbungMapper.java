@@ -180,7 +180,6 @@ public class BewerbungMapper {
 				b.setStatus(rs.getString("status"));
 				b.setProjektname(rs.getString("projektname"));
 				b.setAusschreibungsname(rs.getString("ausschreibungsname"));
-				
 
 				return b;
 			}
@@ -232,11 +231,10 @@ public class BewerbungMapper {
 		// Ergebnisvektor vorbereiten
 		Vector<Bewerbung> result = new Vector<Bewerbung>();
 
-
-
 	    try {
 	    	
 	    	Statement stmt = con.createStatement();
+
 	    	ResultSet rs = stmt.executeQuery("SELECT * FROM Bewerbung"+
 	    	" WHERE organisationseinheit_id=" + o.getOrganisationseinheitId());
 
@@ -253,6 +251,7 @@ public class BewerbungMapper {
 				b.setStatus(rs.getString("status"));
 				b.setProjektname(rs.getString("projektname"));
 				b.setAusschreibungsname(rs.getString("ausschreibungsname"));
+
 
 				// Hinzufügen des neuen Objekts zum Ergebnisvektor
 				result.addElement(b);

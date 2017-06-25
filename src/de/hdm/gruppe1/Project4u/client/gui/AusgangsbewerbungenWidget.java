@@ -6,11 +6,14 @@ import java.util.Vector;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -23,6 +26,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
@@ -32,6 +36,7 @@ import de.hdm.gruppe1.Project4u.client.ClientsideSettings;
 import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Ausschreibung;
 import de.hdm.gruppe1.Project4u.shared.bo.Bewerbung;
+import de.hdm.gruppe1.Project4u.shared.bo.Bewertung;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 
@@ -51,7 +56,8 @@ public class AusgangsbewerbungenWidget extends Composite {
 	HorizontalPanel buttons = new HorizontalPanel();
 	Button close = new Button("Schließen");
 	Button delete = new Button("Bewerbung zurückziehen");
-	
+	SimplePager pagerLinkedBewerbungen = new SimplePager(TextLocation.CENTER, false, 0, false);
+	SimplePager pagerUserbewerbungen = new SimplePager(TextLocation.CENTER, false, 0, false);
 
 	/*
 	 * Der Key-Provider vergibt jedem Objekt der Tabelle eine Id, damit auch
@@ -66,16 +72,11 @@ public class AusgangsbewerbungenWidget extends Composite {
 
 	CellTable<Bewerbung> userBewerbungen = new CellTable<Bewerbung>(KEY_PROVIDER);
 	CellTable<Bewerbung> linkedBewerbungen = new CellTable<Bewerbung>(KEY_PROVIDER);
-	
-	
-	
 
 	public AusgangsbewerbungenWidget() {
 		RootPanel.get("contentHeader").clear();
 		RootPanel.get("contentHeader").add(new Label("Ausgangsbewerbungen"));
-		
-		
-		
+
 		Project4uVerwaltung.getAllBewerbungenOfUser(ClientsideSettings.getAktuellerUser(),
 				new AsyncCallback<Vector<Bewerbung>>() {
 
@@ -84,16 +85,17 @@ public class AusgangsbewerbungenWidget extends Composite {
 						bew = result;
 						vp.add(headingUserBew);
 						vp.add(createTableOfUserbewerbungen(result));
+						vp.add(pagerUserbewerbungen);
 
 						Project4uVerwaltung.getAllBewerbungenOfLinkedTeamAndUnternehmen(
 								ClientsideSettings.getAktuellerUser(), new AsyncCallback<Vector<Bewerbung>>() {
 
 							@Override
 							public void onSuccess(Vector<Bewerbung> linkedBewerbungen) {
-								
-								
+
 								vp.add(headingOrgaBew);
 								vp.add(createTableOfLinkedOrgabewerbungen(linkedBewerbungen));
+								vp.add(pagerLinkedBewerbungen);
 
 								RootPanel.get("content").clear();
 								RootPanel.get("content").add(vp);
@@ -110,13 +112,13 @@ public class AusgangsbewerbungenWidget extends Composite {
 					public void onFailure(Throwable caught) {
 					}
 				});
-		
+
 		delete.addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				Project4uVerwaltung.deleteBewerbung(clickedBewerbung, new AsyncCallback<Void>() {
-					
+
 					@Override
 					public void onSuccess(Void result) {
 						MessageBox.alertWidget("Löschen Bewerbung", "Ihre Bewerbung wurde erfolgreich gelöscht!");
@@ -126,12 +128,12 @@ public class AusgangsbewerbungenWidget extends Composite {
 						RootPanel.get("content").clear();
 						new AusgangsbewerbungenWidget();
 					}
-					
+
 					@Override
 					public void onFailure(Throwable caught) {
 					}
 				});
-				
+
 			}
 		});
 
@@ -147,9 +149,8 @@ public class AusgangsbewerbungenWidget extends Composite {
 		});
 
 	}
-	
-	
-	
+
+
 
 	private CellTable<Bewerbung> createTableOfUserbewerbungen(Vector<Bewerbung> bewerbungen) {
 
@@ -179,16 +180,41 @@ public class AusgangsbewerbungenWidget extends Composite {
 
 		TextColumn<Bewerbung> status = new TextColumn<Bewerbung>() {
 			public String getValue(Bewerbung object) {
+
 				return object.getStatus();
 			}
+			public String getCellStyleNames(Context context, Bewerbung object) {
+				if(object.getStatus().equalsIgnoreCase("angenommen")){
+					return "green";
+				}
+				else if(object.getStatus().equalsIgnoreCase("abgelehnt")){
+					return "rot";
+				}
+				else {
+					return super.getCellStyleNames(context, object);	
+					}
+				
+			}
 		};
+
+		ButtonCell buttCell = new ButtonCell();
+		Column<Bewerbung, String> bewertungColumn = new Column<Bewerbung, String>(buttCell) {
+			@Override
+			public String getValue(Bewerbung bewerbung) {
+				// The value to display in the button.
+
+				return "Bewertung einsehen";
+			}
+		};
+
+		bewertungColumn.setFieldUpdater(new bewertungAnsehenButtonFieldUpdater());
 
 		ButtonCell buttonCell = new ButtonCell();
 		Column<Bewerbung, String> buttonColumn = new Column<Bewerbung, String>(buttonCell) {
 			@Override
 			public String getValue(Bewerbung bewerbung) {
 				// The value to display in the button.
-				return "Details";
+				return "Bewerbungsdetails";
 			}
 		};
 
@@ -206,19 +232,36 @@ public class AusgangsbewerbungenWidget extends Composite {
 		userBewerbungen.addColumn(ausschreibung, "Ausschreibung");
 		userBewerbungen.addColumn(erstelldatum, "Erstelldatum");
 		userBewerbungen.addColumn(status, "Status");
+		userBewerbungen.addColumn(bewertungColumn);
 		userBewerbungen.addColumn(buttonColumn);
 
-		// Anpassen des Widgets an die Breite des div-Elements "content"
-		userBewerbungen.setWidth(RootPanel.get("content").getOffsetWidth() + "px");
+		
+
+		userBewerbungen.setRowCount(bewerbungen.size());
 
 		userBewerbungen.setRowData(bewerbungen);
+		
+		
+		
+		/*
+		 * Der DataListProvider ermöglicht zusammen mit dem SimplePager die Anzeige der 
+		 * Daten über mehere Seiten hinweg
+		 */
+		ListDataProvider<Bewerbung> dataProvider = new ListDataProvider<Bewerbung>();
+	    dataProvider.addDataDisplay(userBewerbungen);
+	    dataProvider.setList(bewerbungen);
+	    
+	    
+		
+	    pagerUserbewerbungen.setDisplay(userBewerbungen);
+	    pagerUserbewerbungen.setPageSize(10);
+	    
+	    userBewerbungen.setWidth("100%");
 
-		// TODO: ggf. pager
+
 
 		return userBewerbungen;
 	}
-	
-	
 	
 	
 	
@@ -253,7 +296,34 @@ public class AusgangsbewerbungenWidget extends Composite {
 			public String getValue(Bewerbung object) {
 				return object.getStatus();
 			}
+			
+			@Override
+			public String getCellStyleNames(Context context, Bewerbung object) {
+				if(object.getStatus().equalsIgnoreCase("angenommen")){
+					return "green";
+				}
+				else if(object.getStatus().equalsIgnoreCase("abgelehnt")){
+					return "rot";
+				}
+				else {
+					return super.getCellStyleNames(context, object);	
+					}
+				
+			}
+			
 		};
+
+		ButtonCell buttCell = new ButtonCell();
+		Column<Bewerbung, String> bewertungColumn = new Column<Bewerbung, String>(buttCell) {
+			@Override
+			public String getValue(Bewerbung bewerbung) {
+				// The value to display in the button.
+
+				return "Bewertung einsehen";
+			}
+		};
+
+		bewertungColumn.setFieldUpdater(new bewertungAnsehenButtonFieldUpdater());
 
 		ButtonCell buttonCell = new ButtonCell();
 		Column<Bewerbung, String> buttonColumn = new Column<Bewerbung, String>(buttonCell) {
@@ -278,21 +348,73 @@ public class AusgangsbewerbungenWidget extends Composite {
 		linkedBewerbungen.addColumn(ausschreibung, "Ausschreibung");
 		linkedBewerbungen.addColumn(erstelldatum, "Erstelldatum");
 		linkedBewerbungen.addColumn(status, "Status");
+		linkedBewerbungen.addColumn(bewertungColumn);
 		linkedBewerbungen.addColumn(buttonColumn);
 
-		// Anpassen des Widgets an die Breite des div-Elements "content"
-		linkedBewerbungen.setWidth(RootPanel.get("content").getOffsetWidth() + "px");
+		linkedBewerbungen.setRowCount(bewerbungen.size());
 
 		linkedBewerbungen.setRowData(bewerbungen);
+		
+		
+		
+		linkedBewerbungen.setRowData(bewerbungen);
 
-		// TODO: ggf. pager
+		
+		/*
+		 * Der DataListProvider ermöglicht zusammen mit dem SimplePager die Anzeige der 
+		 * Daten über mehere Seiten hinweg
+		 */
+		ListDataProvider<Bewerbung> dataProvider = new ListDataProvider<Bewerbung>();
+	    dataProvider.addDataDisplay(linkedBewerbungen);
+	    dataProvider.setList(bewerbungen);
+	    
+	    
+		
+	    pagerLinkedBewerbungen.setDisplay(linkedBewerbungen);
+	    pagerLinkedBewerbungen.setPageSize(10);
+	    
+	    linkedBewerbungen.setWidth("100%");
+
+		
 
 		return linkedBewerbungen;
 	}
-	
-	
-	
-	
+
+	private class bewertungAnsehenButtonFieldUpdater implements FieldUpdater<Bewerbung, String> {
+
+		@Override
+		public void update(int index, Bewerbung object, String value) {
+			
+			if (object.getStatus().equalsIgnoreCase("angenommen") || object.getStatus().equalsIgnoreCase("abgelehnt")) {
+
+				clickedBewerbung = object;
+
+				Project4uVerwaltung.getBewertungOfBewerbung(object, new AsyncCallback<Bewertung>() {
+
+					@Override
+					public void onSuccess(Bewertung result) {
+						if (result!=null){
+						
+						BewertungWidget bw = new BewertungWidget(clickedBewerbung);
+						
+						bw.setViewModusOn(result);
+						bw.show();
+						}
+						else{Window.alert("Fehler, keine Bewertung vorhanden");}
+
+					}
+
+					public void onFailure(Throwable caught) {
+					}
+				});
+
+			}
+			else{
+				MessageBox.alertWidget("Keine Bewertung verfügbar", "Eine Bewertung liegt erst vor, wenn die Bewerbung </br>den Satus 'angenommen' oder 'abgelehnt' hat");
+			}
+		}
+
+	}
 
 	private class detailButtonFieldUpdater implements FieldUpdater<Bewerbung, String> {
 
@@ -314,6 +436,9 @@ public class AusgangsbewerbungenWidget extends Composite {
 					details.add(bewerbung.getVP());
 					vep.add(details);
 					buttons.add(close);
+					if (object.getStatus().equalsIgnoreCase("angenommen")||object.getStatus().equalsIgnoreCase("abgelehnt")){
+						delete.setVisible(false);
+					}
 					buttons.add(delete);
 					vep.add(buttons);
 					box.setText("Bewerbungsübersicht");

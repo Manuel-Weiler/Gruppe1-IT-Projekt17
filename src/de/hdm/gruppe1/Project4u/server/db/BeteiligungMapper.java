@@ -193,7 +193,6 @@ public class BeteiligungMapper {
 	    	  b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
 	    	  b.setProjektId(rs.getInt("projekt_id"));
 	    	  b.setBewertungId(rs.getInt("bewertung_id"));
-
 	        result.addElement(b);
 	      }
 	    }
