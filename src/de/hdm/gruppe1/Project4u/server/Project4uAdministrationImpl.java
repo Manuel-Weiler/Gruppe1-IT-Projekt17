@@ -152,7 +152,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 		System.out.println("deleteOrga");
 
-		// Zugehörige Beteiligungen löschen
+		//Zugehörige Beteiligungen löschen
 		Vector<Beteiligung> vbe = new Vector<Beteiligung>();
 		vbe = beteiligungMapper.findByOrganisationseinheit(organisationseinheit);
 		if (vbe != null) {
@@ -225,6 +225,20 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public Organisationseinheit getOrganisationseinheitByUser(LoginInfo login) throws IllegalArgumentException {
 
 		for (Organisationseinheit o : organisationseinheitMapper.findByTyp("Person")) {
+			if (o.getGoogleId().equalsIgnoreCase(login.getEmailAddress())) {
+
+				return o;
+			}
+
+		}
+		return null;
+
+	};
+	//Diese methode ist nötig, um den jede Form von nutzer zu identifizieren.
+	//Max
+	public Organisationseinheit getPersonTeamUnternehmenByUser(LoginInfo login) throws IllegalArgumentException {
+
+		for (Organisationseinheit o : organisationseinheitMapper.findAll()) {
 			if (o.getGoogleId().equalsIgnoreCase(login.getEmailAddress())) {
 
 				return o;
@@ -551,6 +565,13 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		Projekt p = findProjektById(a.getProjektId());
 		
 		return p;
+	}
+	
+	//Methode um alle Projekte an der eine Organisationseinheit beteiligt ist auszugeben
+	//Max
+	public Vector<Projekt> findProjekteOfBeteiligteOrganisationseinheit(LoginInfo login) throws IllegalArgumentException {
+		Organisationseinheit orga = getPersonTeamUnternehmenByUser(login);
+		return this.projektMapper.findProjekteOfBeteiligteOrganisationseinheit(orga);
 	}
 
 	/*

@@ -40,6 +40,7 @@ public interface Project4uAdministrationAsync {
 	
 	//////PROJEKT//////
 	void findProjektByOrganisationseinheit(Organisationseinheit organisationseinheit, AsyncCallback<Vector<Projekt>> callback);
+	void findProjekteOfBeteiligteOrganisationseinheit(LoginInfo loginInfo, AsyncCallback<Vector<Projekt>> callback);
 	//////PROJEKT ENDE//////
 	
 	void init(AsyncCallback<Void> callback);

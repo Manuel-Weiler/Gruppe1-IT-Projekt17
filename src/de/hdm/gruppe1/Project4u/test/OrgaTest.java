@@ -6,8 +6,10 @@ import javax.swing.JOptionPane;
 
 import de.hdm.gruppe1.Project4u.server.db.OrganisationseinheitMapper;
 import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
+import de.hdm.gruppe1.Project4u.server.db.ProjektMapper;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
+import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
 
 public class OrgaTest {
 
@@ -32,23 +34,39 @@ public class OrgaTest {
 		
 		OrganisationseinheitMapper om = OrganisationseinheitMapper.organisationseinheitMapper();
 		PartnerprofilMapper ppm = PartnerprofilMapper.partnerprofilMapper();
+		ProjektMapper pm = ProjektMapper.projektMapper();
 		
 		//Alle finden
-				Vector<Organisationseinheit> vo = new Vector<Organisationseinheit>();
+			/*	Vector<Organisationseinheit> vo = new Vector<Organisationseinheit>();
 				vo = om.findAll();
 				for(Organisationseinheit oe: vo){
 					System.out.println(oe.getName());
-				}
+				}*/
 				
 		
+				o.setOrganisationseinheitId(11);
+				Vector<Projekt> vo = new Vector<Projekt>();
+				vo = pm.findProjekteOfBeteiligteOrganisationseinheit(o);
+				for(Projekt projekt: vo){
+					System.out.println(projekt.getProjektId());
+					System.out.println(projekt.getName());
+					System.out.println(projekt.getBeschreibung());
+					System.out.println(projekt.getStartdatum());
+					System.out.println(projekt.getEnddatum());
+					System.out.println(projekt.getOrganisationseinheitId());
+					System.out.println(projekt.getProjektmarktplatzId());
+				}
+				
+				
+				
 		
 		//Orga anlegen
-		pp = ppm.insertPartnerprofil(pp);
+	/*	pp = ppm.insertPartnerprofil(pp);
 		o.setName("HdM");
 		o.setGoogleId("hdm@gmail.de");
 		o.setTyp("unternehmen");
 		o.setPartnerprofilId(pp.getPartnerprofilId());
-		om.insert(o);
+		om.insert(o);*/
 		
 	/*	o2.setName("Max Mustermann");
 		o2.setGoogleId("max.mustermann@gmail.de");
@@ -63,11 +81,11 @@ public class OrgaTest {
 		om.insert(o3);*/
 		
 		//Alle finden
-		Vector<Organisationseinheit> vo2 = new Vector<Organisationseinheit>();
+	/*	Vector<Organisationseinheit> vo2 = new Vector<Organisationseinheit>();
 		vo2 = om.findAll();
 		for(Organisationseinheit oe: vo2){
 			System.out.println(oe.getName() );
-		}
+		}*/
 		
 	/*	//Orga updaten - Name geändert
 		o.setName("Karl Wuchtelig");
@@ -115,6 +133,7 @@ public class OrgaTest {
 		
 		
 
+				
 	}
 
 }

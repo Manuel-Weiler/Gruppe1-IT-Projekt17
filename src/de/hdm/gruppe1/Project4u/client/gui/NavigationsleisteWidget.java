@@ -21,7 +21,7 @@ import de.hdm.gruppe1.Project4u.shared.Project4uAdministrationAsync;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 import de.hdm.gruppe1.Project4u.client.gui.ProjektmarktplatzWidget;
-//import de.hdm.gruppe1.Project4u.client.gui.MeineProjekteWidget;
+import de.hdm.gruppe1.Project4u.client.gui.MeineProjekteWidget;
 
 public class NavigationsleisteWidget extends Composite {
 
@@ -43,6 +43,7 @@ public class NavigationsleisteWidget extends Composite {
 	private Button aBewerbungen = new Button("Ausgangsbewerbungen");
 	private Button reportButton = new Button("Reports");
 	private Button logout = new Button("Logout");
+	private Button projektButton = new Button("Meine Projekte");
 
 	
 	//////TEST////////////////////////////////////////
@@ -55,6 +56,7 @@ public class NavigationsleisteWidget extends Composite {
 
 		menuPanel.add(homeButton);
 		menuPanel.add(profilButton);
+		menuPanel.add(projektButton);
 
 		menuPanel.add(pMarktplatz);
 		menuPanel.add(eBewerbungen);
@@ -63,6 +65,7 @@ public class NavigationsleisteWidget extends Composite {
 		menuPanel.add(reportButton);
 
 		menuPanel.add(logout);
+		
 		
 		//TODO: Testcode löschen
 	/*	menuPanel.add(orgaLoeschen);
@@ -75,6 +78,7 @@ public class NavigationsleisteWidget extends Composite {
 
 		// Layout Button
 		profilButton.setPixelSize(200, 40);
+		projektButton.setPixelSize(200, 40);
 		eBewerbungen.setPixelSize(200, 40);
 		homeButton.setPixelSize(200, 40);
 		pMarktplatz.setPixelSize(200, 40);
@@ -225,6 +229,15 @@ public class NavigationsleisteWidget extends Composite {
 				
 			}
 		});*/
+		
+projektButton.addClickHandler(new ClickHandler() {
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			new MeineProjekteWidget();
+			
+		}
+	});
 		//////////////////////////////////TEST ENDE/////////////////////////////////////////////
 		
 
