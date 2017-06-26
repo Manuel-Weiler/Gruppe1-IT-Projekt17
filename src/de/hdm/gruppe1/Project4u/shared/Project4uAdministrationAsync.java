@@ -32,10 +32,20 @@ public interface Project4uAdministrationAsync {
 	 * @param callback
 	 */
 	
+	
+	
+	void findBeteiligungByOrganisationseinheitAndProjekt(Organisationseinheit o, Projekt p, AsyncCallback<Beteiligung> callback);
+	
+	void findBeteiligungByOrganisationseinheitAndProjekt(LoginInfo login, Projekt p, AsyncCallback<Beteiligung> callback);
+	
+	void deleteBeteiligung(Beteiligung beteiligung, AsyncCallback<Void> callback);
+	
 	//////ORGANISATIONSEINHEIT//////
 	void deleteOrganisationseinheit(Organisationseinheit organisationseinheit, AsyncCallback<Void> callback);
 
 	void getOrganisationseinheitById(int id, AsyncCallback<Organisationseinheit> callback);
+	
+	void getPersonTeamUnternehmenByUser(LoginInfo login, AsyncCallback<Organisationseinheit> callback);
 	//////ENDE ORGANISATIONSEINHEIT/////
 	
 	//////PROJEKT//////

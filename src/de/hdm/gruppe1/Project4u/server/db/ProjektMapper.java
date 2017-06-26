@@ -380,7 +380,7 @@ public class ProjektMapper {
 		      		+ "RIGHT JOIN Projekt "
 		      		+ "ON Beteiligung.projekt_id = Projekt.id "
 		      		+ "WHERE Beteiligung.organisationseinheit_id = " + orga.getOrganisationseinheitId() +  " "
-		      		+ "ORDER BY project4u.Projekt.id;");
+		      		+ "ORDER BY project4u.Projekt.enddatum;");
 		   
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt

@@ -4,12 +4,15 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
+import de.hdm.gruppe1.Project4u.server.db.BeteiligungMapper;
 import de.hdm.gruppe1.Project4u.server.db.OrganisationseinheitMapper;
 import de.hdm.gruppe1.Project4u.server.db.PartnerprofilMapper;
 import de.hdm.gruppe1.Project4u.server.db.ProjektMapper;
+import de.hdm.gruppe1.Project4u.shared.bo.Beteiligung;
 import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 import de.hdm.gruppe1.Project4u.shared.bo.Projekt;
+import de.hdm.gruppe1.Project4u.server.db.BeteiligungMapper;
 
 public class OrgaTest {
 
@@ -31,10 +34,14 @@ public class OrgaTest {
 		Partnerprofil pp = new Partnerprofil();
 		Partnerprofil pp2 = new Partnerprofil();
 		Partnerprofil pp3 = new Partnerprofil();
+		Projekt projekt1 = new Projekt();
+		Beteiligung beteiligung = new Beteiligung();
 		
 		OrganisationseinheitMapper om = OrganisationseinheitMapper.organisationseinheitMapper();
 		PartnerprofilMapper ppm = PartnerprofilMapper.partnerprofilMapper();
 		ProjektMapper pm = ProjektMapper.projektMapper();
+		BeteiligungMapper bm = BeteiligungMapper.beteiligungMapper();
+		
 		
 		//Alle finden
 			/*	Vector<Organisationseinheit> vo = new Vector<Organisationseinheit>();
@@ -45,7 +52,10 @@ public class OrgaTest {
 				
 		
 				o.setOrganisationseinheitId(11);
-				Vector<Projekt> vo = new Vector<Projekt>();
+				projekt1.setProjektId(2);
+				beteiligung = bm.findBeteiligungByOrganisationseinheitAndProjekt(o, projekt1);
+				System.out.println(beteiligung.getBeteiligungId());
+				/*Vector<Projekt> vo = new Vector<Projekt>();
 				vo = pm.findProjekteOfBeteiligteOrganisationseinheit(o);
 				for(Projekt projekt: vo){
 					System.out.println(projekt.getProjektId());
@@ -55,7 +65,8 @@ public class OrgaTest {
 					System.out.println(projekt.getEnddatum());
 					System.out.println(projekt.getOrganisationseinheitId());
 					System.out.println(projekt.getProjektmarktplatzId());
-				}
+				}*/
+				
 				
 				
 				

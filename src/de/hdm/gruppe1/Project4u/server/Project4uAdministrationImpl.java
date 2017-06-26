@@ -617,7 +617,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	public void deleteAusschreibung(Ausschreibung ausschreibung) throws IllegalArgumentException {
 		System.out.println("deleteAusschreibung");
 
-		// TODO zugehörige Bewerbungen löschen
+		//Zugehörige Bewerbungen löschen
 		Vector<Bewerbung> bv = new Vector<Bewerbung>();
 		bv = bewerbungMapper.findByAusschreibung(ausschreibung);
 		if (bv != null) {
@@ -628,7 +628,7 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 
 		this.ausschreibungMapper.delete(ausschreibung);
 
-		// zugehöriges Partnerprofil löschen
+		//Zugehöriges Partnerprofil löschen
 		Partnerprofil partnerprofil = partnerprofilMapper.findById(ausschreibung.getPartnerprofilId());
 		if (partnerprofil != null) {
 			this.deletePartnerprofil(partnerprofil);
@@ -1015,6 +1015,15 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 		Vector<Beteiligung> beteiligungen = this.beteiligungMapper.findByOrganisationseinheit(orga);
 
 		return beteiligungen;
+	}
+	
+	public Beteiligung findBeteiligungByOrganisationseinheitAndProjekt(Organisationseinheit o, Projekt p) {
+		return this.beteiligungMapper.findBeteiligungByOrganisationseinheitAndProjekt(o, p);
+	}
+	public Beteiligung findBeteiligungByOrganisationseinheitAndProjekt(LoginInfo login, Projekt p) {
+		Organisationseinheit o = new Organisationseinheit();
+		o = getPersonTeamUnternehmenByUser(login);
+		return this.beteiligungMapper.findBeteiligungByOrganisationseinheitAndProjekt(o, p);
 	}
 
 	/*

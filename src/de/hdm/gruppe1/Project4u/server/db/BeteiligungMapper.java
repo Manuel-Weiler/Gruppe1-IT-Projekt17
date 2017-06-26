@@ -202,5 +202,45 @@ public class BeteiligungMapper {
 
 	    return result;
 	  }
+	
+	public Beteiligung findBeteiligungByOrganisationseinheitAndProjekt(Organisationseinheit o, Projekt p) {
+	    // DB-Verbindung holen
+	    Connection con = DBConnection.connection();
+
+	    try {
+	      // Leeres SQL-Statement (JDBC) anlegen
+	      Statement stmt = con.createStatement();
+
+	      // Statement ausfüllen und als Query an die DB schicken
+
+	      ResultSet rs = stmt.executeQuery("SELECT * FROM Beteiligung WHERE organisationseinheit_id=" + o.getOrganisationseinheitId() + " "
+	      		+ "AND projekt_id=" + p.getProjektId());
+
+
+	      /*
+	       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
+	       * werden. Prüfe, ob ein Ergebnis vorliegt.
+	       */
+	      if (rs.next()) {
+	        // Ergebnis-Tupel in Objekt umwandeln
+	        Beteiligung b = new Beteiligung();
+	        b.setBeteiligungId(rs.getInt("id"));
+			b.setStartdatum(rs.getDate("startdatum"));
+			b.setEnddatum(rs.getDate("enddatum"));
+			b.setPersonentage(rs.getInt("personentage"));
+			b.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+			b.setProjektId(rs.getInt("projekt_id"));
+			b.setBewertungId(rs.getInt("bewertung_id"));
+
+	        return b;
+	      }
+	    }
+	    catch (SQLException e) {
+	      e.printStackTrace();
+	      return null;
+	    }
+
+	    return null;
+	  }
 
 }
