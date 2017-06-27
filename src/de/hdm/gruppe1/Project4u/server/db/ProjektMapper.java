@@ -364,4 +364,46 @@ public class ProjektMapper {
 			}
 
 		}
+	  
+	  //Diese Methode gibt alle Projekte zurück an denen eine bestimmte Organisationseinheit beteiligt ist
+	  public Vector<Projekt> findProjekteOfBeteiligteOrganisationseinheit(Organisationseinheit orga) {
+		    Connection con = DBConnection.connection();
+		    // Ergebnisvektor vorbereiten
+		    Vector<Projekt> result = new Vector<Projekt>();
+
+		    try {
+		      Statement stmt = con.createStatement();
+
+		      ResultSet rs = stmt.executeQuery("SELECT Projekt.id, Projekt.name, Projekt.startdatum, Projekt.enddatum, "
+		      		+ "Projekt.beschreibung, Projekt.projektmarktplatz_id, Projekt.organisationseinheit_id "
+		      		+ "FROM Beteiligung "
+		      		+ "RIGHT JOIN Projekt "
+		      		+ "ON Beteiligung.projekt_id = Projekt.id "
+		      		+ "WHERE Beteiligung.organisationseinheit_id = " + orga.getOrganisationseinheitId() +  " "
+		      		+ "ORDER BY project4u.Projekt.enddatum;");
+		   
+
+		      // Für jeden Eintrag im Suchergebnis wird nun ein Projekt-Objekt
+		      // erstellt.
+		      while (rs.next()) {
+		        Projekt p = new Projekt();
+		        p.setProjektId(rs.getInt("id"));
+		        p.setName(rs.getString("name"));
+		        p.setStartdatum(rs.getDate("startdatum"));
+		        p.setEnddatum(rs.getDate("enddatum"));
+		        p.setBeschreibung(rs.getString("beschreibung"));
+		        p.setProjektmarktplatzId(rs.getInt("projektmarktplatz_id"));
+		        p.setOrganisationseinheitId(rs.getInt("organisationseinheit_id"));
+
+		        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+		        result.addElement(p);
+		      }
+		    }
+		    catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+
+		    // Ergebnisvektor zurückgeben
+		    return result;
+	 }
 }

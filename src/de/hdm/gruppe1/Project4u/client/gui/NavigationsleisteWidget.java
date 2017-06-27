@@ -22,6 +22,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Organisationseinheit;
 import de.hdm.gruppe1.Project4u.shared.bo.Partnerprofil;
 import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 import de.hdm.gruppe1.Project4u.client.gui.ProjektmarktplatzWidget;
+import de.hdm.gruppe1.Project4u.client.gui.MeineProjekteWidget;
 
 public class NavigationsleisteWidget extends Composite {
 
@@ -43,37 +44,30 @@ public class NavigationsleisteWidget extends Composite {
 	private Button aBewerbungen = new Button("Ausgangsbewerbungen");
 	private Button reportButton = new Button("Reports");
 	private Button logout = new Button("Logout");
+	private Button projektButton = new Button("Projektbeteiligungen");
 
-	
-	//Test
-	Button orgaLoeschen = new Button("Orga löschen");
-	Button projektmarktplatzLoeschen = new Button("Projektmarktplatz löschen");
-	Button testBtn = new Button("Test");
 
 
 	public NavigationsleisteWidget() {
 
 		menuPanel.add(homeButton);
 		menuPanel.add(profilButton);
+		menuPanel.add(projektButton);
 
 		menuPanel.add(pMarktplatz);
 		menuPanel.add(eBewerbungen);
 		menuPanel.add(aBewerbungen);
+
 		menuPanel.add(reportButton);
+
 		menuPanel.add(logout);
-		
-		//TODO: Testcode löschen
-		//Test
-		//menuPanel.add(orgaLoeschen);
-		//menuPanel.add(testBtn);
-		
-		//menuPanel.add(projektmarktplatzLoeschen);
 
 		// Abstand zwischen den einzelnen Buttons
 		menuPanel.setSpacing(20);
 
 		// Layout Button
 		profilButton.setPixelSize(200, 40);
+		projektButton.setPixelSize(200, 40);
 		eBewerbungen.setPixelSize(200, 40);
 		homeButton.setPixelSize(200, 40);
 		pMarktplatz.setPixelSize(200, 40);
@@ -82,108 +76,14 @@ public class NavigationsleisteWidget extends Composite {
 		logout.setPixelSize(200, 40);
 		
 		
-		////////////////////////////////TEST/////////////////////////////////////////////
-		//Test
-		orgaLoeschen.setPixelSize(200, 40);
-		testBtn.setPixelSize(200, 40);
-		projektmarktplatzLoeschen.setPixelSize(200, 40);
-		
-		
-		
-
-		
-		orgaLoeschen.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				
-				Project4uVerwaltung.getOrganisationseinheitById(1, new AsyncCallback<Organisationseinheit>() {
-					
-					@Override
-					public void onSuccess(Organisationseinheit result) {
-						RootPanel.get("content").clear();
-						Label erfolgreich1 = new Label("Name: " 
-														+ result.getName() + " ID: "
-														+ result.getOrganisationseinheitId() + " Typ: "
-														+ result.getTyp() + " Partnerprofil ID: "
-														+ result.getPartnerprofilId());
-						RootPanel.get("content").add(erfolgreich1);
-						
-						Project4uVerwaltung.deleteOrganisationseinheit(result, new AsyncCallback<Void>() {
-							
-							@Override
-							public void onSuccess(Void result) {
-								Label orgaLoeschen = new Label("Erfolgreich geloescht");
-								//RootPanel.get("content").clear();
-								RootPanel.get("content").add(orgaLoeschen);
-								
-							}
-							
-							@Override
-							public void onFailure(Throwable caught) {
-								Label orgaLoeschen = new Label("Fail2");
-								RootPanel.get("content").clear();
-								RootPanel.get("content").add(orgaLoeschen);
-								
-							}
-						});
-						
-					}
-					@Override
-					public void onFailure(Throwable caught) {
-						Label orgaLoeschen = new Label("Fail1");
-						RootPanel.get("content").clear();
-						RootPanel.get("content").add(orgaLoeschen);
-						
-					}
-				});
+		projektButton.addClickHandler(new ClickHandler() {
 			
+			@Override
+			public void onClick(ClickEvent event) {
+				new MeineProjekteWidget();
 				
 			}
 		});
-		projektmarktplatzLoeschen.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				
-				Project4uVerwaltung.getOrganisationseinheitById(1, new AsyncCallback<Organisationseinheit>() {
-					
-					@Override
-					public void onSuccess(Organisationseinheit result) {
-						Label erfolgreich1 = new Label("Erfolgreich1");
-						RootPanel.get("content").add(erfolgreich1);
-						
-						Project4uVerwaltung.deleteOrganisationseinheit(result, new AsyncCallback<Void>() {
-							
-							@Override
-							public void onSuccess(Void result) {
-								Label orgaLoeschen = new Label("Erfolgreich2");
-								RootPanel.get("content").clear();
-								RootPanel.get("content").add(orgaLoeschen);
-								
-							}
-							
-							@Override
-							public void onFailure(Throwable caught) {
-								Label orgaLoeschen = new Label("Fail2");
-								RootPanel.get("content").clear();
-								RootPanel.get("content").add(orgaLoeschen);
-								
-							}
-						});
-						
-					}
-					@Override
-					public void onFailure(Throwable caught) {
-						Label orgaLoeschen = new Label("Fail1");
-						RootPanel.get("content").clear();
-						RootPanel.get("content").add(orgaLoeschen);
-						
-					}
-				});
-			
-				
-			}
-		});
-		//////////////////////////////////TEST ENDE/////////////////////////////////////////////
-		
-
 		
 
 		homeButton.addClickHandler(new ClickHandler() {

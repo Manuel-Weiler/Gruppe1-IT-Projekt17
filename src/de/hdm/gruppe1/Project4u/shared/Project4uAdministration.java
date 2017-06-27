@@ -6,6 +6,7 @@ import java.util.Vector;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -17,8 +18,14 @@ public interface Project4uAdministration extends RemoteService{
 
 	public void init() throws IllegalArgumentException;
 	
+	public Organisationseinheit getPersonTeamUnternehmenByUser(LoginInfo login) throws IllegalArgumentException;
 	
-
+	public Beteiligung findBeteiligungByOrganisationseinheitAndProjekt(Organisationseinheit o, Projekt p) throws IllegalArgumentException;
+	
+	public Beteiligung findBeteiligungByOrganisationseinheitAndProjekt(LoginInfo login, Projekt p) throws IllegalArgumentException;
+	
+	public void deleteBeteiligung(Beteiligung beteiligung) throws IllegalArgumentException;
+	
 	public boolean checkStatus(LoginInfo loginInfo) throws IllegalArgumentException;
 
 	public void deleteOrganisationseinheit(Organisationseinheit organisationseinheit) throws IllegalArgumentException;
@@ -88,9 +95,15 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Vector<Eigenschaft> getAllEigenschaftenByPartnerprofilId(int partnerprofilId)throws IllegalArgumentException;
 	
+	//////PROJEKT//////
 	public Vector<Projekt> findByProjektmarktplatz (Projektmarktplatz projektmarktplatz) throws IllegalArgumentException;
+	public Vector<Projekt> findProjektByOrganisationseinheit (Organisationseinheit organisationseinheit) throws IllegalArgumentException;
+	public Vector<Projekt> findProjekteOfBeteiligteOrganisationseinheit (LoginInfo login) throws IllegalArgumentException;
+	//////ENDE PROJEKT//////
+	
 
 	public Vector<Beteiligung> getBeteiligungForOrga(Organisationseinheit orga) throws IllegalArgumentException;
+
 
 	public Vector<Ausschreibung> getAusschreibungenForPartnerprofil(Organisationseinheit orga)
 			throws IllegalArgumentException;
