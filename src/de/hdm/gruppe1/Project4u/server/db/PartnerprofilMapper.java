@@ -69,7 +69,7 @@ public class PartnerprofilMapper {
 			Statement stmt = con.createStatement();
 
 			// Abfrage der gr��ten bisher vergebnen <code>id</code>
-			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM partnerprofil ");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Partnerprofil ");
 
 			if (rs.next()) {
 				/*
@@ -82,7 +82,7 @@ public class PartnerprofilMapper {
 
 				// Jetzt erst erfolgt die tatsächliche Einfügeoperation
 
-				stmt.executeUpdate("INSERT INTO partnerprofil (id, erstelldatum, aenderungsdatum) "
+				stmt.executeUpdate("INSERT INTO Partnerprofil (id, erstelldatum, aenderungsdatum) "
 
 						+ "VALUES (" + p.getPartnerprofilId() + ",'" + sdf.format(p.getErstelldatum()) + "','"
 						+ sdf.format(p.getAenderungsdatum()) + "')");
@@ -117,7 +117,7 @@ public class PartnerprofilMapper {
 
 			// Abfrage des gesuchten Partnerprofils zur <code>id</code>
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM partnerprofil WHERE id=" + i);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Partnerprofil WHERE id=" + i);
 
 			if (rs.next()) {
 
@@ -154,7 +154,7 @@ public class PartnerprofilMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE partnerprofil SET aenderungsdatum='" + sdf.format(d) + "' WHERE id="
+			stmt.executeUpdate("UPDATE Partnerprofil SET aenderungsdatum='" + sdf.format(d) + "' WHERE id="
 								+ p.getPartnerprofilId());
 
 		} catch (SQLException e) {
@@ -233,7 +233,7 @@ public class PartnerprofilMapper {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(
-					"DELETE FROM partnerprofil WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
+					"DELETE FROM Partnerprofil WHERE organisationseinheit_id= " + o.getOrganisationseinheitId());
 
 		} catch (Exception e2) {
 			e2.printStackTrace();
@@ -245,7 +245,7 @@ public class PartnerprofilMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM partnerprofil WHERE ausschreibung_id= " + a.getAusschreibungId());
+			stmt.executeUpdate("DELETE FROM Partnerprofil WHERE ausschreibung_id= " + a.getAusschreibungId());
 
 		} catch (Exception e2) {
 			e2.printStackTrace();
@@ -259,7 +259,7 @@ public class PartnerprofilMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM partnerprofil");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Partnerprofil");
 
 			while (rs.next()) {
 				Partnerprofil pa = new Partnerprofil();

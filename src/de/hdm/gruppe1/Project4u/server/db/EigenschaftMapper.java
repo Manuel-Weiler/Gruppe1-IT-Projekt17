@@ -57,7 +57,7 @@ public class EigenschaftMapper {
 			Statement stmt = con.createStatement();
 
 			// Abfrage der gr��ten bisher vergebnen <code>id</code>
-			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM eigenschaft ;");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM Eigenschaft ;");
 
 			if (rs.next()) {
 				/*
@@ -69,7 +69,7 @@ public class EigenschaftMapper {
 				stmt = con.createStatement();
 
 				// Jetzt erst erfolgt die tatsächliche Einfügeoperation
-				stmt.executeUpdate("INSERT INTO eigenschaft (id, name, wert, partnerprofil_id) " + 
+				stmt.executeUpdate("INSERT INTO Eigenschaft (id, name, wert, partnerprofil_id) " + 
 				"VALUES ('"+ e.getEigenschaftId() +"','" + e.getName() + "','" + e.getWert() + "','"
 						+ p.getPartnerprofilId() + "');");
 			}
@@ -97,7 +97,7 @@ public class EigenschaftMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("UPDATE eigenschaft SET name='" + e.getName() + "', wert='" + e.getWert() + "' WHERE id='"
+			stmt.executeUpdate("UPDATE Eigenschaft SET name='" + e.getName() + "', wert='" + e.getWert() + "' WHERE id='"
 					+ e.getEigenschaftId() + "'");
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -117,7 +117,7 @@ public class EigenschaftMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM eigenschaft WHERE id='" + e.getEigenschaftId() + "'");
+			stmt.executeUpdate("DELETE FROM Eigenschaft WHERE id='" + e.getEigenschaftId() + "'");
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -177,7 +177,7 @@ public class EigenschaftMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM eigenschaft WHERE partnerprofil_id= " + p.getPartnerprofilId());
+			stmt.executeUpdate("DELETE FROM Eigenschaft WHERE partnerprofil_id= " + p.getPartnerprofilId());
 			
 		} catch (Exception e2) {
 			 e2.printStackTrace();

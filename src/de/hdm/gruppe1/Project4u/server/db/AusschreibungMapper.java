@@ -80,7 +80,7 @@ public class AusschreibungMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("UPDATE ausschreibung SET "
+			stmt.executeUpdate("UPDATE Ausschreibung SET "
 					+ "bezeichnung='" + au.getBezeichnung()+"'," 
 					+ "name_projektleiter='" + au.getNameProjektleiter() +"'," 
 					+ "bewerbungsfrist='" + sdf.format(au.getBewerbungsfrist())+"'," 
@@ -186,7 +186,7 @@ public class AusschreibungMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM ausschreibung");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Ausschreibung");
 			
 			while(rs.next()){
 				Ausschreibung au = new Ausschreibung();

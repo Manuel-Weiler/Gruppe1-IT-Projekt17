@@ -81,7 +81,7 @@ public class OrganisationseinheitMapper {
 			Statement stmt = con.createStatement();
 			
 
-			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM organisationseinheit;");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM Organisationseinheit;");
 
 			
 			
@@ -90,7 +90,7 @@ public class OrganisationseinheitMapper {
 				
 				stmt = con.createStatement();
 				
-				stmt.executeUpdate("INSERT INTO organisationseinheit (id, google_id, name, typ, partnerprofil_id) "
+				stmt.executeUpdate("INSERT INTO Organisationseinheit (id, google_id, name, typ, partnerprofil_id) "
 			            + "VALUES ('" + organisationseinheit.getOrganisationseinheitId() + "', '" + organisationseinheit.getGoogleId() + "','" + organisationseinheit.getName() + "', '" + organisationseinheit.getTyp() + "', '" + organisationseinheit.getPartnerprofilId() + "');");
 			
 			
@@ -148,7 +148,7 @@ public class OrganisationseinheitMapper {
 
 		      // Statement ausfüllen und als Query an die DB schicken
 
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM organisationseinheit WHERE id=" + id);
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Organisationseinheit WHERE id=" + id);
 
 
 		      /*
@@ -183,7 +183,7 @@ public class OrganisationseinheitMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM organisationseinheit " + "ORDER BY name");
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Organisationseinheit " + "ORDER BY name");
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
 		      // erstellt.
@@ -217,7 +217,7 @@ public class OrganisationseinheitMapper {
 		      Statement stmt = con.createStatement();
 
 		      ResultSet rs = stmt.executeQuery("SELECT * "
-		          + "FROM organisationseinheit " + "WHERE name LIKE '" + name
+		          + "FROM Organisationseinheit " + "WHERE name LIKE '" + name
 		          + "' ORDER BY name");
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
@@ -250,7 +250,7 @@ public class OrganisationseinheitMapper {
 		      Statement stmt = con.createStatement();
 
 		      ResultSet rs = stmt.executeQuery("SELECT * "
-		          + "FROM organisationseinheit WHERE typ='" + typ
+		          + "FROM Organisationseinheit WHERE typ='" + typ
 		          + "' ORDER BY name");
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
@@ -286,7 +286,7 @@ public class OrganisationseinheitMapper {
 
 		      ResultSet rs = stmt
 		    		  
-		          .executeQuery("SELECT * FROM organisationseinheit "
+		          .executeQuery("SELECT * FROM Organisationseinheit "
 		              + "WHERE google_id='" + googleId +"'");
 
 		  
@@ -318,7 +318,7 @@ public class OrganisationseinheitMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT organisationseinheit_id "
+			ResultSet rs = stmt.executeQuery("SELECT Organisationseinheit_id "
 					+ "FROM organisationseinheit_has_organisationseinheit WHERE person_id='"
 					+ orga.getOrganisationseinheitId() + "';");
 
