@@ -182,7 +182,7 @@ public class NavigationsleisteWidget extends Composite {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				ClientsideSettings.setAktuellerUser(null);
+				
 				signOutLink.setHref(ClientsideSettings.getAktuellerUser().getLogoutUrl());
 				Window.Location.assign(signOutLink.getHref());
 
