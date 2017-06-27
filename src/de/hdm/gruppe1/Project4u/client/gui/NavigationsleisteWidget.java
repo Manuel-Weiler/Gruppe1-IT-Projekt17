@@ -43,7 +43,7 @@ public class NavigationsleisteWidget extends Composite {
 	private Button aBewerbungen = new Button("Ausgangsbewerbungen");
 	private Button reportButton = new Button("Reports");
 	private Button logout = new Button("Logout");
-	private Button projektButton = new Button("Meine Projekte");
+	private Button projektButton = new Button("Projektbeteiligungen");
 
 	
 	//////TEST////////////////////////////////////////
@@ -230,17 +230,17 @@ public class NavigationsleisteWidget extends Composite {
 			}
 		});*/
 		
-projektButton.addClickHandler(new ClickHandler() {
-		
-		@Override
-		public void onClick(ClickEvent event) {
-			new MeineProjekteWidget();
-			
-		}
-	});
+
 		//////////////////////////////////TEST ENDE/////////////////////////////////////////////
 		
-
+		projektButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				new MeineProjekteWidget();
+				
+			}
+		});
 		
 
 		homeButton.addClickHandler(new ClickHandler() {
