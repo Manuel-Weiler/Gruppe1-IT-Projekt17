@@ -132,8 +132,8 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	// Login-Status
 	public boolean checkStatus(LoginInfo loginInfo) {
 		boolean status = false;
-		Vector<Organisationseinheit> orgas = new Vector<Organisationseinheit>();
-		orgas = getAllOrganisationseinheitOfTypPerson();
+		Vector<Organisationseinheit> orgas = getAllOrganisationseinheitOfTypPerson();
+		
 		for (Organisationseinheit o : orgas) {
 			if (o.getGoogleId().equalsIgnoreCase(loginInfo.getEmailAddress())) {
 				status = true;

@@ -44,14 +44,15 @@ public class Project4u implements EntryPoint {
 			public void onFailure(Throwable error) {
 			}
 
-		  public void onSuccess(LoginInfo result) {
-		  loginInfo = result;
-		  ClientsideSettings.setAktuellerUser(result);
-		  if(loginInfo.isLoggedIn()) {
-		  loadProject4u();
-		  newUserCheck(result);	 
-		  } else {
-		  loadLogin();
+			public void onSuccess(LoginInfo result) {
+				loginInfo = result;
+				ClientsideSettings.setAktuellerUser(result);
+				if (loginInfo.isLoggedIn()) {
+					ClientsideSettings.setAktuellerUser(result);
+					loadProject4u();
+					newUserCheck(result);
+				} else {
+					  loadLogin();
 		  }
 		  }
 		  });

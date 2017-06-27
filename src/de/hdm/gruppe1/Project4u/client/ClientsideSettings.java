@@ -41,7 +41,7 @@ public class ClientsideSettings extends CommonSettings{
 	 * setzt den aktuell eingeloggten User als Userd
 	 */
 	public static void setAktuellerUser(LoginInfo nutzer) {
-		ClientsideSettings.aktuellerUser = nutzer;
+		aktuellerUser = nutzer;
 	}
 
 

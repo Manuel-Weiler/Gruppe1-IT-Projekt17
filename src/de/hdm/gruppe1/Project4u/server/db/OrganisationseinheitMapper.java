@@ -183,7 +183,7 @@ public class OrganisationseinheitMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM Organisationseinheit " + "ORDER BY name");
+		      ResultSet rs = stmt.executeQuery("SELECT * FROM Organisationseinheit");
 
 		      // Für jeden Eintrag im Suchergebnis wird nun ein Organisationseinheit-Objekt
 		      // erstellt.
