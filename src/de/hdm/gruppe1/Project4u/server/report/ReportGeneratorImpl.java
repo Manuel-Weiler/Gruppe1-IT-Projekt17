@@ -191,7 +191,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		// Reportinhalt:
 
 		// Von den Vektor passendeVektoren muss nun wieder auf Ausschreibungen
-		// gekommen werden, damit diese ausgegeben werden können.
+		// gekommen werden, damit diese ausgegeben werden kï¿½nnen.
 
 		Vector<Ausschreibung> passendeAusschreibungen = this.project4uAdministration
 				.getAusschreibungenForPartnerprofil(orga);
@@ -215,7 +215,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 	/*
 	 * 3. Report welcher alle Bewerbungen auf Ausschreibungen des Benutzers
-	 * zurückgibt.
+	 * zurï¿½ckgibt.
 	 * 
 	 * @author Dominik Sasse
 	 * 
@@ -230,7 +230,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		if (this.getProject4uAdministration() == null)
 			return null;
 
-		// Zuerst werden die Ausschreibungen des Nutzers benötigt
+		// Zuerst werden die Ausschreibungen des Nutzers benï¿½tigt
 		Vector<Ausschreibung> aus = project4uAdministration.getAusschreibungenForOrga(o);
 
 		// Leeren Report anlegen
@@ -238,7 +238,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		result.setTitle("Alle Bewerbungen auf eigene Ausschreibungen");
 
-		// Für jede Ausschreibung soll ein Report mit den Bewerbungen erstellt
+		// Fï¿½r jede Ausschreibung soll ein Report mit den Bewerbungen erstellt
 		// werden
 		for (Ausschreibung au : aus) {
 
@@ -255,12 +255,16 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			ausschreibungsheadline2.addColumn(new Column("Ausschreibungstext: " + au.getAusschreibungstext()));
 			result.addRow(ausschreibungsheadline2);
 
-			// Ausschreibungstext hinzufügen
+			// Ausschreibungstext hinzufï¿½gen
 			Row ausschreibungstextline = new Row();
 			ausschreibungstextline.addColumn(new Column(" "));
 			result.addRow(ausschreibungstextline);
 
-			// Nun sollen die dazugehörigen Bewerbungen hinzugefügt werden
+			Row ausschreibungstextline1 = new Row();
+			ausschreibungstextline1.addColumn(new Column(" "));
+			result.addRow(ausschreibungstextline1);
+			
+			// Nun sollen die dazugehï¿½rigen Bewerbungen hinzugefï¿½gt werden
 			// Kopfzeile fï¿½r die Tabelle anlegen:
 			Row headline = new Row();
 
@@ -291,9 +295,22 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				// fï¿½r jede Spalte dieser Zeile wird nun der Inhalt
 				// geschrieben
 				bewerbungRow.addColumn(new Column(b.getBewerbungstext()));
-				bewerbungRow.addColumn(new Column(String.valueOf(b.getErstelldatum())));
-				bewerbungRow.addColumn(new Column(b.getStatus()));
+				
+				Row bewerbungRow1 = new Row();
+				bewerbungRow1.addColumn(new Column(String.valueOf(b.getErstelldatum())));
+				
+				Row bewerbungRow2 = new Row();
+				bewerbungRow2.addColumn(new Column(b.getStatus()));
 
+				//Leerzeilen anlegen zur Abgrenzung
+				Row bewerbungRow3 = new Row();
+				bewerbungRow3.addColumn(new Column(" "));
+				
+				Row bewerbungRow4 = new Row();
+				bewerbungRow4.addColumn(new Column(" "));
+				
+				Row bewerbungRow5 = new Row();
+				bewerbungRow5.addColumn(new Column(" "));
 				// Zeile dem Report hinzufï¿½gen
 				result.addRow(bewerbungRow);
 			}
@@ -303,13 +320,13 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 
 	/*
-	 * 4. Abfrage der eigenen Bewerbungen und den zugehörigen Ausschreibungen
+	 * 4. Abfrage der eigenen Bewerbungen und den zugehï¿½rigen Ausschreibungen
 	 * des Benutzers
 	 * 
 	 * @author Dominik Sasse
 	 */
 
-	// Zuerst müssen alle Bewerbungen des Nutzers ausgeeben werden
+	// Zuerst mï¿½ssen alle Bewerbungen des Nutzers ausgeeben werden
 	public ReportForEigeneBewerbungen createEigeneBewerbungenReport(Organisationseinheit orga)
 			throws IllegalArgumentException {
 
@@ -328,7 +345,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		headline.addColumn(new Column("Erstelldatum"));
 		headline.addColumn(new Column("Bewerbungstext"));
 		headline.addColumn(new Column("Status"));
-		//leere Spalte einfügen für inhaltliche Trennung
+		//leere Spalte einfï¿½gen fï¿½r inhaltliche Trennung
 		headline.addColumn(new Column("  "));
 		// Inhalt der Ausschreibung
 		headline.addColumn(new Column("Ausschreibungsbezeichnung"));
@@ -344,7 +361,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		Vector<Bewerbung> bew = project4uAdministration.getBewerbungForOrganisationseinheit(orga);
 
-		// Anschließend müssen die Ausschreibungen zu diesen Bewerbungen
+		// Anschlieï¿½end mï¿½ssen die Ausschreibungen zu diesen Bewerbungen
 		// ausgegeben werden.
 
 		for (Bewerbung be : bew) {
@@ -355,7 +372,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			bewerbungRow.addColumn(new Column(String.valueOf(be.getErstelldatum())));
 			bewerbungRow.addColumn(new Column(be.getBewerbungstext()));
 			bewerbungRow.addColumn(new Column(String.valueOf(be.getStatus())));
-			//leere Spalte für inhaltliche Trennung
+			//leere Spalte fï¿½r inhaltliche Trennung
 			bewerbungRow.addColumn(new Column(""));
 			// Inhalt Ausschreibung
 			bewerbungRow.addColumn(new Column(au.getBezeichnung()));
@@ -449,7 +466,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		return result;
 	}
 
-	// Hier werden nun die 2 SimpleReports zusammengefügt
+	// Hier werden nun die 2 SimpleReports zusammengefï¿½gt
 	public ReportByProjektverflechtungen createProjektverflechtungReport(Organisationseinheit orga)
 			throws IllegalArgumentException {
 
@@ -467,11 +484,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 
 	/*
-	 * Report 6 Durchführung einer Fan-in/Fan-out-Analyse: Zu allen Teilnehmern
+	 * Report 6 Durchfï¿½hrung einer Fan-in/Fan-out-Analyse: Zu allen Teilnehmern
 	 * kann jeweils die Anzahl von Bewerbungen (laufende, abgelehnte,
 	 * angenommene) (eine Art Fan-out) und deren Anzahl von Ausschreibungen
 	 * (erfolgreich besetzte, abgebrochene, laufende, also Fan-out) tabellarisch
-	 * aufgeführt werden.
+	 * aufgefï¿½hrt werden.
 	 * 
 	 * @author: Dominik Sasse
 	 */
