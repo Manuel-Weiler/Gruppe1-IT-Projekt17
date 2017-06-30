@@ -179,13 +179,6 @@ public class PartnerprofilMapper {
 
 	}
 	
-	/* TODO: Anpassen, wenn Klasse Ausschreibung&Ausschreibungsmapper existiert
-	 * Diese Methode gibt die Ausschreibung zur�ck, die durch das Partnerprofil-Objekt 
-	 * beschrieben wird.
-	public Ausschreibung getAusschreibungOf(Partnerprofil p)
-	{
-		return a;
-	} */
 
 
 	/**
@@ -200,32 +193,7 @@ public class PartnerprofilMapper {
 		return EigenschaftMapper.eigenschaftMapper().findByPartnerprofil(p);
 	}
 
-	/*
-	 * public Partnerprofil findByOrganisationseinheit (Organisationseinheit o)
-	 * { Connection con = DBConnection.connection(); Partnerprofil p = new
-	 * Partnerprofil();
-	 * 
-	 * try { Statement stmt = con.createStatement();
-	 * 
-	 * // Abfrage des gesuchten Partnerprofils zur <code>id</code> ResultSet rs
-	 * = stmt.executeQuery("SELECT * " +
-	 * "FROM Partnerprofil WHERE organisationseinheit_id='" +
-	 * o.getOrganisationseinheitId() + "'");
-	 * 
-	 * if (rs.next()) {
-	 * 
-	 * 
-	 * Dem R�ckgabeobjekt werden die Werte aus der Tabelle zugewiesen und so
-	 * das Tupel aus der Tabelle wieder in ein Objekt transformiert.
-	 * 
-	 * p.setID(rs.getInt("id")); p.setErstelldatum(rs.getDate("erstelldatum"));
-	 * p.setAenderungsdatum(rs.getDate("�nderungsdatum"));
-	 * 
-	 * return p; } } catch (SQLException e) { e.printStackTrace(); return null;
-	 * }
-	 * 
-	 * return null; }
-	 */
+	
 
 	public void deletePartnerprofilOfOrganisationseinheit(Organisationseinheit o) {
 		Connection con = DBConnection.connection();

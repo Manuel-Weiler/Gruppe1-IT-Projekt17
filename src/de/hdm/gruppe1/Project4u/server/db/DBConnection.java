@@ -26,12 +26,7 @@ public class DBConnection {
 	                    Class.forName("com.mysql.jdbc.Driver");
 	                    con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project4u", "root", null);
 	                }
-				
-				/*
-				 // Local MySQL instance to use during development.
-                 Class.forName("com.mysql.jdbc.Driver");
-                 con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/project4u?user=root&password=");
-				*/
+								
 			
 			} catch (Exception e) {
 				con = null;

@@ -207,6 +207,7 @@ public class NavigationsleisteWidget extends Composite {
 		profilButton.setEnabled(true);
 		homeButton.setEnabled(true);
 		reportButton.setEnabled(true);
+		projektButton.setEnabled(true);
 	}
 	
 	public void setButtonsUnenabled(){	
@@ -216,6 +217,7 @@ public class NavigationsleisteWidget extends Composite {
 		profilButton.setEnabled(false);
 		homeButton.setEnabled(false);
 		reportButton.setEnabled(false);
+		projektButton.setEnabled(false);
 		
 		
 	}

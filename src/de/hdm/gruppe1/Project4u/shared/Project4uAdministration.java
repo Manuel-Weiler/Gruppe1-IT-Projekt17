@@ -34,15 +34,9 @@ public interface Project4uAdministration extends RemoteService{
 	
 	public Vector<Projektmarktplatz> findAllProjektmarktplatz() throws IllegalArgumentException;
 
-	//TODO: Testmethode l�schen
-	String testMethode();
-
 	public ArrayList<Ausschreibung> getAlleAusschreibungen() throws IllegalArgumentException;
 	
 	public Ausschreibung createAusschreibung(Ausschreibung a, int partnerprofilId, Projekt pr)throws IllegalArgumentException;
-	
-	//TODO: Testmethode l�schen
-	public Vector<Projektmarktplatz> testMethode2() throws IllegalArgumentException;
 	
 	public Projektmarktplatz createProjektmarktplatz(Projektmarktplatz p, LoginInfo login)throws IllegalArgumentException;
 	

@@ -241,7 +241,7 @@ public class ProjektmarktplatzWidget extends Composite {
 						@Override
 						public void onClick(ClickEvent event) {
 
-							// TODO: Löschen des Projektmarktplatzes
+							
 							Project4uVerwaltung.getOrganisationseinheitById(selectionModel.getSelectedObject().getOrganisationseinheitId(), new AsyncCallback<Organisationseinheit>() {
 								
 								@Override

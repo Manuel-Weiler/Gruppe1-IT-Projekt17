@@ -210,7 +210,7 @@ public class AusschreibungMapper {
 	
 	
 	
-// So oder mit einem Vector?
+
 	public Ausschreibung  findByNameAusschreibung (String bezeichnung) {
 		Connection con = DBConnection.connection();
 		Ausschreibung au = new Ausschreibung();
@@ -272,10 +272,7 @@ public class AusschreibungMapper {
 		  }
 		
 
-		/**TODO: Diese Methode is voll f�r n arsch
-		 * @param profil
-		 * @return
-		 */
+		
 		public Vector<Ausschreibung> findByPartnerprofil (Partnerprofil profil) {
 		    Connection con = DBConnection.connection();
 		    Vector<Ausschreibung> result = new Vector<Ausschreibung>();

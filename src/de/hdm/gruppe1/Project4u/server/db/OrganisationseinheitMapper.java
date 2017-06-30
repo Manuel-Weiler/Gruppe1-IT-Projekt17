@@ -403,7 +403,7 @@ public class OrganisationseinheitMapper {
 			}
 		}
 		}
-		//TODO prüfen
+		
 		//Diese Methode löscht alle Verbindungen einer Organisationseinheit zu anderen Organisationseinheiten
 		public Vector<Organisationseinheit> getVerbindungenOfOrganisationseinheit(Organisationseinheit organisationseinheit) {
 			Connection con = DBConnection.connection();

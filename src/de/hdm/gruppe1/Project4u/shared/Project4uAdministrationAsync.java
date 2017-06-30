@@ -58,11 +58,7 @@ public interface Project4uAdministrationAsync {
 	
 	void findAllProjektmarktplatz(AsyncCallback<Vector<Projektmarktplatz>> callback);
 	
-	void testMethode (AsyncCallback<String> callback);
-	
 	void getAlleAusschreibungen(AsyncCallback<ArrayList<Ausschreibung>> callback);
-
-	void testMethode2(AsyncCallback<Vector<Projektmarktplatz>> callback);
 
 	void createProjektmarktplatz(Projektmarktplatz p, LoginInfo login, AsyncCallback<Projektmarktplatz> callback);
 

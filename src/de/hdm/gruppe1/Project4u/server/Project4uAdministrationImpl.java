@@ -1033,21 +1033,6 @@ public class Project4uAdministrationImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 
-	// TODO: Testmethode
-	public String testMethode() {
-		Organisationseinheit orgaEinheit = new Organisationseinheit();
-		orgaEinheit = this.organisationseinheitMapper.findByKey(2);
-		// String test = "Dies ist ein Test-String";
-		return orgaEinheit.getName();
-	}
-
-	public Vector<Projektmarktplatz> testMethode2() {
-		Projektmarktplatz test = new Projektmarktplatz();
-		test.setName("test");
-		test.setProjektmarktplatzId(1);
-		Vector<Projektmarktplatz> vtest = new Vector<Projektmarktplatz>();
-		vtest.add(test);
-		return vtest;
-	}
+	
 
 }

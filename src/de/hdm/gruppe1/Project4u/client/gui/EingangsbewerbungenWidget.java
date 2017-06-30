@@ -51,7 +51,7 @@ import de.hdm.gruppe1.Project4u.shared.bo.Projektmarktplatz;
 public class EingangsbewerbungenWidget {
 	
 	
-	//TODO: nach bewertung aktualisieren
+	
 	
 		Project4uAdministrationAsync Project4uVerwaltung = ClientsideSettings.getProject4uVerwaltung();
 		VerticalPanel vp = new VerticalPanel();

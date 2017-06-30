@@ -120,7 +120,7 @@ public class MeineProjekteWidget extends Composite {
 							}
 							@Override
 							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
+								
 								
 							}
 						});
@@ -129,7 +129,7 @@ public class MeineProjekteWidget extends Composite {
 					}
 					
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
+						
 						
 					}
 		
@@ -229,31 +229,15 @@ public class MeineProjekteWidget extends Composite {
 										new MeineProjekteWidget();
 										
 
+									
 										
-										
-										/*Project4uVerwaltung.findProjekteOfBeteiligteOrganisationseinheit(ClientsideSettings.getAktuellerUser(),
-												new AsyncCallback<Vector<Projekt>>() {
-
-													public void onSuccess(Vector<Projekt> result) {
-														vp.add(headingUserProjekte);
-														vp.add(createTableOfUserProjekte(result));
-														RootPanel.get("content").clear();
-														RootPanel.get("content").add(vp);
-														
-													}
-													
-													public void onFailure(Throwable caught) {
-														// TODO Auto-generated method stub
-														
-													}
-										
-										});*/
+							
 
 										
 									}
 									@Override
 									public void onFailure(Throwable caught) {
-										// TODO Auto-generated method stub
+										
 										
 									}
 								});
@@ -261,7 +245,7 @@ public class MeineProjekteWidget extends Composite {
 							}
 							@Override
 							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
+								
 								
 							}
 						});	
@@ -270,17 +254,7 @@ public class MeineProjekteWidget extends Composite {
 		
 		
 		
-		/*  // Add a selection model to handle user selection.
-	    final SingleSelectionModel<Projekt> selectionModel = new SingleSelectionModel<Projekt>();
-	    projektTabelle.setSelectionModel(selectionModel);
-	    selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-	      public void onSelectionChange(SelectionChangeEvent event) {
-	        Contact selected = selectionModel.getSelectedObject();
-	        if (selected != null) {
-	          Window.alert("You selected: " + selected.name);
-	        }
-	      }
-	    });*/
+	
 		projektTabelleAktuell.addColumn(projektName, "Name");
 		projektTabelleAktuell.addColumn(projektleiter, "Projektleiter");
 		projektTabelleAktuell.addColumn(startdatum, "Start");
@@ -389,29 +363,13 @@ public CellTable<Projekt> createTableOfOldUserProjekte(Vector<Projekt> projekte)
 										
 										new MeineProjekteWidget();
 										
-										/*Project4uVerwaltung.findProjekteOfBeteiligteOrganisationseinheit(ClientsideSettings.getAktuellerUser(),
-												new AsyncCallback<Vector<Projekt>>() {
-
-													public void onSuccess(Vector<Projekt> result) {
-														vp.add(headingUserProjekte);
-														vp.add(createTableOfUserProjekte(result));
-														RootPanel.get("content").clear();
-														RootPanel.get("content").add(vp);
-														
-													}
-													
-													public void onFailure(Throwable caught) {
-														// TODO Auto-generated method stub
-														
-													}
 										
-										});*/
 
 										
 									}
 									@Override
 									public void onFailure(Throwable caught) {
-										// TODO Auto-generated method stub
+										
 										
 									}
 								});
@@ -419,7 +377,7 @@ public CellTable<Projekt> createTableOfOldUserProjekte(Vector<Projekt> projekte)
 							}
 							@Override
 							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
+								
 								
 							}
 						});	
@@ -427,17 +385,7 @@ public CellTable<Projekt> createTableOfOldUserProjekte(Vector<Projekt> projekte)
 		});
 		projektTabelleAlt.addColumn(deleteBeteiligung);
 		
-		/*  // Add a selection model to handle user selection.
-	    final SingleSelectionModel<Projekt> selectionModel = new SingleSelectionModel<Projekt>();
-	    projektTabelle.setSelectionModel(selectionModel);
-	    selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-	      public void onSelectionChange(SelectionChangeEvent event) {
-	        Contact selected = selectionModel.getSelectedObject();
-	        if (selected != null) {
-	          Window.alert("You selected: " + selected.name);
-	        }
-	      }
-	    });*/
+		
 		
 		//Anzahl der Zeilen definieren
 		projektTabelleAlt.setRowCount(projekte.size());
