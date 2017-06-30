@@ -255,15 +255,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			ausschreibungsheadline2.addColumn(new Column("Ausschreibungstext: " + au.getAusschreibungstext()));
 			result.addRow(ausschreibungsheadline2);
 
-			// Ausschreibungstext hinzuf�gen
-			Row ausschreibungstextline = new Row();
-			ausschreibungstextline.addColumn(new Column(" "));
-			result.addRow(ausschreibungstextline);
 
-			Row ausschreibungstextline1 = new Row();
-			ausschreibungstextline1.addColumn(new Column(" "));
-			result.addRow(ausschreibungstextline1);
-			
+
 			// Nun sollen die dazugeh�rigen Bewerbungen hinzugef�gt werden
 			// Kopfzeile f�r die Tabelle anlegen:
 			Row headline = new Row();
@@ -273,10 +266,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			headline.addColumn(new Column("Bewerbungstext"));
 			headline.addColumn(new Column("Erstelldatum"));
 			headline.addColumn(new Column("Status"));
-
+			
 			// Kopfzeile wird dem Report hinzugefuegt
 			result.addRow(headline);
 
+		
+			
 			// Reportinhalt:
 
 			Vector<Bewerbung> be = project4uAdministration.getAllBewerbungen();
@@ -295,24 +290,20 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				// f�r jede Spalte dieser Zeile wird nun der Inhalt
 				// geschrieben
 				bewerbungRow.addColumn(new Column(b.getBewerbungstext()));
-				
-				Row bewerbungRow1 = new Row();
-				bewerbungRow1.addColumn(new Column(String.valueOf(b.getErstelldatum())));
-				
-				Row bewerbungRow2 = new Row();
-				bewerbungRow2.addColumn(new Column(b.getStatus()));
+				bewerbungRow.addColumn(new Column(String.valueOf(b.getErstelldatum())));
+				bewerbungRow.addColumn(new Column(b.getStatus()));
 
-				//Leerzeilen anlegen zur Abgrenzung
-				Row bewerbungRow3 = new Row();
-				bewerbungRow3.addColumn(new Column(" "));
-				
-				Row bewerbungRow4 = new Row();
-				bewerbungRow4.addColumn(new Column(" "));
-				
-				Row bewerbungRow5 = new Row();
-				bewerbungRow5.addColumn(new Column(" "));
 				// Zeile dem Report hinzuf�gen
 				result.addRow(bewerbungRow);
+				// Leerzeile einfügen
+				Row ausschreibungstextline = new Row();
+				ausschreibungstextline.addColumn(new Column(" "));
+				result.addRow(ausschreibungstextline);
+				
+				// Leerzeile einfügen
+				Row ausschreibungstextline1 = new Row();
+				ausschreibungstextline1.addColumn(new Column(" "));
+				result.addRow(ausschreibungstextline1);
 			}
 
 		}
